@@ -1,10 +1,11 @@
 Z = require \zombie
+S = require \../server
 
 log = console.log
 
 z = new Z do
   #debug       : true
-  waitDuration: 1000ms
+  waitDuration: 1000ms  # bug: zombie never takes less time than this t/o
 
 exports
   ..init = (server) ->
@@ -19,7 +20,8 @@ exports
       res.send z.html!
 
     function get-app-url req then
-      log req-port = if (port = process.env.PORT) then ":#{port}" else ''
+      log req-port = if S.settings.env isnt \production # heroku port isn't 80
+        and (port = process.env.PORT) then ":#{port}" else ''
       log app-path = "##{req.path}".replace \.html, ''
       log app-url = "#{req.protocol}://#{req.host}#{req-port}/#{app-path}"
       app-url
