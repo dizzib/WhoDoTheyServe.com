@@ -1,0 +1,54 @@
+mixin css(url)
+  link(href='#{url}.css', rel='stylesheet', type='text/css')
+
+mixin script(url)
+  script(src='#{url}.js', type='text/javascript')
+
+!!!
+html
+  meta(charset='utf-8')
+  head
+    title WhoDoTheyServe.com
+    +css('boot')
+    +css('/lib-3p/bootstrap/css/bootstrap.min')
+  body.container
+    small.version.pull-right
+    h1
+      a(href='') WhoDoTheyServe.com
+    .navigator
+    .view.hide-on-boot
+      .alert.alert-error
+      .doc
+      .graph
+      .edge
+      .edge-evidence-head.section
+      .edge-evidence-void
+      .edge-evidence
+      .edge-meta.section
+      .edges
+      .node
+      .node-evidence-head.section
+      .node-evidence-void
+      .node-evidence
+      .node-edges-head.section
+      .node-edges-a
+      .node-edges-b
+      .node-meta.section
+      .nodes
+      .session-info
+      .user
+      .user-nodes.section
+      .user-edges
+      .user-signin
+      .user-signup
+      .users
+    br
+    br
+    .footer
+
+  +script('/lib-3p/underscore')
+  +script('/lib-3p/jquery')
+  +script('/lib-3p/backbone')
+  +script('/lib-3p/jit.min')
+  +script('lib')
+  +script('app')

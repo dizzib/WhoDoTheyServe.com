@@ -1,0 +1,10 @@
+include ../lib/_form
+
+form.form-horizontal.well
+  legend
+    span.create Create evidence
+    span.update Edit evidence
+  fieldset
+    +field-text('url', 'Url', 'Enter url of some good evidence')
+    +field-hidden('entity_id', 'EntityId')
+  +button-bar

@@ -1,0 +1,17 @@
+ul.nav.nav-tabs
+  li(active='^node')
+    a(href='#/nodes') Actors
+  li(active='^edge')
+    a(href='#/edges') Connections
+  li(active='^graph')
+    a(href='#/graph') Graph
+  li(active='^user-signin').pull-right.signed-out
+    a(href='#/user-signin') Login
+  li(active='^user-signout').pull-right.signed-in
+    a(href='#/user-signout') Logout
+  li(active='^user-info').pull-right.signed-in
+    a(href='#/user-info') Account 
+  li(active='^user-signup').pull-right.signed-in-admin
+    a(href='#/user-signup') Signup
+  li(active='^users').pull-right
+    a(href='#/users') Users

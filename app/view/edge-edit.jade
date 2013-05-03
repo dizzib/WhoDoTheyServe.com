@@ -1,0 +1,21 @@
+include ../lib/_form
+
+form.form-horizontal.well
+  legend
+    span.create Create Connection
+    span.update Edit Connection
+  fieldset
+    +field-select('a_node_id', 'Actor A')
+    +field-label('a_is', 'Influence')
+      label.radio Actor A is a subordinate of B (e.g. serves under or is owned/influenced by B)
+        input(type='radio', name='a_is', id='a_is_lt', value='lt')
+      label.radio Actor A is a peer/equal of B (e.g. a person representing organisation B)
+        input(type='radio', name='a_is', id='a_is_eq', value='eq')
+    +field-text('how', 'How')
+      span.help-inline Optional note of how A and B are related e.g. "owned by"
+    +field-select('b_node_id', 'Actor B')
+    +field-text('year_from', 'Year From')
+      //- span.help-inline When this connection started
+    +field-text('year_to', 'Year To')
+      //- span.help-inline The year this connection ended (optional)
+  +button-bar

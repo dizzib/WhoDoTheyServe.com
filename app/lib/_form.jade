@@ -1,0 +1,37 @@
+mixin field-hidden(name, label)
+  input(type='hidden', id=name, name=name)
+
+mixin field-label(name, label)
+  - var label = label || name
+  .control-group
+    label(for=name).control-label #{label}
+    .controls
+      block
+
+mixin field-input(type, name, label, placeholder)
+  +field-label(name, label)
+    input(type=type, id=name, name=name, placeholder=placeholder)
+    block
+
+mixin field-password(name, label, placeholder)
+  +field-input('password', name, label, placeholder)
+    block
+
+mixin field-text(name, label, placeholder)
+  +field-input('text', name, label, placeholder)
+    block
+
+mixin field-select(name, label)
+  +field-label(name, label)
+    select(id=name, name=name)
+
+mixin button-bar
+  hr
+  button(type='button').btn.cancel Cancel 
+    i.icon-arrow-left
+  button(type='submit').btn.btn-primary.pull-right.create Create 
+    i.icon-ok.icon-white
+  button(type='submit').btn.btn-primary.pull-right.update Update 
+    i.icon-ok.icon-white
+  button(type='button').btn.btn-danger.delete.pull-right.update Delete 
+    i.icon-remove.icon-white

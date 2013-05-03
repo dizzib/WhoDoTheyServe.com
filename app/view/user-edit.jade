@@ -1,0 +1,18 @@
+include ../lib/_form
+
+form.form-horizontal.well
+  legend
+    span.create Signup
+    span.update Edit Account
+  fieldset
+    +field-text('login', 'Username')
+    +field-password('password', 'Password', 'Unchanged')
+    +field-password('passconf', 'Confirm Password', 'Unchanged')
+    +field-text('email', 'Email')
+      span.help-block
+        | Purely for user verification and password reset
+        | (encrypted in the db and never disclosed).
+    +field-text('info', 'Homepage')
+    .signed-in-admin
+      +field-text('trust_level', 'Trust Level')
+  +button-bar
