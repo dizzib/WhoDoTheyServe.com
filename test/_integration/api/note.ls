@@ -34,7 +34,7 @@ function update done, name, is-ok, fields then
   if H.is-ok res then S.notes[name] = note
   done err
 
-function list done, name, n then
+function list done, n, name then
   H.list done, "notes/for/#{get-entity name ._id}", n
 
 function get-route key then
