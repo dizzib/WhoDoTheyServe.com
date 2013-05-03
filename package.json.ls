@@ -27,7 +27,6 @@ devDependencies:
   brfs        : \0.0.x
   browserify  : \2.12.x
   chai        : \1.5.x
-  'insert-css': \0.0.0
   jade        : \0.27.x
   mocha       : \1.7.x
   mongodb     : \1.2.x

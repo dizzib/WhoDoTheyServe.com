@@ -1,6 +1,6 @@
 B          = require \backbone
-F          = require \fs
-Insert-css = require \insert-css
+F          = require \fs # inlined by brfs
+Insert-css = require \./lib-3p/insert-css
 C          = require \./collection
 H          = require \./helper
 M-Ext      = require \./model-ext
@@ -8,7 +8,6 @@ S          = require \./session
 V          = require \./view
 V-Event    = require \./view-event
 Router     = require \./router
-
 
 Insert-css F.readFileSync __dirname + \/lib/form.css
 Insert-css F.readFileSync __dirname + \/index.css

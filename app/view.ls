@@ -1,5 +1,5 @@
-F              = require \fs
-Insert-css     = require \insert-css
+F              = require \fs # inlined by brfs
+Insert-css     = require \./lib-3p/insert-css
 V              = require \./view-engine
 V-Graph        = require \./view/graph
 V-NavBar       = require \./view/navbar
