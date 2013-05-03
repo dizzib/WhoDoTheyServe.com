@@ -8,6 +8,7 @@ H        = require \./api/helper
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
 Node     = require \./api/node
+Note     = require \./api/note
 Session  = require \./api/session
 User     = require \./api/user
 
@@ -24,7 +25,7 @@ describe 'api', ->
     <- drop-db
     DB.connect!
     site = spawn-site!
-    site.stderr.on \data, -> log "#{it}"
+    site.stderr.on \data, -> H.log "#{it}"
     site.stdout.on \data, ->
       #H.log "#{it}"
       done! if /listening/.test it
@@ -190,6 +191,19 @@ describe 'api', ->
       run Evidence.c0.remove.ok
       run Node.c.remove.ok
       run Node.list.is4
+    describe 'note', ->
+      run Note.a.list.is0
+      run Note.a.create.ok
+      run Note.b.create.ok
+      run Note.a.list.is1
+      run Note.a.text.min.create.bad # count > 1
+      run Note.a.text.min.update.ok
+      run Note.a.text.min-lt.update.bad
+      run Note.a.text.max.update.ok
+      run Note.a.text.max-gt.update.bad
+      run Note.a.remove.ok
+      run Note.a.list.is0
+      run Note.b.list.is1
   describe 'user B', ->
     run Session.signout.ok
     run Session.b.signin.bad.login
@@ -206,7 +220,13 @@ describe 'api', ->
       run Edge.bc.create.ok
       run Evidence.bc0.create.ok
       run Node.f.create.ok
-    describe 'maint', ->
+    describe 'note', ->
+      run Note.b.create.ok
+      run Note.b.list.is2
+      run Note.b.text.min.create.bad # count > 1
+      run Note.b.remove.ok
+      run Note.b.list.is1
+    describe 'user', ->
       run User.a.info.path.update.bad
       run User.a.remove.bad
       run User.b.remove.ok
@@ -216,7 +236,7 @@ describe 'api', ->
     run Session.admin.signin.bad.login
     run Session.admin.signin.bad.password
     run Session.admin.signin.password.a.ok
-    describe 'user maint', ->
+    describe 'user', ->
       run User.a.password.c.update.ok
       run User.a.trust-level.six.update.ok
       run User.c.remove.ok

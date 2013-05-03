@@ -1,5 +1,6 @@
 M-Edges     = require \./model-edges
 M-Nodes     = require \./model-nodes
+M-Notes     = require \./model-notes
 M-Evidences = require \./model-evidences
 M-Sessions  = require \./model-sessions
 M-Users     = require \./model-users
@@ -14,6 +15,7 @@ exports
     server
       ..param \id, (req,, next, req.id) -> next!
       ..get "/api/evidences/for/:id"      , M-Evidences.crud-fns.list-for-entity
+      ..get "/api/notes/for/:id"          , M-Notes.crud-fns.list-for-entity
       ..get "/api/sys"                    , Sys.get
      #..get "/api/users/:id/verify/:token", M-Users.verify
 
@@ -22,10 +24,12 @@ exports
     set-api-sec \evidences , M-Evidences
     set-api-sec \edges     , M-Edges
     set-api-sec \nodes     , M-Nodes
+    set-api-sec \notes     , M-Notes
     set-api-integrity!
     set-api-crud \evidences, M-Evidences
     set-api-crud \edges    , M-Edges
     set-api-crud \nodes    , M-Nodes
+    set-api-crud \notes    , M-Notes
     set-api-crud \users    , M-Users
     set-api-crud-sessions!
 
