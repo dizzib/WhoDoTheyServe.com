@@ -194,7 +194,7 @@ describe 'api', ->
     describe 'note', ->
       run Note.a.list.is0
       run Note.a.create.ok
-      run Note.b.create.ok
+      run Note.b.text.tqbf.create.ok
       run Note.a.list.is1
       run Note.a.text.min.create.bad # count > 1
       run Note.a.text.min.update.ok
@@ -221,11 +221,10 @@ describe 'api', ->
       run Evidence.bc0.create.ok
       run Node.f.create.ok
     describe 'note', ->
+      run Note.b.remove.bad
       run Note.b.create.ok
       run Note.b.list.is2
       run Note.b.text.min.create.bad # count > 1
-      run Note.b.remove.ok
-      run Note.b.list.is1
     describe 'user', ->
       run User.a.info.path.update.bad
       run User.a.remove.bad

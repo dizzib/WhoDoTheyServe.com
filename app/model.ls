@@ -40,6 +40,9 @@ exports
         * pattern : Cons.node.name.regex
           msg     : "Name should be #{Cons.node.name.info}"
 
+  ..Note = Model.extend do
+    urlRoot: '/api/notes'
+
   ..Session = Model.extend do
     urlRoot   : '/api/sessions'
     validation:

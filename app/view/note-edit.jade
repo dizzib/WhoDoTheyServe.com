@@ -1,0 +1,10 @@
+include ../lib/_form
+
+form.well
+  fieldset
+    span.help-block
+      | Please enter your note below.
+      | You can edit it as many times as you like, or delete it at any time.
+    textarea(type='text', id='text', name='text', rows='5')
+    +field-hidden('entity_id', 'EntityId')
+    +button-bar

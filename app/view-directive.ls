@@ -1,22 +1,10 @@
-H = require \./helper
+B = require \backbone
+_ = require \underscore
 C = require \./collection
+H = require \./helper
 S = require \./session
 
 exports
-  ..nodes =
-    name:
-      href: -> node-info @_id
-  ..node-edges-head =
-    btn-edge-new:
-      href: -> \#/edge-new
-      text: -> 'New '
-  ..node-evidences = evidence \node
-  ..node-evidences-head = evidence-head \node
-  ..node-info =
-    btn-edit:
-      class: show-if-creator
-      href : -> node-edit @_id
-      text : -> 'Edit '
   ..edges =
     a-node: node-a!
     b-node: node-b!
@@ -42,6 +30,28 @@ exports
       text: -> find-user-by-meta(@meta)?get(\login) ? '(deleted user)'
     create-date:
       text: -> new Date @meta?create_date
+  ..nodes =
+    name:
+      href: -> node-info @_id
+  ..node-evidences = evidence \node
+  ..node-evidences-head = evidence-head \node
+  ..node-info =
+    btn-edit:
+      class: show-if-creator
+      href : -> node-edit @_id
+      text : -> 'Edit '
+  ..note-info = _.extend do
+    btn-edit:
+      href: -> "#/#{B.history.fragment}/note-edit"
+    editable:
+      class: -> \hide if _.isEmpty this
+    exports.meta
+  ..notes = exports.meta
+  ..notes-head =
+    btn-new:
+      href: -> "#/#{B.history.fragment}/note-new"
+    creatable:
+      class: -> \hide unless _.isEmpty this
   ..users =
     login:
       href: -> user-info @_id
@@ -64,7 +74,8 @@ exports
       text: edge-how
     period: edge-period!
 
-## helpers
+function note e-type then
+
 function evidence entity-type then
   btn-delete:
     class: show-if-creator
@@ -89,6 +100,7 @@ function edge-period then
     yf = if @year_from then "from #{@year_from} " else ''
     yt = if @year_to then "to #{@year_to}" else ''
     yf + yt
+function find-user-by-meta then C.Users.find-by-id it?create_user_id
 function node-edit then "#/node-edit/#{it}"
 function node-info then "#/node-info/#{it}"
 function node-a then
@@ -101,4 +113,3 @@ function show-if-creator then
   \hide unless S.is-signed-in @meta?create_user_id
 function user-edit then "#/user-edit"
 function user-info then "#/user-info/#{it}" if it
-function find-user-by-meta then C.Users.find-by-id it?create_user_id

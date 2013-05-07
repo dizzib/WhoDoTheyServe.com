@@ -20,6 +20,7 @@ exports.init = ->
   add-factory-method M.Evidence
   add-factory-method M.Edge
   add-factory-method M.Node
+  add-factory-method M.Note
   add-factory-method M.Session
   add-factory-method M.Signup
   add-factory-method M.Sys

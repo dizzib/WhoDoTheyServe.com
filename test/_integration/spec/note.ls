@@ -21,7 +21,8 @@ exports.get-spec = (c, r, u, d, list) ->
     b : _.extend do
       h.get-spec \b, text:'Jumps over the lazy dog'
       text:
-        min: h.get-spec \b, text:\x * 10
+        tqbf: h.get-spec \b, text:'The quick brown fox'
+        min : h.get-spec \b, text:\x * 10
       list:
         is0: h.get-spec-list 0, \b
         is1: h.get-spec-list 1, \b

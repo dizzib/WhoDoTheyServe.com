@@ -29,6 +29,10 @@ exports.init = ->
     model     : M.Node
     comparator: -> it.get \name .toLowerCase!
 
+  notes = ->
+    url  : "/api/notes/for/#{it}"
+    model: M.Note
+
   sessions =
     url  : '/api/sessions'
     model: M.Session
@@ -48,3 +52,7 @@ exports.init = ->
       return @_coll[eid] if @_coll and @_coll[eid]
       @_coll ||= []
       @_coll[eid] ||= new (Collection.extend evidences eid)!
+
+    ..Notes = (entity-id) ->
+      @_notes = [] unless @_notes
+      @_notes[entity-id] ||= new (Collection.extend notes entity-id)!

@@ -2,6 +2,7 @@ B = require \backbone
 H = require \./helper
 C = require \./collection
 M = require \./model
+S = require \./session
 V = require \./view
 D = require \./view-directive
 
@@ -29,7 +30,7 @@ Router = B.Router.extend do
     \node-edit/:id          : \node_edit
     \node-evi-del/:eid/:id  : \node_evi_del
     \node-evi-new/:id       : \node_evi_new
-    \node-info/:id          : \node_info
+    'node-info/:id(/:act)'  : \node_info
     \node-new               : \node_edit
     \session-info           : \session_info
     \users                  : \user_list
@@ -84,14 +85,24 @@ function render-node-evidence-new then
   V.node-info         .render (C.Nodes.get it), D.node-info
   V.node-evidence-edit.render (M.Evidence.create!set \entity_id, it), C.Evidences it
 
-function render-node-info then
-  V.node-info          .render (node = C.Nodes.get id=it), D.node-info
+function render-node-info id, act then
+  V.node-info          .render (node = C.Nodes.get id), D.node-info
   V.node-evidences-head.render node, D.node-evidences-head
   V.node-evidences     .render (C.Evidences id), D.node-evidences, void-view:V.node-evidences-void
-  V.node-edges-head    .render node, D.node-edges-head
+  V.node-edges-head    .render!
   V.node-edges-a       .render (C.Edges.find -> id is it.get \a_node_id), D.edges
   V.node-edges-b       .render (C.Edges.find -> id is it.get \b_node_id), D.edges
   V.node-meta          .render node, D.meta
+  C.Notes id .fetch error:H.on-err, success: -> render-notes it, id, act
+
+function render-notes notes, entity-id, act then
+  note-by-signin = if act is \note-new then M.Note.create!set \entity_id, entity-id
+    else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
+  notes-not-by-signin = notes.find(-> not S.is-signed-in it.get \meta.create_user_id)
+  V.notes-head.render note-by-signin, D.notes-head
+  V.note-edit .render note-by-signin, notes, fetch:no if act
+  V.note-info .render note-by-signin, D.note-info if not act
+  V.notes     .render notes-not-by-signin, D.notes, fetch:no
 
 function render-user-info then
   V.user-info .render (C.Users.get(id = it or C.Sessions.models.0?id)), D.user-info

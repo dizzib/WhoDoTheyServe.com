@@ -20,14 +20,14 @@ exports
     delete: ->
       return unless confirm 'Are you sure you want to delete this item ?'
       @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
-    render: (@model, @coll) ->
+    render: (@model, @coll, opts) ->
       B.Validation.bind this
       ($tem = $ @options.template).addClass if is-new = @model.isNew! then \create else \update
-      return render @model if is-new
+      return render @model if is-new or opts?fetch is no
       @model.fetch error:H.on-err, success: -> render it
       ~function render model then
         @$el.html $tem.render model.toJSON-T! .set-access!show!
-        $ \input:text:visible:first .focus!
+        @$el.find 'input[type=text],textarea,select' .filter ':visible:first' .focus!
         @trigger \rendered, model
     save: ->
       # if @model is undefined here then check $el isn't being used elsewhere!
@@ -37,18 +37,22 @@ exports
 
   ..InfoView = B.View.extend do
     render: (model, directive) ->
-      ($tem = $ @options.template).render model.toJSON-T!, directive
+      $tem = $ @options.template
+      data = if model then model.toJSON-T! else {}
+      $tem.render data, directive #, debug:on
       @$el.html $tem .set-access!show!
 
   ..ListView = B.View.extend do
     render: (coll, directive, opts) ->
+      return render coll if opts?fetch is no
       return render coll unless coll.url
       coll.fetch error:H.on-err, success: -> render it
-      ~function render coll then
-        if coll.length is 0 then
+      ~function render c then
+        c = c.find f if f = opts?filter
+        if c.length is 0 then
           return unless opts?void-view
           return opts.void-view.render!
-        ($tem = $ @options.template).filter \.items .render coll.toJSON-T!, directive
+        ($tem = $ @options.template).filter \.items .render c.toJSON-T!, directive
         @$el.html $tem .set-access!show!
 
   ..SelectView = B.View.extend do

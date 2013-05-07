@@ -23,6 +23,10 @@ exports.init = (router) ->
       ..on \cancelled,     -> B.history.history.back!
       ..on \destroyed, (e) -> navigate "node-info/#{e.get \entity_id}"
       ..on \saved    , (e) -> navigate "node-info/#{e.get \entity_id}"
+    ..note-edit
+      ..on \cancelled,     -> B.history.history.back!
+      ..on \destroyed,     -> B.history.history.back!
+      ..on \saved    , (n) -> navigate "node-info/#{n.get \entity_id}"
     ..user-edit
       ..on \cancelled,     -> B.history.history.back!
       ..on \destroyed,     -> navigate \users
