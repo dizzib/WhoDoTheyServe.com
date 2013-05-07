@@ -14,8 +14,8 @@ exports.get-spec = (c, r, u, d, list) ->
       text:
         min   : h.get-spec \a, text:\x * 10
         min-lt: h.get-spec \a, text:\x * 9
-        max   : h.get-spec \a, text:\x * 100
-        max-gt: h.get-spec \a, text:\x * 101
+        max   : h.get-spec \a, text:\x * 200
+        max-gt: h.get-spec \a, text:\x * 201
     ab: h.get-spec \ab
     ac: h.get-spec \ac
     b : _.extend do

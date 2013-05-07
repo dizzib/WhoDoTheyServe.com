@@ -41,7 +41,12 @@ exports
           msg     : "Name should be #{Cons.node.name.info}"
 
   ..Note = Model.extend do
-    urlRoot: '/api/notes'
+    urlRoot   : '/api/notes'
+    validation:
+      \text :
+        * required: yes
+        * pattern : Cons.note.regex
+          msg     : "Note should be #{Cons.note.info}"
 
   ..Session = Model.extend do
     urlRoot   : '/api/sessions'
