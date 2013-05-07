@@ -19,13 +19,10 @@ exports
       href: edge-info
       text: edge-how
     period: edge-period!
-  ..edge-evidences = evidence \edge
-  ..edge-evidences-head = evidence-head \edge
   ..edge-info =
     btn-edit:
       class: show-if-creator
-      href : edge-edit
-      text : -> 'Edit '
+      href : -> "#/edge-edit/#{@_id}"
     a-node: node-a!
     b-node: node-b!
     how:
@@ -45,13 +42,10 @@ exports
   ..nodes =
     name:
       href: -> node-info @_id
-  ..node-evidences = evidence \node
-  ..node-evidences-head = evidence-head \node
   ..node-info =
     btn-edit:
       class: show-if-creator
-      href : -> node-edit @_id
-      text : -> 'Edit '
+      href : -> "#/node-edit/#{@_id}"
   ..notes = exports.meta
   ..notes-head =
     btn-edit:
@@ -69,7 +63,6 @@ exports
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
       href : -> "#/user-edit/#{@_id}"
-      text : -> 'Edit '
     url:
       href: -> @info
       text: -> @info
@@ -84,24 +77,6 @@ exports
       text: edge-how
     period: edge-period!
 
-function note e-type then
-
-function evidence entity-type then
-  btn-delete:
-    class: show-if-creator
-    href : -> "#/#{entity-type}-evi-del/#{@entity_id}/#{@_id}"
-  btn-new:
-    href: -> "#/#{entity-type}-evi-new/#{@_id}"
-    text: -> 'New '
-  url:
-    href  : -> @url
-    text  : -> @url
-    target: -> \_blank  # open in new tab
-function evidence-head entity-type then
-  btn-new:
-    href: -> "#/#{entity-type}-evi-new/#{@_id}"
-    text: -> 'New '
-function edge-edit then "#/edge-edit/#{@_id}"
 function edge-info then "#/edge-info/#{@_id}"
 function edge-how then "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
 function edge-period then
@@ -111,7 +86,6 @@ function edge-period then
     yt = if @year_to then "to #{@year_to}" else ''
     yf + yt
 function find-user-by-meta then C.Users.find-by-id it?create_user_id
-function node-edit then "#/node-edit/#{it}"
 function node-info then "#/node-info/#{it}"
 function node-a then
   href: -> node-info @a_node_id

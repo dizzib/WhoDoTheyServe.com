@@ -17,9 +17,9 @@ Router = B.Router.extend do
     V.navigator.render!
   routes:
     ''                      : \graph
-    \about                  : \doc_about
-    \api                    : \doc_api
-    \disclaimer             : \doc_disclaim
+    \doc/about              : \doc_about
+    \doc/api                : \doc_api
+    \doc/disclaimer         : \doc_disclaim
     \edges                  : \edge_list
     \edge-edit/:id          : \edge_edit
     \edge-info/:id          : \edge
@@ -36,8 +36,8 @@ Router = B.Router.extend do
     \session-info           : \session_info
     \users                  : \user_list
     \user-edit/:id          : \user_edit
-    \user-info              : \user_info
-    \user-info/:id          : \user_info
+    \user-info              : \user
+    \user-info/:id          : \user
     \user-signin            : \user_signin
     \user-signout           : \user_signout
     \user-signup            : \user_signup
@@ -52,8 +52,8 @@ Router = B.Router.extend do
   node_list   : -> V.nodes.render C.Nodes, D.nodes
   node_edit   : -> V.node-edit.render M.Node.create(it), C.Nodes
   session_info: -> V.session-info.render!
+  user        :    render-user-info
   user_edit   : -> V.user-edit.render M.User.create(it), C.Users
-  user_info   :    render-user-info
   user_list   : -> V.users.render C.Users, D.users
   user_signin : -> V.user-signin.render M.Session.create!, C.Sessions
   user_signup : -> V.user-signup.render M.Signup.create!, C.Users
