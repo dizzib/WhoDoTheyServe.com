@@ -3,7 +3,7 @@ F = require \fs
 C = require \../collection
 H = require \../helper
 
-T = F.readFileSync __dirname + \/session-info.html
+T = F.readFileSync __dirname + \/session.html
 
 module.exports = B.View.extend do
   render: ->

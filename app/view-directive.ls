@@ -7,7 +7,7 @@ S = require \./session
 exports # define first for in-situ _.extend
   ..meta =
     create-user:
-      href: -> user-info @meta?create_user_id
+      href: -> user @meta?create_user_id
       text: -> find-user-by-meta(@meta)?get(\login) ? '(deleted user)'
     create-date:
       text: -> new Date @meta?create_date
@@ -16,10 +16,10 @@ exports
     a-node: node-a!
     b-node: node-b!
     how:
-      href: edge-info
+      href: edge
       text: edge-how
     period: edge-period!
-  ..edge-info =
+  ..edge =
     btn-edit:
       class: show-if-creator
       href : -> "#/edge-edit/#{@_id}"
@@ -41,8 +41,8 @@ exports
       href: -> "#/#{B.history.fragment}/evi-new"
   ..nodes =
     name:
-      href: -> node-info @_id
-  ..node-info =
+      href: -> node @_id
+  ..node =
     btn-edit:
       class: show-if-creator
       href : -> "#/node-edit/#{@_id}"
@@ -58,8 +58,8 @@ exports
       class: -> \hide if _.isEmpty this
   ..users =
     login:
-      href: -> user-info @_id
-  ..user-info =
+      href: -> user @_id
+  ..user =
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
       href : -> "#/user-edit/#{@_id}"
@@ -68,16 +68,16 @@ exports
       text: -> @info
   ..user-nodes =
     name:
-      href: -> node-info @_id
+      href: -> node @_id
   ..user-edges =
     a-node: node-a!
     b-node: node-b!
     how:
-      href: edge-info
+      href: edge
       text: edge-how
     period: edge-period!
 
-function edge-info then "#/edge-info/#{@_id}"
+function edge then "#/edge/#{@_id}"
 function edge-how then "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
 function edge-period then
   text: ->
@@ -86,14 +86,14 @@ function edge-period then
     yt = if @year_to then "to #{@year_to}" else ''
     yf + yt
 function find-user-by-meta then C.Users.find-by-id it?create_user_id
-function node-info then "#/node-info/#{it}"
+function node then "#/node/#{it}"
 function node-a then
-  href: -> node-info @a_node_id
+  href: -> node @a_node_id
   text: -> @a_node_name
 function node-b then
-  href: -> node-info @b_node_id
+  href: -> node @b_node_id
   text: -> @b_node_name
 function show-if-creator then
   \hide unless S.is-signed-in @meta?create_user_id
+function user then "#/user/#{it}" if it
 function user-edit then "#/user-edit"
-function user-info then "#/user-info/#{it}" if it

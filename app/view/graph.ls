@@ -22,7 +22,7 @@ module.exports = B.View.extend do
         overridable : yes
         color       : \grey
       onCreateLabel: (el, node) ->
-        $ \<a/> .text node.name .attr \href, "#/node-info/#{node.id}" .appendTo $ el
+        $ \<a/> .text node.name .attr \href, "#/node/#{node.id}" .appendTo $ el
       Events:
         enable      : yes
         type        : \Native
