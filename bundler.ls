@@ -14,27 +14,25 @@ exports.init = ->
     \./app/lib-3p/transparency
     \./app/lib-3p-ext/jquery-3p
 
-  b = B \./app/boot.js
+  ba = B \./app/boot.js
   for l in libs
-    b.external l
-  b.transform Brfs
-  b.require \./app/lib-3p-shim/backbone  , expose:\backbone
-  b.require \./app/lib-3p/transparency   , expose:\transparency
-  b.require \./app/lib-3p-shim/underscore, expose:\underscore
+    ba.external l
+  ba.transform Brfs
+  ba.require \./app/lib-3p-shim/backbone  , expose:\backbone
+  ba.require \./app/lib-3p/transparency   , expose:\transparency
+  ba.require \./app/lib-3p-shim/underscore, expose:\underscore
 
-  err, src <- b.bundle detectGlobals:false
-  throw err if err
-  err <- F.writeFile \./app/app.js, src
-  throw err if err
-  console.log 'Bundled app.js'
+  wsa = F.createWriteStream \./app/app.js
+  rsa = ba.bundle detectGlobals:false, insertGlobals:false
+  rsa.on \end, -> console.log 'Bundled app.js'
+  rsa.pipe wsa
 
   return # https://github.com/substack/node-browserify/issues/355
 
-  b = B libs
+  bl = B libs
   for l in libs
-    b.require l
-  err, src <- b.bundle detectGlobals:false
-  throw err if err
-  err <- F.writeFile \./app/lib.js, src
-  throw err if err
-  console.log 'Bundled lib.js'
+    bl.require l
+  wsl = F.createWriteStream \./app/lib.js
+  rsl = bl.bundle detectGlobals:false, insertGlobals:false
+  rsl.on \end, -> console.log 'Bundled lib.js'
+  rsl.pipe wsl
