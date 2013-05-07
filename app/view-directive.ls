@@ -4,6 +4,13 @@ C = require \./collection
 H = require \./helper
 S = require \./session
 
+exports # define first for in-situ _.extend
+  ..meta =
+    create-user:
+      href: -> user-info @meta?create_user_id
+      text: -> find-user-by-meta(@meta)?get(\login) ? '(deleted user)'
+    create-date:
+      text: -> new Date @meta?create_date
 exports
   ..edges =
     a-node: node-a!
@@ -24,12 +31,17 @@ exports
     how:
       text: edge-how
     period: edge-period!
-  ..meta =
-    create-user:
-      href: -> user-info @meta?create_user_id
-      text: -> find-user-by-meta(@meta)?get(\login) ? '(deleted user)'
-    create-date:
-      text: -> new Date @meta?create_date
+  ..evidences = _.extend do
+    btn-edit:
+      class: show-if-creator
+      href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
+    url:
+      href: -> @url
+      text: -> @url
+    exports.meta
+  ..evidences-head =
+    btn-new:
+      href: -> "#/#{B.history.fragment}/evi-new"
   ..nodes =
     name:
       href: -> node-info @_id
@@ -40,18 +52,16 @@ exports
       class: show-if-creator
       href : -> node-edit @_id
       text : -> 'Edit '
-  ..note-info = _.extend do
-    btn-edit:
-      href: -> "#/#{B.history.fragment}/note-edit"
-    editable:
-      class: -> \hide if _.isEmpty this
-    exports.meta
   ..notes = exports.meta
   ..notes-head =
+    btn-edit:
+      href: -> "#/#{B.history.fragment}/note-edit"
     btn-new:
       href: -> "#/#{B.history.fragment}/note-new"
     creatable:
       class: -> \hide unless _.isEmpty this
+    editable:
+      class: -> \hide if _.isEmpty this
   ..users =
     login:
       href: -> user-info @_id

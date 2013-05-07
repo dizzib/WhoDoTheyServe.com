@@ -21,6 +21,7 @@ exports
       return unless confirm 'Are you sure you want to delete this item ?'
       @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
+      $ \.view .addClass \editing
       B.Validation.bind this
       ($tem = $ @options.template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no

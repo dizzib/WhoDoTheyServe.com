@@ -12,6 +12,7 @@ V.version.render!
 Router = B.Router.extend do
   before: ->
     $ \.view>* .hide!
+    $ \.view .removeClass \editing
     $ \.view .removeClass \hide-on-boot
     V.navigator.render!
   routes:
@@ -21,16 +22,16 @@ Router = B.Router.extend do
     \disclaimer             : \doc_disclaim
     \edges                  : \edge_list
     \edge-edit/:id          : \edge_edit
-    \edge-evi-del/:eid/:id  : \edge_evi_del
-    \edge-evi-new/:id       : \edge_evi_new
-    \edge-info/:id          : \edge_info
+    \edge-info/:id          : \edge
+    \edge-info/:id/:act     : \edge
+    \edge-info/:id/:act/:id : \edge
     \edge-new               : \edge_edit
     \graph                  : \graph
     \nodes                  : \node_list
     \node-edit/:id          : \node_edit
-    \node-evi-del/:eid/:id  : \node_evi_del
-    \node-evi-new/:id       : \node_evi_new
-    'node-info/:id(/:act)'  : \node_info
+    \node-info/:id          : \node
+    \node-info/:id/:act     : \node
+    \node-info/:id/:act/:id : \node
     \node-new               : \node_edit
     \session-info           : \session_info
     \users                  : \user_list
@@ -44,16 +45,12 @@ Router = B.Router.extend do
   doc_api     : -> V.doc-api.render!
   doc_disclaim: -> V.doc-disclaimer.render!
   graph       : -> V.graph.render!
-  edge_evi_del:    get-renderer-evidence-del \edge-info
-  edge_evi_new:    render-edge-evidence-new
+  edge        :    render-edge
   edge_edit   : -> V.edge-edit.render M.Edge.create(it), C.Edges
-  edge_info   :    render-edge-info
-  edge_list   :    -> V.edges.render C.Edges, D.edges
-  node_list   :    -> V.nodes.render C.Nodes, D.nodes
-  node_evi_del:    get-renderer-evidence-del \node-info
-  node_evi_new:    render-node-evidence-new
+  edge_list   : -> V.edges.render C.Edges, D.edges
+  node        :    render-node
+  node_list   : -> V.nodes.render C.Nodes, D.nodes
   node_edit   : -> V.node-edit.render M.Node.create(it), C.Nodes
-  node_info   :    render-node-info
   session_info: -> V.session-info.render!
   user_edit   : -> V.user-edit.render M.User.create(it), C.Users
   user_info   :    render-user-info
@@ -64,45 +61,36 @@ Router = B.Router.extend do
 
 module.exports = router = new Router!
 
-function get-renderer-evidence-del info-url then (entity-id, id) ->
-  return nav! unless confirm 'Are you sure you want to delete this evidence ?'
-  C.Evidences entity-id .destroy id, success:nav, error:H.on-err
-  function nav then navigate "#{info-url}/#{entity-id}"
-
 function navigate route then router.navigate route, trigger:true
 
-function render-edge-info then
-  V.edge-info          .render (edge = C.Edges.get it), D.edge-info
-  V.edge-evidences-head.render edge, D.edge-evidences-head
-  V.edge-evidences     .render (C.Evidences it), D.edge-evidences, void-view:V.edge-evidences-void
-  V.edge-meta          .render edge, D.meta
+function render-edge id, act, child-id then
+  V.edge-info.render (edge = C.Edges.get id), D.edge-info
+  V.meta     .render edge, D.meta
+  C.Evidences id .fetch error:H.on-err, success: -> render-evidences it, id, act, child-id
+  C.Notes     id .fetch error:H.on-err, success: -> render-notes     it, id, act
 
-function render-edge-evidence-new then
-  V.edge-info         .render (C.Edges.get it), D.edge-info
-  V.edge-evidence-edit.render (M.Evidence.create!set \entity_id, it), C.Evidences it
+function render-evidences evs, entity-id, act, id then
+  ev = M.Evidence.create!set \entity_id, entity-id if act is \evi-new
+  ev = evs.get id if act is \evi-edit
+  V.evidences-head.render void, D.evidences-head
+  V.evidence-edit .render ev, evs, fetch:no if ev
+  V.evidences     .render evs, D.evidences, void-view:V.evidences-void
 
-function render-node-evidence-new then
-  V.node-info         .render (C.Nodes.get it), D.node-info
-  V.node-evidence-edit.render (M.Evidence.create!set \entity_id, it), C.Evidences it
-
-function render-node-info id, act then
-  V.node-info          .render (node = C.Nodes.get id), D.node-info
-  V.node-evidences-head.render node, D.node-evidences-head
-  V.node-evidences     .render (C.Evidences id), D.node-evidences, void-view:V.node-evidences-void
-  V.node-edges-head    .render!
-  V.node-edges-a       .render (C.Edges.find -> id is it.get \a_node_id), D.edges
-  V.node-edges-b       .render (C.Edges.find -> id is it.get \b_node_id), D.edges
-  V.node-meta          .render node, D.meta
-  C.Notes id .fetch error:H.on-err, success: -> render-notes it, id, act
+function render-node id, act, child-id then
+  V.node-info      .render (node = C.Nodes.get id), D.node-info
+  V.node-edges-head.render!
+  V.node-edges-a   .render (C.Edges.find -> id is it.get \a_node_id), D.edges
+  V.node-edges-b   .render (C.Edges.find -> id is it.get \b_node_id), D.edges
+  V.meta           .render node, D.meta
+  C.Evidences id .fetch error:H.on-err, success: -> render-evidences it, id, act, child-id
+  C.Notes     id .fetch error:H.on-err, success: -> render-notes     it, id, act
 
 function render-notes notes, entity-id, act then
   note-by-signin = if act is \note-new then M.Note.create!set \entity_id, entity-id
     else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
-  notes-not-by-signin = notes.find(-> not S.is-signed-in it.get \meta.create_user_id)
   V.notes-head.render note-by-signin, D.notes-head
-  V.note-edit .render note-by-signin, notes, fetch:no if act
-  V.note-info .render note-by-signin, D.note-info if not act
-  V.notes     .render notes-not-by-signin, D.notes, fetch:no
+  V.note-edit .render note-by-signin, notes, fetch:no if act in <[ note-edit note-new ]>
+  V.notes     .render notes, D.notes, fetch:no
 
 function render-user-info then
   V.user-info .render (C.Users.get(id = it or C.Sessions.models.0?id)), D.user-info

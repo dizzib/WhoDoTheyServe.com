@@ -1,5 +1,6 @@
 B = require \backbone
 C = require \./collection
+H = require \./helper
 V = require \./view
 
 exports.init = (router) ->
@@ -10,23 +11,19 @@ exports.init = (router) ->
       ..on \rendered , (e) -> V.edge-a-node-sel.render C.Nodes, \name, e.get \a_node_id
       ..on \rendered , (e) -> V.edge-b-node-sel.render C.Nodes, \name, e.get \b_node_id
       ..on \saved    , (e) -> navigate "edge-info/#{e.id}"
-    ..edge-evidence-edit
+    ..evidence-edit
       ..on \cancelled,     -> B.history.history.back!
-      ..on \destroyed, (e) -> navigate "edge-info/#{e.get \entity_id}"
-      ..on \saved    , (e) -> navigate "edge-info/#{e.get \entity_id}"
+      ..on \destroyed,     -> B.history.history.back!
+      ..on \saved    ,     -> navigate B.history.fragment.replace /\/evi-.*$/g, ''
     ..node-edit
       ..on \cancelled,     -> B.history.history.back!
       ..on \destroyed,     -> navigate \nodes
       ..on \rendered , (n) -> $ \#name .typeahead source:C.Nodes.pluck \name
       ..on \saved    , (n) -> navigate "node-info/#{n.id}"
-    ..node-evidence-edit
-      ..on \cancelled,     -> B.history.history.back!
-      ..on \destroyed, (e) -> navigate "node-info/#{e.get \entity_id}"
-      ..on \saved    , (e) -> navigate "node-info/#{e.get \entity_id}"
     ..note-edit
       ..on \cancelled,     -> B.history.history.back!
       ..on \destroyed,     -> B.history.history.back!
-      ..on \saved    , (n) -> navigate "node-info/#{n.get \entity_id}"
+      ..on \saved    ,     -> navigate B.history.fragment.replace /\/note-.*$/g, ''
     ..user-edit
       ..on \cancelled,     -> B.history.history.back!
       ..on \destroyed,     -> navigate \users

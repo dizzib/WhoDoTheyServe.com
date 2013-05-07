@@ -12,7 +12,6 @@ Router     = require \./router
 Insert-css F.readFileSync __dirname + \/lib/form.css
 Insert-css F.readFileSync __dirname + \/index.css
 Insert-css F.readFileSync __dirname + \/view/edge.css
-Insert-css F.readFileSync __dirname + \/view/evidence.css
 Insert-css F.readFileSync __dirname + \/view/footer.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
@@ -23,11 +22,14 @@ V-Event.init Router
 C.Sessions.on \sync, -> V.navigator.render $ \.navbar
 
 $.fn.set-access = ->
-  @find '.signed-in'             .toggle S.is-signed-in!
-  @find '.signed-in-admin'       .toggle S.is-signed-in-admin!
+  show-or-hide \.signed-in      , S.is-signed-in!
+  show-or-hide \.signed-in-admin, S.is-signed-in-admin!
+  show-or-hide \.signed-out     , S.is-signed-out!
   @find '.signed-in-admin input' .prop \disabled, not S.is-signed-in-admin!
-  @find '.signed-out'            .toggle S.is-signed-out!
   return this
+
+  ~function show-or-hide sel, show then
+    @find sel .addClass if show then \show else \hide
 
 fetch-edges!
 
