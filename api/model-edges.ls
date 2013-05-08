@@ -10,7 +10,7 @@ spec =
   b_node_id : type:M.Schema.ObjectId, required:yes, index:yes
   a_is      : type:String, required:yes, enum:<[eq lt]>
   how       : type:String, required:no , match:Cons.edge.how.regex
-  year_from : type:Number, required:yes, min:Cons.edge.year.min, max:Cons.edge.year.max
+  year_from : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
   year_to   : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
 
 schema = new M.Schema spec

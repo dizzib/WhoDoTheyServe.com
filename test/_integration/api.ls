@@ -164,7 +164,7 @@ describe 'api', ->
       run Edge.ab.how.max-gt.update.bad
       run Edge.ab.how.min.update.ok
       run Edge.ab.how.min-lt.update.bad
-      run Edge.ab.year.from.null.update.bad
+      run Edge.ab.year.from.null.update.ok
       run Edge.ab.year.from.max.update.ok
       run Edge.ab.year.from.max-gt.update.bad
       run Edge.ab.year.from.min.update.ok

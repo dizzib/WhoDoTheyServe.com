@@ -80,9 +80,9 @@ Router = B.Router.extend do
   user_signout: ->
     return navigate \session unless m = C.Sessions.models.0
     m.destroy error:H.on-err, success: -> navigate \session
-    function navigate route then router.navigate route, trigger:true
+    function navigate route then module.exports.navigate route, trigger:true
 
-module.exports = router = new Router!
+module.exports = new Router!
 
 function render-evidences entity-id, act, id then
   evs = C.Evidences.find -> entity-id is it.get \entity_id

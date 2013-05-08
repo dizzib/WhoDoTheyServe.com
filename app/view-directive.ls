@@ -17,7 +17,7 @@ const EDGE =
   period:
     text: ->
       if @year_from and @year_from is @year_to then return "in #{@year_to}"
-      yf = if @year_from then "from #{@year_from} " else ''
+      yf = "from #{@year_from or '?'} "
       yt = if @year_to then "to #{@year_to}" else ''
       yf + yt
 

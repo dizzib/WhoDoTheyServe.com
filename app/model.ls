@@ -29,7 +29,7 @@ exports
         * required: no
         * pattern : Cons.edge.how.regex
           msg     : "How should be #{Cons.edge.how.info}"
-      \year_from : range:[Cons.edge.year.min, Cons.edge.year.max] required:yes
+      \year_from : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
       \year_to   : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
 
   ..Node = Model.extend do
