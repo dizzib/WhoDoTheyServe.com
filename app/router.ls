@@ -73,11 +73,10 @@ Router = B.Router.extend do
     V.user-nodes.render (C.Nodes.find -> id is it.get \meta.create_user_id), D.user-nodes
   user_signout: ->
     return navigate \session unless m = C.Sessions.models.0
-    m.destroy { error:H.on-err, success: -> navigate \session }
+    m.destroy error:H.on-err, success: -> navigate \session
+    function navigate route then router.navigate route, trigger:true
 
 module.exports = router = new Router!
-
-function navigate route then router.navigate route, trigger:true
 
 function render-evidences evs, entity-id, act, id then
   ev = M.Evidence.create!set \entity_id, entity-id if act is \evi-new

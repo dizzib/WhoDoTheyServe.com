@@ -93,7 +93,6 @@ function node-a then
 function node-b then
   href: -> node @b_node_id
   text: -> @b_node_name
-function show-if-creator then
-  \hide unless S.is-signed-in @meta?create_user_id
+function show-if-creator then \hide unless S.is-signed-in @meta?create_user_id
 function user then "#/user/#{it}" if it
 function user-edit then "#/user-edit"

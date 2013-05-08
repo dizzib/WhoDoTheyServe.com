@@ -38,9 +38,9 @@ exports
 
   ..InfoView = B.View.extend do
     render: (model, directive) ->
-      $tem = $ @options.template
       data = if model then model.toJSON-T! else {}
-      $tem.render data, directive #, debug:on
+      # NOTE: transparency won't process directive if data is void, hence {}
+      ($tem = $ @options.template).render data, directive #, debug:on
       @$el.html $tem .set-access!show!
 
   ..ListView = B.View.extend do
