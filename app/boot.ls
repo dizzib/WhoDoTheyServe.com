@@ -33,8 +33,16 @@ $.fn.set-access = ->
 
 fetch-edges!
 
-function fetch-edges    then C.Edges.fetch    error:H.on-err, success:fetch-nodes
-function fetch-nodes    then C.Nodes.fetch    error:H.on-err, success:fetch-sessions
-function fetch-sessions then C.Sessions.fetch error:H.on-err, success:fetch-users
-function fetch-users    then C.Users.fetch    error:H.on-err, success:start
-function start          then B.history.start!
+function fetch-edges then C.Edges.fetch error:H.on-err, success:fetch-nodes
+function fetch-nodes then C.Nodes.fetch error:H.on-err, success:start
+function start       then B.history.start!
+
+C.Evidences.fetch error:on-err
+C.Notes    .fetch error:on-err
+C.Sessions .fetch error:on-err
+C.Users    .fetch error:on-err
+
+function on-err coll, xhr then
+  info   = "The app failed to start.\n\n#{xhr.responseText}"
+  prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
+  if confirm "#{info}\n\n#{prompt}" then window.location.reload!

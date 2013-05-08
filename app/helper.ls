@@ -1,7 +1,7 @@
 exports
   ..log = -> console.log.apply console, arguments
 
-  ..on-err = (, xhr) ->
+  ..on-err = (coll, xhr) ->
     msg = get-friendly(xhr.responseText) || 'An error occurred. Sorry!'
     $ \.alert-error .text msg .show!
 

@@ -4,49 +4,67 @@ C = require \./collection
 H = require \./helper
 S = require \./session
 
-exports # define first for in-situ _.extend
-  ..meta =
-    create-user:
-      href: -> user @meta?create_user_id
-      text: -> find-user-by-meta(@meta)?get(\login) ? '(deleted user)'
-    create-date:
-      text: -> new Date @meta?create_date
+const EDGE =
+  a-node:
+    href: -> get-node-href @a_node_id
+    text: -> @a_node_name
+  b-node:
+    href: -> get-node-href @b_node_id
+    text: -> @b_node_name
+  how:
+    href: -> "#/edge/#{@_id}"
+    text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
+  period:
+    text: ->
+      if @year_from and @year_from is @year_to then return "in #{@year_to}"
+      yf = if @year_from then "from #{@year_from} " else ''
+      yt = if @year_to then "to #{@year_to}" else ''
+      yf + yt
+
+const HIDE =
+  class: -> \hide
+
+const META =
+  create-user:
+    href: -> get-user-href @meta?create_user_id
+    text: ->
+      return '(deleted user)' unless creator = C.Users.find-by-id @meta?create_user_id
+      creator.get \login
+  create-date:
+    text: -> new Date @meta?create_date
+
+const SHOW-IF-CREATOR =
+  -> \hide unless S.is-signed-in @meta?create_user_id
+
+const URL =
+  href: -> @url
+  text: -> @url
+
 exports
-  ..edges =
-    a-node: node-a!
-    b-node: node-b!
-    how:
-      href: edge
-      text: edge-how
-    period: edge-period!
-  ..edge =
+  ..edge = _.extend do
+    EDGE
     btn-edit:
-      class: show-if-creator
+      class: SHOW-IF-CREATOR
       href : -> "#/edge-edit/#{@_id}"
-    a-node: node-a!
-    b-node: node-b!
-    how:
-      text: edge-how
-    period: edge-period!
+  ..edges = EDGE
   ..evidences = _.extend do
+    META
     btn-edit:
-      class: show-if-creator
+      class: SHOW-IF-CREATOR
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
-    url:
-      href: -> @url
-      text: -> @url
-    exports.meta
+    url: URL
   ..evidences-head =
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
+  ..meta = META
   ..nodes =
     name:
-      href: -> node @_id
+      href: -> get-node-href @_id
   ..node =
     btn-edit:
-      class: show-if-creator
+      class: SHOW-IF-CREATOR
       href : -> "#/node-edit/#{@_id}"
-  ..notes = exports.meta
+  ..notes = META
   ..notes-head =
     btn-edit:
       href: -> "#/#{B.history.fragment}/note-edit"
@@ -58,7 +76,7 @@ exports
       class: -> \hide if _.isEmpty this
   ..users =
     login:
-      href: -> user @_id
+      href: -> get-user-href @_id
   ..user =
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
@@ -66,33 +84,12 @@ exports
     url:
       href: -> @info
       text: -> @info
-  ..user-nodes =
-    name:
-      href: -> node @_id
-  ..user-edges =
-    a-node: node-a!
-    b-node: node-b!
-    how:
-      href: edge
-      text: edge-how
-    period: edge-period!
+  ..user-evidences =
+    btn : HIDE
+    meta: HIDE
+    url : URL
+  ..user-notes =
+    meta: HIDE
 
-function edge then "#/edge/#{@_id}"
-function edge-how then "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
-function edge-period then
-  text: ->
-    if @year_from and @year_from is @year_to then return "in #{@year_to}"
-    yf = if @year_from then "from #{@year_from} " else ''
-    yt = if @year_to then "to #{@year_to}" else ''
-    yf + yt
-function find-user-by-meta then C.Users.find-by-id it?create_user_id
-function node then "#/node/#{it}"
-function node-a then
-  href: -> node @a_node_id
-  text: -> @a_node_name
-function node-b then
-  href: -> node @b_node_id
-  text: -> @b_node_name
-function show-if-creator then \hide unless S.is-signed-in @meta?create_user_id
-function user then "#/user/#{it}" if it
-function user-edit then "#/user-edit"
+function get-node-href then "#/node/#{it}"
+function get-user-href then "#/user/#{it}" if it

@@ -19,40 +19,28 @@ exports.init = ->
   edges =
     url  : '/api/edges'
     model: M.Edge
-
-  evidences = ->
-    url  : "/api/evidences/for/#{it}"
+  evidences =
+    url  : '/api/evidences'
     model: M.Evidence
-
   nodes =
     url       : '/api/nodes'
     model     : M.Node
     comparator: -> it.get \name .toLowerCase!
-
-  notes = ->
-    url  : "/api/notes/for/#{it}"
+  notes =
+    url  : '/api/notes'
     model: M.Note
-
   sessions =
     url  : '/api/sessions'
     model: M.Session
-
   users =
     url       : '/api/users'
     model     : M.User
     find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 
   exports
-    ..Edges    = new (Collection.extend edges)!
-    ..Nodes    = new (Collection.extend nodes)!
-    ..Sessions = new (Collection.extend sessions)!
-    ..Users    = new (Collection.extend users)!
-
-    ..Evidences = (eid) ->
-      return @_coll[eid] if @_coll and @_coll[eid]
-      @_coll ||= []
-      @_coll[eid] ||= new (Collection.extend evidences eid)!
-
-    ..Notes = (entity-id) ->
-      @_notes = [] unless @_notes
-      @_notes[entity-id] ||= new (Collection.extend notes entity-id)!
+    ..Edges     = new (Collection.extend edges)!
+    ..Evidences = new (Collection.extend evidences)!
+    ..Nodes     = new (Collection.extend nodes)!
+    ..Notes     = new (Collection.extend notes)!
+    ..Sessions  = new (Collection.extend sessions)!
+    ..Users     = new (Collection.extend users)!
