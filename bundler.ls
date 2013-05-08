@@ -11,6 +11,7 @@ exports.init = ->
     \./app/lib-3p/backbone-validation-bootstrap
     \./app/lib-3p/bootstrap/js/bootstrap
     \./app/lib-3p/insert-css
+    \./app/lib-3p/jquery.timeago
     \./app/lib-3p/transparency
     \./app/lib-3p-ext/jquery-3p
 

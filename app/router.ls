@@ -10,6 +10,8 @@ V.footer .render!
 V.version.render!
 
 Router = B.Router.extend do
+  after: ->
+    $ \.timeago .timeago!
   before: ->
     $ \.view>* .hide!
     $ \.view .removeClass \editing

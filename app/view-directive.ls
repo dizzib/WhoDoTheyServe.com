@@ -28,10 +28,10 @@ const META =
   create-user:
     href: -> get-user-href @meta?create_user_id
     text: ->
-      return '(deleted user)' unless creator = C.Users.find-by-id @meta?create_user_id
-      creator.get \login
+      return '(deleted user) ' unless creator = C.Users.find-by-id @meta?create_user_id
+      "#{creator.get \login} "
   create-date:
-    text: -> new Date @meta?create_date
+    title: -> @meta?create_date # https://github.com/rmm5t/jquery-timeago
 
 const SHOW-IF-CREATOR =
   -> \hide unless S.is-signed-in @meta?create_user_id
