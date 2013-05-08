@@ -25,6 +25,7 @@ exports
       range:
         in : get-spec-ab year_from:2013 year_to:2013
         out: get-spec-ab year_from:2013 year_to:2012
+    to-ab: get-spec-ab key-a:\a key-b:\b
     to-ba: get-spec-ab key-a:\b key-b:\a
     to-bc: get-spec-ab key-a:\b key-b:\c
   ..aa = get-spec \a, \a

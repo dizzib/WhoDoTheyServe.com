@@ -10,7 +10,7 @@ exports.init = (router) ->
       ..on \destroyed, -> navigate \edges
       ..on \rendered , -> V.edge-a-node-sel.render C.Nodes, \name, it.get \a_node_id
       ..on \rendered , -> V.edge-b-node-sel.render C.Nodes, \name, it.get \b_node_id
-      ..on \saved    , -> navigate "edge/#{e.id}"
+      ..on \saved    , -> navigate "edge/#{it.id}"
     ..evidence-edit
       ..on \cancelled, -> B.history.history.back!
       ..on \destroyed, -> B.history.history.back!

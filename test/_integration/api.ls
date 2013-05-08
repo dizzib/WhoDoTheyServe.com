@@ -154,6 +154,7 @@ describe 'api', ->
       run Edge.list.is0
       run Edge.ab.create.ok
       run Edge.ab.create.bad        # dup
+      run Edge.ab.to-ab.update.ok
       run Edge.ab.to-bc.update.bad  # ab immutable
       run Edge.ab.is.eq.update.ok
       run Edge.ab.is.eq.read.ok

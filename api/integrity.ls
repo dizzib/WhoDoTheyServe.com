@@ -14,9 +14,14 @@ exports
     return next new H.ApiError 'Cannot create an edge to a node lacking evidence' unless obj
     get-checker-create(M-Edges) req, res, next
   ..edge-update = (req, res, next) ->
+    return next! unless (b = req.body).a_node_id or b.b_node_id
     return next! if req.session.signin.role is \admin
-    return next new H.ApiError 'Only admin can update a_node_id' if (b = req.body).a_node_id
-    return next new H.ApiError 'Only admin can update b_node_id' if b.b_node_id
+    err, edge <- M-Edges.findById req.id
+    return next err if err
+    if b.a_node_id and not edge.a_node_id.equals b.a_node_id then
+      return next new H.ApiError 'Only admin can update a_node_id'
+    if b.b_node_id and not edge.b_node_id.equals b.b_node_id then
+      return next new H.ApiError 'Only admin can update b_node_id'
     next!
   ..edge-delete = (req, res, next) ->
     err, obj <- M-Evidences.findOne entity_id:req.id
