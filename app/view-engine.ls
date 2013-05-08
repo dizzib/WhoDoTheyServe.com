@@ -10,6 +10,7 @@ exports
   ..DocuView = B.View.extend do
     render: -> @$el.html @options.document .show!
 
+  # IMPORTANT! Every edit view must reside on it's own $el to keep events independent
   ..EditView = B.View.extend do
     events:
       'click .cancel': \cancel
@@ -31,7 +32,7 @@ exports
         @$el.find 'input[type=text],textarea,select' .filter ':visible:first' .focus!
         @trigger \rendered, model
     save: ->
-      # if @model is undefined here then check $el isn't being used elsewhere!
+      unless @model then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       (m = @model).attributes = $ it.currentTarget .serializeObject!
       @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, @model }
       false

@@ -45,7 +45,7 @@ exports
     EDGE
     btn-edit:
       class: SHOW-IF-CREATOR
-      href : -> "#/edge-edit/#{@_id}"
+      href : -> "#/edge/edit/#{@_id}"
   ..edges = EDGE
   ..evidences = _.extend do
     META
@@ -63,7 +63,7 @@ exports
   ..node =
     btn-edit:
       class: SHOW-IF-CREATOR
-      href : -> "#/node-edit/#{@_id}"
+      href : -> "#/node/edit/#{@_id}"
   ..notes = META
   ..notes-head =
     btn-edit:
@@ -80,7 +80,7 @@ exports
   ..user =
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
-      href : -> "#/user-edit/#{@_id}"
+      href : -> "#/user/edit/#{@_id}"
     url:
       href: -> @info
       text: -> @info

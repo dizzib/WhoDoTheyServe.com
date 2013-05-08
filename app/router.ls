@@ -20,27 +20,27 @@ Router = B.Router.extend do
     \doc/about         : \doc_about
     \doc/api           : \doc_api
     \doc/disclaimer    : \doc_disclaim
+    \edge/edit/:id     : \edge_edit
+    \edge/new          : \edge_edit
     \edge/:id          : \edge
     \edge/:id/:act     : \edge
     \edge/:id/:act/:id : \edge
-    \edge-edit/:id     : \edge_edit
-    \edge-new          : \edge_edit
     \edges             : \edges
     \graph             : \graph
+    \node/edit/:id     : \node_edit
+    \node/new          : \node_edit
     \node/:id          : \node
     \node/:id/:act     : \node
     \node/:id/:act/:id : \node
-    \node-edit/:id     : \node_edit
-    \node-new          : \node_edit
     \nodes             : \nodes
     \session           : \session
     \user              : \user
+    \user/edit/:id     : \user_edit
+    \user/signin       : \user_signin
+    \user/signout      : \user_signout
+    \user/signup       : \user_signup
     \user/:id          : \user
     \users             : \user_list
-    \user-edit/:id     : \user_edit
-    \user-signin       : \user_signin
-    \user-signout      : \user_signout
-    \user-signup       : \user_signup
   doc_about   : -> V.doc-about.render!
   doc_api     : -> V.doc-api.render!
   doc_disclaim: -> V.doc-disclaimer.render!
@@ -50,11 +50,11 @@ Router = B.Router.extend do
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes     id, act
-  edge_edit   : -> V.edge-edit.render M.Edge.create(it), C.Edges
-  edges       : ->
+  edge_edit: -> V.edge-edit.render M.Edge.create(it), C.Edges
+  edges    : ->
     V.edges-head.render!
     V.edges     .render C.Edges, D.edges
-  node        : (id, act, child-id) ->
+  node: (id, act, child-id) ->
     V.node           .render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!
     V.node-edges-a   .render (C.Edges.find -> id is it.get \a_node_id), D.edges
@@ -62,16 +62,16 @@ Router = B.Router.extend do
     V.meta           .render node, D.meta
     render-evidences id, act, child-id
     render-notes     id, act
-  nodes       : ->
+  nodes: ->
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes
-  node_edit   : -> V.node-edit.render M.Node.create(it), C.Nodes
-  session     : -> V.session.render!
-  user_edit   : -> V.user-edit.render M.User.create(it), C.Users
-  user_list   : -> V.users.render C.Users, D.users
-  user_signin : -> V.user-signin.render M.Session.create!, C.Sessions
-  user_signup : -> V.user-signup.render M.Signup.create!, C.Users
-  user        : ->
+  node_edit  : -> V.node-edit.render M.Node.create(it), C.Nodes
+  session    : -> V.session.render!
+  user_edit  : -> V.user-edit.render M.User.create(it), C.Users
+  user_list  : -> V.users.render C.Users, D.users
+  user_signin: -> V.user-signin.render M.Session.create!, C.Sessions
+  user_signup: -> V.user-signup.render M.Signup.create!, C.Users
+  user       : ->
     V.user.render (C.Users.get(id = it or C.Sessions.models.0?id)), D.user
     render-user-entities id, V.edges    , C.Edges    , D.edges
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
