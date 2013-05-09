@@ -10,7 +10,7 @@ dependencies:
   express   : \3.1.0
   mongoose  : \3.5.5
   underscore: \1.4.4
-  zombie    : \2.0.0-alpha15
+  zombie    : \2.0.0-alpha18
 # https://www.nodejitsu.com/documentation/features/dns/ 
 domains:
   \whodotheyserve.com

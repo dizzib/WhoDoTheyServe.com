@@ -3,20 +3,18 @@ S = require \../server
 
 log = console.log
 
-z = new Z do
-  #debug       : true
-  waitDuration: 1000ms  # bug: zombie never takes less time than this t/o
+z = new Z #debug: true
 
 exports
   ..init = (server) ->
     server.get /\.html$/, handler
 
     function handler req, res, next then
-      err <- z.visit get-app-url req
+      err <- z.visit get-app-url(req), element:\#view.ready
       return next err if err
-      strip-scripts!
       cripple-tabmenu!
       seoify-links!
+      strip-scripts!
       res.send z.html!
 
     function get-app-url req then
@@ -42,5 +40,5 @@ exports
     function cripple-tabmenu then
       z.evaluate "
         $('li[active=\"^graph\"]').remove();
-        $('li[active=\"^user-signin\"]').remove();
+        $('li[active=\"^user/signin\"]').remove();
       "

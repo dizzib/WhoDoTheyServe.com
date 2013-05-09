@@ -22,7 +22,7 @@ dependencies:
   express     : \3.1.0
   mongoose    : \3.5.5
   underscore  : \1.4.4
-  zombie      : \2.0.0-alpha15
+  zombie      : \2.0.0-alpha18
 devDependencies:
   brfs        : \0.0.x
   browserify  : \2.12.x
