@@ -4,6 +4,18 @@ C = require \./collection
 H = require \./helper
 S = require \./session
 
+const CUES =
+  cues:
+    null: ->
+      $el = $ it.element
+      render C.Evidences, 'icon-camera'
+      render C.Notes    , 'icon-comment'
+      ~function render coll, cue-class then
+        items = coll.find ~> @_id is it.get \entity_id
+        for item in items.models
+          $el.append "<i class=#{cue-class}/>"
+      ''
+
 const EDGE =
   a-node:
     href: -> get-node-href @a_node_id
@@ -46,7 +58,9 @@ exports
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/edge/edit/#{@_id}"
-  ..edges = EDGE
+  ..edges = _.extend do
+    CUES
+    EDGE
   ..evidences = _.extend do
     META
     btn-edit:
@@ -57,7 +71,8 @@ exports
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
   ..meta = META
-  ..nodes =
+  ..nodes = _.extend do
+    CUES
     name:
       href: -> get-node-href @_id
   ..node =
