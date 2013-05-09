@@ -53,7 +53,7 @@ exports
       return render coll unless coll.url      # filtered collection won't have url
       render coll
       coll.fetch error:H.on-err, success: -> render it, show:false
-      ~function render c, opts then
+      ~function render c, inner-opts then
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
         if c.length is 0 then
@@ -61,7 +61,7 @@ exports
           return opts.void-view.render!
         ($tem = $ @options.template).filter \.items .render c.toJSON-T!, directive
         @$el.html $tem
-        @$el.set-access S .show! unless opts?show is false
+        @$el.set-access S .show! unless inner-opts?show is false
 
   ..SelectView = B.View.extend do
     render: (coll, fname, sel-id) ->
