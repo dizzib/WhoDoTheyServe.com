@@ -101,7 +101,7 @@ function render-notes entity-id, act then
     else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
   V.notes-head.render note-by-signin, D.notes-head
   V.note-edit .render note-by-signin, C.Notes, fetch:no if act in <[ note-edit note-new ]>
-  V.notes     .render notes, D.notes, fetch:no
+  V.notes     .render notes, D.notes
 
 function render-user-entities user-id, view, coll, directive then
   view.render (coll.find -> user-id is it.get \meta.create_user_id), directive

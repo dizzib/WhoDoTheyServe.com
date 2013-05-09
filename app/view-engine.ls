@@ -41,21 +41,26 @@ exports
     render: (model, directive) ->
       data = if model then model.toJSON-T! else {}
       # NOTE: transparency won't process directive if data is void, hence {}
-      ($tem = $ @options.template).render data, directive #, debug:on
+      ($tem = $ @options.template).render data, directive
       @$el.html $tem .set-access!show!
 
   ..ListView = B.View.extend do
+    # For fast ui, render happens in 2 phases:
+    # 1. render current content immediately; 2. render async-fetched content
     render: (coll, directive, opts) ->
-      return render coll if opts?fetch is no
-      return render coll unless coll.url
-      coll.fetch error:H.on-err, success: -> render it
-      ~function render c then
+      @$el.attr \data-loc, B.history.fragment # to detemine if navigated away
+      return render coll unless coll.url      # filtered collection won't have url
+      render coll
+      coll.fetch error:H.on-err, success: -> render it, show:false
+      ~function render c, opts then
+        return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
         if c.length is 0 then
           return unless opts?void-view
           return opts.void-view.render!
         ($tem = $ @options.template).filter \.items .render c.toJSON-T!, directive
-        @$el.html $tem .set-access!show!
+        @$el.html $tem
+        @$el.set-access!show! unless opts?show is false
 
   ..SelectView = B.View.extend do
     render: (coll, fname, sel-id) ->
