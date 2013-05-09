@@ -1,13 +1,14 @@
 B = require \backbone
 F = require \fs
 H = require \../helper
+S = require \../session
 
 T = F.readFileSync __dirname + \/navbar.html
 
 module.exports = B.View.extend do
   render: ->
     @set-active-tab $t = $ T
-    @$el.html $t .set-access!show!
+    @$el.html $t .set-access S .show!
 
   set-active-tab: ($t) ->
     $t.find \li .each ->

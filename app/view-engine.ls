@@ -3,6 +3,7 @@ F = require \fs
 T = require \transparency
 _ = require \underscore
 H = require \./helper
+S = require \./session
 
 T-Sel = F.readFileSync __dirname + \/view/select.html
 
@@ -28,7 +29,7 @@ exports
       return render @model if is-new or opts?fetch is no
       @model.fetch error:H.on-err, success: -> render it
       ~function render model then
-        @$el.html $tem.render model.toJSON-T! .set-access!show!
+        @$el.html $tem.render model.toJSON-T! .set-access S .show!
         @$el.find 'input[type=text],textarea,select' .filter ':visible:first' .focus!
         @trigger \rendered, model
     save: ->
@@ -42,7 +43,7 @@ exports
       data = if model then model.toJSON-T! else {}
       # NOTE: transparency won't process directive if data is void, hence {}
       ($tem = $ @options.template).render data, directive
-      @$el.html $tem .set-access!show!
+      @$el.html $tem .set-access S .show!
 
   ..ListView = B.View.extend do
     # For fast ui, render happens in 2 phases:
@@ -60,7 +61,7 @@ exports
           return opts.void-view.render!
         ($tem = $ @options.template).filter \.items .render c.toJSON-T!, directive
         @$el.html $tem
-        @$el.set-access!show! unless opts?show is false
+        @$el.set-access S .show! unless opts?show is false
 
   ..SelectView = B.View.extend do
     render: (coll, fname, sel-id) ->

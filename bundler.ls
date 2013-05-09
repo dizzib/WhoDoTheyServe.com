@@ -13,7 +13,7 @@ exports.init = ->
     \./app/lib-3p/insert-css
     \./app/lib-3p/jquery.timeago
     \./app/lib-3p/transparency
-    \./app/lib-3p-ext/jquery-3p
+    \./app/lib-3p-ext/jquery
 
   ba = B \./app/boot.js
   for l in libs

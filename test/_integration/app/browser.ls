@@ -38,8 +38,13 @@ module.exports = _.extend z,
         # Here's the workaround
         @evaluate "$.prototype.focus = function() { return; }"
       .then ~>
-        # patch jquery show/hide to tag hidden elements
+        # patch show/hide to tag hidden elements for zombie tests
         # https://github.com/assaf/zombie/issues/429
-        #log J
+        #$.fn.show = ->
+        #  @removeClass \hidden
+        #  @show ...
+        #$.fn.hide = ->
+        #  @addClass \hidden
+        #  @hide ...
         done!
       .fail -> done it
