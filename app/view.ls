@@ -3,6 +3,7 @@ Insert-css = require \./lib-3p/insert-css
 V          = require \./view-engine
 V-Graph    = require \./view/graph
 V-NavBar   = require \./view/navbar
+V-News     = require \./view/news
 V-Session  = require \./view/session
 V-Version  = require \./view/version
 
@@ -54,6 +55,7 @@ exports
   ..graph           = new V-Graph                              el:\.view>.main
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator
+  ..news            = new V-News                               el:\.view>.main
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main
   ..node-edit       = new V.EditView template:T-NodeEdit     , el:\.view>.node-edit
   ..node-edges-a    = new V.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
