@@ -1,13 +1,11 @@
 ### About
-This site is a non-profit [opensource] collaborative effort to track and visualise the rapidly changing global political and corporate power structure. The purpose is to highlight potential [conflicts of interest][coi] and to educate.
+This site is a non-profit [opensource] effort to track and visualise the rapidly changing global political and corporate power structure. The purpose is to highlight potential [conflicts of interest][coi] and to educate.
 
-If you notice a missing actor/connection or have found some good evidence then feel free to signup and contribute. The signup software is currently under development so you'll need to email me your preferred username and I'll set you up with a new account, just use the Contact link below.
+If you'd like to become a contributor then please email me via the contact link below and I'll set you up with a new account.
 
 This site is experimental and open to new ideas/suggestions which you can add to [github issues][issues].
 
-Cheers! Andy
-
-May 2013
+Cheers!
 
 ### Credits
 
@@ -36,6 +34,7 @@ node
 nodemon
 request
 stylus
+timeago
 twitter-bootstrap
 underscore
 zombie
