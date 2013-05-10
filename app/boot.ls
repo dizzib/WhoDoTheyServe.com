@@ -9,7 +9,7 @@ V-Event    = require \./view-event
 Router     = require \./router
 
 Insert-css F.readFileSync __dirname + \/lib/form.css
-#Insert-css F.readFileSync __dirname + \/index.css
+Insert-css F.readFileSync __dirname + \/index.css
 Insert-css F.readFileSync __dirname + \/view/edge.css
 Insert-css F.readFileSync __dirname + \/view/footer.css
 
