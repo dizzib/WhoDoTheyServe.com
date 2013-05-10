@@ -12,10 +12,11 @@ V.version.render!
 Router = B.Router.extend do
   after: ->
     $ \.timeago .timeago!
-    $ \#view .addClass \ready
+    $ \.view .addClass \ready
   before: ->
-    $ \#view>* .hide!
-    $ \#view .removeClass!
+    $ \.view>* .hide!
+    $ \.view .removeClass \editing
+    $ \.view .removeClass \ready
     V.navigator.render!
   routes:
     ''                 : \graph

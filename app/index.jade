@@ -9,14 +9,15 @@ html
   meta(charset='utf-8')
   head
     title WhoDoTheyServe.com
-    +css('boot')
+    +css('index')
     +css('/lib-3p/bootstrap/css/bootstrap.min')
   body.container
     small.version.pull-right
     h1
       a(href='') WhoDoTheyServe.com
+    .remove-after-boot Loading...
     .navigator
-    #view.hide-on-boot
+    .view.show-after-boot
       .alert.alert-error
       .main
       .edge-edit
