@@ -14,6 +14,7 @@ exports
   ..init = (server) ->
     server
       ..param \id, (req,, next, req.id) -> next!
+      ..get "/api/keep-alive"             , (, res) -> res.send 200
       ..get "/api/evidences/for/:id"      , M-Evidences.crud-fns.list-for-entity
       ..get "/api/notes/for/:id"          , M-Notes.crud-fns.list-for-entity
       ..get "/api/sys"                    , Sys.get
