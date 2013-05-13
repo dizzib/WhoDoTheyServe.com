@@ -1,6 +1,4 @@
-name   : \wdts
 version: \0.1.0
-private: true
 scripts:
 # DANGER: each line must end in a space for livescript multiline to work!
   start: "
@@ -32,6 +30,3 @@ devDependencies:
   mongodb     : \1.2.x
   request     : \2.16.x
   stylus      : \0.31.x
-engines:
-  node: \0.10.4
-  npm : \1.2.18
