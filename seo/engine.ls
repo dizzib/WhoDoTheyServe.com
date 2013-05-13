@@ -10,7 +10,7 @@ exports
     server.get /\.html$/, handler
 
     function handler req, res, next then
-      err <- z.visit get-app-url(req), element:\#view.ready
+      err <- z.visit get-app-url(req), element:\.view.ready
       return next err if err
       cripple-tabmenu!
       seoify-links!
