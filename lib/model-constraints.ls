@@ -1,8 +1,8 @@
 exports
   ..edge =
     how:
-      info: 'a string of 4 to 30 lower-case letters e.g. is CEO of'
-      regex: /^[a-z ]{4,30}$/
+      info: 'a string of 4 to 30 letters e.g. is funded by'
+      regex: /^[a-z &,\/]{4,30}$/i
     year:
       min: 1000
       max: 2020
@@ -14,8 +14,8 @@ exports
     regex: /^[a-z]{2,2}[a-z0-9]{2,10}$/
   ..node =
     name:
-      info: 'a string of 4 to 50 letters or numbers e.g. Foo Bar'
-      regex: /^(?!(the| ))([a-z0-9\,!\(\)]| (?=[a-z0-9\(])){4,50}$/i
+      info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'
+      regex: /^(?!(the| ))([a-z0-9\,!&\(\)]| (?=[a-z0-9&\(])){4,50}$/i
   ..note =
     info: 'a string of 10 to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
     regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{10,200}$/i

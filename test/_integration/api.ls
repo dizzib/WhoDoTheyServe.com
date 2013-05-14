@@ -116,6 +116,7 @@ describe 'api', ->
       run Node.a.name.the.start.update.bad
       run Node.a.name.the.has.update.ok
       run Node.a.name.you.update.ok
+      run Node.a.name.dcms.update.ok
       run Node.a.name.paren.open.update.ok
       run Node.a.name.update.ok
       run Node.a.name.dup.update.bad
@@ -164,6 +165,9 @@ describe 'api', ->
       run Edge.ab.how.max-gt.update.bad
       run Edge.ab.how.min.update.ok
       run Edge.ab.how.min-lt.update.bad
+      run Edge.ab.how.amp.update.ok
+      run Edge.ab.how.comma.update.ok
+      run Edge.ab.how.slash.update.ok
       run Edge.ab.year.from.null.update.ok
       run Edge.ab.year.from.max.update.ok
       run Edge.ab.year.from.max-gt.update.bad

@@ -11,6 +11,9 @@ exports
       gt: get-spec-ab a_is:\gt
       lt: get-spec-ab a_is:\lt
     how:
+      amp   : get-spec-ab how:'is founder & CEO'
+      comma : get-spec-ab how:'is founder, CEO'
+      slash : get-spec-ab how:'is founder/CEO'
       max   : get-spec-ab how:\x * 30
       max-gt: get-spec-ab how:\x * 31
       min   : get-spec-ab how:\x * 4

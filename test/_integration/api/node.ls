@@ -20,6 +20,7 @@ exports
         start: get-spec \a, name: 'The Band of England'
         has  : get-spec \a, name: 'Bank of England, The'
       you   : get-spec \a, name: 'YOU! (UK)'
+      dcms  : get-spec \a, name: 'Department for Culture, Media & Sport'
       paren :
         open: get-spec \a, name: 'foo((('
   ..b = get-spec \b

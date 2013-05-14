@@ -7,16 +7,27 @@ form.form-horizontal.well
   fieldset
     +field-select('a_node_id', 'Actor A')
     +field-label('a_is', 'Influence')
-      label.radio Actor A is a subordinate of B (e.g. serves under or is owned/influenced by B)
+      label.radio
+        | A is a subordinate of B
+        | (e.g. A is created, employed, funded, owned, or run by B)
         input(type='radio', name='a_is', id='a_is_lt', value='lt')
-      label.radio Actor A is a peer/equal of B (e.g. a person representing organisation B)
+      label.radio
+        | A is a peer/equal of B, or influence unclear or unknown
         input(type='radio', name='a_is', id='a_is_eq', value='eq')
     +field-text('how', 'How')
-      span.help-inline Optional note of how A and B are related e.g. "owned by"
+      span.help-block
+        | Optional note of how A relates to B
+        | (e.g. owned by, department of, attends).
+      span.help-block
+        | Please use present tense e.g. 'is' rather than 'was',
+        | even for past connections.
     +field-select('b_node_id', 'Actor B')
     +field-text('year_from', 'Year From')
-      //- span.help-inline When this connection started
+      span.help-block
+        | When this connection started (leave blank if you're not sure).
     +field-text('year_to', 'Year To')
-      //- span.help-inline The year this connection ended (optional)
+      span.help-block
+        | The year this connection ended.
+        | Leave blank if the connection is still in force.
   hr
   +button-bar

@@ -5,12 +5,19 @@ form.form-horizontal.well
     span.create Create actor
     span.update Edit actor
   fieldset
-    +field-text('name', 'Name', 'Enter name')
+    span.input-xxlarge
+      +field-text('name', 'Name', 'Enter name')
     span.help-block
-      | A person's name should take the form LastName, FirstName
-      | e.g. 'Jefferson, Thomas' rather than 'Thomas Jefferson'
+      | A person's name should take the form LastName, FirstName e.g. 
+      strong Jefferson, Thomas 
+      | rather than 
+      strong Thomas Jefferson
+      | .
     span.help-block
-      | An organisation should begin without indefinite article
-      | e.g. 'Bank of England' rather than 'The Bank of England'
+      | An organisation should begin without indefinite article e.g. 
+      strong Bank of England 
+      | rather than 
+      strong The Bank of England
+      | .
     hr
     +button-bar
