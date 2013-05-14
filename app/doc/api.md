@@ -2,12 +2,12 @@
 
 The data is freely available:
 
-[nodes](/api/nodes)
+[nodes](http://wdts.eu01.aws.af.cm/api/nodes)
 
-[edges](/api/edges)
+[edges](http://wdts.eu01.aws.af.cm/api/edges)
 
-[evidences](/api/evidences)
+[evidences](http://wdts.eu01.aws.af.cm/api/evidences)
 
-[users](/api/users)
+[users](http://wdts.eu01.aws.af.cm/api/users)
 
 [API]: http://en.wikipedia.org/wiki/Application_programming_interface

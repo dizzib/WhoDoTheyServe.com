@@ -15,12 +15,21 @@ module.exports = server = Express!
   ..use Express.cookieParser!
   ..use Express.cookieSession cookie-opts
   ..use Express.bodyParser!
+  ..use allow-cross-domain
   ..use server.router
   ..use Express.static "#{__dirname}/app"
   ..use log-error show-stack:yes if env in <[ development ]>
   ..use log-error show-stack:no  if env in <[ test staging production ]>
   ..use handle-error
   ..use Express.errorHandler! if env in <[ development ]>
+
+# http://backbonetutorials.com/cross-domain-sessions/
+function allow-cross-domain req, res, next then
+  res.set \Access-Control-Allow-Credentials, true
+  res.set \Access-Control-Allow-Headers    , 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  res.set \Access-Control-Allow-Methods    , 'GET,POST,PUT,DELETE,OPTIONS'
+  res.set \Access-Control-Allow-Origin     , req.headers.origin
+  next!
 
 function handle-error err, req, res, next then
   msg = switch

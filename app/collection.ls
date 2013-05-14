@@ -1,10 +1,9 @@
-_ = require \underscore
-B = require \backbone
-H = require \./helper
-M = require \./model
+_   = require \underscore
+B   = require \backbone
+Api = require \./api
+M   = require \./model
 
 Collection = B.Collection.extend do
-  find: -> new Collection @filter it
   destroy: (id-or-model, opts) ->   # complement of @create convenience
     model = if _.isString id-or-model then @get(id-or-model) else id-or-model
     success = opts.success
@@ -12,28 +11,30 @@ Collection = B.Collection.extend do
       @remove model, opts
       success model, resp, opts if success
     model.destroy opts
+  find: ->
+    new Collection @filter it
   toJSON-T: (opts) ->
     @map (m) -> if m.toJSON-T then m.toJSON-T opts else m.toJSON opts
 
 exports.init = ->
   edges =
-    url  : '/api/edges'
+    url  : Api.edges
     model: M.Edge
   evidences =
-    url  : '/api/evidences'
+    url  : Api.evidences
     model: M.Evidence
   nodes =
-    url       : '/api/nodes'
+    url       : Api.nodes
     model     : M.Node
     comparator: -> it.get \name .toLowerCase!
   notes =
-    url  : '/api/notes'
+    url  : Api.notes
     model: M.Note
   sessions =
-    url  : '/api/sessions'
+    url  : Api.sessions
     model: M.Session
   users =
-    url       : '/api/users'
+    url       : Api.users
     model     : M.User
     find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 

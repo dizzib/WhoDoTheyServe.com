@@ -2,8 +2,8 @@ exports
   ..log = -> console.log.apply console, arguments
 
   ..on-err = (coll, xhr) ->
-    msg = get-friendly(xhr.responseText) || 'An error occurred. Sorry!'
-    $ \.alert-error .text msg .show!
+    const MSG = 'An error occurred (check the debug console for more details)'
+    $ \.alert-error .text get-friendly(xhr.responseText) || MSG .show!
 
 function get-friendly msg then
   msg

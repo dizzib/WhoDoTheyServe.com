@@ -14,10 +14,10 @@ exports
   ..init = (server) ->
     server
       ..param \id, (req,, next, req.id) -> next!
-      ..get "/api/keep-alive"             , (, res) -> res.send 200
-      ..get "/api/evidences/for/:id"      , M-Evidences.crud-fns.list-for-entity
-      ..get "/api/notes/for/:id"          , M-Notes.crud-fns.list-for-entity
-      ..get "/api/sys"                    , Sys.get
+      ..options \*                       , (, res) -> res.send 200
+      ..get \/api/sys                    , Sys.get
+      ..get \/api/evidences/for/:id      , M-Evidences.crud-fns.list-for-entity
+      ..get \/api/notes/for/:id          , M-Notes.crud-fns.list-for-entity
      #..get "/api/users/:id/verify/:token", M-Users.verify
 
     set-api-sec-sessions!
@@ -35,6 +35,7 @@ exports
     set-api-crud-sessions!
 
     function set-api-crud route, Model then
+      server
         ..get    "/api/#{route}"    , Model.crud-fns.list
         ..post   "/api/#{route}"    , Model.crud-fns.create
         ..get    "/api/#{route}/:id", Model.crud-fns.read
@@ -65,6 +66,7 @@ exports
         ..delete "/api/users/:id", SecUsers.maintain!
 
     function set-api-integrity then
+      server
         ..post   "/api/edges"    , Integrity.edge-create
         ..put    "/api/edges/:id", Integrity.edge-update
         ..delete "/api/edges/:id", Integrity.edge-delete

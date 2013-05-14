@@ -1,4 +1,5 @@
 B    = require \backbone
+Api  = require \./api
 Cons = require \../lib/model-constraints
 
 B.Validation.configure labelFormatter:\label
@@ -8,14 +9,13 @@ Model = B.DeepModel.extend do
 
 exports
   ..Evidence = Model.extend do
-    urlRoot: '/api/evidences'
+    urlRoot: Api.evidences
     labels :
       \url : 'Url'
     validation:
       \url : required:yes pattern:\url
-
   ..Edge = Model.extend do
-    urlRoot: '/api/edges'
+    urlRoot: Api.edges
     labels :
       \a_node_id : 'Actor A'
       \b_node_id : 'Actor B'
@@ -31,35 +31,31 @@ exports
           msg     : "How should be #{Cons.edge.how.info}"
       \year_from : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
       \year_to   : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
-
   ..Node = Model.extend do
-    urlRoot   : '/api/nodes'
+    urlRoot   : Api.nodes
     validation:
       \name :
         * required: yes
         * pattern : Cons.node.name.regex
           msg     : "Name should be #{Cons.node.name.info}"
-
   ..Note = Model.extend do
-    urlRoot   : '/api/notes'
+    urlRoot   : Api.notes
     validation:
       \text :
         * required: yes
         * pattern : Cons.note.regex
           msg     : "Note should be #{Cons.note.info}"
-
   ..Session = Model.extend do
-    urlRoot   : '/api/sessions'
+    urlRoot   : Api.sessions
     validation:
       \login    : required:yes
       \password : required:yes
-
-  ..Signup = Model.extend user-spec pwd-required:yes
-
+  ..Signup = Model.extend do
+    user-spec pwd-required:yes
   ..Sys = Model.extend do
-    urlRoot: '/api/sys'
-
-  ..User = Model.extend user-spec pwd-required:no
+    urlRoot: Api.sys
+  ..User = Model.extend do
+    user-spec pwd-required:no
 
 function val-login
   return
@@ -80,7 +76,7 @@ function val-password opts
       msg     : "Password should be #{Cons.password.info}"
 
 function user-spec opts
-  urlRoot: '/api/users'
+  urlRoot: Api.users
   labels :
     \info     : 'Homepage'
     \passconf : 'Confirm Password'
