@@ -4,18 +4,6 @@ C = require \./collection
 H = require \./helper
 S = require \./session
 
-const CUES =
-  cues:
-    null: ->
-      $el = $ it.element
-      render C.Evidences, 'icon-camera'
-      render C.Notes    , 'icon-comment'
-      ~function render coll, cue-class then
-        items = coll.find ~> @_id is it.get \entity_id
-        for item in items.models
-          $el.append "<i class=#{cue-class}/>"
-      ''
-
 const EDGE =
   a-node:
     href: -> get-node-href @a_node_id
@@ -32,6 +20,23 @@ const EDGE =
       yf = "from #{@year_from or '?'} "
       yt = if @year_to then "to #{@year_to}" else ''
       yf + yt
+
+const GLYPH =
+  glyph:
+    href: ->
+      "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
+
+const GLYPHS =
+  glyphs:
+    null: ->
+      $el = $ it.element
+      render C.Evidences, 'icon-camera'
+      render C.Notes    , 'icon-comment'
+      ~function render coll, glyph-class then
+        items = coll.find ~> @_id is it.get \entity_id
+        for item in items.models
+          $el.append "<i class=#{glyph-class}/>"
+      ''
 
 const HIDE =
   class: -> \hide
@@ -59,7 +64,7 @@ exports
       class: SHOW-IF-CREATOR
       href : -> "#/edge/edit/#{@_id}"
   ..edges = _.extend do
-    CUES
+    GLYPHS
     EDGE
   ..evidences = _.extend do
     META
@@ -70,15 +75,16 @@ exports
   ..evidences-head =
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
+  ..glyph = GLYPH
   ..meta = META
-  ..nodes = _.extend do
-    CUES
-    name:
-      href: -> get-node-href @_id
   ..node =
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/node/edit/#{@_id}"
+  ..nodes = _.extend do
+    GLYPHS
+    name:
+      href: -> get-node-href @_id
   ..notes = META
   ..notes-head =
     btn-edit:
@@ -89,9 +95,6 @@ exports
       class: -> \hide unless _.isEmpty this
     editable:
       class: -> \hide if _.isEmpty this
-  ..users =
-    login:
-      href: -> get-user-href @_id
   ..user =
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
@@ -105,6 +108,9 @@ exports
     url : URL
   ..user-notes =
     meta: HIDE
+  ..users =
+    login:
+      href: -> get-user-href @_id
 
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
