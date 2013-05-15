@@ -21,8 +21,6 @@ Router = B.Router.extend do
   routes:
     ''                 : \news
     \doc/about         : \doc_about
-    \doc/api           : \doc_api
-    \doc/disclaimer    : \doc_disclaim
     \edge/edit/:id     : \edge_edit
     \edge/new          : \edge_edit
     \edge/:id          : \edge
@@ -46,8 +44,6 @@ Router = B.Router.extend do
     \user/:id          : \user
     \users             : \user_list
   doc_about   : -> V.doc-about.render!
-  doc_api     : -> V.doc-api.render!
-  doc_disclaim: -> V.doc-disclaimer.render!
   graph       : -> V.graph.render!
   edge        : (id, act, child-id) ->
     V.edge.render (edge = C.Edges.get id), D.edge

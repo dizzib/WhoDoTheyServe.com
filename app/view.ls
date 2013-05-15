@@ -10,8 +10,6 @@ V-Version  = require \./view/version
 Insert-css F.readFileSync __dirname + \/view.css
 
 D-About         = F.readFileSync __dirname + \/doc/about.html
-D-Api           = F.readFileSync __dirname + \/doc/api.html
-D-Disclaimer    = F.readFileSync __dirname + \/doc/disclaimer.html
 T-EdgeEdit      = F.readFileSync __dirname + \/view/edge-edit.html
 T-Edge          = F.readFileSync __dirname + \/view/edge.html
 T-Edges         = F.readFileSync __dirname + \/view/edges.html
@@ -39,8 +37,6 @@ T-Users         = F.readFileSync __dirname + \/view/users.html
 exports
   # IMPORTANT! Every edit view must reside on it's own el to keep events independent
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
-  ..doc-api         = new V.DocuView document:D-Api          , el:\.view>.main
-  ..doc-disclaimer  = new V.DocuView document:D-Disclaimer   , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         tagName:\#a_node_id
   ..edge-b-node-sel = new V.SelectView                         tagName:\#b_node_id
