@@ -11,7 +11,6 @@ exports
   ..DocuView = B.View.extend do
     render: -> @$el.html @options.document .show!
 
-  # IMPORTANT! Every edit view must reside on it's own $el to keep events independent
   ..EditView = B.View.extend do
     events:
       'click .cancel': \cancel

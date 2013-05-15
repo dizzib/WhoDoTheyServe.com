@@ -14,7 +14,7 @@ Router = B.Router.extend do
     $ \.timeago .timeago!
     $ \.view .addClass \ready
   before: ->
-    $ \.view>* .off!hide! # clear all event handlers
+    $ \.view>* .off!hide! # call off() so different views can use same element
     $ \.view .removeClass \editing
     $ \.view .removeClass \ready
     V.navigator.render!

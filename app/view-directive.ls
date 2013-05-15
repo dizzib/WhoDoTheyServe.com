@@ -50,8 +50,7 @@ const META =
   create-date:
     title: -> @meta?create_date # https://github.com/rmm5t/jquery-timeago
 
-const SHOW-IF-CREATOR =
-  -> \hide unless S.is-signed-in @meta?create_user_id
+const SHOW-IF-CREATOR = -> \hide unless S.is-signed-in @meta?create_user_id
 
 const URL =
   href: -> @url

@@ -1,4 +1,4 @@
-F          = require \fs # inlined by brfs
+F          = require \fs # browserified
 Insert-css = require \./lib-3p/insert-css
 V          = require \./view-engine
 V-Graph    = require \./view/graph
@@ -35,7 +35,6 @@ T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 
 exports
-  # IMPORTANT! Every edit view must reside on it's own el to keep events independent
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         tagName:\#a_node_id
