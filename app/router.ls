@@ -14,12 +14,12 @@ Router = B.Router.extend do
     $ \.timeago .timeago!
     $ \.view .addClass \ready
   before: ->
-    $ \.view>* .hide!
+    $ \.view>* .off!hide! # clear all event handlers
     $ \.view .removeClass \editing
     $ \.view .removeClass \ready
     V.navigator.render!
   routes:
-    ''                 : \news
+    ''                 : \home
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
     \edge/new          : \edge_edit
@@ -28,7 +28,7 @@ Router = B.Router.extend do
     \edge/:id/:act/:id : \edge
     \edges             : \edges
     \graph             : \graph
-    \news              : \news
+    \home              : \home
     \node/edit/:id     : \node_edit
     \node/new          : \node_edit
     \node/:id          : \node
@@ -54,7 +54,7 @@ Router = B.Router.extend do
   edges    : ->
     V.edges-head.render!
     V.edges     .render C.Edges, D.edges
-  news: -> V.news.render!
+  home: -> V.home.render!
   node: (id, act, child-id) ->
     V.node           .render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

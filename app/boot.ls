@@ -1,7 +1,7 @@
 B       = require \backbone
 F       = require \fs # inlined by brfs
 Ins-css = require \./lib-3p/insert-css
-Api        = require \./api
+Api     = require \./api
 C       = require \./collection
 H       = require \./helper
 M-Ext   = require \./model-ext
@@ -21,24 +21,23 @@ C      .init!
 V-Event.init Router
 
 wire-events!
-fetch-edges!
 
-C.Evidences.fetch error:on-err
-C.Notes    .fetch error:on-err
-C.Sessions .fetch error:on-err
-C.Users    .fetch error:on-err
+$.when(
+  C.Edges    .fetch!
+  C.Evidences.fetch!
+  C.Nodes    .fetch!
+  C.Notes    .fetch!
+  C.Sessions .fetch!
+  C.Users    .fetch!
+).then start, abort
 
-function fetch-edges then C.Edges.fetch error:H.on-err, success:fetch-nodes
-function fetch-nodes then C.Nodes.fetch error:H.on-err, success:start
-
-function on-err coll, xhr then
+function abort coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
 function start then
-  $ \.remove-after-boot .remove!
-  $ \.show-after-boot   .removeClass \show-after-boot
+  $ \.view .removeClass \show-after-boot
   B.history.start!
 
 function wire-events then

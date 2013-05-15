@@ -2,8 +2,8 @@ F          = require \fs # inlined by brfs
 Insert-css = require \./lib-3p/insert-css
 V          = require \./view-engine
 V-Graph    = require \./view/graph
+V-Home     = require \./view/home
 V-NavBar   = require \./view/navbar
-V-News     = require \./view/news
 V-Session  = require \./view/session
 V-Version  = require \./view/version
 
@@ -40,7 +40,7 @@ exports
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         tagName:\#a_node_id
   ..edge-b-node-sel = new V.SelectView                         tagName:\#b_node_id
-  ..edge-edit       = new V.EditView template:T-EdgeEdit     , el:\.view>.edge-edit
+  ..edge-edit       = new V.EditView template:T-EdgeEdit     , el:\.view>.main
   ..edges           = new V.ListView template:T-Edges        , el:\.view>.edges
   ..edges-head      = new V.InfoView template:T-EdgesHead    , el:\.view>.main
   ..evidence-edit   = new V.EditView template:T-EvidenceEdit , el:\.view>.evidence-edit
@@ -49,11 +49,11 @@ exports
   ..evidences-void  = new V.DocuView document:T-EvidencesVoid, el:\.view>.evidences
   ..footer          = new V.DocuView document:T-Footer       , el:\.footer
   ..graph           = new V-Graph                              el:\.view>.main
+  ..home            = new V-Home                               el:\.view>.main
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator
-  ..news            = new V-News                               el:\.view>.main
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main
-  ..node-edit       = new V.EditView template:T-NodeEdit     , el:\.view>.node-edit
+  ..node-edit       = new V.EditView template:T-NodeEdit     , el:\.view>.main
   ..node-edges-a    = new V.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
   ..node-edges-b    = new V.ListView template:T-NodeEdgesB   , el:\.view>.node-edges-b
   ..node-edges-head = new V.InfoView template:T-EdgesHead    , el:\.view>.node-edges-head
@@ -64,8 +64,8 @@ exports
   ..notes-head      = new V.InfoView template:T-NotesHead    , el:\.view>.notes-head
   ..session         = new V-Session                            el:\.view>.main
   ..user            = new V.InfoView template:T-User         , el:\.view>.main
-  ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.user-edit
-  ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.user-signin
-  ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.user-signup
+  ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
+  ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
+  ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.main
   ..version         = new V-Version                            el:\.version
