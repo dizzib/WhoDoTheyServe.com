@@ -19,7 +19,7 @@ Router = B.Router.extend do
     $ \.view .removeClass \ready
     V.navigator.render!
   routes:
-    ''                 : \graph
+    ''                 : \news
     \doc/about         : \doc_about
     \doc/api           : \doc_api
     \doc/disclaimer    : \doc_disclaim
@@ -30,6 +30,7 @@ Router = B.Router.extend do
     \edge/:id/:act/:id : \edge
     \edges             : \edges
     \graph             : \graph
+    \news              : \news
     \node/edit/:id     : \node_edit
     \node/new          : \node_edit
     \node/:id          : \node
@@ -57,6 +58,7 @@ Router = B.Router.extend do
   edges    : ->
     V.edges-head.render!
     V.edges     .render C.Edges, D.edges
+  news: -> V.news.render!
   node: (id, act, child-id) ->
     V.node           .render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

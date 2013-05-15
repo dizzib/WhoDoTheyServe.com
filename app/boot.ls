@@ -1,18 +1,17 @@
-B          = require \backbone
-F          = require \fs # inlined by brfs
-Insert-css = require \./lib-3p/insert-css
+B       = require \backbone
+F       = require \fs # inlined by brfs
+Ins-css = require \./lib-3p/insert-css
 Api        = require \./api
-C          = require \./collection
-H          = require \./helper
-M-Ext      = require \./model-ext
-V          = require \./view
-V-Event    = require \./view-event
-Router     = require \./router
+C       = require \./collection
+H       = require \./helper
+M-Ext   = require \./model-ext
+V       = require \./view
+V-Event = require \./view-event
+Router  = require \./router
 
-Insert-css F.readFileSync __dirname + \/lib/form.css
-Insert-css F.readFileSync __dirname + \/index.css
-Insert-css F.readFileSync __dirname + \/view/edge.css
-Insert-css F.readFileSync __dirname + \/view/footer.css
+Ins-css F.readFileSync __dirname + \/index.css
+Ins-css F.readFileSync __dirname + \/lib/form.css
+Ins-css F.readFileSync __dirname + \/view/footer.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 
