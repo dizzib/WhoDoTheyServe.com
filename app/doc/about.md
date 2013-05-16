@@ -1,11 +1,14 @@
 ### About
-The purpose is to highlight potential [conflicts of interest][coi] and to make you think.
+A secondary purpose is to highlight possible [conflict of interest][coi].
 
-As far as possible, actors and connections are backed up with evidence to keep this site grounded in fact and not speculation (conspiracy theory).
+As far as possible, actors and connections are backed up with evidence
+to keep this site grounded in fact and not speculation (conspiracy theory).
 
-This site is experimental and open to new ideas/suggestions which you can add to [github issues][issues].
+This site is experimental and open to new ideas/suggestions which
+you can add to [github issues][issues].
 
-If you'd like to become a contributor then please email me via the contact link below and I'll set you up with a new account.
+If you'd like to become a contributor then please email me
+via the contact link below.
 
 ### API
 
@@ -54,9 +57,12 @@ This site does not use tracking tools like google analytics.
 
 ### Security
 
-Contributor passwords are hashed using [bcrypt] before storing in the database so should be safe even if the database gets hacked.
+Contributor passwords are hashed using [bcrypt] before storing in the
+database so should be safe even if the database gets hacked.
 
-Contributor email addresses are encrypted using [256-bit aes][aes] and never disclosed. Even so, it's probably wise to use a [disposable email address][disp-email].
+Contributor email addresses are encrypted using [256-bit aes][aes]
+and never disclosed. Even so, it's probably wise to
+use a [disposable email address][disp-email].
 
 [aes]:       http://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 [api]:       http://en.wikipedia.org/wiki/Application_programming_interface
