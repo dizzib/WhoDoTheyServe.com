@@ -7,7 +7,6 @@ exports.init = ->
     \./app/lib-3p/underscore.mixin.deepExtend
     \./app/lib-3p/backbone-deep-model
     \./app/lib-3p/backbone.routefilter
-    \./app/lib-3p/backbone-validation
     \./app/lib-3p/backbone-validation-bootstrap
     \./app/lib-3p/bootstrap/js/bootstrap
     \./app/lib-3p/insert-css
