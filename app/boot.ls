@@ -38,6 +38,8 @@ function abort coll, xhr then
 
 function start then
   $ \.view .removeClass \show-after-boot
+  V.footer .render!
+  V.version.render!
   B.history.start!
 
 function wire-events then

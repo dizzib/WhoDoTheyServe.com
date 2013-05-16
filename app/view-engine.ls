@@ -5,6 +5,8 @@ _ = require \underscore
 H = require \./helper
 S = require \./session
 
+const CLASS-EDITING = \editing
+
 T-Sel = F.readFileSync __dirname + \/view/select.html
 
 exports
@@ -23,7 +25,7 @@ exports
       @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
       @delegateEvents!
-      $ \.view .addClass \editing
+      $ \.view .addClass CLASS-EDITING
       B.Validation.bind this
       ($tem = $ @options.template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no
@@ -37,6 +39,7 @@ exports
       (m = @model).attributes = $ it.currentTarget .serializeObject!
       @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, @model }
       false
+  ..ResetEditView = -> $ \.view .removeClass CLASS-EDITING
 
   ..InfoView = B.View.extend do
     render: (model, directive) ->
