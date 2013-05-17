@@ -8,7 +8,7 @@ I = require \../lib-3p/insert-css
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 640
+const HEIGHT = 940
 const WIDTH  = 940
 
 module.exports = B.View.extend do
@@ -28,7 +28,6 @@ function render el then
   edges = _.map C.Edges.models, (x) -> x.attributes
 
   edges.forEach (edge) ->
-    H.log edge
     edge.source = _.find nodes, (n) -> n._id is edge.a_node_id
     edge.target = _.find nodes, (n) -> n._id is edge.b_node_id
 
@@ -36,7 +35,7 @@ function render el then
     .nodes nodes
     .links edges
     .charge -1500
-    .linkDistance 5
+    .linkDistance 2
     .linkStrength 0.5
     .size [WIDTH, HEIGHT]
     .start!
@@ -72,6 +71,7 @@ function render el then
     .data f.nodes!
     .enter!
       .append \svg:a
+        .call f.drag
         .attr \xlink:href, (d) -> "#/node/#{d._id}"
         .append \svg:text
           .attr \text-anchor, \middle
