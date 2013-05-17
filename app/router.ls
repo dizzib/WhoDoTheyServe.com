@@ -42,10 +42,10 @@ Router = B.Router.extend do
     \user/:id          : \user
     \users             : \user_list
   doc_about   : -> V.doc-about.render!
-  graph       : -> V.graph.render!
   edge        : VC.edge
   edges       : VC.edges
   edge_edit   : -> V.edge-edit.render M.Edge.create(it), C.Edges
+  graph       : -> V.graph.render!
   home        : -> V.home.render!
   node        : VC.node
   nodes       : VC.nodes

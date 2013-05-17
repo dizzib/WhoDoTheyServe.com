@@ -3,64 +3,90 @@ F = require \fs
 _ = require \underscore
 C = require \../collection
 H = require \../helper
+I = require \../lib-3p/insert-css
 
+I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
+
+const HEIGHT = 640
+const WIDTH  = 940
 
 module.exports = B.View.extend do
   render: ->
-    @$el.html T .show!
-    fd = new $jit.ForceDirected do
-      injectInto: \fdvis
-      height    : 600
-      Navigation:
-        enable      : yes
-        panning     : 'avoid nodes'
-        zooming     : 20
-      Edge:
-        overridable : yes
-      Node:
-        overridable : yes
-        color       : \grey
-      onCreateLabel: (el, node) ->
-        $ \<a/> .text node.name .attr \href, "#/node/#{node.id}" .appendTo $ el
-      Events:
-        enable      : yes
-        type        : \Native
-        onDragMove: (node, eventInfo, e) ->
-          pos = eventInfo.getPos!
-          node.pos.setc(pos.x, pos.y)
-          fd.plot!
-        onTouchMove: (node, eventInfo, e) ->
-          $jit.util.event.stop e
-          @onDragMove node, eventInfo, e
-      #iterations: 100
-      #levelDistance: 100
+    render @el
+    @$el.show!
 
-    period-edges = C.Edges.find -> it.in_range 1900, 2013
+function render el then
+  $ el .empty!
 
-    nodes = _.map C.Nodes.models, (n) ->
-      edges = period-edges.find -> n.id is it.get \a_node_id
-      adjs  = _.map edges.models, (l) ->
-        return
-          nodeFrom: a = l.get \a_node_id
-          nodeTo  : b = l.get \b_node_id
-          data:
-            \$direction : [ a, b ]
-            \$type      : if \lt is l.get \a_is then \arrow else \line
-            #\$color     : \#0f0
-      return
-        id         : n.id
-        name       : n.get \name
-        adjacencies: adjs
+  svg = d3.select el
+    .append \svg
+    .attr \width , WIDTH
+    .attr \height, HEIGHT
 
-    return unless nodes.length
+  nodes = _.map C.Nodes.models, (x) -> x.attributes
+  edges = _.map C.Edges.models, (x) -> x.attributes
 
-    fd
-      ..loadJSON nodes
-      ..computeIncremental do
-        iter:40
-        onComplete: ->
-          fd.animate do
-            modes: [ \linear ]
-            transition: $jit.Trans.Elastic.easeOut
-            duration: 2500
+  edges.forEach (edge) ->
+    H.log edge
+    edge.source = _.find nodes, (n) -> n._id is edge.a_node_id
+    edge.target = _.find nodes, (n) -> n._id is edge.b_node_id
+
+  f = d3.layout.force!
+    .nodes nodes
+    .links edges
+    .charge -1500
+    .linkDistance 5
+    .linkStrength 0.5
+    .size [WIDTH, HEIGHT]
+    .start!
+
+  svg.append \svg:defs .selectAll \marker
+    .data <[ end ]>
+    .enter!append \svg:marker
+      .attr \id, String
+      .attr \viewBox, '0 -5 10 10'
+      .attr \refX, 20
+      .attr \markerWidth, 10
+      .attr \markerHeight, 10
+      .attr \orient, \auto
+    .append \svg:path
+      .attr \d, 'M0,-5L10,0L0,5'
+
+  circs = svg.selectAll \circle
+    .data f.nodes!
+    .enter!
+      .append \svg:circle
+      .attr \class, \node
+      .attr \r, (d) -> 5 + d.weight
+
+  lines = svg.selectAll \line
+    .data f.links!
+    .enter!
+      .append \svg:line
+      .attr \class, \edge
+      .attr \marker-end, (d) ->
+        if d.a_is is \lt then 'url(#end)' else ''
+
+  texts = svg.selectAll \text
+    .data f.nodes!
+    .enter!
+      .append \svg:a
+        .attr \xlink:href, (d) -> "#/node/#{d._id}"
+        .append \svg:text
+          .attr \text-anchor, \middle
+          .text (d) -> d.name
+
+  f.on \tick, ->
+    circs
+      .attr \cx, (d) -> d.x
+      .attr \cy, (d) -> d.y
+    lines
+      .attr \x1, (d) -> d.source.x
+      .attr \y1, (d) -> d.source.y
+      .attr \x2, (d) -> d.target.x
+      .attr \y2, (d) -> d.target.y
+    texts
+      .attr \x, (d) -> d.x
+      .attr \y, (d) -> d.y
+

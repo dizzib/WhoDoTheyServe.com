@@ -47,7 +47,7 @@ exports
   ..evidences-head  = new V.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
   ..evidences-void  = new V.DocuView document:T-EvidencesVoid, el:\.view>.evidences
   ..footer          = new V.DocuView document:T-Footer       , el:\.footer
-  ..graph           = new V-Graph                              el:\.view>.main
+  ..graph           = new V-Graph                              el:\.view>.graph
   ..home            = new V-Home                               el:\.view>.main
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator
