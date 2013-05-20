@@ -1,38 +1,37 @@
-mixin css(url)
-  link(href='#{url}.css', rel='stylesheet', type='text/css')
-
-mixin script(url)
-  script(src='#{url}.js', type='text/javascript')
-
 !!!
 html
   meta(charset='utf-8')
   head
     title WhoDoTheyServe.com
-    +css('boot')
-    +script('/lib-3p/yepnope.1.5.4-min')
-    +script('lib-3p-loader')
+    style(type='text/css')
+      /* seed css from bootstrap.css to prevent FoUC */
+      body { font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; }
+      h1 { font-size:38.5px; margin:10px 0; line-height:40px; }
+      a { color:#08c; text-decoration:none; }
+      .container { width:940px; margin-right:auto; margin-left:auto; }
+      .hide-during-boot { display:none; }
+    script(type='text/javascript', src='/lib-3p/yepnope.1.5.4-min.js')
+    script(type='text/javascript', src='lib-3p-loader.js')
   body.container
     small.version.pull-right
     h1
       a(href='#/home') WhoDoTheyServe.com
-    .navigator
-    .view.show-after-boot
-      .alert.alert-error
-      .main
-      .graph
-      .edges
-      .nodes
-      .evidences-head.section
-      .evidence-edit
-      .evidences
-      .notes-head.section
-      .note-edit
-      .notes
-      .node-edges-head.section
-      .node-edges-a
-      .node-edges-b
-      .meta.section
-    br
-    br
-    .footer
+    .hide-during-boot
+      .navigator
+      .view
+        .alert.alert-error
+        .main
+        .graph
+        .edges
+        .nodes
+        .evidences-head.section
+        .evidence-edit
+        .evidences
+        .notes-head.section
+        .note-edit
+        .notes
+        .node-edges-head.section
+        .node-edges-a
+        .node-edges-b
+        .meta.section
+      .footer

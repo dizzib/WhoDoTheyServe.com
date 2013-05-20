@@ -37,10 +37,10 @@ function abort coll, xhr then
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
 function start then
-  $ \.view .removeClass \show-after-boot
-  V.footer .render!
+  V.footer.render!
   V.version.render!
   B.history.start!
+  $ \.hide-during-boot .removeClass \hide-during-boot
 
 function wire-events then
   C.Sessions.on \sync, -> V.navigator.render $ \.navbar
