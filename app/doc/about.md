@@ -32,6 +32,7 @@ brfs
 browserify
 chai
 crypto
+d3
 express
 git
 glyphicons
@@ -47,8 +48,10 @@ nodemon
 request
 stylus
 timeago
+transparency
 twitter-bootstrap
 underscore
+yepnope
 zombie
 
 ### Privacy
