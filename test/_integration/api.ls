@@ -166,6 +166,7 @@ describe 'api', ->
       run Edge.ab.how.min.update.ok
       run Edge.ab.how.min-lt.update.bad
       run Edge.ab.how.amp.update.ok
+      run Edge.ab.how.caps.update.ok
       run Edge.ab.how.comma.update.ok
       run Edge.ab.how.slash.update.ok
       run Edge.ab.year.from.null.update.ok

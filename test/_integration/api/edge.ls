@@ -12,6 +12,7 @@ exports
       lt: get-spec-ab a_is:\lt
     how:
       amp   : get-spec-ab how:'is founder & CEO'
+      caps  : get-spec-ab how:'Honorary European Chairman'
       comma : get-spec-ab how:'is founder, CEO'
       slash : get-spec-ab how:'is founder/CEO'
       max   : get-spec-ab how:\x * 30
