@@ -31,10 +31,6 @@ exports
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
     render-user-entities id, V.nodes    , C.Nodes    , D.nodes
     render-user-entities id, V.notes    , C.Notes    , D.user-notes
-  ..user-signout = ->
-    return navigate \session unless m = C.Sessions.models.0
-    m.destroy error:H.on-err, success: -> navigate \session
-    function navigate route then module.exports.navigate route, trigger:true
 
 function render-evidences entity-id, act, id then
   evs = C.Evidences.find -> entity-id is it.get \entity_id

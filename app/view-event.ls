@@ -31,6 +31,8 @@ exports.init = (router) ->
     ..user-signin
       ..on \cancelled, -> B.history.history.back!
       ..on \saved    , -> navigate \session
+    ..user-signout
+      ..on \destroyed, -> navigate \session
     ..user-signup
       ..on \cancelled, -> B.history.history.back!
       ..on \saved    , -> navigate \session

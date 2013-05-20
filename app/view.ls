@@ -5,6 +5,7 @@ V-Graph    = require \./view/graph
 V-Home     = require \./view/home
 V-NavBar   = require \./view/navbar
 V-Session  = require \./view/session
+V-SignOut  = require \./view/user-signout
 V-Version  = require \./view/version
 
 Insert-css F.readFileSync __dirname + \/view.css
@@ -65,6 +66,7 @@ exports
   ..user            = new V.InfoView template:T-User         , el:\.view>.main
   ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
+  ..user-signout    = new V-SignOut
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.main
   ..version         = new V-Version                            el:\.version
