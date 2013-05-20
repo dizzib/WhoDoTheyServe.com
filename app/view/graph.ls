@@ -13,23 +13,21 @@ const WIDTH  = 940
 
 module.exports = B.View.extend do
   render: ->
-    render @el
+    refresh @el
     @$el.show!
 
-function render el then
+function refresh el then
   $ el .empty!
-
   svg = d3.select el
     .append \svg
     .attr \width , WIDTH
     .attr \height, HEIGHT
 
   nodes = _.map C.Nodes.models, (x) -> x.attributes
-  edges = _.map C.Edges.models, (x) -> x.attributes
-
-  edges.forEach (edge) ->
-    edge.source = _.find nodes, (n) -> n._id is edge.a_node_id
-    edge.target = _.find nodes, (n) -> n._id is edge.b_node_id
+  edges = _.map C.Edges.models, (x) -> _.extend do
+    x.attributes
+    source: _.find nodes, (n) -> n._id is x.get \a_node_id
+    target: _.find nodes, (n) -> n._id is x.get \b_node_id
 
   f = d3.layout.force!
     .nodes nodes
@@ -54,28 +52,26 @@ function render el then
 
   circs = svg.selectAll \circle
     .data f.nodes!
-    .enter!
-      .append \svg:circle
+    .enter!append \svg:circle
       .attr \class, \node
       .attr \r, (d) -> 5 + d.weight
 
   lines = svg.selectAll \line
     .data f.links!
-    .enter!
-      .append \svg:line
-      .attr \class, \edge
+    .enter!append \svg:line
+      .attr \class, (d) -> "edge #{if out-of-range d then \out-of-range}"
       .attr \marker-end, (d) ->
         if d.a_is is \lt then 'url(#end)' else ''
 
   texts = svg.selectAll \text
     .data f.nodes!
-    .enter!
-      .append \svg:a
-        .call f.drag
-        .attr \xlink:href, (d) -> "#/node/#{d._id}"
-        .append \svg:text
-          .attr \text-anchor, \middle
-          .text (d) -> d.name
+    .enter!append \svg:a
+      .call f.drag
+      .attr \xlink:href, (d) -> "#/node/#{d._id}"
+      .append \svg:text
+        .attr \dy, \0.2em
+        .attr \text-anchor, \middle
+        .text (d) -> d.name
 
   f.on \tick, ->
     circs
@@ -89,4 +85,12 @@ function render el then
     texts
       .attr \x, (d) -> d.x
       .attr \y, (d) -> d.y
+
+  function out-of-range edge then
+    const RANGE =
+      year_from: 2011
+      year_to  : 2013
+    year_from = edge.year_from
+    year_to   = edge.year_to or 9999
+    return year_to < RANGE.year_from or RANGE.year_to < year_from
 
