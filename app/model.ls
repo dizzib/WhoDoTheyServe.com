@@ -50,12 +50,9 @@ exports
     validation:
       \login    : required:yes
       \password : required:yes
-  ..Signup = Model.extend do
-    user-spec pwd-required:yes
-  ..Sys = Model.extend do
-    urlRoot: Api.sys
-  ..User = Model.extend do
-    user-spec pwd-required:no
+  ..Signup = Model.extend user-spec pwd-required:yes
+  ..Sys    = new (Model.extend urlRoot: Api.sys)!
+  ..User   = Model.extend user-spec pwd-required:no
 
 function val-login
   return

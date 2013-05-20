@@ -4,6 +4,7 @@ Ins-css = require \./lib-3p/insert-css
 Api     = require \./api
 C       = require \./collection
 H       = require \./helper
+M       = require \./model
 M-Ext   = require \./model-ext
 V       = require \./view
 V-Event = require \./view-event
@@ -29,9 +30,10 @@ $.when(
   C.Notes    .fetch!
   C.Sessions .fetch!
   C.Users    .fetch!
-).then start, abort
+  M.Sys      .fetch!
+).then start, fail
 
-function abort coll, xhr then
+function fail coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
