@@ -28,7 +28,9 @@ module.exports = B.View.extend do
       directive = items: _.extend do
         D.edges, D.evidences, D.glyph, D.meta, D.nodes, D.notes
         item:
-          null: -> $ it.element .find ".entity>:not(.#{@type})" .hide!
+          fn: ->
+            $ it.element .find ".entity>:not(.#{@type})" .remove!
+            return void
       ($t = $ T-Latest).render items:latest, directive
       return $t
 
