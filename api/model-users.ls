@@ -14,7 +14,7 @@ spec =
   info        : type:String, match:Cons.url.regex
   role        : type:String, required:yes, enum:<[ admin user ]>
   create_date : type:Date  , required:yes, default:Date.now
-  trust_level : type:Number, required:yes, default:5
+  quota_daily : type:Number, required:yes, default:5
   freeze_until: type:String  # allow sign-in only after this datetime
 
 schema = new M.Schema spec
@@ -51,7 +51,7 @@ module.exports = Users = M.model \users, schema
         #success: Signup.send-email
     read: (req, res, next) ->
       Crud.read req, res, next, Users,
-        return-fields: <[ login email info trust_level ]>
+        return-fields: <[ login email info quota_daily ]>
         success: (req, user, done) ->
           user.email = Crypt.decrypt user.email
           done!

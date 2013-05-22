@@ -78,7 +78,7 @@ describe 'api', ->
     #run User.a.verify.ok
     run Session.a.signin.password.a.ok
     describe 'maint', ->
-      run User.a.trust-level.six.update.bad
+      run User.a.quota-daily.six.update.bad
       run User.a.password.b.update.ok
       run User.a.email.null.update.bad
       run User.a.email.no-domain.update.bad
@@ -243,7 +243,7 @@ describe 'api', ->
     run Session.admin.signin.password.a.ok
     describe 'user', ->
       run User.a.password.c.update.ok
-      run User.a.trust-level.six.update.ok
+      run User.a.quota-daily.six.update.ok
       run User.c.remove.ok
     describe 'graph', ->
       run Node.a.name.max.update.ok # dispite edge

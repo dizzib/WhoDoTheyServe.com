@@ -13,12 +13,12 @@ exports
         * 'meta.create_user_id': si.id
         * 'meta.create_date'   : $gte:H.get-date-yesterday!
       next err if err
-      if user.trust_level? then
+      if user.quota_daily? then
         const multipliers =
           nodes    : 1
           edges    : 1
           evidences: 2
-        if n >= (limit = multipliers[Model.modelName] * user.trust_level) then
+        if n >= (limit = multipliers[Model.modelName] * user.quota_daily) then
           return next new H.ApiError "
           Your 24-hour contribution limit of #{limit} #{Model.modelName} has been reached! 
           Contact admin to have your limit increased or wait 24 hours before retrying.

@@ -10,8 +10,8 @@ exports.get-spec = (c, r, u, d, list, verify) ->
         fake      : get-spec-admin token:\ThisIsAFakeToken
     a: _.extend do
       get-spec-a!
-      trust-level:
-        six       : get-spec-a trust_level:6
+      quota-daily:
+        six       : get-spec-a quota_daily:6
       email:
         null      : get-spec-a email:''
         new       : get-spec-a email:\email@domain.com

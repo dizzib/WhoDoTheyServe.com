@@ -16,13 +16,13 @@ exports
       "
       return next new Error 'signin required' unless si = req.session.signin
       return next new Error 'only admin can signup' unless si.role is \admin
-      #return next new Error 'only admin can add trust_level' if req.body.trust_level
+      #return next new Error 'only admin can add quota_daily' if req.body.quota_daily
       next!
 
   ..maintain = ->
     (req, res, next) ->
       return next new Error 'signin required' unless si = req.session.signin
       return next! if si.role is \admin
-      return next new Error 'only admin can amend trust_level' if req.body.trust_level
+      return next new Error 'only admin can amend quota_daily' if req.body.quota_daily
       return next new Error 'signin mismatch' unless req.id is si.id
       next!
