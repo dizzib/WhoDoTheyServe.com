@@ -23,18 +23,26 @@ function refresh el then
     .attr \width , WIDTH
     .attr \height, HEIGHT
 
-  nodes = _.map C.Nodes.models, (x) -> x.attributes
+  nodes = _.map C.Nodes.models, (x) -> _.extend do
+    x.attributes
+    edge-count: 0
+
   edges = _.map C.Edges.models, (x) -> _.extend do
     x.attributes
     source: _.find nodes, (n) -> n._id is x.get \a_node_id
     target: _.find nodes, (n) -> n._id is x.get \b_node_id
 
+  for edge in edges
+    edge.source.edge-count++
+    edge.target.edge-count++
+
   f = d3.layout.force!
     .nodes nodes
     .links edges
     .charge -1500
-    .linkDistance 2
-    .linkStrength 0.5
+    .friction 0.95
+    .linkDistance -> 50
+    .linkStrength -> 10 / (it.source.edge-count + it.target.edge-count)
     .size [WIDTH, HEIGHT]
     .start!
 
@@ -93,4 +101,3 @@ function refresh el then
     year_from = edge.year_from
     year_to   = edge.year_to or 9999
     return year_to < RANGE.year_from or RANGE.year_to < year_from
-
