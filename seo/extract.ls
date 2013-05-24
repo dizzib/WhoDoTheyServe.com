@@ -32,9 +32,9 @@ function visit route, cb then
     save-html-to-file @getHTML!, route
     cb!
 
-function eval-remove-features then $ 'a.btn, a.hide, .seo-remove' .remove!
+function eval-remove-features then $ 'a.btn, a.hide, .meta, .seo-remove' .remove!
 
-function eval-get-links then Array::map.call $(\a), (x) -> x.getAttribute \href
+function eval-get-links then Array::map.call $(\a), -> it.getAttribute \href
 
 function eval-insert-link-css then
   $ \body .before "<link type='text/css' rel='stylesheet' href='/lib-3p/bootstrap/css/bootstrap.css'>"

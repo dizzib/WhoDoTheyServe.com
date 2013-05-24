@@ -1,10 +1,9 @@
+include _mixin
+
 ul.items.unstyled
   li.evidence.clearfix
     i.glyph.icon-camera
     a(target='_blank').url
-    small.meta
-      span  - added by  
-      a.createUser
-      abbr.createDate.timeago
+    +meta
     a.btn.btnEdit.pull-right.signed-in Edit 
       i.icon-edit
