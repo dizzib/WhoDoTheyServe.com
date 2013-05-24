@@ -86,7 +86,7 @@ function refresh el then
             .attr \target, \_blank
             .attr \xlink:href, -> ev.get \url
             .append \svg:image
-              .attr \xlink:href, \../asset/camera.svg
+              .attr \xlink:href, \asset/camera.svg
               .attr \x , dx + i * (ICON-SIZE + 1)
               .attr \width , ICON-SIZE
               .attr \height, ICON-SIZE
