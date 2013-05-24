@@ -8,8 +8,9 @@ I = require \../lib-3p/insert-css
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 940
-const WIDTH  = 940
+const ICON-SIZE = 16
+const HEIGHT    = 940
+const WIDTH     = 940
 
 module.exports = B.View.extend do
   render: ->
@@ -29,8 +30,8 @@ function refresh el then
 
   edges = _.map C.Edges.models, (x) -> _.extend do
     x.attributes
-    source: _.find nodes, (n) -> n._id is x.get \a_node_id
-    target: _.find nodes, (n) -> n._id is x.get \b_node_id
+    source: _.find nodes, -> it._id is x.get \a_node_id
+    target: _.find nodes, -> it._id is x.get \b_node_id
 
   for edge in edges
     edge.source.edge-count++
@@ -62,39 +63,63 @@ function refresh el then
     .data f.nodes!
     .enter!append \svg:circle
       .attr \class, \node
-      .attr \r, (d) -> 5 + d.weight
+      .attr \r, -> 5 + it.weight
 
   lines = svg.selectAll \line
     .data f.links!
     .enter!append \svg:line
-      .attr \class, (d) -> "edge #{if out-of-range d then \out-of-range}"
-      .attr \marker-end, (d) ->
-        if d.a_is is \lt then 'url(#end)' else ''
+      .attr \class, -> "edge #{if is-out-of-range it then \minor else ''}".trim!
+      .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''
+
+  line-glyphs = svg.selectAll \g.edge-glyphs
+    .data f.links!
+    .enter!append \svg:g
+      .attr \class, \edge-glyphs
+
+  line-glyphs
+    .each (edge) ->
+      evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
+      dx = - ((ICON-SIZE + 1) * (evs.length - 1)) / 2
+      for ev, i in evs
+        d3.select this
+          .append \svg:a
+            .attr \target, \_blank
+            .attr \xlink:href, -> ev.get \url
+            .append \svg:image
+              .attr \xlink:href, \../asset/camera.svg
+              .attr \x , dx + i * (ICON-SIZE + 1)
+              .attr \width , ICON-SIZE
+              .attr \height, ICON-SIZE
 
   texts = svg.selectAll \text
     .data f.nodes!
     .enter!append \svg:a
       .call f.drag
-      .attr \xlink:href, (d) -> "#/node/#{d._id}"
+      .attr \xlink:href, -> "#/node/#{it._id}"
       .append \svg:text
         .attr \dy, \0.2em
         .attr \text-anchor, \middle
-        .text (d) -> d.name
+        .text -> it.name
 
   f.on \tick, ->
     circs
-      .attr \cx, (d) -> d.x
-      .attr \cy, (d) -> d.y
+      .attr \cx, -> it.x
+      .attr \cy, -> it.y
+    line-glyphs
+      .attr \transform, ->
+        x = it.source.x + (it.target.x - it.source.x - ICON-SIZE) / 2
+        y = it.source.y + (it.target.y - it.source.y - ICON-SIZE) / 2
+        "translate(#{x},#{y})"
     lines
-      .attr \x1, (d) -> d.source.x
-      .attr \y1, (d) -> d.source.y
-      .attr \x2, (d) -> d.target.x
-      .attr \y2, (d) -> d.target.y
+      .attr \x1, -> it.source.x
+      .attr \y1, -> it.source.y
+      .attr \x2, -> it.target.x
+      .attr \y2, -> it.target.y
     texts
-      .attr \x, (d) -> d.x
-      .attr \y, (d) -> d.y
+      .attr \x, -> it.x
+      .attr \y, -> it.y
 
-  function out-of-range edge then
+  function is-out-of-range edge then
     const RANGE =
       year_from: 2011
       year_to  : 2013

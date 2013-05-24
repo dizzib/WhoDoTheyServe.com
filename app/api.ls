@@ -14,7 +14,8 @@ exports
   ..users     = get-url \users
 
 function get-url endpoint then
-  is-prod  = /\.(com|net)$/.test B.history.location.hostname
+  loc = window.location
+  is-prod  = /\.(com|net)$/.test loc.hostname or /prod/.test loc.search
   url-root = if is-prod then API-URL else \/api
   "#{url-root}/#{endpoint}"
 
