@@ -9,13 +9,15 @@ I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
 const ICON-SIZE = 16
-const HEIGHT    = 940
-const WIDTH     = 940
+const HEIGHT    = 1500
+const WIDTH     = 2000
 
 module.exports = B.View.extend do
   render: ->
     refresh @el
     @$el.show!
+    setTimeout init-position, 100 # small delay required to work
+    function init-position then ($ window .scrollTop 500 .scrollLeft 500)
 
 function refresh el then
   $ el .empty!
@@ -43,7 +45,8 @@ function refresh el then
     .charge -1500
     .friction 0.95
     .linkDistance -> 50
-    .linkStrength -> 10 / (it.source.edge-count + it.target.edge-count)
+    .linkStrength ->
+      (if is-out-of-range it then 5 else 10) / (it.source.edge-count + it.target.edge-count)
     .size [WIDTH, HEIGHT]
     .start!
 

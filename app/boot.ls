@@ -12,7 +12,6 @@ Router  = require \./router
 
 Ins-css F.readFileSync __dirname + \/lib/form.css
 Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
-Ins-css F.readFileSync __dirname + \/view/footer.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 
