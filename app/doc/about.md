@@ -2,7 +2,7 @@
 A secondary purpose is to highlight possible [conflict of interest][coi].
 
 As far as possible, actors and connections are backed up with evidence
-to keep this site grounded in fact and not speculation (conspiracy theory).
+to keep this site grounded in fact and not speculation or conspiracy theory.
 
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
