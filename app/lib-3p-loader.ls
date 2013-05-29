@@ -16,7 +16,7 @@ const LIBS =
     loc : \d3.js
     test: -> window.d3
   jquery:
-    cdn : \jquery/2.0.0/jquery.min.js
+    cdn : \jquery/2.0.1/jquery.min.js
     loc : \jquery.js
     test: -> window.$
   jquery_timeago:
