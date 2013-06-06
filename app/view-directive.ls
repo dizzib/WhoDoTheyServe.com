@@ -30,13 +30,16 @@ const GLYPHS =
   glyphs:
     null: ->
       $el = $ it.element
-      render C.Evidences, 'icon-camera'
-      render C.Notes    , 'icon-comment'
-      ~function render coll, glyph-class then
-        items = coll.find ~> @_id is it.get \entity_id
-        for item in items.models
-          $el.append "<i class=#{glyph-class}/>"
-      ''
+      evs = C.Evidences.find ~> @_id is it.get \entity_id
+      for ev in evs.models
+        $el.append "
+          <a target='_blank' title='Click to view evidence' href='#{ev.get \url}'>
+            <i class='icon-camera'/>
+          </a>"
+      notes = C.Notes.find ~> @_id is it.get \entity_id
+      for note in notes.models
+        $el.append "<i title='#{note.get \text}' class='icon-comment'/>"
+      return ''
 
 const HIDE =
   class: -> \hide
