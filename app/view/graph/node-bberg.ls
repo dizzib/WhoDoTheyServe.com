@@ -21,8 +21,8 @@ exports
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
         evs = _.filter C.Evidences.models, -> edge.id is it.get \entity_id
-        console.log evs.length
         url = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge.id}"
+        tip = if evs.length is 1 then "Evidence at Bilderberg #{edge.get \year_from}" else ''
         dx  = offset-x + (i * BADGE-SPACE-X) - (BADGE-SIZE-X / 2)
         d3-node = d3.select this
         d3-node.append \svg:rect
@@ -34,8 +34,9 @@ exports
           .attr \x     , dx
           .attr \y     , 10
         d3-node.append \svg:a
-          .attr \target    , \_blank
-          .attr \xlink:href, -> url
+          .attr \target     , \_blank
+          .attr \xlink:href , -> url
+          .attr \xlink:title, -> tip
           .append \svg:text
             .attr \class, \bberg-badge-text
             .attr \dx   , dx + 2

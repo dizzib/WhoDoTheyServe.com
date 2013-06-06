@@ -14,6 +14,7 @@ exports
     @groups.no
 
   ..render = (svg, d3-force) ->
+    return unless @groups.yes.length
     @g = svg.append \svg:g
     node-bac = _.find d3-force.nodes!, -> it.name is 'Bilderberg Annual Conference'
     for edge in @groups.yes
