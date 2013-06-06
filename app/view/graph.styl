@@ -1,14 +1,19 @@
 .graph
+  position      relative
   a
     fill          #08c
   a:hover
     fill          #058
   marker
     fill          #aaa
-  .node
-    fill          #8ff
+  svg
+    position      absolute
+    left          0
+    top           0
   .edge
     stroke        #ccc
     stroke-width  1.5px
   .edge.minor
     stroke-dasharray  5,5
+  .node
+    fill          #8ff
