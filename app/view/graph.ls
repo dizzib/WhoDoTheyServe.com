@@ -13,13 +13,18 @@ T = F.readFileSync __dirname + \/graph.html
 const HEIGHT = 1500
 const WIDTH  = 2000
 
+scroll-pos = x:500, y:500
+
 module.exports = B.View.extend do
   init: ->
     refresh @el
-    setTimeout init-position, 100 # small delay required to work
-    function init-position then ($ window .scrollTop 500 .scrollLeft 500)
   render: ->
+    $window = $ window
+    B.once \route-before, ->
+      scroll-pos.x = $window.scrollLeft!
+      scroll-pos.y = $window.scrollTop!
     @$el.show!
+    $window .scrollTop(scroll-pos.y) .scrollLeft(scroll-pos.x)
 
 function refresh el then
   $ el .empty!

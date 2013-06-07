@@ -12,6 +12,7 @@ Router = B.Router.extend do
     $ \.timeago .timeago!
     $ \.view .addClass \ready
   before: ->
+    B.trigger \route-before
     $ \.view>* .off!hide! # call off() so different views can use same element
     $ \.view .removeClass \ready
     VE.ResetEditView!
