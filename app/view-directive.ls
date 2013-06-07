@@ -33,7 +33,7 @@ const GLYPHS =
       evs = C.Evidences.find ~> @_id is it.get \entity_id
       for ev in evs.models
         $el.append "
-          <a target='_blank' title='Evidence' href='#{ev.get \url}'>
+          <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
             <i class='icon-camera'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id

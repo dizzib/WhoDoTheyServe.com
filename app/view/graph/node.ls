@@ -3,7 +3,7 @@ C = require \../../collection
 
 exports
   ..data = ->
-    _.map C.Nodes.models, (x) -> x.attributes
+    _.map C.Nodes.models, (m) -> m.toJSON-T!
 
   ..init = (svg, d3-force) ~>
     @nodes = svg.selectAll \g.nodes

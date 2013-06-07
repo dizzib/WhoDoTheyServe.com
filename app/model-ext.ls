@@ -11,11 +11,19 @@ exports.init = ->
       _.extend j, b_node_name:(C.Nodes.get @get \b_node_id)?get \name
       _.extend j, a_is_eq: \eq is @get \a_is
       _.extend j, a_is_lt: \lt is @get \a_is
-      j
+      _.extend j, tip: "Evidence#{if (how = @get \how) then ' - ' + how else ''}"
+      return j
     in_range: (y_from, y_to) ->
       yf = @get(\year_from) or 0
       yt = @get(\year_to)   or 9999
       not (yf > y_to or yt < y_from)
+    get-tip: ->
+      "Evidence#{if (how = @get \how) then ' - ' + how else ''}"
+  M.Node .= extend do
+    toJSON-T: (opts) ->
+      j = @toJSON opts
+      _.extend j, tip: 'Evidence'
+      return j
 
   add-factory-method M.Evidence
   add-factory-method M.Edge

@@ -17,7 +17,7 @@ exports
           .append \svg:a
             .attr \target     , \_blank
             .attr \xlink:href , -> ev.get \url
-            .attr \xlink:title, 'Evidence'
+            .attr \xlink:title, -> edge.tip
             .append \svg:image
               .attr \xlink:href, \asset/camera.svg
               .attr \x         , dx + i * (ICON-SIZE + 1)

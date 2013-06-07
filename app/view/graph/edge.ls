@@ -3,10 +3,10 @@ C = require \../../collection
 
 exports
   ..data = (nodes) ->
-    _.map C.Edges.models, (x) -> _.extend do
-      x.attributes
-      source  : _.find nodes, -> it._id is x.get \a_node_id
-      target  : _.find nodes, -> it._id is x.get \b_node_id
+    _.map C.Edges.models, (m) -> _.extend do
+      m.toJSON-T!
+      source  : _.find nodes, -> it._id is m.get \a_node_id
+      target  : _.find nodes, -> it._id is m.get \b_node_id
 
   ..init = (svg, d3-force) ~>
     svg.append \svg:defs .selectAll \marker
