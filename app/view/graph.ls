@@ -10,7 +10,7 @@ G-NodeBBerg = require \./graph/node-bberg
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 1500
+const HEIGHT = 1600
 const WIDTH  = 2000
 
 scroll-pos = x:500, y:500
@@ -40,7 +40,7 @@ function refresh el then
   f = d3.layout.force!
     .nodes nodes
     .links edges
-    .charge -1500
+    .charge -2000
     .friction 0.95
     .linkDistance -> 50
     .linkStrength G-Edge.get-strength
@@ -53,15 +53,18 @@ function refresh el then
   G-NodeBBerg.init svg, f
   G-EdgeGlyph.init svg, f
 
+  n-tick = 0
   f.on \start, -> G-EdgeBBerg.render-clear svg-underlay
   f.on \end  , -> G-EdgeBBerg.render svg-underlay, f
-  f.on \tick , ->
-    G-Node.on-tick!
-    G-Edge.on-tick!
-    G-EdgeGlyph.on-tick!
+  f.on \tick , -> tick! if n-tick++ % 4 is 0
 
   function create-svg then
     d3.select el
       .append \svg:svg
       .attr \width , WIDTH
       .attr \height, HEIGHT
+
+  function tick then
+    G-Node.on-tick!
+    G-Edge.on-tick!
+    G-EdgeGlyph.on-tick!
