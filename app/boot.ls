@@ -40,6 +40,7 @@ function fail coll, xhr then
 function start then
   V.footer.render!
   V.version.render!
+  V.graph.init!
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
 

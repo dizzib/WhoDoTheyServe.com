@@ -14,11 +14,12 @@ const HEIGHT = 1500
 const WIDTH  = 2000
 
 module.exports = B.View.extend do
-  render: ->
+  init: ->
     refresh @el
-    @$el.show!
     setTimeout init-position, 100 # small delay required to work
     function init-position then ($ window .scrollTop 500 .scrollLeft 500)
+  render: ->
+    @$el.show!
 
 function refresh el then
   $ el .empty!
