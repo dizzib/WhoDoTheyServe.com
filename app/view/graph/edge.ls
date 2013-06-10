@@ -29,7 +29,7 @@ exports
           if it.a_is is \lt then 'url(#end)' else ''
 
   ..get-strength = ->
-      x = if is-out-of-range it then 5 else 10
+      x = if is-out-of-range it then 1 else 10
       w = it.source.weight + it.target.weight
       x / w
 

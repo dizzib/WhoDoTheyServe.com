@@ -10,10 +10,10 @@ G-NodeBBerg = require \./graph/node-bberg
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 1600
+const HEIGHT = 2000
 const WIDTH  = 2000
 
-scroll-pos = x:500, y:500
+scroll-pos = x:500, y:700
 
 module.exports = B.View.extend do
   init: ->
