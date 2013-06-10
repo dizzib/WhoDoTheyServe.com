@@ -1,3 +1,5 @@
+include _header
+
 !!!
 html
   meta(charset='utf-8')
@@ -17,12 +19,7 @@ html
   noscript
     meta(http-equiv='refresh', content='0;URL=home.html')
   body
-    .navbar-fixed-top
-      a.seo-link(href='home.html') SEO-site
-      small.label.label-info.version.pull-right
-      h1
-        a(href='#/home') WhoDoTheyServe.com
-      .navigator
+    +header
     .view.hide-during-boot
       .alert.alert-error
       .main
