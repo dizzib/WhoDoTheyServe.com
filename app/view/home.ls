@@ -19,10 +19,9 @@ module.exports = B.View.extend do
 
     function render-latest then
       edges     = get-json C.Edges    , \edge
-      evidences = get-json C.Evidences, \evidence
       nodes     = get-json C.Nodes    , \node
       notes     = get-json C.Notes    , \note
-      all       = edges ++ evidences ++ nodes ++ notes
+      all       = edges ++ nodes ++ notes
       by-date   = _.sortBy all, (x) -> x.meta.create_date
       latest    = _.first by-date.reverse!, 50
       directive = items: _.extend do
