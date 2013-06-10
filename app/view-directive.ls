@@ -15,11 +15,7 @@ const EDGE =
     href: -> "#/edge/#{@_id}"
     text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
   period:
-    text: ->
-      if @year_from and @year_from is @year_to then return "in #{@year_to}"
-      yf = "from #{@year_from or '?'} "
-      yt = if @year_to then "to #{@year_to}" else ''
-      yf + yt
+    text: -> @period
 
 const GLYPH =
   glyph:
