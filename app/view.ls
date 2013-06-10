@@ -1,12 +1,13 @@
-F          = require \fs # browserified
-Insert-css = require \./lib-3p/insert-css
-V          = require \./view-engine
-V-Graph    = require \./view/graph
-V-Home     = require \./view/home
-V-NavBar   = require \./view/navbar
-V-Session  = require \./view/session
-V-SignOut  = require \./view/user-signout
-V-Version  = require \./view/version
+F           = require \fs # browserified
+Insert-css  = require \./lib-3p/insert-css
+V           = require \./view-engine
+V-Graph     = require \./view/graph
+V-GraphTBar = require \./view/graph/toolbar
+V-Home      = require \./view/home
+V-NavBar    = require \./view/navbar
+V-Session   = require \./view/session
+V-SignOut   = require \./view/user-signout
+V-Version   = require \./view/version
 
 Insert-css F.readFileSync __dirname + \/view.css
 
@@ -49,6 +50,7 @@ exports
   ..evidences-void  = new V.DocuView document:T-EvidencesVoid, el:\.view>.evidences
   ..footer          = new V.DocuView document:T-Footer       , el:\.footer
   ..graph           = new V-Graph                              el:\.view>.graph
+  ..graph-toolbar   = new V-GraphTBar                          el:\.view>.graph
   ..home            = new V-Home                               el:\.view>.main
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator

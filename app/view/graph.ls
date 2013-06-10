@@ -1,6 +1,7 @@
 B = require \backbone
 F = require \fs
 I = require \../lib-3p/insert-css
+V = require \../view
 G-Edge      = require \./graph/edge
 G-EdgeBBerg = require \./graph/edge-bberg
 G-EdgeGlyph = require \./graph/edge-glyph
@@ -10,14 +11,20 @@ G-NodeBBerg = require \./graph/node-bberg
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 2000
-const WIDTH  = 2000
+const CLASS-BBERG = \bberg
+const HEIGHT      = 2000
+const WIDTH       = 2000
 
 scroll-pos = x:500, y:700
 
 module.exports = B.View.extend do
   init: ->
     refresh @el
+    V.graph-toolbar
+      ..render!
+      ..on \toggle-bberg, ->
+        $bberg = $ ".#{CLASS-BBERG}"
+        if it then $bberg.show! else $bberg.hide!
   render: ->
     $window = $ window
     B.once \route-before, ->
@@ -29,8 +36,9 @@ module.exports = B.View.extend do
 function refresh el then
   $ el .empty!
 
-  svg-underlay = create-svg!
-  svg          = create-svg!
+  # order matters: svg uses painter's algo
+  svg-bberg = create-svg CLASS-BBERG
+  svg       = create-svg!
 
   nodes = G-Node.data!
   edges = G-Edge.data nodes
@@ -54,13 +62,14 @@ function refresh el then
   G-EdgeGlyph.init svg, f
 
   n-tick = 0
-  f.on \start, -> G-EdgeBBerg.render-clear svg-underlay
-  f.on \end  , -> G-EdgeBBerg.render svg-underlay, f
+  f.on \start, -> G-EdgeBBerg.render-clear svg-bberg
+  f.on \end  , -> G-EdgeBBerg.render svg-bberg, f
   f.on \tick , -> tick! if n-tick++ % 4 is 0
 
-  function create-svg then
+  function create-svg css-class then
     d3.select el
       .append \svg:svg
+      .attr \class , css-class
       .attr \width , WIDTH
       .attr \height, HEIGHT
 

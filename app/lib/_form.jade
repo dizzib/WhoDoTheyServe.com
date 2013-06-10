@@ -8,6 +8,11 @@ mixin field-label(name, label)
     .controls
       block
 
+mixin field-checkbox(name, label)
+  label.checkbox
+    input(type='checkbox', id=name, name=name)
+    div #{label}
+
 mixin field-input(type, name, label, placeholder)
   +field-label(name, label)
     input(type=type, id=name, name=name, placeholder=placeholder)
