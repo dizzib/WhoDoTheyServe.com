@@ -1,14 +1,15 @@
 ### About
 A secondary purpose is to highlight possible [conflict of interest][coi].
 
-As far as possible, actors and connections are backed up with evidence
+As far as possible, actors and connections are backed up with reliable evidence
 to keep this site grounded in fact and not speculation or conspiracy theory.
 
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
 
-If you'd like to become a contributor then please email me
-via the contact link below.
+If you'd like to suggest new actors or connections then please email
+them to me via the contact link below.
+Don't forget to include url(s) of reliable evidence!
 
 ### API
 
