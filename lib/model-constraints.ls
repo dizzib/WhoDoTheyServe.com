@@ -1,8 +1,8 @@
 exports
   ..edge =
     how:
-      info: 'a string of 4 to 30 letters e.g. is funded by'
-      regex: /^[a-z &,\/]{4,30}$/i
+      info: 'a string of 2 to 30 letters e.g. chairman'
+      regex: /^[a-z &,\/]{2,30}$/i
     year:
       min: 1000
       max: 2020

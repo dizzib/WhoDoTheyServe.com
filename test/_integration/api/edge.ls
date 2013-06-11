@@ -17,8 +17,8 @@ exports
       slash : get-spec-ab how:'is founder/CEO'
       max   : get-spec-ab how:\x * 30
       max-gt: get-spec-ab how:\x * 31
-      min   : get-spec-ab how:\x * 4
-      min-lt: get-spec-ab how:\x * 3
+      min   : get-spec-ab how:\xx
+      min-lt: get-spec-ab how:\x
     year:
       from:
         null  : get-spec-ab year_from:''
