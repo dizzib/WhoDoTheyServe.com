@@ -30,7 +30,7 @@ exports
   ..render-steer = (g, d3-force) ->
     edges = @steer-edges.yes
     @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
-    glyphs = g.selectAll \g.edge-glyphs
+    glyphs = @g-steer.selectAll \g.edge-glyphs
       .data @steer-edges.yes
       .enter!append \svg:g
         .attr \class, \edge-glyphs
