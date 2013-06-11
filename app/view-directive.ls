@@ -22,6 +22,10 @@ const GLYPH =
     href: ->
       "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
 
+const GLYPH-EVI =
+  glyph:
+    class: -> "glyph #{get-icon this}"
+
 const GLYPHS =
   glyphs:
     null: ->
@@ -30,7 +34,7 @@ const GLYPHS =
       for ev in evs.models
         $el.append "
           <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='icon-camera'/>
+            <i class='#{get-icon ev.toJSON-T!}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
@@ -65,6 +69,7 @@ exports
     GLYPHS
     EDGE
   ..evidences = _.extend do
+    GLYPH-EVI
     META
     btn-edit:
       class: SHOW-IF-CREATOR
@@ -100,7 +105,8 @@ exports
     url:
       href: -> @info
       text: -> @info
-  ..user-evidences =
+  ..user-evidences = _.extend do
+    GLYPH-EVI
     btn : HIDE
     meta: HIDE
     url : URL
@@ -110,5 +116,6 @@ exports
     login:
       href: -> get-user-href @_id
 
+function get-icon ev then if ev.is-video then \icon-facetime-video else \icon-camera
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it

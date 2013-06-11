@@ -29,6 +29,11 @@ exports.init = ->
       yf = @get(\year_from) or 0
       yt = @get(\year_to)   or 9999
       not (yf > y_to or yt < y_from)
+  M.Evidence .= extend do
+    toJSON-T: (opts) ->
+      j = @toJSON opts
+      _.extend j, is-video: /youtube\.com/.test @get \url
+      return j
   M.Node .= extend do
     toJSON-T: (opts) ->
       j = @toJSON opts

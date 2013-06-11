@@ -19,10 +19,12 @@ exports
             .attr \xlink:href , -> ev.get \url
             .attr \xlink:title, -> edge.tip
             .append \svg:image
-              .attr \xlink:href, \asset/camera.svg
+              .attr \xlink:href, "\asset/#{get-icon ev}.svg"
               .attr \x         , dx + i * (ICON-SIZE + 1)
               .attr \width     , ICON-SIZE
               .attr \height    , ICON-SIZE
+
+      function get-icon ev then if ev.toJSON-T!is-video then \video else \camera
 
   ..on-tick = ~>
     @glyphs.attr \transform, ->

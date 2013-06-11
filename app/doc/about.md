@@ -8,8 +8,8 @@ This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
 
 If you'd like to suggest new actors or connections then please email
-them to me via the contact link below.
-Don't forget to include url(s) of reliable evidence!
+them to me via the contact link below,
+and don't forget to include url(s) of reliable evidence!
 
 ### API
 
@@ -38,6 +38,7 @@ express
 git
 glyphicons
 guard
+icomoon
 jade
 jquery
 livescript
