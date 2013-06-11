@@ -3,6 +3,7 @@ _ = require \underscore
 C = require \../../collection
 H = require \../../helper
 I = require \../../lib-3p/insert-css
+E = require \./edge-glyph
 N = require \./node-bberg
 
 I F.readFileSync __dirname + \/edge-bberg.css
@@ -22,21 +23,26 @@ exports
       else \no
     return @attend-edges.no
 
-  ..render-attend = (svg, d3-force) ->
-    @g-attend = render svg, d3-force, @attend-edges.yes,
+  ..render-attend = (g, d3-force) ->
+    @g-attend = render g, d3-force, @attend-edges.yes,
       N.is-annual-conference, N.is-conference-yyyy, \bberg-attend
 
-  ..render-steer = (svg, d3-force) ->
-    @g-steer = render svg, d3-force, @steer-edges.yes,
-      N.is-steering, N.is-steering, \bberg-steer
+  ..render-steer = (g, d3-force) ->
+    edges = @steer-edges.yes
+    render g, d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
+    glyphs = g.selectAll \g.edge-glyphs
+      .data @steer-edges.yes
+      .enter!append \svg:g
+        .attr \class, \edge-glyphs
+    glyphs.each E.append
+    glyphs.attr \transform E.get-transform
 
   ..render-clear = ->
     @g-attend.remove!
     @g-steer.remove!
 
-function render svg, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
+function render g, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
   return unless edges.length
-  g = svg.append \svg:g
   hub = _.find d3-force.nodes!, fn-get-hub
   for edge in edges
     [src, tar] = [edge.source, edge.target]
@@ -46,4 +52,3 @@ function render svg, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
       .attr \x2, if fn-is-hub tar then hub.x else tar.x
       .attr \y2, if fn-is-hub tar then hub.y else tar.y
       .attr \class, "edge #{css-class}"
-  return g

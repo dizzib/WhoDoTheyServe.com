@@ -26,8 +26,7 @@ module.exports = B.View.extend do
     add-handler \toggle-bberg-steer , CLASS-BBERG-STEER
     function add-handler event, css-class
       V.graph-toolbar.on event, ->
-        $el = $ ".#{css-class}"
-        if it then $el.show! else $el.hide!
+        d3.select "g.#{css-class}" .attr \display, if it then '' else \none
   render: ->
     $window = $ window
     B.once \route-before, ->
@@ -40,9 +39,9 @@ function refresh el then
   $ el .empty!
 
   # order matters: svg uses painter's algo
-  svg-bberg-attend = create-svg CLASS-BBERG-ATTEND
-  svg-bberg-steer  = create-svg CLASS-BBERG-STEER
-  svg              = create-svg!
+  svg            = create-svg!
+  g-bberg-attend = svg.append \svg:g .attr \class, CLASS-BBERG-ATTEND
+  g-bberg-steer  = svg.append \svg:g .attr \class, CLASS-BBERG-STEER
 
   nodes = G-Node.data!
   edges = G-Edge.data nodes
@@ -69,8 +68,8 @@ function refresh el then
   f.on \start, ->
     G-EdgeBBerg.render-clear!
   f.on \end  , ->
-    G-EdgeBBerg.render-attend svg-bberg-attend, f
-    G-EdgeBBerg.render-steer  svg-bberg-steer , f
+    G-EdgeBBerg.render-attend g-bberg-attend, f
+    G-EdgeBBerg.render-steer  g-bberg-steer , f
   f.on \tick , ->
     tick! if n-tick++ % 4 is 0
 
