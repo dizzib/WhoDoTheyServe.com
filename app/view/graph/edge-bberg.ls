@@ -24,12 +24,12 @@ exports
     return @attend-edges.no
 
   ..render-attend = (g, d3-force) ->
-    render (@g-attend = g), d3-force, @attend-edges.yes,
+    @g-attend = render g, d3-force, @attend-edges.yes,
       N.is-annual-conference, N.is-conference-yyyy, \bberg-attend
 
   ..render-steer = (g, d3-force) ->
     edges = @steer-edges.yes
-    render (@g-steer = g), d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
+    @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
     glyphs = g.selectAll \g.edge-glyphs
       .data @steer-edges.yes
       .enter!append \svg:g
@@ -44,11 +44,13 @@ exports
 function render g, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
   return unless edges.length
   hub = _.find d3-force.nodes!, fn-get-hub
+  g-child = g.append \svg:g
   for edge in edges
     [src, tar] = [edge.source, edge.target]
-    g.append \svg:line
+    g-child.append \svg:line
       .attr \x1, if fn-is-hub src then hub.x else src.x
       .attr \y1, if fn-is-hub src then hub.y else src.y
       .attr \x2, if fn-is-hub tar then hub.x else tar.x
       .attr \y2, if fn-is-hub tar then hub.y else tar.y
       .attr \class, "edge #{css-class}"
+  return g-child
