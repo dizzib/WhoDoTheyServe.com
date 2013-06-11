@@ -53,22 +53,23 @@ const META =
   create-date:
     title: -> @meta?create_date # https://github.com/rmm5t/jquery-timeago
 
-const SHOW-IF-CREATOR = -> \hide unless S.is-signed-in @meta?create_user_id
+const SHOW-IF-CREATOR = ->
+  \hide unless S.is-signed-in @meta?create_user_id
 
 const URL =
   href: -> @url
   text: -> @url
 
 exports
-  ..edge = _.extend do
+  ..edge = _.extend {},
     EDGE
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/edge/edit/#{@_id}"
-  ..edges = _.extend do
+  ..edges = _.extend {},
     GLYPHS
     EDGE
-  ..evidences = _.extend do
+  ..evidences = _.extend {},
     GLYPH-EVI
     META
     btn-edit:
@@ -84,7 +85,7 @@ exports
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/node/edit/#{@_id}"
-  ..nodes = _.extend do
+  ..nodes = _.extend {},
     GLYPHS
     name:
       href: -> get-node-href @_id
@@ -105,7 +106,7 @@ exports
     url:
       href: -> @info
       text: -> @info
-  ..user-evidences = _.extend do
+  ..user-evidences = _.extend {},
     GLYPH-EVI
     btn : HIDE
     meta: HIDE
