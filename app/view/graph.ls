@@ -21,12 +21,12 @@ scroll-pos = x:500, y:700
 module.exports = B.View.extend do
   init: ->
     refresh @el
-    V.graph-toolbar.render!
     add-handler \toggle-bberg-attend, CLASS-BBERG-ATTEND
     add-handler \toggle-bberg-steer , CLASS-BBERG-STEER
     function add-handler event, css-class
       V.graph-toolbar.on event, ->
         d3.select "g.#{css-class}" .attr \display, if it then '' else \none
+    V.graph-toolbar.render!
   render: ->
     $window = $ window
     B.once \route-before, ->
@@ -67,10 +67,10 @@ function refresh el then
   n-tick = 0
   f.on \start, ->
     G-EdgeBBerg.render-clear!
-  f.on \end  , ->
+  f.on \end, ->
     G-EdgeBBerg.render-attend g-bberg-attend, f
     G-EdgeBBerg.render-steer  g-bberg-steer , f
-  f.on \tick , ->
+  f.on \tick, ->
     tick! if n-tick++ % 4 is 0
 
   function create-svg css-class then
