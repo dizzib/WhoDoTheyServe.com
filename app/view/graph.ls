@@ -11,20 +11,23 @@ G-NodeBBerg = require \./graph/node-bberg
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const CLASS-BBERG = \bberg
-const HEIGHT      = 2000
-const WIDTH       = 2000
+const HEIGHT = 2000
+const WIDTH  = 2000
+const CLASS-BBERG-ATTEND = \bberg-attend
+const CLASS-BBERG-STEER  = \bberg-steer
 
 scroll-pos = x:500, y:700
 
 module.exports = B.View.extend do
   init: ->
     refresh @el
-    V.graph-toolbar
-      ..render!
-      ..on \toggle-bberg, ->
-        $bberg = $ ".#{CLASS-BBERG}"
-        if it then $bberg.show! else $bberg.hide!
+    V.graph-toolbar.render!
+    add-handler \toggle-bberg-attend, CLASS-BBERG-ATTEND
+    add-handler \toggle-bberg-steer , CLASS-BBERG-STEER
+    function add-handler event, css-class
+      V.graph-toolbar.on event, ->
+        $el = $ ".#{css-class}"
+        if it then $el.show! else $el.hide!
   render: ->
     $window = $ window
     B.once \route-before, ->
@@ -37,8 +40,9 @@ function refresh el then
   $ el .empty!
 
   # order matters: svg uses painter's algo
-  svg-bberg = create-svg CLASS-BBERG
-  svg       = create-svg!
+  svg-bberg-attend = create-svg CLASS-BBERG-ATTEND
+  svg-bberg-steer  = create-svg CLASS-BBERG-STEER
+  svg              = create-svg!
 
   nodes = G-Node.data!
   edges = G-Edge.data nodes
@@ -62,9 +66,13 @@ function refresh el then
   G-EdgeGlyph.init svg, f
 
   n-tick = 0
-  f.on \start, -> G-EdgeBBerg.render-clear svg-bberg
-  f.on \end  , -> G-EdgeBBerg.render svg-bberg, f
-  f.on \tick , -> tick! if n-tick++ % 4 is 0
+  f.on \start, ->
+    G-EdgeBBerg.render-clear!
+  f.on \end  , ->
+    G-EdgeBBerg.render-attend svg-bberg-attend, f
+    G-EdgeBBerg.render-steer  svg-bberg-steer , f
+  f.on \tick , ->
+    tick! if n-tick++ % 4 is 0
 
   function create-svg css-class then
     d3.select el

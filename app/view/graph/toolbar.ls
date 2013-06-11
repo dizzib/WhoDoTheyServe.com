@@ -8,6 +8,10 @@ T = F.readFileSync __dirname + \/toolbar.html
 module.exports = B.View.extend do
   render: ->
     @$el.append T
-    $bberg = $ \#chkBBerg
-      ..prop \checked, true
-      ..click ~> @trigger \toggle-bberg, $bberg.prop \checked
+    init \#chkBBergAttend, \toggle-bberg-attend
+    init \#chkBBergSteer , \toggle-bberg-steer
+
+    ~function init id, event
+      $el = $ id
+        ..prop \checked, true
+        ..click ~> @trigger event, $el.prop \checked

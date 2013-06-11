@@ -15,8 +15,8 @@ exports
         a_node = C.Nodes.get(a_node_id = it.get \a_node_id).attributes
         b_node = C.Nodes.get(b_node_id = it.get \b_node_id).attributes
         return
-          (node._id is a_node_id and exports.is-bberg-conference b_node) or
-          (node._id is b_node_id and exports.is-bberg-conference a_node)
+          (node._id is a_node_id and exports.is-conference-yyyy b_node) or
+          (node._id is b_node_id and exports.is-conference-yyyy a_node)
       edges = _.sortBy edges, -> it.get \year_from
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
@@ -44,7 +44,13 @@ exports
             .text -> (edge.get \year_from).toString!substring 2
 
   ..filter-out = (nodes) ->
-    _.filter nodes, -> not exports.is-bberg-conference it
+    _.filter nodes, -> not exports.is-conference-yyyy it
 
-  ..is-bberg-conference = (node) ->
-      /^Bilderberg Conference [0-9]{4}$/.test node.name
+  ..is-annual-conference = ->
+    'Bilderberg Annual Conference' is it.name
+
+  ..is-conference-yyyy = ->
+    /^Bilderberg Conference [0-9]{4}$/.test it.name
+
+  ..is-steering = ->
+    'Bilderberg Steering Committee' is it.name
