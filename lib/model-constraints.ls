@@ -15,7 +15,7 @@ exports
   ..node =
     name:
       info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'
-      regex: /^(?!(the| ))([a-z0-9\,!&\(\)]| (?=[a-z0-9&\(])){4,50}$/i
+      regex: /^(?!(the| ))([a-z0-9\,!&\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
   ..note =
     info: 'a string of 10 to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
     regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{10,200}$/i

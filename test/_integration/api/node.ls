@@ -7,11 +7,14 @@ exports
     get-spec \a
     name: _.extend do
       get-spec \a, name: 'Node aa'
+      dash  : get-spec \a, name: 'foo-bar-baz'
       dup   : get-spec \a, name: 'Node AA'
       max   : get-spec \a, name: \x * 50
       max-gt: get-spec \a, name: \x * 51
       min   : get-spec \a, name: \x * 4
       min-lt: get-spec \a, name: \x * 3
+      paren :
+        open: get-spec \a, name: 'foo((('
       space :
         end  : get-spec \a, name: 'foo '
         start: get-spec \a, name: ' foo'
@@ -19,10 +22,8 @@ exports
       the   :
         start: get-spec \a, name: 'The Band of England'
         has  : get-spec \a, name: 'Bank of England, The'
-      you   : get-spec \a, name: 'YOU! (UK)'
       dcms  : get-spec \a, name: 'Department for Culture, Media & Sport'
-      paren :
-        open: get-spec \a, name: 'foo((('
+      you   : get-spec \a, name: 'YOU! (UK)'
   ..b = get-spec \b
   ..c = get-spec \c
   ..d = get-spec \d

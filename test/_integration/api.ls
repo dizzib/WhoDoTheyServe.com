@@ -109,6 +109,7 @@ describe 'api', ->
       run Node.a.name.max.read.ok
       run Node.a.name.max-gt.update.bad
       run Node.a.name.min.update.ok
+      run Node.a.name.dash.update.ok
       run Node.a.name.min-lt.update.bad
       run Node.a.name.space.multi.update.bad
       run Node.a.name.space.start.update.bad
