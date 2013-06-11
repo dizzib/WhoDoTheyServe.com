@@ -25,7 +25,7 @@ module.exports = B.View.extend do
       by-date   = _.sortBy all, (x) -> x.meta.create_date
       latest    = _.first by-date.reverse!, 50
       directive = items: _.extend do
-        D.edges, D.evidences, D.glyph, D.meta, D.nodes, D.notes
+        D.edges, D.glyph, D.meta, D.nodes, D.notes
         item:
           fn: ->
             $ it.element .find ".entity>:not(.#{@type})" .remove!
