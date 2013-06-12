@@ -3,10 +3,10 @@ F = require \fs
 I = require \../lib-3p/insert-css
 V = require \../view
 G-Edge      = require \./graph/edge
-G-EdgeBBerg = require \./graph/edge-bberg
+G-EdgeBBerg = require \./graph/bberg/edge
 G-EdgeGlyph = require \./graph/edge-glyph
 G-Node      = require \./graph/node
-G-NodeBBerg = require \./graph/node-bberg
+G-NodeBBerg = require \./graph/bberg/node
 
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html

@@ -1,8 +1,8 @@
 F = require \fs
-C = require \../../collection
-I = require \../../lib-3p/insert-css
+C = require \../../../collection
+I = require \../../../lib-3p/insert-css
 
-I F.readFileSync __dirname + \/node-bberg.css
+I F.readFileSync __dirname + \/node.css
 
 const BADGE-SIZE-Y  = 16
 const BADGE-SIZE-X  = 20
