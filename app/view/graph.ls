@@ -3,11 +3,11 @@ F = require \fs
 I = require \../lib-3p/insert-css
 V = require \../view
 G-Edge      = require \./graph/edge
-G-EdgeBBerg = require \./graph/bberg/edge
-G-EdgeCfr   = require \./graph/cfr/edge
 G-EdgeGlyph = require \./graph/edge-glyph
 G-Node      = require \./graph/node
-G-NodeBBerg = require \./graph/bberg/node
+G-EdgeBil   = require \./graph/bil/edge
+G-NodeBil   = require \./graph/bil/node
+G-EdgeCfr   = require \./graph/cfr/edge
 G-NodeCfr   = require \./graph/cfr/node
 
 I F.readFileSync __dirname + \/graph.css
@@ -15,18 +15,18 @@ T = F.readFileSync __dirname + \/graph.html
 
 const HEIGHT = 2000
 const WIDTH  = 2000
-const CLASS-BBERG-ATTEND = \bberg-attend
-const CLASS-BBERG-STEER  = \bberg-steer
-const CLASS-CFR          = \cfr
+const CLASS-BIL-ATTEND = \bil-attend
+const CLASS-BIL-STEER  = \bil-steer
+const CLASS-CFR        = \cfr
 
 scroll-pos = x:500, y:700
 
 module.exports = B.View.extend do
   init: ->
     refresh @el
-    add-handler \toggle-bberg-attend, CLASS-BBERG-ATTEND
-    add-handler \toggle-bberg-steer , CLASS-BBERG-STEER
-    add-handler \toggle-cfr         , CLASS-CFR
+    add-handler \toggle-bil-attend, CLASS-BIL-ATTEND
+    add-handler \toggle-bil-steer , CLASS-BIL-STEER
+    add-handler \toggle-cfr       , CLASS-CFR
     function add-handler event, css-class
       V.graph-toolbar.on event, ->
         d3.select "g.#{css-class}" .attr \display, if it then '' else \none
@@ -44,14 +44,14 @@ function refresh el then
   svg = create-svg!
 
   # overlays -- order matters: svg uses painter's algo
-  g-bberg-attend = svg.append \svg:g .attr \class, CLASS-BBERG-ATTEND
-  g-bberg-steer  = svg.append \svg:g .attr \class, CLASS-BBERG-STEER
-  g-cfr          = svg.append \svg:g .attr \class, CLASS-CFR
+  g-bil-attend = svg.append \svg:g .attr \class, CLASS-BIL-ATTEND
+  g-bil-steer  = svg.append \svg:g .attr \class, CLASS-BIL-STEER
+  g-cfr        = svg.append \svg:g .attr \class, CLASS-CFR
 
   nodes = G-Node.data!
   edges = G-Edge.data nodes
-  nodes = G-NodeBBerg.filter-out nodes
-  edges = G-EdgeBBerg.filter-out edges
+  nodes = G-NodeBil.filter-out nodes
+  edges = G-EdgeBil.filter-out edges
   edges = G-EdgeCfr.filter-out edges
 
   f = d3.layout.force!
@@ -67,17 +67,17 @@ function refresh el then
   # order matters: svg uses painter's algo
   G-Edge.init svg, f
   G-Node.init svg, f
-  G-NodeBBerg.init svg, f
+  G-NodeBil.init svg, f
   G-NodeCfr.init svg, f
   G-EdgeGlyph.init svg, f
 
   n-tick = 0
   f.on \start, ->
-    G-EdgeBBerg.render-clear!
+    G-EdgeBil.render-clear!
     G-EdgeCfr.render-clear!
   f.on \end, ->
-    G-EdgeBBerg.render-attend g-bberg-attend, f
-    G-EdgeBBerg.render-steer  g-bberg-steer , f
+    G-EdgeBil.render-attend g-bil-attend, f
+    G-EdgeBil.render-steer  g-bil-steer , f
     G-EdgeCfr.render g-cfr, f
   f.on \tick, ->
     tick! if n-tick++ % 4 is 0

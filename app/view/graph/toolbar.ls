@@ -8,9 +8,9 @@ T = F.readFileSync __dirname + \/toolbar.html
 module.exports = B.View.extend do
   render: ->
     @$el.append T
-    init \#chkBBergAttend, \toggle-bberg-attend, false
-    init \#chkBBergSteer , \toggle-bberg-steer , true
-    init \#chkCfr        , \toggle-cfr         , false
+    init \#chkBilAttend, \toggle-bil-attend, false
+    init \#chkBilSteer , \toggle-bil-steer , true
+    init \#chkCfr      , \toggle-cfr       , false
 
     ~function init id, event, value
       $el = $ id

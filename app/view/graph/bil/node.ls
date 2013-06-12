@@ -26,7 +26,7 @@ exports
         dx  = offset-x + (i * BADGE-SPACE-X) - (BADGE-SIZE-X / 2)
         d3-node = d3.select this
         d3-node.append \svg:rect
-          .attr \class , \bberg-badge
+          .attr \class , \bil-badge
           .attr \height, BADGE-SIZE-Y
           .attr \width , BADGE-SIZE-X
           .attr \rx    , 5
@@ -38,7 +38,7 @@ exports
           .attr \xlink:href , -> url
           .attr \xlink:title, -> tip
           .append \svg:text
-            .attr \class, \bberg-badge-text
+            .attr \class, \bil-badge-text
             .attr \dx   , dx + 2
             .attr \dy   , 23
             .text -> (edge.get \year_from).toString!substring 2

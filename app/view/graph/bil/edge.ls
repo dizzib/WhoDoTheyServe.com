@@ -26,11 +26,11 @@ exports
   ..render-attend = (g, d3-force) ->
     return unless edges = @attend-edges.yes
     @g-attend = render g, d3-force, edges,
-      N.is-annual-conference, N.is-conference-yyyy, \bberg-attend
+      N.is-annual-conference, N.is-conference-yyyy, \bil-attend
 
   ..render-steer = (g, d3-force) ->
     return unless edges = @steer-edges.yes
-    @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
+    @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bil-steer
     glyphs = @g-steer.selectAll \g.edge-glyphs
       .data @steer-edges.yes
       .enter!append \svg:g
