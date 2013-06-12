@@ -3,7 +3,6 @@ _ = require \underscore
 C = require \../../../collection
 H = require \../../../helper
 I = require \../../../lib-3p/insert-css
-E = require \../edge-glyph
 N = require \./node
 
 I F.readFileSync __dirname + \/edge.css
@@ -29,12 +28,6 @@ exports
         .attr \x2, if N.is-cfr tar then cfr.x else tar.x
         .attr \y2, if N.is-cfr tar then cfr.y else tar.y
         .attr \class, "edge cfr"
-    glyphs = @g.selectAll \g.edge-glyphs
-      .data @edges
-      .enter!append \svg:g
-        .attr \class, \edge-glyphs
-    glyphs.each E.append
-    glyphs.attr \transform E.get-transform
 
   ..render-clear = ->
     @g.remove!
