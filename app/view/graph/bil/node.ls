@@ -1,6 +1,7 @@
 F = require \fs
 C = require \../../../collection
 I = require \../../../lib-3p/insert-css
+E = require \./edge
 
 I F.readFileSync __dirname + \/node.css
 
@@ -9,39 +10,33 @@ const BADGE-SIZE-X  = 20
 const BADGE-SPACE-X = 24
 
 exports
-  ..init = (svg, d3-force) ~>
+  ..init = (svg, d3-force) ->
     svg.selectAll \g.node .each (node) ->
-      edges = _.filter C.Edges.models, ->
-        a_node = C.Nodes.get(a_node_id = it.get \a_node_id).attributes
-        b_node = C.Nodes.get(b_node_id = it.get \b_node_id).attributes
-        return
-          (node._id is a_node_id and exports.is-conference-yyyy b_node) or
-          (node._id is b_node_id and exports.is-conference-yyyy a_node)
-      edges = _.sortBy edges, -> it.get \year_from
+      edges = _.filter E.edges-attend, ->
+        node._id is it.a_node_id or node._id is it.b_node_id
+      edges = _.sortBy edges, -> it.year_from
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
-        evs = _.filter C.Evidences.models, -> edge.id is it.get \entity_id
-        url = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge.id}"
-        tip = if evs.length is 1 then "Evidence at Bilderberg #{edge.get \year_from}" else ''
+        evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
+        url = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
+        tip = if evs.length is 1 then "Evidence at Bilderberg #{edge.year_from}" else ''
         dx  = offset-x + (i * BADGE-SPACE-X) - (BADGE-SIZE-X / 2)
-        d3-node = d3.select this
-        d3-node.append \svg:rect
-          .attr \class , \bil-badge
+        badge = d3.select this .append \svg:g
+          .attr \class, \badge-bil
+          .attr \transform, -> "translate(#{dx},10)"
+        badge.append \svg:rect
           .attr \height, BADGE-SIZE-Y
           .attr \width , BADGE-SIZE-X
           .attr \rx    , 5
           .attr \ry    , 5
-          .attr \x     , dx
-          .attr \y     , 10
-        d3-node.append \svg:a
+        badge.append \svg:a
           .attr \target     , \_blank
           .attr \xlink:href , -> url
           .attr \xlink:title, -> tip
           .append \svg:text
-            .attr \class, \bil-badge-text
-            .attr \dx   , dx + 2
-            .attr \dy   , 23
-            .text -> (edge.get \year_from).toString!substring 2
+            .attr \dx, 2
+            .attr \dy, 13
+            .text -> (edge.year_from).toString!substring 2
 
   ..filter-out = (nodes) ->
     _.filter nodes, -> not exports.is-conference-yyyy it

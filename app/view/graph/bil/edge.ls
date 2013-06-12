@@ -10,29 +10,28 @@ I F.readFileSync __dirname + \/edge.css
 
 exports
   ..filter-out = (edges) ->
-    @steer-edges = _.groupBy edges, ->
-      if it.how is \member
-      and (N.is-steering it.source or N.is-steering it.target)
-      then \yes else \no
-    steer-nodes = _.map @steer-edges.yes, ->
+    function is-conference-yyyy then
+      N.is-conference-yyyy it.source or N.is-conference-yyyy it.target
+    function is-steering then
+      it.how is \member and (N.is-steering it.source or N.is-steering it.target)
+    @edges-attend = _.filter edges, is-conference-yyyy
+    @edges-steer  = _.filter edges, is-steering
+    @nodes-steer  = _.map @edges-steer, ->
       if N.is-steering it.source then it.target else it.source
-    @attend-edges = _.groupBy @steer-edges.no, ->
-      if (N.is-conference-yyyy it.source or N.is-conference-yyyy it.target) then
-        s = _.find steer-nodes, (x) -> x._id in [it.source._id, it.target._id]
-        if !!s then \discard else \yes
-      else \no
-    return @attend-edges.no
+    _.difference edges, @edges-attend, @edges-steer
 
   ..render-attend = (g, d3-force) ->
-    return unless edges = @attend-edges.yes
+    return unless @edges-attend
+    edges = _.reject @edges-attend, (edge) ~>
+      !!_.find @nodes-steer, -> it._id in [edge.source._id, edge.target._id]
     @g-attend = render g, d3-force, edges,
       N.is-annual-conference, N.is-conference-yyyy, \bil-attend
 
   ..render-steer = (g, d3-force) ->
-    return unless edges = @steer-edges.yes
+    return unless edges = @edges-steer
     @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bil-steer
     glyphs = @g-steer.selectAll \g.edge-glyphs
-      .data @steer-edges.yes
+      .data edges
       .enter!append \svg:g
         .attr \class, \edge-glyphs
     glyphs.each E.append
