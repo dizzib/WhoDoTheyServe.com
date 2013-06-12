@@ -10,6 +10,7 @@ module.exports = B.View.extend do
     @$el.append T
     init \#chkBBergAttend, \toggle-bberg-attend, false
     init \#chkBBergSteer , \toggle-bberg-steer , true
+    init \#chkCfr        , \toggle-cfr         , false
 
     ~function init id, event, value
       $el = $ id

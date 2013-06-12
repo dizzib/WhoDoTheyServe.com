@@ -10,7 +10,7 @@ const BADGE-SPACE-X = 24
 
 exports
   ..init = (svg, d3-force) ~>
-    svg.selectAll \g.nodes .each (node) ->
+    svg.selectAll \g.node .each (node) ->
       edges = _.filter C.Edges.models, ->
         a_node = C.Nodes.get(a_node_id = it.get \a_node_id).attributes
         b_node = C.Nodes.get(b_node_id = it.get \b_node_id).attributes

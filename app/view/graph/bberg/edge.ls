@@ -24,11 +24,12 @@ exports
     return @attend-edges.no
 
   ..render-attend = (g, d3-force) ->
-    @g-attend = render g, d3-force, @attend-edges.yes,
+    return unless edges = @attend-edges.yes
+    @g-attend = render g, d3-force, edges,
       N.is-annual-conference, N.is-conference-yyyy, \bberg-attend
 
   ..render-steer = (g, d3-force) ->
-    edges = @steer-edges.yes
+    return unless edges = @steer-edges.yes
     @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bberg-steer
     glyphs = @g-steer.selectAll \g.edge-glyphs
       .data @steer-edges.yes
@@ -38,11 +39,10 @@ exports
     glyphs.attr \transform E.get-transform
 
   ..render-clear = ->
-    @g-attend.remove!
-    @g-steer.remove!
+    @g-attend?remove!
+    @g-steer?remove!
 
 function render g, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
-  return unless edges.length
   hub = _.find d3-force.nodes!, fn-get-hub
   g-child = g.append \svg:g
   for edge in edges
