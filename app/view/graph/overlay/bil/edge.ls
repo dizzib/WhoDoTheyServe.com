@@ -1,15 +1,15 @@
 F = require \fs
 _ = require \underscore
-C = require \../../../collection
-H = require \../../../helper
-I = require \../../../lib-3p/insert-css
-E = require \../edge-glyph
+C = require \../../../../collection
+H = require \../../../../helper
+I = require \../../../../lib-3p/insert-css
+E = require \../../edge-glyph
 N = require \./node
 
 I F.readFileSync __dirname + \/edge.css
 
 exports
-  ..filter-out = (edges) ->
+  ..filter = (edges) ->
     function is-conference-yyyy then
       N.is-conference-yyyy it.source or N.is-conference-yyyy it.target
     function is-steering then

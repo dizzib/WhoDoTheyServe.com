@@ -1,6 +1,6 @@
 F = require \fs
-C = require \../../../collection
-I = require \../../../lib-3p/insert-css
+C = require \../../../../collection
+I = require \../../../../lib-3p/insert-css
 E = require \./edge
 
 I F.readFileSync __dirname + \/node.css
@@ -10,7 +10,7 @@ const BADGE-SIZE-X  = 20
 const BADGE-SPACE-X = 24
 
 exports
-  ..init = (svg, d3-force) ->
+  ..init = (svg) ->
     svg.selectAll \g.node .each (node) ->
       edges = _.filter E.edges-attend, ->
         node._id is it.a_node_id or node._id is it.b_node_id
@@ -39,7 +39,7 @@ exports
             .attr \dy, 13
             .text -> (edge.year_from).toString!substring 2
 
-  ..filter-out = (nodes) ->
+  ..filter = (nodes) ->
     _.filter nodes, -> not exports.is-conference-yyyy it
 
   ..is-annual-conference = ->
