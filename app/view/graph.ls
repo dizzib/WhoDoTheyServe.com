@@ -1,5 +1,6 @@
 B = require \backbone
 F = require \fs
+_ = require \underscore
 I = require \../lib-3p/insert-css
 V = require \../view
 G-Edge      = require \./graph/edge
@@ -13,8 +14,8 @@ G-NodeCfr   = require \./graph/cfr/node
 I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 2000
-const WIDTH  = 2000
+const HEIGHT = 2200
+const WIDTH  = 2200
 const CLASS-BIL-ATTEND = \bil-attend
 const CLASS-BIL-STEER  = \bil-steer
 const CLASS-CFR        = \cfr
@@ -37,7 +38,7 @@ module.exports = B.View.extend do
       scroll-pos.x = $window.scrollLeft!
       scroll-pos.y = $window.scrollTop!
     @$el.show!
-    $window .scrollTop(scroll-pos.y) .scrollLeft(scroll-pos.x)
+    _.defer -> $window .scrollTop(scroll-pos.y) .scrollLeft(scroll-pos.x)
 
 function refresh el then
   $ el .empty!
