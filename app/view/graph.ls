@@ -46,7 +46,7 @@ function refresh el then
     .links edges
     .charge -2000
     .friction 0.95
-    .linkDistance -> 50
+    .linkDistance -> 100
     .linkStrength E.get-strength
     .size [WIDTH, HEIGHT]
     .start!
