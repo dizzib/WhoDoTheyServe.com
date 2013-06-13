@@ -18,8 +18,9 @@ exports
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
         evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
-        url = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
-        tip = if evs.length is 1 then "Evidence at Bilderberg #{edge.year_from}" else ''
+        ev1 = evs.length is 1
+        url = if ev1 then evs.0.get \url else "#/edge/#{edge._id}"
+        tip = if ev1 then "Evidence at Bilderberg #{edge.year_from}" else ''
         dx  = offset-x + (i * BADGE-SPACE-X) - (BADGE-SIZE-X / 2)
         badge = d3.select this .append \svg:g
           .attr \class, \badge-bil
@@ -30,7 +31,7 @@ exports
           .attr \rx    , 5
           .attr \ry    , 5
         badge.append \svg:a
-          .attr \target     , \_blank
+          .attr \target     , if ev1 then \_blank else ''
           .attr \xlink:href , -> url
           .attr \xlink:title, -> tip
           .append \svg:text
