@@ -1,5 +1,9 @@
+F = require \fs
 _ = require \underscore
+I = require \../../lib-3p/insert-css
 C = require \../../collection
+
+I F.readFileSync __dirname + \/edge.css
 
 exports
   ..data = (nodes) ->

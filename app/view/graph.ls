@@ -1,7 +1,6 @@
 B  = require \backbone
 F  = require \fs
 _  = require \underscore
-I  = require \../lib-3p/insert-css
 V  = require \../view
 E  = require \./graph/edge
 EG = require \./graph/edge-glyph
@@ -9,7 +8,6 @@ N  = require \./graph/node
 OB = require \./graph/overlay/bil
 OC = require \./graph/overlay/cfr
 
-I F.readFileSync __dirname + \/graph.css
 T = F.readFileSync __dirname + \/graph.html
 
 const HEIGHT = 2200

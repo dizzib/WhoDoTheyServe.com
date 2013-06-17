@@ -1,5 +1,9 @@
+F = require \fs
 _ = require \underscore
+I = require \../../lib-3p/insert-css
 C = require \../../collection
+
+I F.readFileSync __dirname + \/node.css
 
 exports
   ..data = ->
@@ -9,11 +13,11 @@ exports
     @nodes = svg.selectAll \g.node
       .data d3-force.nodes!
       .enter!append \svg:g
-        .attr \class, -> "node id_#{it._id}"
+        .attr \class, -> "node id_#{it._id} #{if is-you it then \you}"
         .call d3-force.drag
 
     @nodes.append \svg:circle
-      .attr \r, -> 5 + it.weight
+      .attr \r, -> 5 + it.weight + if is-you it then 10 else 0
 
     @nodes.append \svg:a
       .attr \xlink:href, -> "#/node/#{it._id}"
@@ -24,3 +28,5 @@ exports
 
   ..on-tick = ~>
     @nodes.attr \transform, ~> "translate(#{it.x},#{it.y})"
+
+function is-you then /^YOU/.test it.name
