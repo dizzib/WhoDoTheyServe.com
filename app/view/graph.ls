@@ -10,8 +10,8 @@ OC = require \./graph/overlay/cfr
 
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 2200
-const WIDTH  = 2200
+const HEIGHT = 2500
+const WIDTH  = 2500
 
 overlays = [ OB, OC ]
 
