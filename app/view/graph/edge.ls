@@ -8,7 +8,7 @@ I F.readFileSync __dirname + \/edge.css
 
 exports
   ..data = (nodes) ->
-    edges = C.Edges.toJSON-T!
+    edges = _.reject C.Edges.toJSON-T!, is-exclude
     d3-edges = _.map edges, (edge) -> _.extend do
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
@@ -35,6 +35,10 @@ exports
           /govern/.test it.how and it.how is edge.how and
           it.year_from is edge.year_to and
           (it.a_node_id is edge.a_node_id or it.b_node_id is edge.b_node_id)
+
+    function is-exclude edge then
+      year_to = edge.year_to or 9999
+      year_to < 1960
 
     function get-ring-of-you nodes then
       edges = []
@@ -70,7 +74,7 @@ exports
     if it.class is \you then 1800 else 100
 
   ..get-strength = ->
-    x = if it.class is \minor then 1 else if it.class is \bis then 0.1 else 20
+    x = if it.class is \minor then 1 else 20
     w = it.source.weight + it.target.weight
     x / w
 
