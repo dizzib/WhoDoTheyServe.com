@@ -7,7 +7,6 @@ EG = require \./graph/edge-glyph
 N  = require \./graph/node
 O  = require \./graph/overlay
 OB = require \./graph/overlay/bil
-#OC = require \./graph/overlay/cfr
 OS = require \./graph/overlay/slit
 
 T = F.readFileSync __dirname + \/graph.html
@@ -15,7 +14,7 @@ T = F.readFileSync __dirname + \/graph.html
 const HEIGHT = 2500
 const WIDTH  = 2500
 
-O-Cfr = new O \cfr, (-> it.how is \member), (-> /^CFR/.test it.name)
+O-Cfr = new O \cfr, (-> it.how is \member)  , (-> /^CFR/.test it.name)
 O-Bis = new O \bis, (-> it.how is \director), (-> /^BIS/.test it.name)
 
 overlays = [ OB, O-Cfr, O-Bis ]
