@@ -11,6 +11,7 @@ module.exports = B.View.extend do
     init \#chkBilAttend, \toggle-bil-attend, false
     init \#chkBilSteer , \toggle-bil-steer , true
     init \#chkCfr      , \toggle-cfr       , false
+    init \#chkBis      , \toggle-bis       , false
 
     ~function init id, event, value
       $el = $ id

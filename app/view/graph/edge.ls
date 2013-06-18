@@ -17,14 +17,8 @@ exports
 
     function assign-classes d3-edges then
       for edge in d3-edges
-        edge.class =
-          if is-out-of-range edge then \minor
-          else if is-bis edge then \bis
-          else ''
+        edge.class = if is-out-of-range edge then \minor else ''
       return d3-edges
-
-      function is-bis then
-        N.is-bis it.source or N.is-bis it.target
 
       function is-out-of-range edge then
         const RANGE =
@@ -43,8 +37,8 @@ exports
           (it.a_node_id is edge.a_node_id or it.b_node_id is edge.b_node_id)
 
     function get-ring-of-you nodes then
-      console.log you-nodes = _.filter nodes, N.is-you
       edges = []
+      you-nodes = _.filter nodes, N.is-you
       last-node = _.last you-nodes
       for node in you-nodes
         edges.push do
