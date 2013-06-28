@@ -34,7 +34,7 @@ module.exports = class Overlay
   filter-edges: (edges) ~> # must be called before init
     groups = _.groupBy edges, ~>
       if @fn-edge-is-match it and node-is-match it then \yes else \no
-    @edges = groups.yes
+    @edges = groups.yes or []
     return groups.no
 
     ~function node-is-match then
