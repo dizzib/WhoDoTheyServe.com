@@ -22,7 +22,7 @@ exports
 
       function is-out-of-range edge then
         const RANGE =
-          year_from: 2011
+          year_from: 2013
           year_to  : 2013
         year_from = edge.year_from
         year_to   = edge.year_to or 9999
