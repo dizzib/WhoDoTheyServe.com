@@ -54,4 +54,4 @@ module.exports = class Overlay
         .attr \class, "edge #{@tag}"
 
   render-clear: ~>
-    @g.remove!
+    @g?remove!
