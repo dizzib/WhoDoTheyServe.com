@@ -2,10 +2,10 @@ Should = require \chai .should!
 R      = require \request
 
 exports
-  ..del     = (path, cb)       -> exports.request.del url(path), cb
-  ..get     = (path, cb)       -> exports.request.get url(path), cb
-  ..post    = (path, json, cb) -> exports.request.post { url:url(path), json:json }, cb
-  ..put     = (path, json, cb) -> exports.request.put  { url:url(path), json:json }, cb
+  ..del     = (path, cb)      -> exports.request.del url(path), cb
+  ..get     = (path, cb)      -> exports.request.get url(path), cb
+  ..post    = (path, obj, cb) -> exports.request.post { url:url(path), json:obj }, cb
+  ..put     = (path, obj, cb) -> exports.request.put  { url:url(path), json:obj }, cb
   ..request = get-request!
 
   ..list = (done, route, n) ->

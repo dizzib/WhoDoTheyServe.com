@@ -1,9 +1,11 @@
+H           = require \./helper
 M-Edges     = require \./model-edges
 M-Nodes     = require \./model-nodes
 M-Notes     = require \./model-notes
 M-Evidences = require \./model-evidences
 M-Sessions  = require \./model-sessions
 M-Users     = require \./model-users
+Hive        = require \./hive
 Integrity   = require \./integrity
 Sec         = require \./security
 SecSessions = require \./security-sessions
@@ -13,11 +15,17 @@ Sys         = require \./sys
 exports
   ..init = (server) ->
     server
-      ..param \id, (req,, next, req.id) -> next!
-      ..options \*                       , (, res) -> res.send 200
-      ..get \/api/sys                    , Sys.get
-      ..get \/api/evidences/for/:id      , M-Evidences.crud-fns.list-for-entity
-      ..get \/api/notes/for/:id          , M-Notes.crud-fns.list-for-entity
+      ..param \id , (req,, next, req.id)  -> next!
+      ..param \key, (req,, next, req.key) -> next!
+      ..options \*, (, res) -> res.send 200
+
+    server
+      ..get  "/api/sys"              , Sys.get
+      ..get  "/api/hive/:key"        , Hive.get
+      ..post "/api/hive/:key"        , Hive.set
+      ..put  "/api/hive/:key"        , Hive.set
+      ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
+      ..get  "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
      #..get "/api/users/:id/verify/:token", M-Users.verify
 
     set-api-sec-sessions!

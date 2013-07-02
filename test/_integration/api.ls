@@ -7,6 +7,7 @@ B        = require \./app/browser
 H        = require \./api/helper
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
+Hive     = require \./api/hive
 Node     = require \./api/node
 Note     = require \./api/note
 Session  = require \./api/session
@@ -36,6 +37,7 @@ describe 'api', ->
     done!
 
   describe 'public', ->
+    run Hive.a.get.bad
   describe 'signup', ->
     run User.list.is0
     run User.admin.create.ok
@@ -70,6 +72,7 @@ describe 'api', ->
     run User.d.create.ok
     run User.list.is5
     run User.e.create.bad      # daily signup max
+    run Hive.a.set.ok
     run Session.signout.ok
   describe 'user A', ->
     run Session.a.signin.bad.login
@@ -77,6 +80,8 @@ describe 'api', ->
     #run Session.a.signin.password.a.bad
     #run User.a.verify.ok
     run Session.a.signin.password.a.ok
+    run Hive.a.get.ok
+    #run Hive.a.set.bad        # not admin
     describe 'maint', ->
       run User.a.quota-daily.six.update.bad
       run User.a.password.b.update.ok
