@@ -3,9 +3,13 @@ _      = require \underscore
 H      = require \./helper
 
 exports
-  ..a = _.extend do
-    get-spec-tests get, \a, \value-a
-    get-spec-tests set, \a, \value-a
+  ..a = get-spec-by-key \a, '{"key":"foo","value":"bar"}'
+  ..b = get-spec-by-key \b, \value-b
+
+function get-spec-by-key key, value then
+  _.extend do
+    get-spec-tests get, key, value
+    get-spec-tests set, key, value
 
 function get-spec-tests op, key, value then
   "#{op.name}":

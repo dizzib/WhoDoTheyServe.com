@@ -74,6 +74,9 @@ describe 'api', ->
     run User.e.create.bad      # daily signup max
     run Hive.a.set.ok
     run Session.signout.ok
+  describe 'public', ->
+    run Hive.a.get.ok
+    run Hive.b.get.bad
   describe 'user A', ->
     run Session.a.signin.bad.login
     run Session.a.signin.bad.password
@@ -246,6 +249,7 @@ describe 'api', ->
     run Session.admin.signin.bad.login
     run Session.admin.signin.bad.password
     run Session.admin.signin.password.a.ok
+    run Hive.b.set.ok
     describe 'user', ->
       run User.a.password.c.update.ok
       run User.a.quota-daily.six.update.ok
@@ -259,12 +263,13 @@ describe 'api', ->
       run Node.c.remove.ok
       run Node.f.remove.ok
       run Node.list.is4
-  describe 'signout', ->
+  describe 'public', ->
     run Session.signout.ok
     run Node.a.create.bad       # signed out
     run Edge.ab.create.bad      # signed out
     run Edge.ab.remove.bad      # signed out
     run Hive.a.get.ok
+    run Hive.b.get.ok
 
 function kill-site cb then
   err <- CP.exec "pkill -f 'node boot.js test'"
