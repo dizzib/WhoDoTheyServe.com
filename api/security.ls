@@ -2,6 +2,11 @@ H       = require \./helper
 M-Users = require \./model-users
 
 exports
+  ..admin = (req, res, next) ->
+    return next new Error 'signin required' unless si = req.session.signin
+    return next! if si.role is \admin
+    return next new Error 'admin signin required'
+
   ..create = (Model) ->
     (req, res, next) ->
       return next new Error 'signin required' unless si = req.session.signin

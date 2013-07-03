@@ -80,8 +80,7 @@ describe 'api', ->
     #run Session.a.signin.password.a.bad
     #run User.a.verify.ok
     run Session.a.signin.password.a.ok
-    run Hive.a.get.ok
-    #run Hive.a.set.bad        # not admin
+    run Hive.a.set.bad        # not admin
     describe 'maint', ->
       run User.a.quota-daily.six.update.bad
       run User.a.password.b.update.ok
@@ -265,6 +264,7 @@ describe 'api', ->
     run Node.a.create.bad       # signed out
     run Edge.ab.create.bad      # signed out
     run Edge.ab.remove.bad      # signed out
+    run Hive.a.get.ok
 
 function kill-site cb then
   err <- CP.exec "pkill -f 'node boot.js test'"

@@ -21,19 +21,18 @@ exports
 
     server
       ..get  "/api/sys"              , Sys.get
-      ..get  "/api/hive/:key"        , Hive.get
-      ..post "/api/hive/:key"        , Hive.set
-      ..put  "/api/hive/:key"        , Hive.set
       ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
       ..get  "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
      #..get "/api/users/:id/verify/:token", M-Users.verify
 
+    set-api-sec-hive!
     set-api-sec-sessions!
     set-api-sec-users!
     set-api-sec \evidences , M-Evidences
     set-api-sec \edges     , M-Edges
     set-api-sec \nodes     , M-Nodes
     set-api-sec \notes     , M-Notes
+    set-api-hive!
     set-api-integrity!
     set-api-crud \evidences, M-Evidences
     set-api-crud \edges    , M-Edges
@@ -56,11 +55,22 @@ exports
         ..post   "/api/sessions"    , M-Sessions.crud-fns.create
         ..delete "/api/sessions/:id", M-Sessions.crud-fns.delete
 
+    function set-api-hive then
+      server
+        ..get  "/api/hive/:key", Hive.get
+        ..post "/api/hive/:key", Hive.set
+        ..put  "/api/hive/:key", Hive.set
+
     function set-api-sec route, Model then
       server
         ..post   "/api/#{route}"    , Sec.create Model
         ..put    "/api/#{route}/:id", Sec.amend Model
         ..delete "/api/#{route}/:id", Sec.amend Model
+
+    function set-api-sec-hive then
+      server
+        ..post "/api/hive/:key", Sec.admin
+        ..put  "/api/hive/:key", Sec.admin
 
     function set-api-sec-sessions then
       server
