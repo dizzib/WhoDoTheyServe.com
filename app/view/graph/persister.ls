@@ -4,7 +4,8 @@ M = require \../../model
 
 exports
   ..apply-layout = (nodes) ->
-    layout = JSON.parse M.Hive.Graph.get \value
+    return nodes unless json = M.Hive.Graph.get \value
+    layout = JSON.parse json
     _.each nodes, ->
       if pos = _.findWhere layout, id:it._id then
         it
