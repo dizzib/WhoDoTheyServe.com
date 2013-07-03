@@ -21,9 +21,14 @@ function get-spec-test op, key, value, is-ok then
   fn  : (done) -> op key, value, done, is-ok
 
 function get key, expect-value, done, is-ok then
-  err, res, actual-value <- H.get get-route key
-  H.assert res, is-ok
-  actual-value.should.equal expect-value if is-ok
+  err, res, json <- H.get get-route key
+  H.assert res, true
+  obj = JSON.parse json
+  if is-ok then
+    Should.exist obj.value
+    obj.value.should.equal expect-value
+  else
+    Should.not.exist obj.value
   done err
 
 function set key, value, done, is-ok then

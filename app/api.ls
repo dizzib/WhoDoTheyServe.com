@@ -7,6 +7,7 @@ exports
   # endpoints
   ..edges     = get-url \edges
   ..evidences = get-url \evidences
+  ..hive      = get-url \hive
   ..nodes     = get-url \nodes
   ..notes     = get-url \notes
   ..sessions  = get-url \sessions

@@ -6,6 +6,7 @@ C       = require \./collection
 H       = require \./helper
 M       = require \./model
 M-Ext   = require \./model-ext
+P       = require \./view/graph/persister
 V       = require \./view
 V-Event = require \./view-event
 Router  = require \./router
@@ -23,13 +24,14 @@ V-Event.init Router
 wire-events!
 
 $.when(
-  C.Edges    .fetch!
-  C.Evidences.fetch!
-  C.Nodes    .fetch!
-  C.Notes    .fetch!
-  C.Sessions .fetch!
-  C.Users    .fetch!
-  M.Sys      .fetch!
+  C.Edges     .fetch!
+  C.Evidences .fetch!
+  C.Nodes     .fetch!
+  C.Notes     .fetch!
+  C.Sessions  .fetch!
+  C.Users     .fetch!
+  M.Sys       .fetch!
+  M.Hive.Graph.fetch!
 ).then start, fail
 
 function fail coll, xhr then
@@ -45,4 +47,5 @@ function start then
   $ \.hide-during-boot .removeClass \hide-during-boot
 
 function wire-events then
-  C.Sessions.on \sync, -> V.navigator.render $ \.navbar
+  C.Sessions.on \sync, ->
+    V.navigator.render $ \.navbar

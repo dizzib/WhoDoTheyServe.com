@@ -8,6 +8,7 @@ N  = require \./graph/node
 O  = require \./graph/overlay
 OB = require \./graph/overlay/bil
 OS = require \./graph/overlay/slit
+P  = require \./graph/persister
 
 T = F.readFileSync __dirname + \/graph.html
 
@@ -21,8 +22,10 @@ overlays = [ OB, O-Cfr, O-Bis ]
 
 module.exports = B.View.extend do
   init: ->
-    refresh @el
-    V.graph-toolbar.render!
+    refresh @el, f = d3.layout.force!
+    V.graph-toolbar
+      ..render!
+      ..on \save-layout, -> P.save-layout f
   render: ->
     @scroll = @scroll or x:500, y:700
     $window = $ window
@@ -32,7 +35,7 @@ module.exports = B.View.extend do
     @$el.show!
     _.defer ~> $window .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
 
-function refresh el then
+function refresh el, f then
   $ el .empty!
   svg = d3.select el .append \svg:svg
     .attr \width , WIDTH
@@ -41,17 +44,17 @@ function refresh el then
   nodes = N.data!
   edges = E.data nodes
   edges = (OB.filter-edges >> O-Cfr.filter-edges >> O-Bis.filter-edges) edges
-  nodes = (OB.filter-nodes) nodes
+  nodes = (OB.filter-nodes >> P.apply-layout) nodes
 
-  f = d3.layout.force!
-    .nodes nodes
-    .links edges
-    .charge -2000
-    .friction 0.95
-    .linkDistance E.get-distance
-    .linkStrength E.get-strength
-    .size [WIDTH, HEIGHT]
-    .start!
+  f.nodes nodes
+   .links edges
+   .charge -2000
+   .friction 0.95
+   .linkDistance E.get-distance
+   .linkStrength E.get-strength
+   .size [WIDTH, HEIGHT]
+   .start!
+   .alpha 0.01 # settle immediately (must invoke after start)
 
   # order matters: svg uses painter's algo
   E .init svg, f

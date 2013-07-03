@@ -57,9 +57,9 @@ exports
 
     function set-api-hive then
       server
-        ..get  "/api/hive/:key", Hive.get
-        ..post "/api/hive/:key", Hive.set
-        ..put  "/api/hive/:key", Hive.set
+        ..get  "/api/hive/:key"    , Hive.get
+        ..post "/api/hive/:key"    , Hive.set
+        ..put  "/api/hive/:key/:id", Hive.set
 
     function set-api-sec route, Model then
       server

@@ -10,9 +10,7 @@ exports
     M-Hive.load (docs) -> _.each docs, -> cache[it.key] = it.value
 
   ..get = (req, res, next) ->
-    key = req.key
-    return next new H.ApiError "#{key} not found" unless _.has cache, key
-    res.send cache[key]
+    res.json value:cache[req.key]
 
   ..set = (req, res, next) ->
     cache[req.key] = req.body.value
