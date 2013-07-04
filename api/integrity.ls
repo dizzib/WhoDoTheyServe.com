@@ -1,8 +1,8 @@
 _           = require \underscore
 H           = require \./helper
-M-Edges     = require \./model-edges
-M-Nodes     = require \./model-nodes
-M-Evidences = require \./model-evidences
+M-Edges     = require \./model/edges
+M-Nodes     = require \./model/nodes
+M-Evidences = require \./model/evidences
 
 exports
   ..edge-create = (req, res, next) ->

@@ -1,7 +1,7 @@
 M         = require \mongoose
-Cons      = require \../lib/model-constraints
-Crud      = require \./crud
-H         = require \./helper
+Cons      = require \../../lib/model-constraints
+Crud      = require \../crud
+H         = require \../helper
 P-Meta    = require \./plugin-meta
 
 schema = new M.Schema do

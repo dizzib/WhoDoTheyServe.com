@@ -3,7 +3,7 @@ _     = require \underscore
 H     = require \./helper
 S     = require \../state
 U     = require \../spec/user
-Users = require \../../../api/model-users
+Users = require \../../../api/model/users
 
 module.exports = U.get-spec create, read, update, remove, list, verify
 

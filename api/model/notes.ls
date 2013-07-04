@@ -1,7 +1,7 @@
 M      = require \mongoose
 _      = require \underscore
-Cons   = require \../lib/model-constraints
-Crud   = require \./crud
+Cons   = require \../../lib/model-constraints
+Crud   = require \../crud
 P-Meta = require \./plugin-meta
 
 s-evidences =

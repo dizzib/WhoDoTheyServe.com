@@ -1,5 +1,5 @@
 H       = require \./helper
-M-Users = require \./model-users
+M-Users = require \./model/users
 
 exports
   ..admin = (req, res, next) ->

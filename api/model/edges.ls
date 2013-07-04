@@ -1,8 +1,8 @@
 M      = require \mongoose
 _      = require \underscore
-Cons   = require \../lib/model-constraints
-Crud   = require \./crud
-H      = require \./helper
+Cons   = require \../../lib/model-constraints
+Crud   = require \../crud
+H      = require \../helper
 P-Meta = require \./plugin-meta
 
 spec =

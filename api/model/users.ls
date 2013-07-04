@@ -1,11 +1,11 @@
 M          = require \mongoose
-H          = require \./helper
-Cons       = require \../lib/model-constraints
-Crypt      = require \./crypt
-CryptPwd   = require \./crypt-pwd
-Crud       = require \./crud
-M-Sessions = require \./model-sessions
-Signup     = require \./signup
+H          = require \../helper
+Cons       = require \../../lib/model-constraints
+Crypt      = require \../crypt
+CryptPwd   = require \../crypt-pwd
+Crud       = require \../crud
+M-Sessions = require \./sessions
+Signup     = require \../signup
 
 spec =
   login       : type:String, required:yes, index:{+unique}, match:Cons.login.regex

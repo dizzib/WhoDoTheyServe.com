@@ -1,7 +1,7 @@
 M      = require \mongoose
 _      = require \underscore
 H      = require \./helper
-M-Hive = require \./model-hive
+M-Hive = require \./model/hive
 
 cache = {}
 

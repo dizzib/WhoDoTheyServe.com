@@ -1,6 +1,6 @@
 M = require \mongoose
 _ = require \underscore
-H = require \./helper
+H = require \../helper
 
 s-hive =
   key  : type:String, required:yes, index:{+unique}

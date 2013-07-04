@@ -1,6 +1,6 @@
 _     = require \underscore
-H     = require \./helper
-Users = require \./model-users
+H     = require \../helper
+Users = require \./users
 
 exports
   ..crud-fns =
