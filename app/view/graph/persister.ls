@@ -8,10 +8,8 @@ exports
     layout = JSON.parse json
     _.each nodes, ->
       if pos = _.findWhere layout, id:it._id then
-        it
-          #..fixed = true
-          ..x  = pos.x
-          ..y  = pos.y
+        it.x = pos.x
+        it.y = pos.y
     nodes
 
   ..save-layout = (graph) ->
@@ -19,7 +17,6 @@ exports
       id: it._id
       x : Math.round it.x
       y : Math.round it.y
-    json = JSON.stringify layout
-    M.Hive.Graph.save value:JSON.stringify layout,
+    M.Hive.Graph.save value:JSON.stringify(layout),
       fail   : -> H.log \fail
       success: -> H.log \ok

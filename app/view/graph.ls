@@ -4,6 +4,7 @@ _  = require \underscore
 V  = require \../view
 E  = require \./graph/edge
 EG = require \./graph/edge-glyph
+FZ = require \./graph/freezer
 N  = require \./graph/node
 O  = require \./graph/overlay
 OB = require \./graph/overlay/bil
@@ -44,7 +45,7 @@ function refresh el, f then
   nodes = N.data!
   edges = E.data nodes
   edges = (OB.filter-edges >> O-Cfr.filter-edges >> O-Bis.filter-edges) edges
-  nodes = (OB.filter-nodes >> P.apply-layout) nodes
+  nodes = (OB.filter-nodes >> P.apply-layout >> FZ.fix-unless-admin) nodes
 
   f.nodes nodes
    .links edges
@@ -62,6 +63,8 @@ function refresh el, f then
   OS.init svg, f
   EG.init svg, f
   _.each overlays, -> it.init svg, f
+
+  FZ.make-draggable-if-admin svg, f
   OS.align svg, f
 
   n-tick = 0

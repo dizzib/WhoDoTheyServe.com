@@ -14,7 +14,6 @@ exports
       .data d3-force.nodes!
       .enter!append \svg:g
         .attr \class, -> "node id_#{it._id} #{if exports.is-you it then \you}"
-        .call d3-force.drag
 
     @nodes.append \svg:circle
       .attr \r, -> 5 + it.weight + if exports.is-you it then 10 else 0
