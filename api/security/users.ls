@@ -1,5 +1,5 @@
-H     = require \./helper
-Users = require \./model/users
+H     = require \../helper
+Users = require \../model/users
 
 const DAILY_SIGNUP_MAX = 5
 

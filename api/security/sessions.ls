@@ -1,7 +1,7 @@
 _        = require \underscore
-CryptPwd = require \./crypt-pwd
-H        = require \./helper
-Users    = require \./model/users
+CryptPwd = require \../crypt-pwd
+H        = require \../helper
+Users    = require \../model/users
 
 exports
   ..create = ->

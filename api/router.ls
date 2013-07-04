@@ -8,8 +8,8 @@ M-Users     = require \./model/users
 Hive        = require \./hive
 Integrity   = require \./integrity
 Sec         = require \./security
-SecSessions = require \./security-sessions
-SecUsers    = require \./security-users
+SecSessions = require \./security/sessions
+SecUsers    = require \./security/users
 Sys         = require \./sys
 
 exports
