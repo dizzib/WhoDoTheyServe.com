@@ -16,10 +16,7 @@ T = F.readFileSync __dirname + \/graph.html
 const HEIGHT = 2500
 const WIDTH  = 2500
 
-O-Cfr = new O \cfr, (-> it.how is \member)  , (-> /^CFR/.test it.name)
-O-Bis = new O \bis, (-> it.how is \director), (-> /^BIS/.test it.name)
-
-overlays = [ OB, O-Cfr, O-Bis ]
+overlays = [ OB, O.Cfr, O.Bis ]
 
 module.exports = B.View.extend do
   init: ->
@@ -44,7 +41,7 @@ function refresh el, f then
 
   nodes = N.data!
   edges = E.data nodes
-  edges = (OB.filter-edges >> O-Cfr.filter-edges >> O-Bis.filter-edges) edges
+  edges = (OB.filter-edges >> O.Cfr.filter-edges >> O.Bis.filter-edges) edges
   nodes = (OB.filter-nodes >> P.apply-layout >> FZ.fix-unless-admin) nodes
 
   f.nodes nodes

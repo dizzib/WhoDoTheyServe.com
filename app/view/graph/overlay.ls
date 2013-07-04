@@ -5,7 +5,7 @@ V = require \../../view
 
 I F.readFileSync __dirname + \/overlay.css
 
-module.exports = class Overlay
+class Overlay
   (@tag, @fn-edge-is-match, @fn-node-is-match) ->
 
   init: (svg, @f) ~>
@@ -55,3 +55,7 @@ module.exports = class Overlay
 
   render-clear: ~>
     @g?remove!
+
+exports
+  ..Cfr = new Overlay \cfr, (-> it.how is \member)  , (-> /^CFR/.test it.name)
+  ..Bis = new Overlay \bis, (-> it.how is \director), (-> /^BIS/.test it.name)

@@ -12,8 +12,8 @@ exports
         it.y = pos.y
     nodes
 
-  ..save-layout = (graph) ->
-    layout = _.map graph.nodes!, ->
+  ..save-layout = (d3-force) ->
+    layout = _.map d3-force.nodes!, ->
       id: it._id
       x : Math.round it.x
       y : Math.round it.y
