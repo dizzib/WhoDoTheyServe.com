@@ -6,7 +6,9 @@ $.fn.set-access = (session) ->
   return this
 
   ~function show-or-hide sel, show then
-    @find sel .addClass if show then \show else \hide
+    @find sel
+      .addClass    (if show then \show else \hide)
+      .removeClass (if show then \hide else \show)
 
 # http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
 $.fn.serializeObject = ->

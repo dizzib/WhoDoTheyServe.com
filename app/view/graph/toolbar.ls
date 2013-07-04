@@ -9,15 +9,15 @@ T = F.readFileSync __dirname + \/toolbar.html
 
 module.exports = B.View.extend do
   render: ->
-    @$el.append T .set-access S
+    @$el.append T
+    S.auto-sync-el @$el.find \.toolbar
+
+    $ \#btnSaveLayout .click ~> @trigger \save-layout
+
     init-overlay-chk \#chkBilAttend, \toggle-bil-attend, false
     init-overlay-chk \#chkBilSteer , \toggle-bil-steer , true
     init-overlay-chk \#chkCfr      , \toggle-cfr       , false
     init-overlay-chk \#chkBis      , \toggle-bis       , false
-
-    $ \#btnSaveLayout .click ~>
-      H.log \click
-      @trigger \save-layout
 
     ~function init-overlay-chk id, event, value
       $el = $ id

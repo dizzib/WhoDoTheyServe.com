@@ -21,8 +21,6 @@ M-Ext  .init!
 C      .init!
 V-Event.init Router
 
-wire-events!
-
 $.when(
   C.Edges     .fetch!
   C.Evidences .fetch!
@@ -45,7 +43,3 @@ function start then
   V.graph.init!
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
-
-function wire-events then
-  C.Sessions.on \sync, ->
-    V.navigator.render $ \.navbar

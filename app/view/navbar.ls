@@ -8,7 +8,8 @@ T = F.readFileSync __dirname + \/navbar.html
 module.exports = B.View.extend do
   render: ->
     @set-active-tab $t = $ T
-    @$el.html $t .set-access S .show!
+    @$el.html $t .show!
+    S.auto-sync-el @$el
 
   set-active-tab: ($t) ->
     $t.find \li .each ->
