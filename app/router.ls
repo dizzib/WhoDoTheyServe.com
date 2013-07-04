@@ -18,7 +18,7 @@ Router = B.Router.extend do
     VE.ResetEditView!
     V.navigator.render!
   routes:
-    ''                 : \home
+    ''                 : \graph
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
     \edge/new          : \edge_edit

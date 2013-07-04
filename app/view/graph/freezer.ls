@@ -1,10 +1,13 @@
 _ = require \underscore
 N = require \./node
+P = require \./persister
 S = require \../../session
 
 exports
   ..fix-unless-admin = (nodes) ->
-    _.each nodes, -> it.fixed = not S.is-signed-in-admin! or N.is-you it
+    _.each nodes, -> it.fixed =
+      (not S.is-signed-in-admin! and P.is-persisted!)
+      or (S.is-signed-in-admin! and N.is-you it)
     nodes
 
   ..make-draggable-if-admin = (svg, d3-force) ->

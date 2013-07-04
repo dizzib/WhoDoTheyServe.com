@@ -48,11 +48,12 @@ function refresh el, f then
    .links edges
    .charge -2000
    .friction 0.95
-   .linkDistance E.get-distance
+   .linkDistance 100
    .linkStrength E.get-strength
    .size [WIDTH, HEIGHT]
    .start!
-   .alpha 0.01 # settle immediately (must invoke after start)
+
+  if P.is-persisted! then f.alpha 0.01 # settle immediately (must invoke after start)
 
   # order matters: svg uses painter's algo
   E .init svg, f

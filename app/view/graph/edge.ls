@@ -13,7 +13,7 @@ exports
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
       target: _.find nodes, -> it._id is edge.b_node_id
-    return assign-classes(d3-edges) ++ get-ring-of-you nodes
+    return assign-classes d3-edges
 
     function assign-classes d3-edges then
       for edge in d3-edges
@@ -40,18 +40,6 @@ exports
       year_to = edge.year_to or 9999
       year_to < 1960
 
-    function get-ring-of-you nodes then
-      edges = []
-      you-nodes = _.filter nodes, N.is-you
-      last-node = _.last you-nodes
-      for node in you-nodes
-        edges.push do
-          class : \you
-          source: last-node
-          target: node
-        last-node = node
-      return edges
-
   ..init = (svg, d3-force) ~>
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
@@ -69,9 +57,6 @@ exports
       .enter!append \svg:line
         .attr \class     , -> "edge #{it.class}".trim!
         .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''
-
-  ..get-distance = ->
-    if it.class is \you then 1800 else 100
 
   ..get-strength = ->
     x = if it.class is \minor then 1 else 20
