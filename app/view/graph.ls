@@ -25,7 +25,7 @@ module.exports = B.View.extend do
       ..render!
       ..on \save-layout, -> P.save-layout f
   render: ->
-    @scroll = @scroll or x:500, y:700
+    @scroll = @scroll or x:0, y:0
     $window = $ window
     B.once \route-before, ~>
       @scroll.x = $window.scrollLeft!

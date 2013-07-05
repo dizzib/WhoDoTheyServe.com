@@ -6,14 +6,12 @@ H = require \../helper
 S = require \../session
 D = require \../view-directive
 
-D-Home   = F.readFileSync __dirname + \/home.html
 T-Latest = F.readFileSync __dirname + \/latest.html
 
 module.exports = B.View.extend do
   render: ->
     @$el
       .empty!
-      .append D-Home
       .append render-latest!
       .show!
 
