@@ -7,11 +7,21 @@ cache = {}
 
 exports
   ..init = ->
-    M-Hive.load (docs) -> _.each docs, -> cache[it.key] = it.value
+    M-Hive.load (err, docs) ->
+      throw err if err
+      _.each docs, -> cache[it.key] = it.value
 
-  ..get = (req, res, next) ->
-    res.json value:cache[req.key]
+  ..get = (key) ->
+    cache[key]
 
-  ..set = (req, res, next) ->
-    cache[req.key] = req.body.value
+  ..set = (key, value, cb) ->
+    cache[key] = value
     M-Hive.upsert ...
+
+  ..read = (req, res, next) ->
+    res.json value:exports.get req.key
+
+  ..write = (req, res, next) ->
+    exports.set req.key, req.body.value, (err, doc) ->
+      return next err if err
+      res.json doc

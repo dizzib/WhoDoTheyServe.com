@@ -26,5 +26,5 @@ exports
 
   ..signout = (req, res, siu) ->
     H.log "SignOut #{siu.id} as #{siu.role}"
-    delete req.session
+    delete req.session.signin
     res.json req.body

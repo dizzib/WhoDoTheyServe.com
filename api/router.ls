@@ -1,3 +1,4 @@
+Analytics   = require \./analytics
 H           = require \./helper
 M-Edges     = require \./model/edges
 M-Nodes     = require \./model/nodes
@@ -20,6 +21,7 @@ exports
       ..options \*, (, res) -> res.send 200
 
     server
+      ..get  "/api/sys"              , Analytics.measure
       ..get  "/api/sys"              , Sys.get
       ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
       ..get  "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
@@ -57,9 +59,9 @@ exports
 
     function set-api-hive then
       server
-        ..get  "/api/hive/:key"    , Hive.get
-        ..post "/api/hive/:key"    , Hive.set
-        ..put  "/api/hive/:key/:id", Hive.set
+        ..get  "/api/hive/:key"    , Hive.read
+        ..post "/api/hive/:key"    , Hive.write
+        ..put  "/api/hive/:key/:id", Hive.write
 
     function set-api-sec route, Model then
       server

@@ -11,13 +11,11 @@ schema = new M.Schema s-hive, { collection:\hive }
 Model = M.model \hive, schema
   ..load = (cb) ->
     err, docs <- Model.find
-    throw err if err
-    cb docs
+    cb err, docs
 
-  ..upsert = (req, res, next) ->
-    [k, v] = [req.key, req.body.value]
-    err, doc <- Model.findOneAndUpdate key:k, { key:k, value:v }, {+upsert}
-    return next err if err
-    res.json doc
+  ..upsert = (key, value, cb) ->
+    data = key:key, value:value
+    err, doc <- Model.findOneAndUpdate key:key, data, {+upsert}
+    cb err, doc if cb
 
 module.exports = Model
