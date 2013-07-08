@@ -1,4 +1,5 @@
-# casperjs script to extract SEO'ified site
+# external casperjs (non-node) script to extract SEO'ified site
+# NOTE: insufficient RAM may cause phantomjs segment fault
 
 C = require \casper .create logLevel:\error verbose:true
 F = require \fs
@@ -12,19 +13,21 @@ done    = [ ]
 pending = [ ROUTE-HOME ]
 
 C.start!
+C.on \remote.message, -> @echo it
 C.then -> iterate!
 C.run!
 
 function iterate then
   C.echo pending.length
   return C.exit! if pending.length is 0
-  visit pending.pop!, iterate
+  visit pending.shift!, iterate
 
 function visit route, cb then
+  done.push route
+  C.echo "visit #{route}"
   C.thenOpen get-url route
   C.then -> @waitUntilVisible '.view'
   C.then ->
-    done.push route
     C.evaluate eval-remove-features
     queue-links!
     C.evaluate eval-seoify-links
@@ -62,7 +65,7 @@ function maybe-add-pending-link link then
   return unless /^#/.test link
   return if done.indexOf(link) > -1
   return if pending.indexOf(link) > -1
-  C.echo link
+  C.echo "push #{link}"
   pending.push link
 
 function prepare-app then
