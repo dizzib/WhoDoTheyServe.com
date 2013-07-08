@@ -66,9 +66,7 @@ Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
 
 This site does not use 3rd party tracking tools like Google analytics.
 The only information captured is
-[visitor count](http://wdts.eu01.aws.af.cm/api/hive/n-hits-2013)
-and the last few
-[web-referers](http://wdts.eu01.aws.af.cm/api/hive/referers)
+[visitor count](http://wdts.eu01.aws.af.cm/api/hive/n-hits-2013).
 
 ### Security
 
