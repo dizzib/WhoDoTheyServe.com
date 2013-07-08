@@ -1,6 +1,7 @@
 B       = require \backbone
 F       = require \fs # inlined by brfs
 Ins-css = require \./lib-3p/insert-css
+Twitter = require \./lib-3p/twitter
 Api     = require \./api
 C       = require \./collection
 H       = require \./helper
@@ -13,6 +14,7 @@ Router  = require \./router
 
 Ins-css F.readFileSync __dirname + \/lib/form.css
 Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
+Ins-css F.readFileSync __dirname + \/view/footer.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 
@@ -42,4 +44,5 @@ function start then
   V.version.render!
   V.graph.init!
   B.history.start!
+  Twitter!
   $ \.hide-during-boot .removeClass \hide-during-boot
