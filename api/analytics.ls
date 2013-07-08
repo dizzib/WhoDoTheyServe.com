@@ -23,7 +23,7 @@ exports
       return unless r = req.get \referer
       value = Hive.get const KEY = \referers
       rs = if value then JSON.parse value else []
-      return if r is rs.0 # ignore duplicate
+      return if _.contains rs, r # uniquify
       rs.unshift r
       rs = _.first rs, 20items
       err <- Hive.set KEY, JSON.stringify rs
