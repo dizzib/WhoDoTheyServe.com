@@ -1,7 +1,6 @@
 B       = require \backbone
 F       = require \fs # inlined by brfs
 Ins-css = require \./lib-3p/insert-css
-Twitter = require \./lib-3p/twitter
 Api     = require \./api
 C       = require \./collection
 H       = require \./helper
@@ -9,12 +8,12 @@ M       = require \./model
 M-Ext   = require \./model-ext
 P       = require \./view/graph/persister
 V       = require \./view
+V-Foot  = require \./view/footer
 V-Event = require \./view-event
 Router  = require \./router
 
 Ins-css F.readFileSync __dirname + \/lib/form.css
 Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
-Ins-css F.readFileSync __dirname + \/view/footer.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 
@@ -40,9 +39,8 @@ function fail coll, xhr then
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
 function start then
-  V.footer.render!
   V.version.render!
+  V-Foot.init!
   V.graph.init!
   B.history.start!
-  Twitter!
   $ \.hide-during-boot .removeClass \hide-during-boot

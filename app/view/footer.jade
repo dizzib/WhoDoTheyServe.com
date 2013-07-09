@@ -1,10 +1,22 @@
 .navbar.navbar-fixed-bottom
+  ul.nav.social
+    li.twitter
+      a.twitter-share-button(
+        data-url="http://www.whodotheyserve.com"
+        href    ='https://twitter.com/share') Tweet
+    li.fb
+      .fb-like(
+        data-action    ="recommend",
+        data-href      ="http://www.whodotheyserve.com",
+        data-layout    ="button_count",
+        data-send      ="false",
+        data-show-faces="false",
+        data-width     ="450")
   ul.nav.pull-right
     li
-      a(target='_blank', href='https://github.com/dizzib/WhoDoTheyServe.com')
+      a(href  ='https://github.com/dizzib/WhoDoTheyServe.com'
+        target='_blank')
         small Source on Github
     li
       a(href='mailto:&#100;&#105;&#122;&#122;&#105;&#098;&#048;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;')
         small Contact by email
-    li.twitter
-      a.twitter-share-button(href='https://twitter.com/share',data-url="http://www.whodotheyserve.com") Tweet
