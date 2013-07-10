@@ -8,8 +8,8 @@ M       = require \./model
 M-Ext   = require \./model-ext
 P       = require \./view/graph/persister
 V       = require \./view
-V-Foot  = require \./view/footer
 V-Event = require \./view-event
+V-Foot  = require \./view/footer
 Router  = require \./router
 
 Ins-css F.readFileSync __dirname + \/lib/form.css

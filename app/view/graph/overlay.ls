@@ -42,15 +42,15 @@ class Overlay
 
   render: ~>
     return unless @edges.length
-    cfr = _.find @f.nodes!, @fn-node-is-match
+    node = _.find @f.nodes!, @fn-node-is-match
     @g = @g-root.append \svg:g
     for edge in @edges
       [src, tar] = [edge.source, edge.target]
       @g.append \svg:line
-        .attr \x1, if @fn-node-is-match src then cfr.x else src.x
-        .attr \y1, if @fn-node-is-match src then cfr.y else src.y
-        .attr \x2, if @fn-node-is-match tar then cfr.x else tar.x
-        .attr \y2, if @fn-node-is-match tar then cfr.y else tar.y
+        .attr \x1, if @fn-node-is-match src then node.x else src.x
+        .attr \y1, if @fn-node-is-match src then node.y else src.y
+        .attr \x2, if @fn-node-is-match tar then node.x else tar.x
+        .attr \y2, if @fn-node-is-match tar then node.y else tar.y
         .attr \class, "edge #{@tag}"
 
   render-clear: ~>
