@@ -57,5 +57,6 @@ class Overlay
     @g?remove!
 
 exports
+  ..Ac  = new Overlay \ac , (-> true)               , (-> /^Atlantic Council$/.test it.name)
   ..Cfr = new Overlay \cfr, (-> it.how is \member)  , (-> /^CFR/.test it.name)
   ..Bis = new Overlay \bis, (-> it.how is \director), (-> /^BIS/.test it.name)

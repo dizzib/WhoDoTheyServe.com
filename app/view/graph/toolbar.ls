@@ -14,6 +14,7 @@ module.exports = B.View.extend do
 
     $ \#btnSaveLayout .click ~> @trigger \save-layout
 
+    init-overlay-chk \#chkAc       , \toggle-ac        , false
     init-overlay-chk \#chkBilAttend, \toggle-bil-attend, false
     init-overlay-chk \#chkBilSteer , \toggle-bil-steer , true
     init-overlay-chk \#chkCfr      , \toggle-cfr       , false
