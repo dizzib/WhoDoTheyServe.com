@@ -22,5 +22,5 @@ exports
       y : Math.round it.y
     value = JSON.stringify layout:layout
     M.Hive.Graph.save value:value,
-      fail   : -> H.log \fail
-      success: -> H.log \ok
+      fail   : -> alert \fail
+      success: -> alert \ok
