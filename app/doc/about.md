@@ -1,7 +1,7 @@
 ### About
 
 WhoDoTheyServe.com is a non-profit [opensource] effort to track and
-[visualise] the rapidly changing global political, banking and corporate power
+visualise the rapidly changing global political, banking and corporate power
 structure. A secondary purpose is to highlight possible [conflict of interest][coi].
 
 As far as possible, actors and connections are backed up with reliable evidence
@@ -90,4 +90,3 @@ use a [disposable email address][disp-email].
 [json]:       http://en.wikipedia.org/wiki/Json
 [mongolab]:   http://mongolab.com
 [opensource]: https://github.com/dizzib/WhoDoTheyServe.com
-[visualise]:  #/graph

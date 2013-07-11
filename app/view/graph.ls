@@ -20,6 +20,7 @@ overlays = [ OB, O.Ac, O.Bis, O.Cfr ]
 
 module.exports = B.View.extend do
   init: ->
+    return unless @el # might be undefined for seo
     refresh @el, f = d3.layout.force!
     V.graph-toolbar
       ..render!

@@ -14,6 +14,7 @@ Router = B.Router.extend do
   before: ->
     B.trigger \route-before
     $ \.view>* .off!hide! # call off() so different views can use same element
+    $ '.view>:not(.persist)' .empty!
     $ \.view .removeClass \ready
     VE.ResetEditView!
     V.navigator.render!

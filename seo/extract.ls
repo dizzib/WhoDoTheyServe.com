@@ -44,17 +44,23 @@ function eval-insert-link-css then
 
 function eval-insert-noscript-warning then
   $ \noscript .remove!
-  $ \body .before "<div class='alert alert-warning'><noscript>
-      You are currently viewing the cut-down version of this site. 
-      To view the feature-rich version, please ensure javascript 
-      is enabled in your browser before refreshing the page.
-    </noscript></div>"
+  $ \.navbar-fixed-top .after "
+    <div class='navbar-fixed-top'>
+      <div class='alert'>
+        You are currently viewing the cut-down version of this site. 
+        To view the feature-rich version, please ensure javascript 
+        is enabled in your browser before refreshing the page.
+      </div>
+    </div>
+  "
 
 function eval-insert-script-redirect then
   $ \script .remove!
-  $ \body .before "<script type='text/javascript'>
+  $ \body .before "
+    <script type='text/javascript'>
       window.location.href = '/#' + window.location.pathname.replace('.html', '');
-    </script>"
+    </script>
+  "
 
 function eval-seoify-links then
   $ "a[href^='#']" .each -> @href = "#{@hash.replace('#', '')}.html"
