@@ -15,8 +15,8 @@ exports
       caps  : get-spec-ab how:'Honorary European Chairman'
       comma : get-spec-ab how:'is founder, CEO'
       slash : get-spec-ab how:'is founder/CEO'
-      max   : get-spec-ab how:\x * 30
-      max-gt: get-spec-ab how:\x * 31
+      max   : get-spec-ab how:\x * 50
+      max-gt: get-spec-ab how:\x * 51
       min   : get-spec-ab how:\xx
       min-lt: get-spec-ab how:\x
     year:
