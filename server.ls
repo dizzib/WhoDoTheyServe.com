@@ -16,7 +16,7 @@ static-opts =
 env = (server = Express!).settings.env
 module.exports = server
   ..set \port, process.env.PORT || 80
-  ..use Express.favicon!
+  ..use Express.favicon \./app/asset/favicon.png, static-opts
   ..use Express.logger \dev if env in <[ development test staging production ]>
   ..use Express.compress! if env in <[ staging production ]>
   ..use Express.cookieParser!
