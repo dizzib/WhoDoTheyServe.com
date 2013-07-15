@@ -9,7 +9,7 @@ cookie-opts =
   cookie:
     maxAge: ONE-HOUR
 
-#http://docs.aws.amazon.com/AmazonCloudFront/2010-11-01/DeveloperGuide/Expiration.html
+# http://docs.aws.amazon.com/AmazonCloudFront/2010-11-01/DeveloperGuide/Expiration.html
 static-opts =
   maxAge: ONE-HOUR
 
