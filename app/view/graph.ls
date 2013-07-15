@@ -13,8 +13,7 @@ P  = require \./graph/persister
 
 T = F.readFileSync __dirname + \/graph.html
 
-const HEIGHT = 2500
-const WIDTH  = 2500
+const SIZE = 3000
 
 overlays = [ OB, O.Ac, O.Bis, O.Cfr ]
 
@@ -37,8 +36,8 @@ module.exports = B.View.extend do
 function refresh el, f then
   $ el .empty!
   svg = d3.select el .append \svg:svg
-    .attr \width , WIDTH
-    .attr \height, HEIGHT
+    .attr \width , SIZE
+    .attr \height, SIZE
 
   nodes = N.data!
   edges = E.data nodes
@@ -51,7 +50,7 @@ function refresh el, f then
    .friction 0.95
    .linkDistance 100
    .linkStrength E.get-strength
-   .size [WIDTH, HEIGHT]
+   .size [SIZE, SIZE]
    .start!
 
   if P.is-persisted! then f.alpha 0.01 # settle immediately (must invoke after start)
