@@ -2,14 +2,21 @@ Express = require \express
 _       = require \underscore
 H       = require \./api/helper
 
+const ONE-HOUR = 60m * 60s * 1000ms
+
 cookie-opts =
   secret: process.env.WDTS_COOKIE_SECRET or \secret
   cookie:
-    maxAge: 60m * 60s * 1000ms
+    maxAge: ONE-HOUR
 
-module.exports = server = Express!
+#http://docs.aws.amazon.com/AmazonCloudFront/2010-11-01/DeveloperGuide/Expiration.html
+static-opts =
+  maxAge: ONE-HOUR
+
+env = (server = Express!).settings.env
+module.exports = server
   ..set \port, process.env.PORT || 80
-  ..use Express.favicon! if env = server.settings.env
+  ..use Express.favicon!
   ..use Express.logger \dev if env in <[ development test staging production ]>
   ..use Express.compress! if env in <[ staging production ]>
   ..use Express.cookieParser!
@@ -17,7 +24,7 @@ module.exports = server = Express!
   ..use Express.bodyParser!
   ..use allow-cross-domain
   ..use server.router
-  ..use Express.static "#{__dirname}/app"
+  ..use Express.static "#{__dirname}/app", static-opts
   ..use log-error show-stack:yes if env in <[ development ]>
   ..use log-error show-stack:no  if env in <[ test staging production ]>
   ..use handle-error
