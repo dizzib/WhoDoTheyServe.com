@@ -1,32 +1,32 @@
 const LIBS =
   backbone:
-    cdn : \backbone.js/1.0.0/backbone-min.js
-    loc : \backbone.js
-    test: -> window.Backbone
+    cdn: \backbone.js/1.0.0/backbone-min.js
+    loc: \backbone.js
+    ok : -> window.Backbone
   backbone_validation:
-    cdn : \backbone.validation/0.7.1/backbone-validation-min.js
-    loc : \backbone-validation.js
-    test: -> window.Backbone?Validation
+    cdn: \backbone.validation/0.7.1/backbone-validation-min.js
+    loc: \backbone-validation.js
+    ok : -> window.Backbone?Validation
   bootstrap:
-    cdn : \twitter-bootstrap/2.3.1/css/bootstrap.min.css
-    loc : \bootstrap/css/bootstrap.css
-    test: -> true # no fallback 'cos yepnope.css.js ignores timeout
+    cdn: \twitter-bootstrap/2.3.1/css/bootstrap.min.css
+    loc: \bootstrap/css/bootstrap.css
+    ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   d3:
-    cdn : \d3/3.1.6/d3.min.js
-    loc : \d3.js
-    test: -> window.d3
+    cdn: \d3/3.1.6/d3.min.js
+    loc: \d3.js
+    ok : -> window.d3
   jquery:
-    cdn : \jquery/2.0.1/jquery.min.js
-    loc : \jquery.js
-    test: -> window.$
+    cdn: \jquery/2.0.1/jquery.min.js
+    loc: \jquery.js
+    ok : -> window.$
   jquery_timeago:
-    cdn : \jquery-timeago/1.1.0/jquery.timeago.min.js
-    loc : \jquery.timeago.js
-    test: -> window.$?timeago
+    cdn: \jquery-timeago/1.1.0/jquery.timeago.min.js
+    loc: \jquery.timeago.js
+    ok : -> window.$?timeago
   underscore:
-    cdn : \underscore.js/1.4.4/underscore-min.js
-    loc : \underscore.js
-    test: -> window._
+    cdn: \underscore.js/1.4.4/underscore-min.js
+    loc: \underscore.js
+    ok : -> window._
 
 resources = []
 resources # order is important
@@ -47,7 +47,7 @@ function get-resource name then
   yep     : "//cdnjs.cloudflare.com/ajax/libs/#{LIBS[name].cdn}"
   nope    : get-url-local name
   complete: ->
-    return if LIBS[name].test!
+    return if LIBS[name].ok!
     console.log "Fallback to #{url = get-url-local name}"
     yepnope url
 
