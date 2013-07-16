@@ -16,25 +16,33 @@ exports
     return assign-classes d3-edges
 
     function assign-classes d3-edges then
-      for edge in d3-edges
-        edge.class = if is-out-of-range edge then \minor else ''
+      for d3-edge in d3-edges
+        cls = []
+        if is-out-of-range d3-edge then cls.push \minor
+        if is-family       d3-edge then cls.push \family
+        d3-edge.class = cls * ' '
       return d3-edges
 
-      function is-out-of-range edge then
+      function is-family d3-edge then
+        return false unless family-name-a = d3-edge.source.family-name
+        return false unless family-name-b = d3-edge.target.family-name
+        return family-name-a is family-name-b
+
+      function is-out-of-range d3-edge then
         const RANGE =
           year_from: 2013
           year_to  : 2013
-        year_from = edge.year_from
-        year_to   = edge.year_to or 9999
+        year_from = d3-edge.year_from
+        year_to   = d3-edge.year_to or 9999
         result = year_to < RANGE.year_from or RANGE.year_to < year_from
-        return result or has-successor-governor edge
+        return result or has-successor-governor d3-edge
 
       # eg Mark Carney cannot govern both BoC and BoE simultaneously
-      function has-successor-governor edge then
+      function has-successor-governor d3-edge then
         successor = _.find edges, ->
-          /govern/.test it.how and it.how is edge.how and
-          it.year_from is edge.year_to and
-          (it.a_node_id is edge.a_node_id or it.b_node_id is edge.b_node_id)
+          /govern/.test it.how and it.how is d3-edge.how and
+          it.year_from is d3-edge.year_to and
+          (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
 
     function is-exclude edge then
       year_to = edge.year_to or 9999
