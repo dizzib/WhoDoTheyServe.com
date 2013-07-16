@@ -23,24 +23,32 @@ C      .init!
 V-Event.init Router
 
 $.when(
-  C.Edges     .fetch!
-  C.Evidences .fetch!
-  C.Nodes     .fetch!
-  C.Notes     .fetch!
-  C.Sessions  .fetch!
-  C.Users     .fetch!
-  M.Sys       .fetch!
-  M.Hive.Graph.fetch!
+  M.Sys.fetch!
 ).then start, fail
+
+$.when(
+  C.Evidences .fetch!
+  C.Edges     .fetch!
+  C.Nodes     .fetch!
+  C.Sessions  .fetch!
+  M.Hive.Graph.fetch!
+).then start-graph, fail
+
+$.when(
+  C.Notes.fetch!
+  C.Users.fetch!
+).then null, fail
 
 function fail coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
+function start-graph then
+  V.graph.init!
+
 function start then
   V.version.render!
   V-Foot.init!
-  V.graph.init!
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
