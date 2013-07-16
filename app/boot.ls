@@ -34,12 +34,9 @@ $.when(
   M.Hive.Graph.fetch!
 ).then (-> V.graph.init!), fail
 
-$.when(
-  C.Notes.fetch!
-  C.Users.fetch!
-).then null, fail
-
-M.Sys.fetch success: -> V.version.render!
+C.Notes.fetch error:fail
+C.Users.fetch error:fail
+M.Sys  .fetch error:fail, success: -> V.version.render!
 
 function fail coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
