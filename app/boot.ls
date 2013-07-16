@@ -21,10 +21,10 @@ Api    .init!
 M-Ext  .init!
 C      .init!
 V-Event.init Router
+V-Foot .init!
 
-$.when(
-  M.Sys.fetch!
-).then start, fail
+B.history.start!
+$ \.hide-during-boot .removeClass \hide-during-boot
 
 $.when(
   C.Evidences .fetch!
@@ -32,23 +32,16 @@ $.when(
   C.Nodes     .fetch!
   C.Sessions  .fetch!
   M.Hive.Graph.fetch!
-).then start-graph, fail
+).then (-> V.graph.init!), fail
 
 $.when(
   C.Notes.fetch!
   C.Users.fetch!
 ).then null, fail
 
+M.Sys.fetch success: -> V.version.render!
+
 function fail coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
-
-function start-graph then
-  V.graph.init!
-
-function start then
-  V.version.render!
-  V-Foot.init!
-  B.history.start!
-  $ \.hide-during-boot .removeClass \hide-during-boot
