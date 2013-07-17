@@ -1,4 +1,4 @@
-# external casperjs (non-node) script to extract SEO'ified site
+# casperjs (non-node) script to extract SEO'ified site
 # NOTE: insufficient RAM may cause phantomjs segment fault
 
 C = require \casper .create logLevel:\error verbose:true
