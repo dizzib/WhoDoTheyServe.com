@@ -8,7 +8,8 @@ exports
   ..set-images = ->
     err, nodes <- M-Nodes.find!lean!exec
     return H.log err if err
-    value = JSON.parse Hive.get \graph
+    json = Hive.get \graph
+    value = if json then JSON.parse json else {}
     value.images = []
     for node in nodes
       for d in Data.images
