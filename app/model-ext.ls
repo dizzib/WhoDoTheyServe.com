@@ -41,8 +41,8 @@ exports.init = ->
       _.extend j, family-name: get-family-name this
       return j
       function get-family-name node then
-        matches = node.get \name .match /^\w+,/
-        return matches?0.replace ',', ''
+        return unless name = node.get \name
+        name.match(/^\w+,/)?0.replace ',', ''
 
   add-factory-method M.Evidence
   add-factory-method M.Edge

@@ -6,10 +6,11 @@ M-Hive = require \./model/hive
 cache = {}
 
 exports
-  ..init = ->
-    M-Hive.load (err, docs) ->
-      throw err if err
-      _.each docs, -> cache[it.key] = it.value
+  ..init = (cb) ->
+    err, docs <- M-Hive.load
+    throw err if err
+    _.each docs, -> cache[it.key] = it.value
+    cb! if cb
 
   ..get = (key) ->
     cache[key]
