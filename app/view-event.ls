@@ -1,4 +1,5 @@
 B = require \backbone
+_ = require \underscore
 C = require \./collection
 H = require \./helper
 V = require \./view
@@ -10,6 +11,7 @@ exports.init = (router) ->
       ..on \destroyed, -> navigate \edges
       ..on \rendered , -> V.edge-a-node-sel.render C.Nodes, \name, it.get \a_node_id
       ..on \rendered , -> V.edge-b-node-sel.render C.Nodes, \name, it.get \b_node_id
+      ..on \rendered , -> $ \#how .typeahead source:_.uniq C.Edges.pluck \how
       ..on \saved    , -> navigate "edge/#{it.id}"
     ..evidence-edit
       ..on \cancelled, -> B.history.history.back!
