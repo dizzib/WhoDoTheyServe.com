@@ -23,16 +23,13 @@ C      .init!
 V-Event.init Router
 V-Foot .init!
 
-B.history.start!
-$ \.hide-during-boot .removeClass \hide-during-boot
-
 $.when(
   C.Evidences .fetch!
   C.Edges     .fetch!
   C.Nodes     .fetch!
   C.Sessions  .fetch!
   M.Hive.Graph.fetch!
-).then (-> V.graph.init!), fail
+).then start, fail
 
 C.Notes.fetch error:fail
 C.Users.fetch error:fail
@@ -42,3 +39,8 @@ function fail coll, xhr then
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
+
+function start then
+  V.graph.init!
+  B.history.start!
+  $ \.hide-during-boot .removeClass \hide-during-boot
