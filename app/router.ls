@@ -1,23 +1,19 @@
 B  = require \backbone
+_ = require \underscore
 H  = require \./helper
 C  = require \./collection
 M  = require \./model
 V  = require \./view
 VC = require \./view-composer
 VD = require \./view-directive
-VE = require \./view-engine
+VH = require \./view-handler
 
 Router = B.Router.extend do
   after: ->
-    $ \.timeago .timeago!
-    $ \.view .addClass \ready
+    VH.ready!
   before: ->
     B.trigger \route-before
-    $ \.view>* .off!hide! # call off() so different views can use same element
-    $ '.view>:not(.persist)' .empty!
-    $ \.view .removeClass \ready
-    VE.ResetEditView!
-    V.navigator.render!
+    VH.reset!
   routes:
     ''                 : \graph
     \doc/about         : \doc_about

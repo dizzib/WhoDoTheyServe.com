@@ -34,7 +34,7 @@ exports
       @model.fetch error:H.on-err, success: -> render it
       ~function render model then
         @$el.html $tem.render model.toJSON-T! .set-access S .show!
-        @$el.find 'input[type=text],textarea,select' .filter ':visible:first' .focus!
+        @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
         @trigger \rendered, model
     save: ->
       unless @model then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
@@ -75,8 +75,8 @@ exports
         html    : -> @[fname]
         selected: -> \selected if @_id is sel-id
         value   : -> @_id
-      if $T-Sel.find 'option[selected]' .length is 0 then
-        $ T-Sel .filter \.prompt .find \option .prependTo $T-Sel
+      #if $T-Sel.find 'option[selected]' .length then H.log \x
+      $ T-Sel .filter \.prompt .find \option .prependTo $T-Sel
       $ @tagName
         ..html $T-Sel.children! # children! prevents duplicate nested select
         ..combobox!

@@ -8,7 +8,7 @@ M       = require \./model
 M-Ext   = require \./model-ext
 P       = require \./view/graph/persister
 V       = require \./view
-V-Event = require \./view-event
+V-Hdlr  = require \./view-handler
 V-Foot  = require \./view/footer
 Router  = require \./router
 
@@ -17,11 +17,11 @@ Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 
-Api    .init!
-M-Ext  .init!
-C      .init!
-V-Event.init Router
-V-Foot .init!
+Api   .init!
+M-Ext .init!
+C     .init!
+V-Hdlr.init Router
+V-Foot.init!
 
 $.when(
   C.Evidences .fetch!
