@@ -12,7 +12,7 @@ exports.init = (router) ->
       ..on \rendered , -> V.edge-a-node-sel.render C.Nodes, \name, it.get \a_node_id
       ..on \rendered , -> V.edge-b-node-sel.render C.Nodes, \name, it.get \b_node_id
       ..on \rendered , -> $ \#how .typeahead source:_.uniq C.Edges.pluck \how
-      ..on \saved    , -> navigate "edge/#{it.id}"
+      ..on \saved    , -> nav-entity-saved \edge, &0, &1
     ..evidence-edit
       ..on \cancelled, -> nav-extra-done \evi
       ..on \destroyed, -> nav-extra-done \evi

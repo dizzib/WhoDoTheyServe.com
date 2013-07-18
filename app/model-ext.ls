@@ -5,6 +5,10 @@ M = require \./model
 
 exports.init = ->
   M.Edge .= extend do
+    in_range: (y_from, y_to) ->
+      yf = @get(\year_from) or 0
+      yt = @get(\year_to)   or 9999
+      not (yf > y_to or yt < y_from)
     toJSON-T: (opts) ->
       j = @toJSON opts
       _.extend j, a_node_name:(C.Nodes.get @get \a_node_id)?get \name
@@ -25,10 +29,6 @@ exports.init = ->
         how = "#{if (how = edge.get \how) then ' - ' + how else ''}"
         period = get-period edge
         "Evidence#{how}, #{period}"
-    in_range: (y_from, y_to) ->
-      yf = @get(\year_from) or 0
-      yt = @get(\year_to)   or 9999
-      not (yf > y_to or yt < y_from)
   M.Evidence .= extend do
     toJSON-T: (opts) ->
       j = @toJSON opts

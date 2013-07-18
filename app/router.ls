@@ -22,7 +22,8 @@ Router = B.Router.extend do
     ''                 : \graph
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
-    \edge/new          : \edge_edit
+    \edge/new          : \edge_new
+    \edge/new/:node_id : \edge_new
     \edge/:id          : \edge
     \edge/:id/:act     : \edge
     \edge/:id/:act/:id : \edge
@@ -46,15 +47,16 @@ Router = B.Router.extend do
   doc_about   : -> V.doc-about.render!
   edge        : VC.edge
   edges       : VC.edges
-  edge_edit   : -> V.edge-edit.render M.Edge.create(it), C.Edges
+  edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
+  edge_new    : -> V.edge-edit.render (new M.Edge a_node_id:it, b_node_id:it), C.Edges
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   node        : VC.node
   nodes       : VC.nodes
-  node_edit   : -> V.node-edit.render M.Node.create(it), C.Nodes
+  node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   session     : -> V.session.render!
   user        : VC.user
-  user_edit   : -> V.user-edit.render M.User.create(it), C.Users
+  user_edit   : -> V.user-edit.render (M.User.create it), C.Users
   user_list   : -> V.users.render C.Users, VD.users
   user_signin : -> V.user-signin.render M.Session.create!, C.Sessions
   user_signup : -> V.user-signup.render M.Signup.create!, C.Users
