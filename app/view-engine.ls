@@ -1,12 +1,14 @@
 B = require \backbone
-F = require \fs
+F = require \fs # inlined by brfs
 T = require \transparency
 _ = require \underscore
+I = require \./lib-3p/insert-css
 H = require \./helper
 S = require \./session
 
 const CLASS-EDITING = \editing
 
+I F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
 T-Sel = F.readFileSync __dirname + \/view/select.html
 
 exports
@@ -75,4 +77,6 @@ exports
         value   : -> @_id
       if $T-Sel.find 'option[selected]' .length is 0 then
         $ T-Sel .filter \.prompt .find \option .prependTo $T-Sel
-      $ @tagName .html $T-Sel.children! # children! prevents duplicate nested select
+      $ @tagName
+        ..html $T-Sel.children! # children! prevents duplicate nested select
+        ..combobox!

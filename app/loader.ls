@@ -2,40 +2,45 @@ const LIBS =
   backbone:
     cdn: \backbone.js/1.0.0/backbone-min.js
     loc: \backbone.js
-    ok : -> window.Backbone
+    ok : -> Backbone
   backbone_validation:
     cdn: \backbone.validation/0.7.1/backbone-validation-min.js
     loc: \backbone-validation.js
-    ok : -> window.Backbone?Validation
-  bootstrap:
+    ok : -> Backbone?Validation
+  bootstrap_css:
     cdn: \twitter-bootstrap/2.3.1/css/bootstrap.min.css
     loc: \bootstrap/css/bootstrap.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
+  bootstrap_typeahead:
+    cdn: \twitter-bootstrap/2.3.1/js/bootstrap-typeahead.min.js
+    loc: \bootstrap/js/bootstrap-typeahead.js
+    ok : -> $.fn.typeahead
   d3:
     cdn: \d3/3.1.6/d3.min.js
     loc: \d3.js
-    ok : -> window.d3
+    ok : -> d3
   jquery:
     cdn: \jquery/2.0.1/jquery.min.js
     loc: \jquery.js
-    ok : -> window.$
+    ok : -> $
   jquery_timeago:
     cdn: \jquery-timeago/1.1.0/jquery.timeago.min.js
     loc: \jquery.timeago.js
-    ok : -> window.$?timeago
+    ok : -> $?timeago
   underscore:
     cdn: \underscore.js/1.4.4/underscore-min.js
     loc: \underscore.js
-    ok : -> window._
+    ok : -> _
 
 resources = []
-resources # order is important
-  ..push get-resource \bootstrap
+resources # order is important for dependencies
   ..push get-resource \underscore
   ..push get-resource \jquery
   ..push get-resource \jquery_timeago
   ..push get-resource \backbone
   ..push get-resource \backbone_validation
+  ..push get-resource \bootstrap_css
+  ..push get-resource \bootstrap_typeahead
   ..push get-resource \d3
   ..push load:\lib.js
   ..push load:\app.js
