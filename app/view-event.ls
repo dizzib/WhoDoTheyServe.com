@@ -14,18 +14,18 @@ exports.init = (router) ->
       ..on \rendered , -> $ \#how .typeahead source:_.uniq C.Edges.pluck \how
       ..on \saved    , -> navigate "edge/#{it.id}"
     ..evidence-edit
-      ..on \cancelled, -> B.history.history.back!
-      ..on \destroyed, -> B.history.history.back!
-      ..on \saved    , -> navigate B.history.fragment.replace /\/evi-.*$/g, ''
+      ..on \cancelled, -> nav-extra-done \evi
+      ..on \destroyed, -> nav-extra-done \evi
+      ..on \saved    , -> nav-extra-done \evi
     ..node-edit
       ..on \cancelled, -> B.history.history.back!
       ..on \destroyed, -> navigate \nodes
       ..on \rendered , -> $ \#name .typeahead source:C.Nodes.pluck \name
-      ..on \saved    , -> navigate "node/#{it.id}"
+      ..on \saved    , -> nav-entity-saved \node, &0, &1
     ..note-edit
-      ..on \cancelled, -> B.history.history.back!
-      ..on \destroyed, -> B.history.history.back!
-      ..on \saved    , -> navigate B.history.fragment.replace /\/note-.*$/g, ''
+      ..on \cancelled, -> nav-extra-done \note
+      ..on \destroyed, -> nav-extra-done \note
+      ..on \saved    , -> nav-extra-done \note
     ..user-edit
       ..on \cancelled, -> B.history.history.back!
       ..on \destroyed, -> navigate \users
@@ -40,3 +40,10 @@ exports.init = (router) ->
       ..on \saved    , -> navigate \session
 
   function navigate route then router.navigate route, trigger:true
+
+  function nav-entity-saved name, entity, is-new then
+    H.log name, entity, is-new
+    navigate "#{name}/#{entity.id}#{if is-new then '/evi-new' else ''}"
+
+  function nav-extra-done name then
+    navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
