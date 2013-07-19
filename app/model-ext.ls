@@ -1,7 +1,8 @@
-_ = require \underscore
-C = require \./collection
-H = require \./helper
-M = require \./model
+_  = require \underscore
+C  = require \./collection
+H  = require \./helper
+HS = require \./history
+M  = require \./model
 
 exports.init = ->
   M.Edge .= extend do
@@ -44,8 +45,15 @@ exports.init = ->
         return unless name = node.get \name
         name.match(/^\w+,/)?0.replace ',', ''
 
+  M.Edge.create = ->
+    m = create M.Edge, it
+    unless it then # auto-populate new edge with 2 last nodes
+      m.set \a_node_id, HS.get-node-id 0
+      m.set \b_node_id, HS.get-node-id 1
+      if (edge = HS.get-edge!) then m.set \how, edge.get \how
+    return m
+
   add-factory-method M.Evidence
-  add-factory-method M.Edge
   add-factory-method M.Node
   add-factory-method M.Note
   add-factory-method M.Session
@@ -54,6 +62,8 @@ exports.init = ->
   add-factory-method M.User
 
   function add-factory-method Model then
-    Model.create = ->
-      (m = new Model!).id = it
-      return m
+    Model.create = -> create Model, it
+
+  function create Model, id then
+    (m = new Model!).id = id
+    return m

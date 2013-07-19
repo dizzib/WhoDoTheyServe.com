@@ -52,7 +52,8 @@ exports
       V.edge-a-node-sel.render C.Nodes, \name, it.get \a_node_id
       V.edge-b-node-sel.render C.Nodes, \name, it.get \b_node_id
       $ \#how .typeahead source:_.uniq C.Edges.pluck \how
-      $ '.editing input[type=text]:first' .focus!
+      # defer, otherwise won't focus in new edge for some reason
+      _.defer -> $ '.editing input[type=text]:first' .focus!
 
   ..reset = ->
     $ \.view>* .off!hide! # call off() so different views can use same element
@@ -67,6 +68,6 @@ exports
     $ \.view .addClass \ready
     # use a delgated event since view may still be rendering asyncly
     $ \.view .on \focus, 'input[type=text]', ->
-      # defer to workaround Chrome mouseup bug
+      # defer, to workaround Chrome mouseup bug
       # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
       _.defer ~> this.select!

@@ -11,12 +11,13 @@ exports
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes     id, act
+    return edge
   ..edges = ->
     V.edges-head.render!
     V.edges     .render C.Edges, D.edges
   ..node = (id, act, child-id) ->
     V.node           .render (node = C.Nodes.get id), D.node
-    V.node-edges-head.render node, D.node-edges-head
+    V.node-edges-head.render!
     V.node-edges-a   .render (C.Edges.find -> id is it.get \a_node_id), D.edges
     V.node-edges-b   .render (C.Edges.find -> id is it.get \b_node_id), D.edges
     V.meta           .render node, D.meta

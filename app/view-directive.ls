@@ -85,9 +85,6 @@ exports
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/node/edit/#{@_id}"
-  ..node-edges-head =
-    btn-new:
-      href: -> "#/edge/new/#{@_id}"
   ..nodes = _.extend {},
     GLYPHS
     name:

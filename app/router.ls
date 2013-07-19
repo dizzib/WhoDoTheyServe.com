@@ -1,6 +1,7 @@
 B  = require \backbone
-_ = require \underscore
+_  = require \underscore
 H  = require \./helper
+HS = require \./history
 C  = require \./collection
 M  = require \./model
 V  = require \./view
@@ -18,8 +19,7 @@ Router = B.Router.extend do
     ''                 : \graph
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
-    \edge/new          : \edge_new
-    \edge/new/:node_id : \edge_new
+    \edge/new          : \edge_edit
     \edge/:id          : \edge
     \edge/:id/:act     : \edge
     \edge/:id/:act/:id : \edge
@@ -41,13 +41,12 @@ Router = B.Router.extend do
     \user/:id          : \user
     \users             : \user_list
   doc_about   : -> V.doc-about.render!
-  edge        : VC.edge
+  edge        : -> HS.set-edge VC.edge ...
   edges       : VC.edges
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
-  edge_new    : -> V.edge-edit.render (new M.Edge a_node_id:it, b_node_id:it), C.Edges
   graph       : -> V.graph.render!
   home        : -> V.home.render!
-  node        : VC.node
+  node        : -> HS.set-node-id &0; VC.node ...
   nodes       : VC.nodes
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   session     : -> V.session.render!
