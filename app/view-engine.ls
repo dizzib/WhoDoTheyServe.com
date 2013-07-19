@@ -71,12 +71,13 @@ exports
 
   ..SelectView = B.View.extend do
     render: (coll, fname, sel-id) ->
-      $T-Sel = $ T-Sel .filter \select .render coll.toJSON!, item:
+      $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
         html    : -> @[fname]
         selected: -> \selected if @_id is sel-id
         value   : -> @_id
-      #if $T-Sel.find 'option[selected]' .length then H.log \x
-      $ T-Sel .filter \.prompt .find \option .prependTo $T-Sel
+      $prompt = $T.filter \.prompt .find \option
+      unless $T-Sel.find 'option[selected]' .length then $prompt.attr \selected, ''
+      $T-Sel.prepend $prompt
       $ @tagName
         ..html $T-Sel.children! # children! prevents duplicate nested select
         ..combobox!
