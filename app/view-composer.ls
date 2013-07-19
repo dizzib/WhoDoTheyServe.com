@@ -23,6 +23,7 @@ exports
     V.meta           .render node, D.meta
     render-evidences id, act, child-id
     render-notes     id, act
+    return id
   ..nodes = ->
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes

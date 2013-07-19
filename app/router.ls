@@ -46,7 +46,7 @@ Router = B.Router.extend do
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
   graph       : -> V.graph.render!
   home        : -> V.home.render!
-  node        : -> HS.set-node-id &0; VC.node ...
+  node        : -> HS.set-node-id VC.node ...
   nodes       : VC.nodes
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   session     : -> V.session.render!
