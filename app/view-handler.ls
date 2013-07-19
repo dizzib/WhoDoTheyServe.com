@@ -5,8 +5,11 @@ H  = require \./helper
 V  = require \./view
 VE = require \./view-engine
 
+const KEYCODE-ESC = 27
+
 exports
   ..init = (router) ->
+    $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
     V
       ..edge-edit
         ..on \cancelled, -> B.history.history.back!
