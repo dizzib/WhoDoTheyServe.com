@@ -1,5 +1,3 @@
-_ = require \underscore
-
 node-ids = [ void, void ]
 
 exports
@@ -11,8 +9,8 @@ exports
   ..set-edge = (@edge) ~>
 
   ..set-node-id = ->
-    return if it is node-ids.1
-    if it is node-ids.0 then return node-ids.reverse!
+    return if it is node-ids.0
+    if it is node-ids.1 then return node-ids.reverse!
     node-ids
-      ..push it
-      ..shift!
+      ..unshift it
+      ..pop!
