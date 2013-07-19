@@ -66,6 +66,7 @@ exports
   ..ready = ->
     $ \.timeago .timeago!
     $ \.view .addClass \ready
+    _.defer -> $ \.btnNew:visible:first .focus!
     # use a delgated event since view may still be rendering asyncly
     $ \.view .on \focus, 'input[type=text]', ->
       # defer, to workaround Chrome mouseup bug
