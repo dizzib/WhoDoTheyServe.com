@@ -5,6 +5,7 @@ HS = require \./history
 C  = require \./collection
 M  = require \./model
 V  = require \./view
+VE = require \./view/evidence
 VC = require \./view-composer
 VD = require \./view-directive
 VH = require \./view-handler
@@ -24,6 +25,7 @@ Router = B.Router.extend do
     \edge/:id/:act     : \edge
     \edge/:id/:act/:id : \edge
     \edges             : \edges
+    \fireprox          : \fireprox
     \graph             : \graph
     \home              : \home
     \node/edit/:id     : \node_edit
@@ -44,6 +46,7 @@ Router = B.Router.extend do
   edge        : -> HS.set-edge VC.edge ...
   edges       : VC.edges
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
+  fireprox    : VE.set-fireprox-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   node        : -> HS.set-node-id VC.node ...

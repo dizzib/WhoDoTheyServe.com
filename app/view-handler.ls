@@ -4,6 +4,7 @@ C  = require \./collection
 H  = require \./helper
 V  = require \./view
 VE = require \./view-engine
+EV = require \./view/evidence
 
 const KEYCODE-ESC = 27
 
@@ -19,6 +20,7 @@ exports
       ..evidence-edit
         ..on \cancelled, -> nav-extra-done \evi
         ..on \destroyed, -> nav-extra-done \evi
+        ..on \rendered ,    EV.prepare-edit
         ..on \saved    , -> nav-extra-done \evi
       ..node-edit
         ..on \cancelled, -> B.history.history.back!
@@ -45,8 +47,10 @@ exports
     function navigate route then router.navigate route, trigger:true
 
     function nav-entity-saved name, entity, is-new then
-      H.log name, entity, is-new
-      navigate "#{name}/#{entity.id}#{if is-new then '/evi-new' else ''}"
+      return nav! unless is-new
+      <- EV.auto-add entity.id
+      return nav if it?ok then '' else '/evi-new'
+      function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
 
     function nav-extra-done name then
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
