@@ -31,9 +31,9 @@ mixin field-textarea(name, label, placeholder)
     textarea(type='text', id=name, name=name, rows=5, placeholder=placeholder)
     block
 
-mixin field-select(name, label, cssClass)
+mixin field-select(name, label)
   +field-label(name, label)
-    select(id=name, name=name, class=cssClass)
+    select(id=name, name=name)
     block
 
 mixin button-bar

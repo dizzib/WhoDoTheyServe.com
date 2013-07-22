@@ -5,7 +5,8 @@ form.form-horizontal.well
     span.create Create Connection
     span.update Edit Connection
   fieldset
-    +field-select('a_node_id', 'Actor A', 'input-xxlarge')
+    span.input-xxlarge
+      +field-select('a_node_id', 'Actor A')
     +field-label('a_is', 'Influence')
       label.radio
         | A is a subordinate of B
@@ -21,7 +22,8 @@ form.form-horizontal.well
       span.help-block
         | Please use present tense e.g. 'is' rather than 'was',
         | even for past connections.
-    +field-select('b_node_id', 'Actor B', 'input-xxlarge')
+    span.input-xxlarge
+      +field-select('b_node_id', 'Actor B')
     +field-text('year_from', 'Year From')
       span.help-block
         | When this connection started (leave blank if you're not sure).
