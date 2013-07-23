@@ -32,15 +32,15 @@ exports
         const RANGE =
           year_from: 2013
           year_to  : 2013
-        year_from = d3-edge.year_from
-        year_to   = d3-edge.year_to or 9999
-        result = year_to < RANGE.year_from or RANGE.year_to < year_from
+        yf = d3-edge.year_from or d3-edge.year or 0
+        yt = d3-edge.year_to   or d3-edge.year or 9999
+        result = yt < RANGE.year_from or RANGE.year_to < yf
         return result or has-successor-governor d3-edge
 
       # eg Mark Carney cannot govern both BoC and BoE simultaneously
       function has-successor-governor d3-edge then
         successor = _.find edges, ->
-          /govern/.test it.how and it.how is d3-edge.how and
+          /governor/.test it.how and it.how is d3-edge.how and
           it.year_from is d3-edge.year_to and
           (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
 

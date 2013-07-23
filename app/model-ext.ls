@@ -11,25 +11,32 @@ exports.init = ->
       yt = @get(\year_to)   or 9999
       not (yf > y_to or yt < y_from)
     toJSON-T: (opts) ->
-      j = @toJSON opts
-      _.extend j, a_node_name:(C.Nodes.get @get \a_node_id)?get \name
-      _.extend j, b_node_name:(C.Nodes.get @get \b_node_id)?get \name
+      a-node    = C.Nodes.get @get \a_node_id
+      b-node    = C.Nodes.get @get \b_node_id
+      year-from = @get \year_from
+      year-to   = @get \year_to
+      node-yyyy = a-node.get-yyyy! or b-node.get-yyyy!
+      year      = if year-from is year-to then year-from
+      yyyy      = year?toString! or node-yyyy
+      j         = @toJSON opts
+      _.extend j, a_node_name: a-node.get \name
+      _.extend j, b_node_name: b-node.get \name
       _.extend j, a_is_eq: \eq is @get \a_is
       _.extend j, a_is_lt: \lt is @get \a_is
-      _.extend j, tip    : get-tip    this
-      _.extend j, period : get-period this
+      _.extend j, period : get-period!
+      _.extend j, tip    : get-tip!
+      _.extend j, yy     : yyyy?substring 2
+      _.extend j, yyyy   : yyyy
+      _.extend j, year   : parseInt yyyy
       return j
-      function get-period edge then
-        yf = edge.get \year_from
-        yt = edge.get \year_to
-        if yf and yf is yt then return "in #{yt}"
-        f = "from #{yf or '?'} "
-        t = if yt then "to #{yt}" else ''
-        f + t
-      function get-tip edge then
-        how = "#{if (how = edge.get \how) then ' - ' + how else ''}"
-        period = get-period edge
-        "Evidence#{how}, #{period}"
+      function get-period is-tip then
+        return '' if node-yyyy and not is-tip
+        if yyyy then return "in #{yyyy}"
+        period = "from #{year-from or '?'} "
+        period + if year-to then "to #{year-to}" else ''
+      ~function get-tip then
+        how = "#{if how = @get \how then ' - ' + how else ''}"
+        "Evidence#{how} #{get-period true}"
   M.Evidence .= extend do
     toJSON-T: (opts) ->
       j = @toJSON opts
@@ -38,12 +45,14 @@ exports.init = ->
   M.Node .= extend do
     toJSON-T: (opts) ->
       j = @toJSON opts
-      _.extend j, tip: 'Evidence'
       _.extend j, family-name: get-family-name this
+      _.extend j, tip : 'Evidence'
       return j
       function get-family-name node then
         return unless name = node.get \name
         name.match(/^\w+,/)?0.replace ',', ''
+    get-yyyy: ->
+      /[12]\d{3}/.exec(@get \name)?0
 
   M.Edge.create = ->
     m = create M.Edge, it

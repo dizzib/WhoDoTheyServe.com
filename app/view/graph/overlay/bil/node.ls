@@ -20,7 +20,7 @@ exports
         evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
         ev1 = evs.length is 1
         url = if ev1 then evs.0.get \url else "#/edge/#{edge._id}"
-        tip = if ev1 then "Evidence at Bilderberg #{edge.year_from}" else ''
+        tip = if ev1 then "Evidence at Bilderberg #{edge.yyyy}" else ''
         dx  = offset-x + (i * BADGE-SPACE-X) - (BADGE-SIZE-X / 2)
         badge = d3.select this .append \svg:g
           .attr \class, \badge-bil
@@ -37,7 +37,7 @@ exports
           .append \svg:text
             .attr \dx, 2
             .attr \dy, 13
-            .text -> (edge.year_from).toString!substring 2
+            .text -> edge.yy
 
   ..filter = (nodes) ->
     _.filter nodes, -> not exports.is-conference-yyyy it

@@ -48,9 +48,9 @@ exports
 
     function nav-entity-saved name, entity, is-new then
       return nav! unless is-new
+      function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
       <- EV.auto-add entity.id
       return nav if it?ok then '' else '/evi-new'
-      function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
 
     function nav-extra-done name then
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
