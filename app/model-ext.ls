@@ -11,16 +11,16 @@ exports.init = ->
       yt = @get(\year_to)   or 9999
       not (yf > y_to or yt < y_from)
     toJSON-T: (opts) ->
-      a-node    = C.Nodes.get @get \a_node_id
-      b-node    = C.Nodes.get @get \b_node_id
+      a-node    = C.Nodes.get @get \a_node_id # undefined if new
+      b-node    = C.Nodes.get @get \b_node_id # undefined if new
       year-from = @get \year_from
       year-to   = @get \year_to
-      node-yyyy = a-node.get-yyyy! or b-node.get-yyyy!
+      node-yyyy = a-node?get-yyyy! or b-node?get-yyyy!
       year      = if year-from is year-to then year-from
       yyyy      = year?toString! or node-yyyy
       j         = @toJSON opts
-      _.extend j, a_node_name: a-node.get \name
-      _.extend j, b_node_name: b-node.get \name
+      _.extend j, a_node_name: a-node?get \name
+      _.extend j, b_node_name: b-node?get \name
       _.extend j, a_is_eq: \eq is @get \a_is
       _.extend j, a_is_lt: \lt is @get \a_is
       _.extend j, period : get-period!
