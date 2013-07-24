@@ -14,7 +14,7 @@ exports
     svg.selectAll \g.node .each (node) ->
       edges = _.filter E.edges-attend, ->
         node._id is it.a_node_id or node._id is it.b_node_id
-      edges = _.sortBy edges, -> it.year_from
+      edges = _.sortBy edges, -> it.yyyy
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
         evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
