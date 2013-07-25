@@ -3,8 +3,8 @@ _  = require \underscore
 C  = require \./collection
 H  = require \./helper
 V  = require \./view
+EE = require \./view/evidence-edit
 VE = require \./view-engine
-EV = require \./view/evidence
 
 const KEYCODE-ESC = 27
 
@@ -20,7 +20,7 @@ exports
       ..evidence-edit
         ..on \cancelled, -> nav-extra-done \evi
         ..on \destroyed, -> nav-extra-done \evi
-        ..on \rendered ,    EV.prepare-edit
+        ..on \rendered ,    EE.prepare-edit
         ..on \saved    , -> nav-extra-done \evi
       ..node-edit
         ..on \cancelled, -> B.history.history.back!
@@ -49,7 +49,7 @@ exports
     function nav-entity-saved name, entity, is-new then
       return nav! unless is-new
       function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
-      <- EV.auto-add entity.id
+      <- EE.auto-add entity.id
       return nav if it?ok then '' else '/evi-new'
 
     function nav-extra-done name then
