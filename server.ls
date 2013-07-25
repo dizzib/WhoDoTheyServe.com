@@ -7,7 +7,7 @@ const ONE-HOUR = 60m * 60s * 1000ms
 cookie-opts =
   secret: process.env.WDTS_COOKIE_SECRET or \secret
   cookie:
-    maxAge: ONE-HOUR
+    maxAge: 4 * ONE-HOUR # https://github.com/senchalabs/connect/issues/670
 
 # http://docs.aws.amazon.com/AmazonCloudFront/2010-11-01/DeveloperGuide/Expiration.html
 static-opts =
