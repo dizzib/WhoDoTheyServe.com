@@ -8,8 +8,7 @@ I F.readFileSync __dirname + \/edge.css
 
 exports
   ..data = (nodes) ->
-    edges = _.reject C.Edges.toJSON-T!, is-exclude
-    d3-edges = _.map edges, (edge) -> _.extend do
+    d3-edges = _.map (edges = C.Edges.toJSON-T!), (edge) -> _.extend do
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
       target: _.find nodes, -> it._id is edge.b_node_id
@@ -43,10 +42,6 @@ exports
           /governor/.test it.how and it.how is d3-edge.how and
           it.year_from is d3-edge.year_to and
           (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
-
-    function is-exclude edge then
-      year_to = edge.year_to or 9999
-      year_to < 1960
 
   ..init = (svg, d3-force) ~>
     svg.append \svg:defs .selectAll \marker
