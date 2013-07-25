@@ -1,10 +1,10 @@
-B  = require \backbone
-_  = require \underscore
-C  = require \./collection
-H  = require \./helper
-V  = require \./view
-EE = require \./view/evidence-edit
-VE = require \./view-engine
+B   = require \backbone
+_   = require \underscore
+H   = require \./helper
+V   = require \./view
+EDE = require \./view/edge-edit
+EVE = require \./view/evidence-edit
+VE  = require \./view-engine
 
 const KEYCODE-ESC = 27
 
@@ -15,12 +15,12 @@ exports
       ..edge-edit
         ..on \cancelled, -> B.history.history.back!
         ..on \destroyed, -> navigate \edges
-        ..on \rendered ,    prepare-edge-edit
+        ..on \rendered ,    EDE.init
         ..on \saved    , -> nav-entity-saved \edge, &0, &1
       ..evidence-edit
         ..on \cancelled, -> nav-extra-done \evi
         ..on \destroyed, -> nav-extra-done \evi
-        ..on \rendered ,    EE.prepare-edit
+        ..on \rendered ,    EVE.prepare-edit
         ..on \saved    , -> nav-extra-done \evi
       ..node-edit
         ..on \cancelled, -> B.history.history.back!
@@ -49,18 +49,11 @@ exports
     function nav-entity-saved name, entity, is-new then
       return nav! unless is-new
       function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
-      <- EE.auto-add entity.id
+      <- EVE.auto-add entity.id
       return nav if it?ok then '' else '/evi-new'
 
     function nav-extra-done name then
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
-
-    function prepare-edge-edit then
-      V.edge-a-node-sel.render C.Nodes, \name, it.get \a_node_id
-      V.edge-b-node-sel.render C.Nodes, \name, it.get \b_node_id
-      $ \#how .typeahead source:_.uniq C.Edges.pluck \how
-      # defer, otherwise won't focus in new edge for some reason
-      _.defer -> $ '.editing input[type=text]:first' .focus!
 
   ..reset = ->
     $ \.view>* .off!hide! # call off() so different views can use same element

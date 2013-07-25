@@ -70,6 +70,8 @@ exports
         @$el.set-access S .show! unless inner-opts?show is false
 
   ..SelectView = B.View.extend do
+    get-selected-id: ->
+      $ \option:selected, @dropdown .attr \value
     render: (coll, fname, sel-id) ->
       $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
         html    : -> @[fname]
@@ -78,6 +80,7 @@ exports
       $prompt = $T.filter \.prompt .find \option
       unless $T-Sel.find 'option[selected]' .length then $prompt.attr \selected, ''
       $T-Sel.prepend $prompt
-      $ @tagName
+      @dropdown = $ @tagName
         ..html $T-Sel.children! # children! prevents duplicate nested select
         ..combobox!
+        ..change ~> @trigger \selected
