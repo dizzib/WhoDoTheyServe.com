@@ -3,9 +3,9 @@ _  = require \underscore
 H  = require \./helper
 HS = require \./history
 C  = require \./collection
+F  = require \./fireprox
 M  = require \./model
 V  = require \./view
-VE = require \./view/evidence-edit
 VC = require \./view-composer
 VD = require \./view-directive
 VH = require \./view-handler
@@ -46,7 +46,7 @@ Router = B.Router.extend do
   edge        : -> HS.set-edge VC.edge ...
   edges       : VC.edges
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
-  fireprox    : VE.set-fireprox-url
+  fireprox    : F.setup-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   node        : -> HS.set-node-id VC.node ...

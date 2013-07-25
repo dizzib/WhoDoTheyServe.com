@@ -1,9 +1,10 @@
 B   = require \backbone
 _   = require \underscore
+C   = require \./collection
 H   = require \./helper
 V   = require \./view
-EDE = require \./view/edge-edit
-EVE = require \./view/evidence-edit
+VEE = require \./view/edge-edit
+VEV = require \./view/evidence
 VE  = require \./view-engine
 
 const KEYCODE-ESC = 27
@@ -15,12 +16,12 @@ exports
       ..edge-edit
         ..on \cancelled, -> B.history.history.back!
         ..on \destroyed, -> navigate \edges
-        ..on \rendered ,    EDE.init
+        ..on \rendered ,    VEE.init
         ..on \saved    , -> nav-entity-saved \edge, &0, &1
       ..evidence-edit
         ..on \cancelled, -> nav-extra-done \evi
         ..on \destroyed, -> nav-extra-done \evi
-        ..on \rendered ,    EVE.prepare-edit
+        ..on \rendered ,    VEV.init
         ..on \saved    , -> nav-extra-done \evi
       ..node-edit
         ..on \cancelled, -> B.history.history.back!
@@ -49,7 +50,7 @@ exports
     function nav-entity-saved name, entity, is-new then
       return nav! unless is-new
       function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
-      <- EVE.auto-add entity.id
+      <- VEV.create entity.id
       return nav if it?ok then '' else '/evi-new'
 
     function nav-extra-done name then
