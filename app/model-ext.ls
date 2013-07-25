@@ -6,10 +6,6 @@ M  = require \./model
 
 exports.init = ->
   M.Edge .= extend do
-    in_range: (y_from, y_to) ->
-      yf = @get(\year_from) or 0
-      yt = @get(\year_to)   or 9999
-      not (yf > y_to or yt < y_from)
     toJSON-T: (opts) ->
       a-node    = C.Nodes.get @get \a_node_id # undefined if new
       b-node    = C.Nodes.get @get \b_node_id # undefined if new
@@ -18,17 +14,16 @@ exports.init = ->
       node-yyyy = a-node?get-yyyy! or b-node?get-yyyy!
       year      = if year-from is year-to then year-from
       yyyy      = year?toString! or node-yyyy
-      j         = @toJSON opts
-      _.extend j, a_node_name: a-node?get \name
-      _.extend j, b_node_name: b-node?get \name
-      _.extend j, a_is_eq: \eq is @get \a_is
-      _.extend j, a_is_lt: \lt is @get \a_is
-      _.extend j, period : get-period!
-      _.extend j, tip    : get-tip!
-      _.extend j, yy     : yyyy?substring 2
-      _.extend j, yyyy   : yyyy
-      _.extend j, year   : parseInt yyyy
-      return j
+      return _.extend (@toJSON opts),
+        a_node_name: a-node?get \name
+        b_node_name: b-node?get \name
+        a_is_eq    : \eq is @get \a_is
+        a_is_lt    : \lt is @get \a_is
+        period     : get-period!
+        tip        : get-tip!
+        yy         : yyyy?substring 2
+        yyyy       : yyyy
+        year       : parseInt yyyy
       function get-period is-tip then
         return '' if node-yyyy and not is-tip
         if yyyy then return "in #{yyyy}"
@@ -39,15 +34,13 @@ exports.init = ->
         "Evidence#{how} #{get-period true}"
   M.Evidence .= extend do
     toJSON-T: (opts) ->
-      j = @toJSON opts
-      _.extend j, is-video: /youtube\.com/.test @get \url
-      return j
+      _.extend (@toJSON opts),
+        is-video: /youtube\.com/.test @get \url
   M.Node .= extend do
     toJSON-T: (opts) ->
-      j = @toJSON opts
-      _.extend j, family-name: get-family-name this
-      _.extend j, tip : 'Evidence'
-      return j
+      return _.extend (@toJSON opts),
+        family-name: get-family-name this
+        tip        : 'Evidence'
       function get-family-name node then
         return unless name = node.get \name
         name.match(/^\w+,/)?0.replace ',', ''
