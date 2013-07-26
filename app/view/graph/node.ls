@@ -28,13 +28,20 @@ exports
 
     if images = (JSON.parse M.Hive.Graph.get \value).images then
       for image in images
-        dimensions = image.size / \x
-        svg.select "g.id_#{image.id}" .append \svg:image
+        size = image.size / \x
+        g = svg.select "g.id_#{image.id}"
+        g.append \svg:image
           .attr \xlink:href, image.url
-          .attr \x     , -dimensions.0 / 2
-          .attr \y     , -dimensions.1 - 12
-          .attr \width , dimensions.0
-          .attr \height, dimensions.1
+          .attr \x     , x = -size.0 / 2
+          .attr \y     , y = -size.1 - 12
+          .attr \width , size.0
+          .attr \height, size.1
+        if size.2 then
+          g.append \svg:rect
+            .attr \x     , x - 1
+            .attr \y     , y - 1
+            .attr \width , 2 + parseInt size.0
+            .attr \height, 2 + parseInt size.1
 
   ..is-bis = ->
     /^BIS /.test it.name

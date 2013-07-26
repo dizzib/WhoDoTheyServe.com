@@ -22,7 +22,7 @@ images:
     size: \23x12
   * name: "Government of Japan"
     url : \http://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/23px-Flag_of_Japan.svg.png
-    size: \23x15
+    size: \23x15x1
   * name: "Government of Russia"
     url : \http://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/23px-Flag_of_Russia.svg.png
     size: \23x15
