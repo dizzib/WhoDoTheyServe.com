@@ -1,5 +1,5 @@
 images:
-  * name: "Bank|Barclays|Chase|Goldman Sachs|HSBC"
+  * name: "Bank|Barclays|Chase|Goldman Sachs|HSBC|^NM Rothschild"
     url : \/asset/bank.png
     size: \20x19
   * name: "European Union"
