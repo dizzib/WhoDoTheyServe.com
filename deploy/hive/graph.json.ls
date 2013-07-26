@@ -1,4 +1,7 @@
 images:
+  * name: "Bank|Barclays|Chase|Goldman Sachs|HSBC"
+    url : \/asset/bank.png
+    size: \20x19
   * name: "European Union"
     url : \http://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/23px-Flag_of_Europe.svg.png
     size: \23x15

@@ -31,8 +31,8 @@ exports
         dimensions = image.size / \x
         svg.select "g.id_#{image.id}" .append \svg:image
           .attr \xlink:href, image.url
-          .attr \x     , -12
-          .attr \y     , -12 - dimensions.1
+          .attr \x     , -dimensions.0 / 2
+          .attr \y     , -dimensions.1 - 12
           .attr \width , dimensions.0
           .attr \height, dimensions.1
 
