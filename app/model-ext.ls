@@ -45,7 +45,7 @@ exports.init = ->
         return unless name = node.get \name
         name.match(/^\w+,/)?0.replace ',', ''
     get-yyyy: ->
-      /[12]\d{3}/.exec(@get \name)?0
+      /[12]\d{3}$/.exec(@get \name)?0
 
   M.Edge.create = ->
     m = create M.Edge, it
