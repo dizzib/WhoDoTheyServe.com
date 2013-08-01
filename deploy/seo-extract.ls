@@ -5,8 +5,8 @@ C = require \casper .create logLevel:\error verbose:true
 F = require \fs
 
 const CLI-KEY-URL-ROOT = \url-root
-const ROUTE-HOME = '#/home'
-
+const ROUTE-HOME       = '#/users'
+const EXCLUDE-ROUTES   = /\/graph$/
 throw new Error '--url-root is required' unless C.cli.has CLI-KEY-URL-ROOT
 
 done    = [ ]
@@ -71,6 +71,7 @@ function maybe-add-pending-link link then
   return unless /^#/.test link
   return if done.indexOf(link) > -1
   return if pending.indexOf(link) > -1
+  return if EXCLUDE-ROUTES.test link
   C.echo "push #{link}"
   pending.push link
 

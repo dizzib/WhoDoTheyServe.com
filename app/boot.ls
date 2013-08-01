@@ -28,11 +28,11 @@ $.when(
   C.Edges     .fetch!
   C.Nodes     .fetch!
   C.Sessions  .fetch!
+  C.Users     .fetch!
   M.Hive.Graph.fetch!
 ).then start, fail
 
 C.Notes.fetch error:fail
-C.Users.fetch error:fail
 M.Sys  .fetch error:fail, success: -> V.version.render!
 
 function fail coll, xhr then

@@ -8,9 +8,6 @@ S = require \./session
 
 const CLASS-EDITING = \editing
 
-I F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
-T-Sel = F.readFileSync __dirname + \/view/select.html
-
 exports
   ..DocuView = B.View.extend do
     render: -> @$el.html @options.document .show!
@@ -73,6 +70,8 @@ exports
     get-selected-id: ->
       $ \option:selected, @dropdown .attr \value
     render: (coll, fname, sel-id) ->
+      I F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
+      T-Sel = F.readFileSync __dirname + \/view/select.html
       $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
         html    : -> @[fname]
         selected: -> \selected if @_id is sel-id
