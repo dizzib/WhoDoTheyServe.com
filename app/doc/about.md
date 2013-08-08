@@ -1,8 +1,8 @@
 ### About
 
-WhoDoTheyServe.com is a non-profit [opensource] effort to track and
-visualise the rapidly changing global political, banking and corporate power
-structure. A secondary purpose is to highlight possible
+WhoDoTheyServe.com is a non-profit [opensource] effort to visualise the
+global political, financial and corporate power structure.
+A secondary purpose is to highlight possible
 [conflict of interest][coi].
 
 Actors and connections are backed up with evidence from reputable and official
@@ -11,10 +11,6 @@ or conspiracy theory.
 
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
-
-If you'd like to submit your own actors and connections for inclusion in the
-[graph] then please let me know me via the contact link in the page footer,
-and if I get enough interest then I'll look at writing the software.
 
 ### Data
 
