@@ -15,10 +15,10 @@ you can add to [github issues][issues].
 ### Data
 
 The data is freely available in [JSON] format via an [API]:
-[nodes](http://wdts.eu01.aws.af.cm/api/nodes)
-[edges](http://wdts.eu01.aws.af.cm/api/edges)
-[evidences](http://wdts.eu01.aws.af.cm/api/evidences)
-[users](http://wdts.eu01.aws.af.cm/api/users)
+[nodes](http://whodotheyserve.eu01.aws.af.cm/api/nodes)
+[edges](http://whodotheyserve.eu01.aws.af.cm/api/edges)
+[evidences](http://whodotheyserve.eu01.aws.af.cm/api/evidences)
+[users](http://whodotheyserve.eu01.aws.af.cm/api/users)
 
 A [production database dump][db-dump] is maintained in github.
 
