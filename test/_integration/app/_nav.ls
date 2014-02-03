@@ -1,11 +1,8 @@
-F  = require \./firedrive
+B  = require \./_browser
 ST = require \../state
 
 module.exports =
-  assert-ok: (is-ok = true) ->
-    F.assert.displayed !is-ok, class:\alert-error
-
-  go-entity: (key) ->
+  go-edge-or-node: (key) ->
     #  X:n is node e.g. a:0
     # XX:n is edge e.g. ab:0 = from node a to b
     # where :n is optional evidence key
@@ -17,6 +14,6 @@ module.exports =
 
     throw new Error "entity #{ent-key} must first be created" unless name?
 
-    F.click if is-node then \Actors else \Connections
-    F.click name, \a
-    F.wait-for name, if is-node then \h2>.name else \h2>.how
+    B.click if is-node then \Actors else \Connections
+    B.click name, \a
+    B.wait-for name, if is-node then \h2>.name else \h2>.how

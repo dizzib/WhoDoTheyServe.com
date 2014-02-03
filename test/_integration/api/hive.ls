@@ -1,6 +1,6 @@
 Should = require \chai .should!
 _      = require \underscore
-H      = require \./helper
+H      = require \./_http
 S      = require \../spec/hive
 
 module.exports = S.get-spec set, get #, update, remove, list, verify

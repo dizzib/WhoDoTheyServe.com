@@ -1,5 +1,5 @@
 _  = require \underscore
-H  = require \./helper
+H  = require \./_http
 SP = require \../spec/session
 ST = require \../state
 

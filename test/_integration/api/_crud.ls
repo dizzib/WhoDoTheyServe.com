@@ -1,6 +1,6 @@
 _  = require \underscore
 W  = require \wait.for
-H  = require \./helper
+H  = require \./_http
 ST = require \../state
 
 module.exports = (entity-name) ->

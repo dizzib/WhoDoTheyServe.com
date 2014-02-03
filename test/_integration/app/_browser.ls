@@ -19,12 +19,7 @@ M = module.exports =
       c \executeScript, (-> window.confirm = -> ok), [ ok ]
 
   assert:
-    count: (n-expect, sel) ->
-      log n-actual = M.wait-for sel:sel, require-unique:false
-      return if n-actual is n-expect
-      throw new Error "#{sel} count expected=#{n-expect}, actual=#{n-actual}"
-
-    ok: -> M.assert.displayed !it, class:\alert-error
+    ok: (is-ok = true) -> M.assert.displayed !is-ok, class:\alert-error
 
     displayed: (expect = true, ...args) ->
       M.wait-for ...args

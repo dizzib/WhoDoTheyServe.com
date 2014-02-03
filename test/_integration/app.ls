@@ -1,6 +1,6 @@
 W        = require \wait.for
 R        = require \./helper .run
-F        = require \./app/firedrive
+B        = require \./app/_browser
 Edge     = require \./app/edge
 Evidence = require \./app/evidence
 Node     = require \./app/node
@@ -9,6 +9,7 @@ Session  = require \./app/session
 User     = require \./app/user
 Launcher = require \./launcher
 
+return
 unless (env = process.env.NODE_ENV) is \test
   throw new Error "unexpected environment #{env}"
 
@@ -17,18 +18,18 @@ unless (env = process.env.NODE_ENV) is \test
 
 before R ->
   W.for Launcher.reset
-  F.init!
+  B.init!
 
 after R ->
   W.for Launcher.respawn
 
 it 'click About', R ->
-  F.click \About
-  F.wait-for \About, \h3
+  B.click \About
+  B.wait-for \About, \h3
 
 it 'click Latest', R ->
-  F.click \Latest
-  F.wait-for 'Latest Updates', \legend
+  B.click \Latest
+  B.wait-for 'Latest Updates', \legend
 
 it '---admin signup users'
 test User.list.is0

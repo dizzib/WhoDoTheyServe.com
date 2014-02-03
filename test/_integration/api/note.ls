@@ -1,5 +1,5 @@
-E = require \./entity
+C = require \./_crud
 S = require \../spec/note
 
-e = E \notes
-module.exports = S.get-spec e.create-for, e.read, e.update, e.remove, e.list-for
+c = C \notes
+module.exports = S.get-spec c.create-for, c.read, c.update, c.remove, c.list-for

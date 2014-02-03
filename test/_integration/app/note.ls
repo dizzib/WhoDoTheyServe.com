@@ -1,12 +1,12 @@
-C  = require \./crud
-F  = require \./firedrive
-H  = require \./helper
+B  = require \./_browser
+C  = require \./_crud
+N  = require \./_nav
 SP = require \../spec/note
 
 c = C \note,
-  fill       : -> F.fill /Enter your note/, it.text
+  fill       : -> B.fill /Enter your note/, it.text
   go-create  : go-create
-  go-list    : H.go-entity
+  go-list    : N.go-edge-or-node
   go-maintain: go-maintain
   on-create  : on-save
   on-update  : on-save
@@ -16,15 +16,15 @@ module.exports = SP.get-spec c.create, void, c.update, c.remove, c.list
 ## helpers
 
 function go-create key then
-  H.go-entity key
-  F.wait-for /Note/, \legend
-  F.click \New, scope:\el
+  N.go-edge-or-node key
+  B.wait-for /Note/, \legend
+  B.click \New, scope:\el
 
 function go-maintain key then
-  H.go-entity key
-  F.wait-for /Notes/, \legend
-  F.click \Edit, scope:\el
+  N.go-edge-or-node key
+  B.wait-for /Notes/, \legend
+  B.click \Edit, scope:\el
 
 function on-save key, fields then
-  F.wait-for /Note/, \legend
-  F.wait-for fields.text, \span
+  B.wait-for /Note/, \legend
+  B.wait-for fields.text, \span

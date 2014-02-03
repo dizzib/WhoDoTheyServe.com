@@ -1,6 +1,6 @@
+SH = require \chai .should!
 _  = require \underscore
-F  = require \./firedrive
-H  = require \./helper
+B  = require \./_browser
 ST = require \../state
 
 module.exports = (ent-name, opts) ->
@@ -12,20 +12,20 @@ module.exports = (ent-name, opts) ->
     ent-ui        : -> capitalise ent-name          # e.g. Actor
     go-create     : go-create
     go-edit       : go-edit
-    go-entity     : -> F.click it, \a
-    go-list       : -> F.click opts.coll-ui!, \a
+    go-entity     : -> B.click it, \a
+    go-list       : -> B.click opts.coll-ui!, \a
     go-maintain   : go-maintain
     on-create     : ->
     on-remove     : -> opts.wait-for-list!
     on-update     : ->
-    wait-for-list : -> F.wait-for new RegExp(opts.coll-ui!), \legend
+    wait-for-list : -> B.wait-for new RegExp(opts.coll-ui!), \legend
     opts
 
   return
     create: function create key, is-ok, fields then
       opts.go-create ...
       opts.fill fields, key
-      submit 'Create', opts.on-create, ...&
+      submit \Create, opts.on-create, ...&
 
     update: function update key, is-ok, fields then
       opts.go-maintain ...
@@ -34,18 +34,19 @@ module.exports = (ent-name, opts) ->
 
     remove: function remove key, is-ok then
       opts.go-maintain ...
-      F.arrange.confirm true
+      B.arrange.confirm true
       submit \Delete, opts.on-remove, ...&
 
-    list: function list n, key then
+    list: function list n-expect, key then
       opts.go-list key
-      F.assert.count n, ".#{opts.coll-name!}>ul>li"
+      n-actual = B.wait-for sel:".#{opts.coll-name!}>ul>li", require-unique:false
+      n-actual.should.equal n-expect
 
-## helpers
+## private helpers
 
   function submit action, on-success, key, is-ok, fields
-    F.click action
-    H.assert-ok is-ok
+    B.click action
+    B.assert.ok is-ok
     on-success key, fields if is-ok
 
   function capitalise then
@@ -53,7 +54,7 @@ module.exports = (ent-name, opts) ->
 
   function go-create key then
     opts.go-list key
-    F.click \New
+    B.click \New
 
   function go-maintain key then
     opts.go-list key
@@ -61,5 +62,5 @@ module.exports = (ent-name, opts) ->
     opts.go-edit key
 
   function go-edit key then
-    F.click \Edit, \legend>a
-    F.wait-for new RegExp("Edit #{opts.ent-ui!}"), \legend
+    B.click \Edit, \legend>a
+    B.wait-for new RegExp("Edit #{opts.ent-ui!}"), \legend

@@ -1,14 +1,14 @@
-C     = require \chai .should!
+Chai  = require \chai .should!
 _     = require \underscore
 W     = require \wait.for
-E     = require \./entity
-H     = require \./helper
+C     = require \./_crud
+H     = require \./_http
 S     = require \../state
 U     = require \../spec/user
 Users = require \../../../api/model/users
 
-e = E \users
-module.exports = U.get-spec create, e.read, e.update, e.remove, e.list, verify
+c = C \users
+module.exports = U.get-spec create, c.read, c.update, c.remove, c.list, verify
 
 function create login, is-ok, fields then
   user =
