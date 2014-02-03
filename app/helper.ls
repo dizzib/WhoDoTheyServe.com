@@ -3,7 +3,10 @@ exports
 
   ..on-err = (coll, xhr) ->
     const MSG = 'An error occurred (check the debug console for more details)'
-    $ \.alert-error .text get-friendly(xhr.responseText) || MSG .show!
+    exports.show-error xhr.responseText || MSG
+
+  ..show-error = ->
+    $ \.alert-error .text it .show!
 
 function get-friendly msg then
   msg

@@ -35,6 +35,7 @@ T-User          = F.readFileSync __dirname + \/view/user.html
 T-UserEdit      = F.readFileSync __dirname + \/view/user-edit.html
 T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
+T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 
 exports
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
@@ -70,5 +71,6 @@ exports
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
   ..user-signout    = new V-SignOut
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
-  ..users           = new V.ListView template:T-Users        , el:\.view>.main
+  ..users           = new V.ListView template:T-Users        , el:\.view>.users
+  ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main
   ..version         = new V-Version                            el:\.version

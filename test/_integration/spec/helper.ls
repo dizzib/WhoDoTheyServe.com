@@ -1,24 +1,27 @@
 _ = require \underscore
+U = require \util
+H = require \../helper
 
-module.exports = class
-  (@entity-name, @create, @read, @update, @remove, @list) ->
+module.exports = (entity-name, create, read, update, remove, list) ->
 
-  get-spec: (key, fields) -> _.extend do
-    @get-spec-tests @create, key, fields
-    @get-spec-tests @read  , key, fields
-    @get-spec-tests @update, key, fields
-    @get-spec-tests @remove, key, fields
+  get-spec: (key, fields) ->
+    function get-spec-tests op, key, fields then
+      return unless op?
+      "#{op.name}":
+        ok : get-spec-test op, key, true , fields
+        bad: get-spec-test op, key, false, fields
 
-  get-spec-list: (n, e-key) ->
-    info: "#{@entity-name} list is #{n}#{if e-key then ' for ' + e-key}"
-    fn  : (done) ~> @list done, n, e-key
+    function get-spec-test op, key, is-ok, fields then
+      info: "#{op.name} #{entity-name} #{key} #{JSON.stringify(fields) ? ''}
+             #{if is-ok then '' else ' bad'}"
+      fn  : H.run -> op key, is-ok, fields
 
-  get-spec-tests: (op, key, fields) ->
-    "#{op.name}":
-      ok : @get-spec-test op, key, true , fields
-      bad: @get-spec-test op, key, false, fields
+    _.extend do
+      get-spec-tests create, key, fields
+      get-spec-tests read  , key, fields
+      get-spec-tests update, key, fields
+      get-spec-tests remove, key, fields
 
-  get-spec-test: (op, key, is-ok, fields) ->
-    info: "#{op.name} #{@entity-name} #{key} #{JSON.stringify(fields) ? ''}
-           #{if is-ok then '' else ' bad'}"
-    fn  : (done) -> op done, key, is-ok, fields
+  get-spec-list: (n, key) ->
+    info: "#{entity-name} list is #{n}#{if key then ' for ' + key else ''}"
+    fn  : H.run ~> list n, key

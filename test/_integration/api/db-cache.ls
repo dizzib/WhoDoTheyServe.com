@@ -11,6 +11,8 @@ test = it
 describe 'db-cache' ->
   @timeout 5000
 
+  const DB-URL = \mongodb://localhost/test
+
   var db, C-Foos, M-Foos
   ids = {}
 
@@ -20,10 +22,8 @@ describe 'db-cache' ->
   Cache-Q.create store-q
 
   before (done) ->
-    const DB-URL = \mongodb://localhost/test
-
     Mongoose.connect DB-URL
-    err <- Mongoose.connection.db.executeDbCommand dropDatabase:1
+    err <- drop-db
     return done err if err
 
     M-Foos := Mongoose.model \foos, new Mongoose.Schema do
@@ -39,9 +39,8 @@ describe 'db-cache' ->
     done!
 
   after (done) ->
-    Mongoose.disconnect!
-    db.close!
-    done!
+    err <- drop-db
+    done err
 
   # NOTE: each test must leave collection empty for next test
   test 'collection cache', (done) ->
@@ -171,3 +170,7 @@ describe 'db-cache' ->
     ids[tag-new] = foo._id
     return done err if err
     done!
+
+  function drop-db cb then
+    err <- Mongoose.connection.db.executeDbCommand dropDatabase:1
+    cb err

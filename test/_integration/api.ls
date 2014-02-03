@@ -1,10 +1,5 @@
-CP       = require \child_process
-M        = require \mongoose
-N        = require \net
-_        = require \underscore
-DB       = require \../../api/db
-B        = require \./app/browser
-H        = require \./api/helper
+W        = require \wait.for
+R        = require \./helper .run
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
 Hive     = require \./api/hive
@@ -12,287 +7,256 @@ Node     = require \./api/node
 Note     = require \./api/note
 Session  = require \./api/session
 User     = require \./api/user
+Launcher = require \./launcher
 
 unless (env = process.env.NODE_ENV) is \test
   throw new Error "unexpected environment #{env}"
 
-test = it
+(...) <- describe 'api'
+@timeout 10000
 
-describe 'api', ->
-  @timeout 20000
+before R ->
+  W.for Launcher.reset
 
-  before (done) ->
-    <- kill-site
-    <- drop-db
-    DB.connect!
-    site = spawn-site!
-    site.stderr.on \data, -> H.log "#{it}"
-    site.stdout.on \data, ->
-      #H.log "#{it}"
-      done! if /listening/.test it
+#after R ->
+#  W.for Launcher.respawn
 
-  after (done) ->
-    <- kill-site
-    spawn-site detached:true stdio:\inherit
-    done!
+it 'signup'
+test User.list.is0
+test User.admin.create.ok
+test User.admin.create.bad
+test User.login.min.create.bad
+test Session.admin.signin.password.a.ok
+test User.login.min.create.ok
+test User.login.max.create.ok
+test User.login.num4.create.ok
+test User.login.num3.create.ok
+test User.login.num2.create.bad
+test User.login.num1.create.bad
+test User.login.min-lt.create.bad
+test User.login.max-gt.create.bad
+test User.login.has-space.create.bad
+test User.login.has-ucase.create.bad
+test User.login.has-hyphen.create.bad
+test User.login.min.remove.ok
+test User.login.max.remove.ok
+test User.login.num4.remove.ok
+test User.login.num3.remove.ok
+#test Session.admin.signin.password.a.bad
+#test User.admin.token.fake.verify.bad
+#test User.admin.verify.ok
+#test User.admin.verify.bad
+test User.a.create.ok
+test User.a.email.new.update.ok
+test User.a.email.new.read.ok
+test User.a.create.bad
+test User.b.create.ok
+test User.c.create.ok
+test User.d.create.ok
+test User.list.is5
+test User.e.create.bad # daily signup max
+test Hive.a.set.ok
+test Session.a.signin.password.a.bad # signout required
+test Session.signout.ok
+it '---public'
+test Hive.a.get.ok
+test Hive.b.get.bad
+it '---userA'
+test Session.a.signin.bad.login
+test Session.a.signin.bad.password
+#test Session.a.signin.password.a.bad
+#test User.a.verify.ok
+test Session.a.signin.password.a.ok
+test Hive.a.set.bad # not admin
+it 'maint'
+test User.a.quota-daily.six.update.bad
+test User.a.password.b.update.ok
+test User.a.email.null.update.bad
+test User.a.email.no-domain.update.bad
+test User.a.email.no-dot.update.bad
+test User.a.email.no-name.update.bad
+test User.a.email.mailto.update.bad
+test User.a.email.new.update.ok
+test User.a.email.new.read.ok
+test User.a.info.no-http.update.bad
+test User.a.info.no-path.update.bad
+test User.a.info.no-domain.update.bad
+test User.a.info.path.update.ok
+test User.a.info.path.read.ok
+test User.a.info.path-qs.update.ok
+test User.a.password.min-lt.update.bad
+test User.a.password.max-gt.update.bad
+test User.a.password.weak-num.update.bad
+test User.a.password.weak-sym.update.bad
+test User.a.password.weak-ucase.update.bad
+test Session.signout.ok
+test Session.a.signin.password.a.bad
+test Session.a.signin.password.b.ok
+it 'graph'
+test Node.list.is0
+test Node.a.create.ok
+test Node.a.read.ok
+test Node.a.name.max.update.ok
+test Node.a.name.max.read.ok
+test Node.a.name.max-gt.update.bad
+test Node.a.name.min.update.ok
+test Node.a.name.dash.update.ok
+test Node.a.name.min-lt.update.bad
+test Node.a.name.space.multi.update.bad
+test Node.a.name.space.start.update.bad
+test Node.a.name.space.end.update.bad
+test Node.a.name.the.start.update.bad
+test Node.a.name.the.has.update.ok
+test Node.a.name.you.update.ok
+test Node.a.name.dcms.update.ok
+test Node.a.name.paren.open.update.ok
+test Node.a.name.update.ok
+test Node.a.name.dup.update.bad
+test Node.b.create.bad # prior node missing evidence
+test Evidence.a.list.is0
+test Evidence.a0.create.ok
+test Evidence.a.list.is1
+test Evidence.a0.create.bad # dup
+test Node.a.name.update.bad # has evidence
+test Evidence.a.url.path.create.ok
+test Evidence.a.url.path.read.ok
+test Evidence.a.url.path-qs.create.ok
+test Evidence.a.url.no-http.create.bad
+test Evidence.a.url.no-path.create.bad
+test Evidence.a.url.no-domain.create.bad
+test Evidence.a1.create.ok
+test Evidence.a.list.is4
+test Evidence.a1.remove.ok
+test Evidence.a.url.path.remove.ok
+test Evidence.a.url.path-qs.remove.ok
+test Evidence.a.list.is1
+test Node.b.create.ok
+test Evidence.b.list.is0
+test Edge.aa.create.bad # loop
+test Edge.ab.create.bad # b missing evidence
+test Node.c.create.bad # prior node missing evidence
+test Evidence.b0.create.ok
+test Evidence.b.list.is1
+test Node.b.create.bad # dup
+test Node.c.create.ok
+test Evidence.c0.create.ok
+test Node.d.create.ok
+test Evidence.d0.create.ok
+test Node.e.create.ok
+test Evidence.e0.create.ok
+test Node.f.create.bad # count > 5
+test Node.list.is5
+test Node.c.remove.bad # has evidence
+test Edge.list.is0
+test Edge.ab.create.ok
+test Edge.ab.create.bad # dup
+test Edge.ab.to-ab.update.ok
+test Edge.ab.to-bc.update.bad # ab immutable
+test Edge.ab.is.eq.update.ok
+test Edge.ab.is.eq.read.ok
+test Edge.ab.is.gt.update.bad
+test Edge.ab.how.max.update.ok
+test Edge.ab.how.max.read.ok
+test Edge.ab.how.max-gt.update.bad
+test Edge.ab.how.min.update.ok
+test Edge.ab.how.min-lt.update.bad
+test Edge.ab.how.amp.update.ok
+test Edge.ab.how.caps.update.ok
+test Edge.ab.how.comma.update.ok
+test Edge.ab.how.number.update.ok
+test Edge.ab.how.slash.update.ok
+test Edge.ab.year.from.null.update.ok
+test Edge.ab.year.from.max.update.ok
+test Edge.ab.year.from.max-gt.update.bad
+test Edge.ab.year.from.min.update.ok
+test Edge.ab.year.from.min-lt.update.bad
+test Edge.ab.year.range.in.update.ok
+test Edge.ab.year.range.in.read.ok
+test Edge.ab.year.range.out.update.bad
+test Edge.ac.create.bad # prior edge missing evidence
+test Evidence.ab0.create.ok
+test Edge.ba.create.bad # reciprocal ab
+test Edge.ac.create.ok
+test Edge.list.is2
+test Edge.ac.to-ba.update.bad # reciprocal ab
+test Edge.bc.create.bad # prior edge missing evidence
+test Evidence.ac0.create.ok
+test Evidence.ac1.create.ok # count > 5
+test Node.c.remove.bad # has edge
+test Edge.ac.remove.bad # has evidence
+test Evidence.ac0.remove.ok
+test Evidence.ac1.remove.ok
+test Edge.ac.remove.ok
+test Edge.list.is1
+test Node.a.remove.bad # has edge
+test Node.b.remove.bad # has edge
+test Evidence.c0.remove.ok
+test Node.c.remove.ok
+test Node.list.is4
+it 'note'
+test Note.a.list.is0
+test Note.a.create.ok
+test Note.b.text.tqbf.create.ok
+test Note.a.list.is1
+test Note.a.text.min.create.bad # count > 1
+test Note.a.text.min.update.ok
+test Note.a.text.min-lt.update.bad
+test Note.a.text.max.update.ok
+test Note.a.text.max-gt.update.bad
+test Note.a.remove.ok
+test Note.a.list.is0
+test Note.b.list.is1
+test Session.signout.ok
+it '---userB'
+test Session.b.signin.bad.login
+#test Session.b.signin.bad.password
+#test User.b.verify.ok
+test Session.b.signin.password.a.ok
+it 'graph'
+test Node.a.name.update.bad
+test Node.a.remove.bad
+test Node.b.remove.bad
+test Evidence.a0.remove.bad
+test Node.c.create.ok
+test Evidence.c0.create.ok
+test Edge.bc.create.ok
+test Evidence.bc0.create.ok
+test Node.f.create.ok
+it 'note'
+test Note.b.remove.bad
+test Note.b.create.ok
+test Note.b.list.is2
+test Note.b.text.min.create.bad # count > 1
+it 'userA'
+test User.a.info.path.update.bad
+test User.a.remove.bad
+test User.b.remove.ok
+test Session.signout.ok
+test Session.b.signin.password.a.bad
+it '---admin'
+test Session.admin.signin.bad.login
+test Session.admin.signin.bad.password
+test Session.admin.signin.password.a.ok
+test Hive.b.set.ok
+it 'user'
+test User.a.password.c.update.ok
+test User.a.quota-daily.six.update.ok
+test User.c.remove.ok
+it 'graph'
+test Node.a.name.max.update.ok # dispite edge
+test Edge.ab.to-ba.update.ok # dispite immutable
+test Evidence.bc0.remove.ok
+test Edge.bc.remove.ok
+test Evidence.c0.remove.ok
+test Node.c.remove.ok
+test Node.f.remove.ok
+test Node.list.is4
+test Session.signout.ok
+it '---public'
+test Node.a.create.bad # signed out
+test Edge.ab.create.bad # signed out
+test Edge.ab.remove.bad # signed out
+test Hive.a.get.ok
+test Hive.b.get.ok
 
-  describe 'public', ->
-    run Hive.a.get.bad
-  describe 'signup', ->
-    run User.list.is0
-    run User.admin.create.ok
-    run User.admin.create.bad
-    run User.login.min.create.bad
-    run Session.admin.signin.password.a.ok
-    run User.login.min.create.ok
-    run User.login.max.create.ok
-    run User.login.num4.create.ok
-    run User.login.num3.create.ok
-    run User.login.num2.create.bad
-    run User.login.num1.create.bad
-    run User.login.min-lt.create.bad
-    run User.login.max-gt.create.bad
-    run User.login.has-space.create.bad
-    run User.login.has-ucase.create.bad
-    run User.login.has-hyphen.create.bad
-    run User.login.min.remove.ok
-    run User.login.max.remove.ok
-    run User.login.num4.remove.ok
-    run User.login.num3.remove.ok
-    #run Session.admin.signin.password.a.bad
-    #run User.admin.token.fake.verify.bad
-    #run User.admin.verify.ok
-    #run User.admin.verify.bad
-    run User.a.create.ok
-    run User.a.email.new.update.ok
-    run User.a.email.new.read.ok
-    run User.a.create.bad
-    run User.b.create.ok
-    run User.c.create.ok
-    run User.d.create.ok
-    run User.list.is5
-    run User.e.create.bad      # daily signup max
-    run Hive.a.set.ok
-    run Session.signout.ok
-  describe 'public', ->
-    run Hive.a.get.ok
-    run Hive.b.get.bad
-  describe 'user A', ->
-    run Session.a.signin.bad.login
-    run Session.a.signin.bad.password
-    #run Session.a.signin.password.a.bad
-    #run User.a.verify.ok
-    run Session.a.signin.password.a.ok
-    run Hive.a.set.bad        # not admin
-    describe 'maint', ->
-      run User.a.quota-daily.six.update.bad
-      run User.a.password.b.update.ok
-      run User.a.email.null.update.bad
-      run User.a.email.no-domain.update.bad
-      run User.a.email.no-dot.update.bad
-      run User.a.email.no-name.update.bad
-      run User.a.email.mailto.update.bad
-      run User.a.email.new.update.ok
-      run User.a.email.new.read.ok
-      run User.a.info.no-http.update.bad
-      run User.a.info.no-path.update.bad
-      run User.a.info.no-domain.update.bad
-      run User.a.info.path.update.ok
-      run User.a.info.path.read.ok
-      run User.a.info.path-qs.update.ok
-      run User.a.password.min-lt.update.bad
-      run User.a.password.max-gt.update.bad
-      run User.a.password.weak-num.update.bad
-      run User.a.password.weak-sym.update.bad
-      run User.a.password.weak-ucase.update.bad
-      run Session.signout.ok
-      run Session.a.signin.password.a.bad
-      run Session.a.signin.password.b.ok
-    describe 'graph', ->
-      run Node.list.is0
-      run Node.a.create.ok
-      run Node.a.read.ok
-      run Node.a.name.max.update.ok
-      run Node.a.name.max.read.ok
-      run Node.a.name.max-gt.update.bad
-      run Node.a.name.min.update.ok
-      run Node.a.name.dash.update.ok
-      run Node.a.name.min-lt.update.bad
-      run Node.a.name.space.multi.update.bad
-      run Node.a.name.space.start.update.bad
-      run Node.a.name.space.end.update.bad
-      run Node.a.name.the.start.update.bad
-      run Node.a.name.the.has.update.ok
-      run Node.a.name.you.update.ok
-      run Node.a.name.dcms.update.ok
-      run Node.a.name.paren.open.update.ok
-      run Node.a.name.update.ok
-      run Node.a.name.dup.update.bad
-      run Node.b.create.bad         # prior node missing evidence
-      run Evidence.a.list.is0
-      run Evidence.a0.create.ok
-      run Evidence.a.list.is1
-      run Evidence.a0.create.bad    # dup
-      run Node.a.name.update.bad    # has evidence
-      run Evidence.a.url.path.create.ok
-      run Evidence.a.url.path.read.ok
-      run Evidence.a.url.path-qs.create.ok
-      run Evidence.a.url.no-http.create.bad
-      run Evidence.a.url.no-path.create.bad
-      run Evidence.a.url.no-domain.create.bad
-      run Evidence.a1.create.ok
-      run Evidence.a.list.is4
-      run Evidence.a1.remove.ok
-      run Evidence.a.url.path.remove.ok
-      run Evidence.a.url.path-qs.remove.ok
-      run Evidence.a.list.is1
-      run Node.b.create.ok
-      run Evidence.b.list.is0
-      run Edge.aa.create.bad        # loop
-      run Edge.ab.create.bad        # b missing evidence
-      run Node.c.create.bad         # prior node missing evidence
-      run Evidence.b0.create.ok
-      run Evidence.b.list.is1
-      run Node.b.create.bad         # dup
-      run Node.c.create.ok; run Evidence.c0.create.ok
-      run Node.d.create.ok; run Evidence.d0.create.ok
-      run Node.e.create.ok; run Evidence.e0.create.ok
-      run Node.f.create.bad         # count > 5
-      run Node.list.is5
-      run Node.c.remove.bad         # has evidence
-      run Edge.list.is0
-      run Edge.ab.create.ok
-      run Edge.ab.create.bad        # dup
-      run Edge.ab.to-ab.update.ok
-      run Edge.ab.to-bc.update.bad  # ab immutable
-      run Edge.ab.is.eq.update.ok
-      run Edge.ab.is.eq.read.ok
-      run Edge.ab.is.gt.update.bad
-      run Edge.ab.how.max.update.ok
-      run Edge.ab.how.max.read.ok
-      run Edge.ab.how.max-gt.update.bad
-      run Edge.ab.how.min.update.ok
-      run Edge.ab.how.min-lt.update.bad
-      run Edge.ab.how.amp.update.ok
-      run Edge.ab.how.caps.update.ok
-      run Edge.ab.how.comma.update.ok
-      run Edge.ab.how.number.update.ok
-      run Edge.ab.how.slash.update.ok
-      run Edge.ab.year.from.null.update.ok
-      run Edge.ab.year.from.max.update.ok
-      run Edge.ab.year.from.max-gt.update.bad
-      run Edge.ab.year.from.min.update.ok
-      run Edge.ab.year.from.min-lt.update.bad
-      run Edge.ab.year.range.in.update.ok
-      run Edge.ab.year.range.in.read.ok
-      run Edge.ab.year.range.out.update.bad
-      run Edge.ac.create.bad        # prior edge missing evidence
-      run Evidence.ab0.create.ok
-      run Edge.ba.create.bad        # reciprocal ab
-      run Edge.ac.create.ok
-      run Edge.list.is2
-      run Edge.ac.to-ba.update.bad  # reciprocal ab
-      run Edge.bc.create.bad        # prior edge missing evidence
-      run Evidence.ac0.create.ok
-      run Evidence.ac1.create.ok    # count > 5
-      run Node.c.remove.bad         # has edge
-      run Edge.ac.remove.bad        # has evidence
-      run Evidence.ac0.remove.ok
-      run Evidence.ac1.remove.ok
-      run Edge.ac.remove.ok
-      run Edge.list.is1
-      run Node.a.remove.bad         # has edge
-      run Node.b.remove.bad         # has edge
-      run Evidence.c0.remove.ok
-      run Node.c.remove.ok
-      run Node.list.is4
-    describe 'note', ->
-      run Note.a.list.is0
-      run Note.a.create.ok
-      run Note.b.text.tqbf.create.ok
-      run Note.a.list.is1
-      run Note.a.text.min.create.bad # count > 1
-      run Note.a.text.min.update.ok
-      run Note.a.text.min-lt.update.bad
-      run Note.a.text.max.update.ok
-      run Note.a.text.max-gt.update.bad
-      run Note.a.remove.ok
-      run Note.a.list.is0
-      run Note.b.list.is1
-  describe 'user B', ->
-    run Session.signout.ok
-    run Session.b.signin.bad.login
-    #run Session.b.signin.bad.password
-    #run User.b.verify.ok
-    run Session.b.signin.password.a.ok
-    describe 'graph', ->
-      run Node.a.name.update.bad
-      run Node.a.remove.bad
-      run Node.b.remove.bad
-      run Evidence.a0.remove.bad
-      run Node.c.create.ok
-      run Evidence.c0.create.ok
-      run Edge.bc.create.ok
-      run Evidence.bc0.create.ok
-      run Node.f.create.ok
-    describe 'note', ->
-      run Note.b.remove.bad
-      run Note.b.create.ok
-      run Note.b.list.is2
-      run Note.b.text.min.create.bad # count > 1
-    describe 'user', ->
-      run User.a.info.path.update.bad
-      run User.a.remove.bad
-      run User.b.remove.ok
-      run Session.signout.ok
-      run Session.b.signin.password.a.bad
-  describe 'admin', ->
-    run Session.admin.signin.bad.login
-    run Session.admin.signin.bad.password
-    run Session.admin.signin.password.a.ok
-    run Hive.b.set.ok
-    describe 'user', ->
-      run User.a.password.c.update.ok
-      run User.a.quota-daily.six.update.ok
-      run User.c.remove.ok
-    describe 'graph', ->
-      run Node.a.name.max.update.ok # dispite edge
-      run Edge.ab.to-ba.update.ok   # dispite immutable
-      run Evidence.bc0.remove.ok
-      run Edge.bc.remove.ok
-      run Evidence.c0.remove.ok
-      run Node.c.remove.ok
-      run Node.f.remove.ok
-      run Node.list.is4
-  describe 'public', ->
-    run Session.signout.ok
-    run Node.a.create.bad       # signed out
-    run Edge.ab.create.bad      # signed out
-    run Edge.ab.remove.bad      # signed out
-    run Hive.a.get.ok
-    run Hive.b.get.ok
-
-function kill-site cb then
-  err <- CP.exec "pkill -f 'node boot.js test'"
-  # err.code:
-  # 0 One or more processes matched the criteria. 
-  # 1 No processes matched. 
-  # 2 Syntax error in the command line. 
-  # 3 Fatal error: out of memory etc. 
-  throw new Error "pkill returned #{err?code}" if err?code > 1
-  cb err
-
-function drop-db cb then
-  DB.connect!
-  err <- M.connection.db.executeDbCommand dropDatabase:1
-  throw new Error "dropDatabase failed: #{err}" if err
-  err <- M.disconnect
-  throw new Error "disconnect failed: #{err}" if err
-  cb!
-
-function spawn-site opts then
-  site = CP.spawn \node, <[ boot.js test ]>, opts
-  site.unref! # prevent parent process from hanging around
-  site
-
-function run spec then test spec.info, spec.fn
+function test spec then it spec.info, spec.fn

@@ -41,6 +41,11 @@ function refresh el, f then
 
   nodes = N.data!
   edges = E.data nodes
+
+  # prevent D3 error "Cannot read property 'length'" when nodes or edges
+  # is empty, typically at start of app integration tests
+  return unless nodes?length and edges?length
+
   edges = (OB.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
   nodes = (OB.filter-nodes >> P.apply-layout >> FZ.fix-unless-admin) nodes
 

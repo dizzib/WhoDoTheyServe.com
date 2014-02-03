@@ -1,5 +1,5 @@
-_   = require \underscore
 B   = require \backbone
+_   = require \underscore
 Api = require \./api
 M   = require \./model
 

@@ -1,37 +1,51 @@
 Should = require \chai .should!
 R      = require \request
+W      = require \wait.for
+ST     = require \../state
 
-exports
-  ..del     = (path, cb)      -> exports.request.del url(path), cb
-  ..get     = (path, cb)      -> exports.request.get url(path), cb
-  ..post    = (path, obj, cb) -> exports.request.post { url:url(path), json:obj }, cb
-  ..put     = (path, obj, cb) -> exports.request.put  { url:url(path), json:obj }, cb
-  ..request = get-request!
+r = R.defaults jar:R.jar! # clear cookie jar (signout)
 
-  ..list = (done, route, n) ->
-    err, res, json <- exports.get route
-    return done err if err
-    Should.exist json
-    exports.assert res
-    list = JSON.parse json
+module.exports = M =
+  del: (path, cb) ->
+    function del url, cb then r.del url, standardise cb
+    W.for del, url path
+
+  get: (path, cb) ->
+    function get url, cb then r.get url, (err, response, body) ->
+      cb err, { statusCode:response?statusCode, object:JSON.parse body }
+    W.for get, url path
+
+  post: (path, obj) ->
+    function post url, obj, cb then r.post { url:url, json:obj }, standardise cb
+    W.for post, url(path), obj
+
+  put: (path, obj, cb) ->
+    function put url, obj, cb then r.put { url:url, json:obj }, standardise cb
+    W.for put, url(path), obj
+
+  list: (route, n) ->
+    res = W.for M.get, route
+    M.assert res
+    Should.exist list = res.object
     list.length.should.equal n
-    done!
 
-  ..assert  = (res, is-ok = true) ->
-    asserter = if is-ok then exports.ok else exports.err
-    asserter res
-  ..is-ok   = (res) -> res.statusCode is 200
-  ..ok      = (res) ->
-    exports.log res.body unless res.statusCode is 200
-    res.statusCode.should.equal 200
-  ..err     = (res) ->
-    exports.log res.body unless res.statusCode is 500
-    res.statusCode.should.equal 500
+  ## assertions
 
-  ..log = console.log
+  assert: (res, is-ok = true) -> (if is-ok then M.ok else M.err) res
 
-function get-request then
-  jar = R.jar!        # clear cookie jar (signout)
-  R.defaults jar:jar
+  is-ok: -> it.statusCode is 200
+
+  ok: -> assert-result it, 200
+
+  err: -> assert-result it, 500
+
+## helpers
+
+function standardise cb then (err, resp, body) ->
+  cb err, { statusCode:resp?statusCode, body:body }
 
 function url path then "http://localhost:4001/api/#{path}"
+
+function assert-result res, status-code-expect then
+  log res.body unless res.statusCode is status-code-expect
+  res.statusCode.should.equal status-code-expect

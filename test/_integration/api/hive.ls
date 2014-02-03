@@ -1,39 +1,19 @@
 Should = require \chai .should!
 _      = require \underscore
 H      = require \./helper
+S      = require \../spec/hive
 
-exports
-  ..a = get-spec-by-key \a, '{"key":"foo","value":"bar"}'
-  ..b = get-spec-by-key \b, \value-b
+module.exports = S.get-spec set, get #, update, remove, list, verify
 
-function get-spec-by-key key, value then
-  _.extend do
-    get-spec-tests get, key, value
-    get-spec-tests set, key, value
-
-function get-spec-tests op, key, value then
-  "#{op.name}":
-    ok : get-spec-test op, key, value, true
-    bad: get-spec-test op, key, value, false
-
-function get-spec-test op, key, value, is-ok then
-  info: "hive #{op.name} #{key}"
-  fn  : (done) -> op key, value, done, is-ok
-
-function get key, expect-value, done, is-ok then
-  err, res, json <- H.get get-route key
-  H.assert res, true
-  obj = JSON.parse json
+function get key, is-ok, expect-value then
+  H.assert res = H.get get-route key
   if is-ok then
-    Should.exist obj.value
-    obj.value.should.equal expect-value
+    Should.exist res.object.value
+    res.object.value.should.equal expect-value
   else
-    Should.not.exist obj.value
-  done err
+    Should.not.exist res.object.value
 
-function set key, value, done, is-ok then
-  err, res, json-in <- H.post get-route(key), value:value
-  H.assert res, is-ok
-  done err
+function set key, is-ok, value then
+  H.assert (res = H.post get-route(key), value:value), is-ok
 
 function get-route key then "hive/#{key}"

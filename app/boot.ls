@@ -7,10 +7,13 @@ H       = require \./helper
 M       = require \./model
 M-Ext   = require \./model-ext
 P       = require \./view/graph/persister
+VAL     = require \./validator
 V       = require \./view
 V-Hdlr  = require \./view-handler
 V-Foot  = require \./view/footer
 Router  = require \./router
+
+Window.log = console.log
 
 Ins-css F.readFileSync __dirname + \/lib/form.css
 Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
@@ -20,6 +23,7 @@ B.Model.prototype.idAttribute = \_id  # mongodb
 Api   .init!
 M-Ext .init!
 C     .init!
+VAL   .init!
 V-Hdlr.init Router
 V-Foot.init!
 

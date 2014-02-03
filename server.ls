@@ -2,6 +2,8 @@ Express = require \express
 _       = require \underscore
 H       = require \./api/helper
 
+global.log = console.log
+
 const ONE-HOUR = 60m * 60s * 1000ms
 
 cookie-opts =
@@ -48,7 +50,7 @@ function handle-error err, req, res, next then
 function log-error opts then
   (err, req, res, next) ->
     msg = if err.name is \ValidationError then get-validation-msg err else err.message
-    console.log if opts.show-stack and err.stack then err.stack else msg
+    log if opts.show-stack and err.stack then err.stack else msg
     next err
 
 function get-validation-msg err

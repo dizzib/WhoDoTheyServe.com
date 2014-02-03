@@ -1,65 +1,36 @@
-C = require \chai .should!
-_ = require \underscore
-B = require \./browser
+C = require \./crud
+F = require \./firedrive
 H = require \./helper
-S = require \../state
-U = require \../spec/user
+S = require \../spec/user
 
-module.exports = U.get-spec create, read, update, remove, list, verify
+c = C \user,
+  ent-ui   : -> \Contributor
+  fill     : fill
+  go-create: -> F.go \user/signup
+  go-edit  : go-edit
+  on-create: -> F.wait-for /Goodbye|Welcome/, \.main>.show>legend
 
-function create done, login, is-ok, fields = {} then
-  err <- B.go \#/user-signup
-  return done err if err
+module.exports = S.get-spec create, void, c.update, c.remove, c.list
+
+function create login, is-ok, fields = {} then
   fields
-    ..login     ||= login
-    ..password  ||= \Pass1!
-    ..email     ||= "#{login}@domain.com"
-    ..info      ||= ''
-  H.log B.cookies
-  H.log 'create', login, fields
-  B
-    .fill 'Username'        , fields.login
-    .fill 'Password'        , fields.password
-    .fill 'Confirm Password', fields.password
-    .fill 'Email'           , fields.email
-    .fill 'Homepage'        , fields.info
-  err <- B.pressButton \Create
-  B.assert is-ok
-  if B.is-ok! then
-    S.add-user fields
-  done err
+    ..login       ||= login
+    ..password    ||= \Pass1!
+    ..email       ||= "#{login}@domain.com"
+    ..info        ||= ''
+    ..quota_daily ||= \5
+  c.create login, is-ok, fields
 
-function read done, login, is-ok, fields then
-  H.log login, S.users #[login]
-  err <- B.go \#/user-info
-  #user = JSON.parse json
-  #H.assert res, is-ok
-  #for k, v of fields then user[k].should.equal v
-  done err
+## helpers
 
-function update done, login, is-ok, fields then
-  err <- B.go \#/user-edit
-  #user =
-  #  _id     : H.users[login]._id
-  #  password: '' # TODO: stop backbone sending this
-  #err, res, user <- H.put get-route(login), _.extend user, fields
-  #H.assert res, is-ok
-  #if H.is-ok res then H.users[user.login] = user
-  done err
+function go-edit then
+  F.click \Edit
+  F.wait-for /Edit Account/, \legend>.update
 
-function remove done, login, is-ok, fields then
-  err <- B.go \#/user-edit
-  #H.assert res, is-ok
-  #if H.is-ok res then delete H.users[login]
-  done err
-
-function verify done, login, is-ok, fields then
-  err <- B.go "#/api/users/#{login}/verify"
-  #H.assert res, is-ok
-  #if H.is-ok res then delete H.users[login]
-  done err
-
-function list done, n then
-  err <- B.go \#/users
-  B.queryAll('.users li').length.should.equal n
-  done err
+function fill fields then F.fill do
+  Username          : fields.login
+  'Password'        : fields.password
+  'Confirm Password': fields.password
+  Email             : fields.email
+  Homepage          : fields.info
+  'Daily Quota'     : fields.quota_daily

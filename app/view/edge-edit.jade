@@ -8,11 +8,11 @@ form.form-horizontal.well
     span.input-xxlarge
       +field-select('a_node_id', 'Actor A')
     +field-label('a_is', 'Influence')
-      label.radio
+      label.radio(for='a_is_lt')
         | A is a subordinate of B
         | (e.g. A is created, employed, funded, owned, or run by B)
         input(type='radio', name='a_is', id='a_is_lt', value='lt')
-      label.radio
+      label.radio(for='a_is_eq')
         | A is a peer/equal of B, or influence unclear or unknown
         input(type='radio', name='a_is', id='a_is_eq', value='eq')
     +field-text('how', 'How')

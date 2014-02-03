@@ -66,10 +66,12 @@ exports
 
   ..ready = ->
     $ \.timeago .timeago!
-    $ \.view .addClass \ready
-    _.defer -> $ \.btnNew:visible:first .focus!
     # use a delgated event since view may still be rendering asyncly
     $ \.view .on \focus, 'input[type=text]', ->
       # defer, to workaround Chrome mouseup bug
       # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
       _.defer ~> this.select!
+    <- _.defer
+    $ \.btnNew:visible:first .focus!
+    $ \.view .addClass \ready
+    #_.delay (-> $ \.view .addClass \ready), 1000ms

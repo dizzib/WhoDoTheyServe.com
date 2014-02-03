@@ -2,11 +2,11 @@ const LIBS =
   backbone:
     cdn: \backbone.js/1.0.0/backbone-min.js
     loc: \backbone.js
-    ok : -> Backbone
+    ok : -> Backbone?
   backbone_validation:
     cdn: \backbone.validation/0.7.1/backbone-validation-min.js
     loc: \backbone-validation.js
-    ok : -> Backbone?Validation
+    ok : -> Backbone?.Validation?
   bootstrap_css:
     cdn: \twitter-bootstrap/2.3.1/css/bootstrap.min.css
     loc: \bootstrap/css/bootstrap.css
@@ -14,23 +14,23 @@ const LIBS =
   bootstrap_typeahead:
     cdn: \twitter-bootstrap/2.3.1/js/bootstrap-typeahead.min.js
     loc: \bootstrap/js/bootstrap-typeahead.js
-    ok : -> $.fn.typeahead
+    ok : -> $?.fn.typeahead?
   d3:
     cdn: \d3/3.1.6/d3.min.js
     loc: \d3.js
-    ok : -> d3
+    ok : -> d3?
   jquery:
     cdn: \jquery/2.0.1/jquery.min.js
     loc: \jquery.js
-    ok : -> $
+    ok : -> $?
   jquery_timeago:
     cdn: \jquery-timeago/1.1.0/jquery.timeago.min.js
     loc: \jquery.timeago.js
-    ok : -> $?timeago
+    ok : -> $?.timeago?
   underscore:
     cdn: \underscore.js/1.4.4/underscore-min.js
     loc: \underscore.js
-    ok : -> _
+    ok : -> _?
 
 resources = []
 resources # order is important for dependencies
@@ -52,6 +52,7 @@ function get-resource name then
   yep     : "//cdnjs.cloudflare.com/ajax/libs/#{LIBS[name].cdn}"
   nope    : get-url-local name
   complete: ->
+    console.log name
     return if LIBS[name].ok!
     console.log "Fallback to #{url = get-url-local name}"
     yepnope url

@@ -41,23 +41,23 @@ Router = B.Router.extend do
     \user/signout      : \user_signout
     \user/signup       : \user_signup
     \user/:id          : \user
-    \users             : \user_list
+    \users             : \users
   doc_about   : -> V.doc-about.render!
   edge        : -> HS.set-edge VC.edge ...
-  edges       : VC.edges
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
+  edges       : VC.edges
   fireprox    : F.setup-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   node        : -> HS.set-node-id VC.node ...
-  nodes       : VC.nodes
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
+  nodes       : VC.nodes
   session     : -> V.session.render!
   user        : VC.user
   user_edit   : -> V.user-edit.render (M.User.create it), C.Users
-  user_list   : -> V.users.render C.Users, VD.users
   user_signin : -> V.user-signin.render M.Session.create!, C.Sessions
-  user_signup : -> V.user-signup.render M.Signup.create!, C.Users
   user_signout: -> V.user-signout.render!
+  user_signup : -> V.user-signup.render M.Signup.create!, C.Users
+  users       : VC.users
 
 module.exports = new Router!

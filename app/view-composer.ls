@@ -33,6 +33,9 @@ exports
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
     render-user-entities id, V.nodes    , C.Nodes    , D.nodes
     render-user-entities id, V.notes    , C.Notes    , D.user-notes
+  ..users = ->
+    V.users-head.render!
+    V.users.render C.Users, D.users
 
 function render-evidences entity-id, act, id then
   evs = C.Evidences.find -> entity-id is it.get \entity_id
