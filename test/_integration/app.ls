@@ -9,7 +9,6 @@ Session  = require \./app/session
 User     = require \./app/user
 Launcher = require \./launcher
 
-return
 unless (env = process.env.NODE_ENV) is \test
   throw new Error "unexpected environment #{env}"
 
