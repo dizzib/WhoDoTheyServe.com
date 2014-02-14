@@ -11,7 +11,6 @@ module.exports = (entity-name) ->
       submit-create ...
 
     create-for: function create key, is-ok, fields then
-      log key, fields
       parent = get-node-or-edge key
       entity = entity_id:parent._id
       submit-create key, is-ok, _.extend entity, fields

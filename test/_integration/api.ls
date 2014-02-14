@@ -1,3 +1,5 @@
+global.log = console.log
+
 W        = require \wait.for
 R        = require \./helper .run
 Evidence = require \./api/evidence
@@ -7,19 +9,12 @@ Node     = require \./api/node
 Note     = require \./api/note
 Session  = require \./api/session
 User     = require \./api/user
-Launcher = require \./launcher
 
-unless (env = process.env.NODE_ENV) is \test
-  throw new Error "unexpected environment #{env}"
+unless \tester is env = process.env.NODE_ENV
+  throw new Error "unexpected environment #env"
 
 (...) <- describe 'api'
 @timeout 10000
-
-before R ->
-  W.for Launcher.reset
-
-#after R ->
-#  W.for Launcher.respawn
 
 it 'signup'
 test User.list.is0

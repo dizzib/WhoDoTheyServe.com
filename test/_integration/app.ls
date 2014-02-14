@@ -7,20 +7,15 @@ Node     = require \./app/node
 Note     = require \./app/note
 Session  = require \./app/session
 User     = require \./app/user
-Launcher = require \./launcher
 
-unless (env = process.env.NODE_ENV) is \test
-  throw new Error "unexpected environment #{env}"
+unless \tester is env = process.env.NODE_ENV
+  throw new Error "unexpected environment #env"
 
 (...) <- describe 'app'
 @timeout 10000
 
 before R ->
-  W.for Launcher.reset
   B.init!
-
-after R ->
-  W.for Launcher.respawn
 
 it 'click About', R ->
   B.click \About

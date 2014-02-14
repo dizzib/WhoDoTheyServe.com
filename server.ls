@@ -1,8 +1,8 @@
+global.log = console.log
+
 Express = require \express
 _       = require \underscore
 H       = require \./api/helper
-
-global.log = console.log
 
 const ONE-HOUR = 60m * 60s * 1000ms
 
@@ -19,7 +19,7 @@ env = (server = Express!).settings.env
 module.exports = server
   ..set \port, process.env.PORT || 80
   ..use Express.favicon \./app/asset/favicon.png, static-opts
-  ..use Express.logger \dev if env in <[ development test staging production ]>
+  ..use Express.logger \dev
   ..use Express.compress! if env in <[ staging production ]>
   ..use Express.cookieParser!
   ..use Express.cookieSession cookie-opts
@@ -27,8 +27,7 @@ module.exports = server
   ..use allow-cross-domain
   ..use server.router
   ..use Express.static "#{__dirname}/app", static-opts
-  ..use log-error show-stack:yes if env in <[ development ]>
-  ..use log-error show-stack:no  if env in <[ test staging production ]>
+  ..use log-error show-stack:env in <[ development ]>
   ..use handle-error
   ..use Express.errorHandler! if env in <[ development ]>
 

@@ -7,8 +7,6 @@ Hive      = require \./api/hive
 ApiRouter = require \./api/router
 DH-Graph  = require \./deploy/hive/graph
 
-require \./bundler .init! if Server.settings.env is \development
-
 DB.connect!
 Hive.init DH-Graph.set-images
 ApiRouter.init Server

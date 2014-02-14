@@ -7,6 +7,7 @@ exports
   ..create = ->
     (req, res, next) ->
       freeze-secs = process.env.WDTS_USER_SIGNIN_BAD_FREEZE_SECS or 5s
+      return next new Error 'signout required' if req.session.signin
       do
         err, user <- Users.findOne login:(b = req.body).login
         return next err if err

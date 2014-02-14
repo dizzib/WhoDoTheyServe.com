@@ -1,0 +1,15 @@
+#!/bin/bash
+
+OBJ="_build/obj"
+
+lsc -o $OBJ -cw *.json.ls &
+lsc -o $OBJ/task -cw task/*.ls &
+
+cd $OBJ
+npm install
+npm prune
+
+while read
+do
+  :
+done
