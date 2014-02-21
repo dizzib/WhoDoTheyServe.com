@@ -12,7 +12,7 @@ unless \tester is env = process.env.NODE_ENV
   throw new Error "unexpected environment #env"
 
 (...) <- describe 'app'
-@timeout 100000000
+@timeout 10000
 
 before R ->
   B.init!

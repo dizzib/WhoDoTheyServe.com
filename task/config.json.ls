@@ -27,4 +27,3 @@ staging:
   tester:
     NODE_ENV                        : \tester
     SITE_PORT                       : 4002
-    LOAD_FROM_CDN                   : true

@@ -40,6 +40,3 @@ rl = Readline.createInterface input:process.stdin, output:process.stdout
       rl.prompt!
 
 Build.start on-built:Run.recycle-build
-#Build.start!
-#Run.recycle-staging!
-#Run.recycle-build!

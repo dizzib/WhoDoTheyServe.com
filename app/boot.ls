@@ -1,4 +1,4 @@
-Window.log = console.log
+window.log = console.log
 
 B       = require \backbone
 F       = require \fs # inlined by brfs

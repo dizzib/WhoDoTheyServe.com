@@ -48,7 +48,7 @@ yepnope.errorTimeout = 4000ms
 yepnope resources
 
 function get-resource name then
-  test    : is-load-from-cdn!
+  test    : window.is-load-from-cdn # set by /task/stage.ls
   yep     : "//cdnjs.cloudflare.com/ajax/libs/#{LIBS[name].cdn}"
   nope    : get-url-local name
   complete: ->
@@ -58,7 +58,3 @@ function get-resource name then
     yepnope url
 
 function get-url-local name then "/lib-3p/#{LIBS[name].loc}"
-
-function is-load-from-cdn then
-  is-prod = /\.(com|net)$/.test window.location.origin
-  is-prod or /cdn/.test window.location.search

@@ -41,13 +41,6 @@ module.exports = B =
           log \displayed, e
           "displayed failed: #e"
 
-  init: ->
-    W4m md, \connect
-    w4mc \startSession
-    w4mc \setSearchTimeout 500
-    mc.goUrl SITE-URL # + if process.env.LOAD_FROM_CDN then '?cdn=true' else ''
-    w4mc \executeScript init-sandbox
-
   click: (...args) ->
     B.wait-for ...args
     w4mc \executeScript -> window.click-el!
@@ -65,6 +58,15 @@ module.exports = B =
   go: (path = '') ->
     url = "#SITE-URL#{if path then '/#' else ''}/#path"
     w4mc \executeScript, (-> window.location.href = it), [ url ]
+
+  init: ->
+    W4m md, \connect
+    w4mc \startSession
+    w4mc \setSearchTimeout 500
+    w4mc \goUrl SITE-URL
+    view = w4mc \findElement, \.view
+    w4mc \waitFor -> view.displayed!
+    w4mc \executeScript init-sandbox
 
   send-keys: (keys) ->
     el = w4mc \executeScript -> window.el
@@ -150,8 +152,8 @@ function init-sandbox
   window.fetch-by-text = (text, filter, scope) ->
     window.fetch (-> it.trim() is text), filter, scope
 
-  window.fetch-by-regex = (text-rxs, filter, scope) ->
-    rx = new RegExp text-rxs
+  window.fetch-by-regex = (text-rx, filter, scope) ->
+    rx = new RegExp text-rx
     window.fetch (-> rx.test it), filter, scope
 
   window.fill = ->

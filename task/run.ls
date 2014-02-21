@@ -49,7 +49,7 @@ function recycle cwd, g = cfg-group, desc = ''
   [primary, test, tester] = [g.primary, g.test, g.tester]
   <- stop-site primary
   start-site cwd, primary
-  G.say "#API#desc starting..."
+  G.say "#API#desc started"
   <- kill-mocha
   <- stop-site test
   <- drop-db test
@@ -57,16 +57,12 @@ function recycle cwd, g = cfg-group, desc = ''
   e <- run-tests OBJ, tester, 'app --invert'
   return if e?
   G.ok "#API#desc passed"
-  run (-> void)
-  #run run
-  function run cb
-    <- stop-site test
-    <- drop-db test
-    G.say "#APP#desc starting..."
-    <- start-site cwd, test
-    e <- run-tests OBJ, tester, 'app'
-    G.ok "#APP#desc passed" unless e?
-    cb cb
+  <- stop-site test
+  <- drop-db test
+  G.say "#APP#desc started"
+  <- start-site cwd, test
+  e <- run-tests OBJ, tester, 'app'
+  G.ok "#APP#desc passed" unless e?
 
 function run-tests cwd, cfg, grep, cb
   if _.isFunction grep then [grep, cb] = [void, grep] # variadic
