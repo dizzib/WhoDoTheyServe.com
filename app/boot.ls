@@ -1,3 +1,5 @@
+Window.log = console.log
+
 B       = require \backbone
 F       = require \fs # inlined by brfs
 Ins-css = require \./lib-3p/insert-css
@@ -12,8 +14,6 @@ V       = require \./view
 V-Hdlr  = require \./view-handler
 V-Foot  = require \./view/footer
 Router  = require \./router
-
-Window.log = console.log
 
 Ins-css F.readFileSync __dirname + \/lib/form.css
 Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css

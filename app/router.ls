@@ -14,6 +14,7 @@ Router = B.Router.extend do
   after: ->
     VH.ready!
   before: ->
+    H.log \route, it
     B.trigger \route-before
     VH.reset!
   routes:

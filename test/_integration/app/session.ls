@@ -3,7 +3,10 @@ S = require \../spec/session
 
 module.exports = S.get-spec signin, signout
 
-function signin login, is-ok, fields = {} then
+function signin login, is-ok, fields = {}
+  # nav away to clear previous errors
+  B.click /About/, \a .wait-for /About/, \h3
+
   fields
     ..login    ||= login
     ..password ||= \Pass1!
@@ -13,8 +16,7 @@ function signin login, is-ok, fields = {} then
   B.assert.ok is-ok
   B.wait-for \Welcome!, \.main>.show>legend if is-ok
 
-function signout then
-  B.pause! # occasionally fails without this pause
-  B.click \Logout
+function signout
+  B.click \Logout, \a
   B.assert.ok!
   B.wait-for \Goodbye!, \.main>.show>legend

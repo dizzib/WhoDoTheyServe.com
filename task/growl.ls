@@ -1,33 +1,33 @@
-_      = require \lodash
-Assert = require \assert
-Chalk  = require \chalk
-G      = require \growler
-U      = require \util
+Chalk = require \chalk
+Gntp  = require \gntp
+Util  = require \util
 
-const TITLE = 'wdts'
+const APP     = \wdts
+const DEFAULT = create-note \Default, Chalk.stripColor
+const ERROR   = create-note \Error  , Chalk.red
+const SUCCESS = create-note \Success, Chalk.green
 
-g = void
+module.exports =
+  alert: (e, opts = {}) -> send ERROR, e, opts <<< sticky:true
+  err  : (e, opts)      -> send ERROR, e, opts
+  ok   : (text, opts)   -> send SUCCESS, text, opts
+  say  : (text, opts)   -> send DEFAULT, text, opts
 
-exports.get = (cb) ->
-  return cb void, g if g?
+client = new Gntp.Client! <<< host:process.env.growl_at
+register!
 
-  Assert (host = process.env.growl_at), "config growl_at not found in env"
-  g := new G.GrowlApplication TITLE, hostname:host
-  g.setNotifications default:void Success:void Error:void
-  # for some reason Wait.for doesn't play nice with Growler
-  # so stick with a standard callback
-  ok, e <- g.register
-  return cb e if e?
+## helpers
 
-  g.alert = (e, opts) -> g.err e, opts <<< sticky:true
-  g.ok = (text, opts) -> g.say text, true, opts
-  g.err = (e, opts) ->
-    g.say if e instanceof Error then e.message else e, false, opts
-  g.say = (text, ok, opts = {}) ->
-    status = if ok then \Success else if ok? then \Error else \default
-    chalks = default:\stripColor Success:\green Error:\red
-    U.log Chalk[chalks[status]] text unless opts.nolog
-    g.sendNotification status, { text:text, title:TITLE } <<< opts
-    text
+function create-note name, chalk
+  new Gntp.Notification! <<< name:name, displayName:name, chalk:chalk
 
-  cb void, g
+function register
+  req = (new Gntp.Application APP).toRequest!
+  for note in [DEFAULT, ERROR, SUCCESS] then req.addNotification note
+  client.sendMessage req.toRequest!
+
+function send note, text, opts = {}
+  if text instanceof Error then text .= message
+  Util.log note.chalk text unless opts.nolog
+  req = note.toRequest! <<< (applicationName:APP, text:text) <<< opts
+  client.sendMessage req.toRequest!

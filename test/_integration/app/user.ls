@@ -7,11 +7,13 @@ c = C \user,
   fill     : fill
   go-create: -> B.go \user/signup
   go-edit  : go-edit
+  go-list  : -> B.go \users
   on-create: -> B.wait-for /Goodbye|Welcome/, \.main>.show>legend
+  on-update: -> B.wait-for it, '.main h2'
 
 module.exports = S.get-spec create, void, c.update, c.remove, c.list
 
-function create login, is-ok, fields = {} then
+function create login, is-ok, fields = {}
   fields
     ..login       ||= login
     ..password    ||= \Pass1!
@@ -22,7 +24,7 @@ function create login, is-ok, fields = {} then
 
 ## helpers
 
-function go-edit then
+function go-edit
   B.click \Edit
   B.wait-for /Edit Account/, \legend>.update
 

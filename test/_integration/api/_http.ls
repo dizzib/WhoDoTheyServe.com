@@ -44,7 +44,7 @@ module.exports = M =
 function standardise cb then (err, resp, body) ->
   cb err, { statusCode:resp?statusCode, body:body }
 
-function url path then "http://localhost:4001/api/#{path}"
+function url path then "http://localhost:#{process.env.SITE_PORT}/api/#{path}"
 
 function assert-result res, status-code-expect then
   log res.body unless res.statusCode is status-code-expect

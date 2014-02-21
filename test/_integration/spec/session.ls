@@ -5,7 +5,7 @@ S = require \../state
 exports.get-spec = (create, remove) ->
 
   function get-spec-signin login, is-ok, fields then
-    info: "signin #{login} #{JSON.stringify fields}#{is-ok ? '' : ' bad'}"
+    info: "signin #{if is-ok then '' else 'bad '}#login #{JSON.stringify fields}"
     fn  : H.run -> create login, is-ok, fields
 
   function get-spec-tests login, fields then

@@ -11,14 +11,13 @@ Shell  = require \shelljs/global
 WFib   = require \wait.for .launchFiber
 WFor   = require \wait.for .for
 W4m    = require \wait.for .forMethod
-Growl  = require \./growl
+G      = require \./growl
 
 const BUILD    = \_build
 const BUILDOBJ = "#BUILD/obj"
 const NMODULES = './node_modules'
 const ROOT     = pwd!replace "/#BUILDOBJ", ''
 
-g      = void
 opts   = on-built: ->
 pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
 tasks  =
@@ -38,60 +37,52 @@ tasks  =
     oxt : \html
   static:
     cmd : 'cp $IN $OUT'
-    ixt : '+(css|gif|html|jpg|js|json|pem|png|svg|ttf|woff|nodemonignore)'
+    ixt : '+(css|gif|html|jpg|js|json|pem|png|svg|ttf|txt|woff)'
   stylus:
     cmd : "#NMODULES/stylus/bin/stylus -u nib --out $OUT $IN"
     ixt : \styl
     oxt : \css
     mixn: \_
 
-log pwd!
-log ROOT
-
 module.exports =
-  clean-files: -> WFib ->
-    log "clean-files #{pwd!}"
+  compile-files: ->
+    try
+      for tid of tasks then compile-batch tid
+      finalise!
+    catch e then G.err e
+
+  delete-files: ->
+    log "delete-files #{pwd!}"
     Assert _.contains pwd!, BUILDOBJ
     WFor exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
 
-  clean-modules: ->
-    log "clean-modules #{pwd!}"
+  delete-modules: ->
+    log "delete-modules #{pwd!}"
     Assert _.contains pwd!, BUILDOBJ
     rm '-rf' "./node_modules"
 
-  compile-all: ->
-    try WFib ->
-      for tid of tasks then compile-batch tid
-      prepare!
-    catch e then g.err e
-
-  init: (o, cb) ->
-    opts := o
-    e, tmp <- Growl.get
-    g := tmp
-    cb e
-
-  npm-refresh: -> WFib ->
+  refresh-modules: ->
     WFor exec, 'npm prune'
     WFor exec, 'npm install'
 
   start: ->
+    G.say 'build started'
+    opts <<< it
     try
       pushd ROOT
       for tid of tasks then start-watching tid
     finally
       popd!
     pruner.start!
-    g.say 'build started'
 
   stop: ->
     pruner.stop!
     for , t of tasks then t.gaze?close!
-    g.say 'build stopped'
+    G.say 'build stopped'
 
 ## helpers
 
-function bundle-app
+function bundle
   const LIBS =
     # execution order is random
     # https://github.com/substack/node-browserify/issues/355
@@ -108,21 +99,18 @@ function bundle-app
     ba = Brsify \./boot.js
     for l in LIBS then ba.external l
     ba.transform Brfs
-    ba.require \./lib-3p/transparency   , expose:\transparency
-    ba.require \./lib-3p-shim/backbone  , expose:\backbone
-    ba.require \./lib-3p-shim/underscore, expose:\underscore
-
-    osa = Fs.createWriteStream \app.js
-    isa = ba.bundle detectGlobals:false, insertGlobals:false
-    isa.on \end, -> g.say 'Bundled app.js'
-    isa.pipe osa
+      ..require \./lib-3p/transparency   , expose:\transparency
+      ..require \./lib-3p-shim/backbone  , expose:\backbone
+      ..require \./lib-3p-shim/underscore, expose:\underscore
+      ..bundle detectGlobals:false, insertGlobals:false
+        ..on \end, -> G.say 'Bundled app.js'
+        ..pipe Fs.createWriteStream \app.js
 
     bl = Brsify LIBS
     for l in LIBS then bl.require l
-    osl = Fs.createWriteStream \lib.js
-    isl = bl.bundle detectGlobals:false, insertGlobals:false
-    isl.on \end, -> g.say 'Bundled lib.js'
-    isl.pipe osl
+    bl.bundle detectGlobals:false, insertGlobals:false
+      ..on \end, -> G.say 'Bundled lib.js'
+      ..pipe Fs.createWriteStream \lib.js
   finally
     popd!
 
@@ -145,9 +133,9 @@ function compile-batch tid
   files = [ f for dir, paths of t.gaze.watched! for f in paths
     when '/' isnt f.slice -1 and (Path.basename f).0 isnt t.mixn ]
   info = "#{files.length} #tid files"
-  g.say "compiling #info..."
+  G.say "compiling #info..."
   for f in files then WFor compile, t, f
-  g.ok "...done #info!"
+  G.ok "...done #info!"
 
 function get-opath t, ipath
   p = ipath.replace("#ROOT/", '').replace t.ixt, t.oxt
@@ -159,16 +147,16 @@ function markdown ipath, opath, cb
   obj.to opath unless e?
   cb e
 
-function prepare ipath
+function finalise ipath
   return if /\/task\//.test ipath
   rx = new RegExp "^#ROOT/(app|lib)"
-  bundle-app! if rx.test ipath
+  bundle! if not ipath? or rx.test ipath
   opts.on-built!
 
 function prune-empty-dirs
   Assert _.contains pwd!, BUILDOBJ
   code, out <- exec "find . -type d -empty -delete"
-  g.err "prune failed: #code #out" if code
+  G.err "prune failed: #code #out" if code
 
 function start-watching tid
   log "start watching #tid"
@@ -181,16 +169,16 @@ function start-watching tid
       if t.mixn? and (Path.basename ipath).0 is t.mixn then
         try
           compile-batch tid
-          bundle-app!
-        catch e then g.err e
+          finalise ipath
+        catch e then G.err e
       else switch act
         | \added, \changed, \renamed
           try opath = WFor compile, t, ipath
-          catch e then return g.err e
-          g.ok opath
-          prepare ipath
+          catch e then return G.err e
+          G.ok opath
+          finalise ipath
         | \deleted
           try W4m Fs, \unlink, opath = get-opath t, ipath
           catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
-          g.ok "Delete #opath"
-          prepare ipath
+          G.ok "Delete #opath"
+          finalise ipath

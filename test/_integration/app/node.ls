@@ -5,7 +5,7 @@ ST = require \../state
 
 c = C \node,
   ent-ui   : -> \Actor
-  fill     : -> B.fill Name:name = it.name
+  fill     : -> B.fill Name:it.name
   go-entity: go-entity
   on-create: on-save
   on-update: on-save

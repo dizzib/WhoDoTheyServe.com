@@ -12,8 +12,8 @@ module.exports = (entity-name, create, read, update, remove, list) ->
         bad: get-spec-test op, key, false, fields
 
     function get-spec-test op, key, is-ok, fields then
-      info: "#{op.name} #{entity-name} #{key} #{JSON.stringify(fields) ? ''}
-             #{if is-ok then '' else ' bad'}"
+      info: "#{op.name} #{if is-ok then '' else 'bad '}
+             #{entity-name} #{key} #{JSON.stringify(fields) ? ''}"
       fn  : H.run -> op key, is-ok, fields
 
     _.extend do

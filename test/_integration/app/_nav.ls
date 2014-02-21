@@ -9,11 +9,10 @@ module.exports =
     ent-key = if key.indexOf(':') > 0 then key.split ':' .0 else key
     is-node = ent-key.length is 1
 
-    name = if is-node then ST.nodes[ent-key]
-    else new RegExp "---#{ent-key}---"
+    name = if is-node then ST.nodes[ent-key] else new RegExp "---#ent-key---"
+    throw new Error "entity #ent-key must first be created" unless name?
 
-    throw new Error "entity #{ent-key} must first be created" unless name?
-
-    B.click if is-node then \Actors else \Connections
+    B.click (legend = if is-node then \Actors else \Connections), \a
+    B.wait-for-visible (new RegExp legend), \legend
     B.click name, \a
-    B.wait-for name, if is-node then \h2>.name else \h2>.how
+    B.wait-for-visible name, if is-node then 'h2>.name' else 'h2>.how'

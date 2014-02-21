@@ -60,6 +60,7 @@ exports
       ~function render c, inner-opts then
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
+        #return opts.void-view.render! if c.length is 0 and opts.void-view?
         if c.length is 0 then
           return unless opts?void-view
           return opts.void-view.render!

@@ -47,22 +47,21 @@ exports
 
     function navigate route then router.navigate route, trigger:true
 
-    function nav-entity-saved name, entity, is-new then
+    function nav-entity-saved name, entity, is-new
       return nav! unless is-new
       function nav path = '' then navigate "#{name}/#{entity.id}#{path}"
       <- VEV.create entity.id
       return nav if it?ok then '' else '/evi-new'
 
-    function nav-extra-done name then
+    function nav-extra-done name
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
 
   ..reset = ->
-    $ \.view>* .off!hide! # call off() so different views can use same element
-    $ '.view>:not(.persist)' .empty! # for seo
-    $ \.view .removeClass \ready
     $ \.view .off \focus, 'input[type=text]'
-    VE.ResetEditView!
+    $ \.view>* .off!hide!empty! # call off() so different views can use same element
     V.navigator.render!
+    VE.ResetEditView!
+    $ '.view>:not(.persist)' .empty! # for seo
 
   ..ready = ->
     $ \.timeago .timeago!
@@ -70,8 +69,6 @@ exports
     $ \.view .on \focus, 'input[type=text]', ->
       # defer, to workaround Chrome mouseup bug
       # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
-      _.defer ~> this.select!
+      _.defer ~> @select!
     <- _.defer
     $ \.btnNew:visible:first .focus!
-    $ \.view .addClass \ready
-    #_.delay (-> $ \.view .addClass \ready), 1000ms
