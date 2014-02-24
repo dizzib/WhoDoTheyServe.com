@@ -1,7 +1,11 @@
 Assert = require \assert
-Shell  = require \shelljs/global
+Shell  = require \shelljs
 W4     = require \wait.for .for
 G      = require \./growl
+
+const OBJ = Shell.pwd!
+const DIS = OBJ.replace /_build\/obj$/, \_build/dist
+Assert DIS isnt OBJ
 
 try
   cfg = (JSON.parse env.prod).appfog
@@ -19,7 +23,7 @@ module.exports =
       log e
 
   push: ->
-    try
+    exec-then-logout ->
       # prevent node 0.8/0.10 bcrypt version mismatch
       # TODO: find a better solution
       W4 exec, 'npm shrinkwrap'
@@ -27,24 +31,26 @@ module.exports =
 
       #W4 exec, 'af update whodotheyserve'
       G.ok "pushed site to appfog PRODUCTION"
-    catch e
-      log e
-    finally
-      logout!
 
   send-env-vars: ->
-    try
+    exec-then-logout ->
       #for k, v in cfg.env
       #  W4 exec, "af env-add whodotheyserve #k=#v"
       G.ok "sent env-vars to appfog PRODUCTION"
-    catch e
-      log e
-    finally
-      logout!
 
   show-config: -> log cfg
 
 ## helpers
+
+function exec-then-logout fn
+  try
+    pushd DIS
+    fn!
+  catch e
+    log e
+  finally
+    logout!
+    popd!
 
 function logout
   try

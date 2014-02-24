@@ -62,6 +62,7 @@ module.exports =
     rm '-rf' "./node_modules"
 
   refresh-modules: ->
+    Assert _.contains pwd!, BUILDOBJ
     WFor exec, 'npm prune'
     WFor exec, 'npm install'
 
