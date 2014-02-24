@@ -1,5 +1,5 @@
 Should   = require \chai .should!
-CryptPwd = require \../../../api/crypt-pwd
+CryptPwd = require "#{process.cwd!}/site/api/crypt-pwd"
 
 (...) <- describe 'crypt-pwd'
 

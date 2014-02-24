@@ -5,11 +5,15 @@ Rl    = require \readline
 Shell = require \shelljs/global
 WFib  = require \wait.for .launchFiber
 Build = require \./build
+Dir   = require \./constants .dir
 Data  = require \./data
 Prod  = require \./prod
 Run   = require \./run
 Stage = require \./stage
 Seo   = require \./seo
+
+# for safety, set working directory to dev build
+cd Dir.DEV
 
 # shelljs doesn't seem to raise exceptions. Next best thing is for this
 # process to die on error
@@ -17,12 +21,12 @@ config.fatal = true
 
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'  fn:show-help
-  * cmd:'b    ' lev:0 desc:'build - recycle + test' fn:Run.recycle-site-tests-dev
+  * cmd:'b    ' lev:0 desc:'build - recycle + test' fn:Run.recycle-site-dev-tests
   * cmd:'b.fc ' lev:0 desc:'build - files compile'  fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'   fn:Build.delete-files
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'     fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'    fn:Build.refresh-modules
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test' fn:Run.recycle-site-tests-staging
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test' fn:Run.recycle-site-staging-tests
   * cmd:'s.g  ' lev:1 desc:'stage - generate'       fn:Stage.generate
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'   fn:Seo.generate
   * cmd:'p    ' lev:0 desc:'prod  - show config'    fn:Prod.show-config
@@ -51,13 +55,16 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
       for c in COMMANDS when cmd is c.cmd.trim! then c.fn!
       rl.prompt!
 
-Build.start on-built:Run.recycle-site-tests-dev
-Run.recycle-site-dev!
-Run.recycle-site-staging!
-setTimeout ->
-  show-help!
-  rl.prompt!
-, 500ms
+try
+  Build.start on-built:Run.recycle-site-dev-tests
+  Run.recycle-site-dev!
+  Run.recycle-site-staging!
+  setTimeout ->
+    show-help!
+    rl.prompt!
+  , 500ms
+catch e
+  log e
 
 function show-help
   for c in COMMANDS when !c.disabled then log c.display

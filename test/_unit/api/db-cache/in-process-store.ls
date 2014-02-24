@@ -1,5 +1,5 @@
 Should = require \chai .should!
-Store  = require \../../../../api/db-cache/in-process-store
+Store  = require "#{process.cwd!}/site/api/db-cache/in-process-store"
 
 (...) <- describe 'db-cache/in-process-store'
 

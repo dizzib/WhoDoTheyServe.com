@@ -1,25 +1,23 @@
-_      = require \lodash
-Assert = require \assert
-Chalk  = require \chalk
-Cp     = require \child_process
-Mg     = require \mongoose
-Shell  = require \shelljs/global
-Cfg    = require \./config
-G      = require \./growl
+_       = require \lodash
+Assert  = require \assert
+Chalk   = require \chalk
+Cp      = require \child_process
+Mg      = require \mongoose
+Shell   = require \shelljs/global
+Cfg     = require \./config
+Dir     = require \./constants .dir
+DirSite = require \./constants .dir.site
+G       = require \./growl
 
-const API   = "Unit & api tests"
-const APP   = "App tests"
-const OBJ   = pwd!
-const DIS   = OBJ.replace /_build\/obj$/, \_build/dist
-const MOCHA = "#OBJ/node_modules/mocha/bin/mocha"
+const MOCHA = "#{Dir.DEV}/node_modules/mocha/bin/mocha"
 const MARGS = "--reporter spec --bail --recursive"
 
 module.exports =
   cancel-testrun : -> kill-mocha it
-  recycle-site-tests-dev    : -> recycle-site-tests OBJ, Cfg.dev
-  recycle-site-tests-staging: -> recycle-site-tests DIS, Cfg.staging, ' for staging'
-  recycle-site-dev          : -> recycle-site OBJ, Cfg.dev.primary
-  recycle-site-staging      : -> recycle-site DIS, Cfg.staging.primary
+  recycle-site-dev          : -> recycle-site DirSite.DEV, Cfg.dev.primary
+  recycle-site-dev-tests    : -> recycle-site-tests DirSite.DEV, Cfg.dev
+  recycle-site-staging      : -> recycle-site DirSite.STAGING, Cfg.staging.primary
+  recycle-site-staging-tests: -> recycle-site-tests DirSite.STAGING, Cfg.staging, ' for staging'
 
 ## helpers
 
@@ -56,20 +54,22 @@ function recycle-site-tests cwd, cfg, desc = ''
   run-tests cwd, cfg, desc
 
 function run-tests cwd, cfg, desc
+  const API = "Unit & api tests"
+  const APP = "App tests"
   [test, tester] = [cfg.test, cfg.tester]
   G.say "#API#desc started"
   <- kill-mocha
   <- stop-site test
   <- drop-db test
   <- start-site cwd, test
-  e <- start-mocha OBJ, tester, 'app --invert'
+  e <- start-mocha Dir.DEV, tester, 'app --invert'
   return if e?
   G.ok "#API#desc passed"
   <- stop-site test
   <- drop-db test
   G.say "#APP#desc started"
   <- start-site cwd, test
-  e <- start-mocha OBJ, tester, 'app'
+  e <- start-mocha Dir.DEV, tester, 'app'
   G.ok "#APP#desc passed" unless e?
 
 function start-mocha cwd, cfg, grep, cb
@@ -90,6 +90,7 @@ function start-mocha cwd, cfg, grep, cb
 function start-site cwd, cfg, cb
   log "start site #{id = cfg.NODE_ENV} #{port = cfg.PORT}"
   args = "#{cfg.NODE_ARGS || ''} boot #id #port".trim!
+  return log "unable to start non-existent site at #cwd" unless test \-e, cwd
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg
     ..stderr.on \data, log-data
     ..stdout.on \data, ->

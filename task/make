@@ -1,11 +1,11 @@
 #!/bin/bash
 
-OBJ="_build/obj"
+DEV="_build/dev"
 
-lsc -o $OBJ -cw *.json.ls &
-lsc -o $OBJ/task -cw task/*.ls &
+lsc -o $DEV -cw *.json.ls &
+lsc -o $DEV/task -cw task/*.ls &
 
-cd $OBJ
+cd $DEV
 npm install
 npm prune
 

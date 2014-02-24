@@ -3,10 +3,11 @@ Client   = require \mongodb .MongoClient
 Mongoose = require \mongoose
 W        = require \wait.for
 R        = require \../helper .run
-Cache-C  = require \../../../api/db-cache/collection-cache
-Cache-Q  = require \../../../api/db-cache/query-by-entity-cache
-Store    = require \../../../api/db-cache/in-process-store
-Sweeper  = require \../../../api/db-cache/sweeper
+db-cache = "#{process.cwd!}/site/api/db-cache"
+Cache-C  = require "#db-cache/collection-cache"
+Cache-Q  = require "#db-cache/query-by-entity-cache"
+Store    = require "#db-cache/in-process-store"
+Sweeper  = require "#db-cache/sweeper"
 
 (...) <- describe 'db-cache'
 @timeout 5000

@@ -1,22 +1,21 @@
-_      = require \lodash
-Assert = require \assert
-Brsify = require \browserify
-Brfs   = require \brfs
-Cron   = require \cron
-Fs     = require \fs
-Gaze   = require \gaze
-Md     = require \marked
-Path   = require \path
-Shell  = require \shelljs/global
-WFib   = require \wait.for .launchFiber
-WFor   = require \wait.for .for
-W4m    = require \wait.for .forMethod
-G      = require \./growl
+_       = require \lodash
+Assert  = require \assert
+Brsify  = require \browserify
+Brfs    = require \brfs
+Cron    = require \cron
+Fs      = require \fs
+Gaze    = require \gaze
+Md      = require \marked
+Path    = require \path
+Shell   = require \shelljs/global
+WFib    = require \wait.for .launchFiber
+WFor    = require \wait.for .for
+W4m     = require \wait.for .forMethod
+Dir     = require \./constants .dir
+Dirname = require \./constants .dirname
+G       = require \./growl
 
-const BUILD    = \_build
-const BUILDOBJ = "#BUILD/obj"
 const NMODULES = './node_modules'
-const ROOT     = pwd!replace "/#BUILDOBJ", ''
 
 opts   = on-built: ->
 pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
@@ -53,16 +52,16 @@ module.exports =
 
   delete-files: ->
     log "delete-files #{pwd!}"
-    Assert _.contains pwd!, BUILDOBJ
+    Assert.equal pwd!, Dir.DEV
     WFor exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
 
   delete-modules: ->
     log "delete-modules #{pwd!}"
-    Assert _.contains pwd!, BUILDOBJ
+    Assert.equal pwd!, Dir.DEV
     rm '-rf' "./node_modules"
 
   refresh-modules: ->
-    Assert _.contains pwd!, BUILDOBJ
+    Assert.equal pwd!, Dir.DEV
     WFor exec, 'npm prune'
     WFor exec, 'npm install'
 
@@ -70,7 +69,7 @@ module.exports =
     G.say 'build started'
     opts <<< it
     try
-      pushd ROOT
+      pushd Dir.ROOT
       for tid of tasks then start-watching tid
     finally
       popd!
@@ -96,7 +95,7 @@ function bundle
     \./lib-3p/transparency
     \./lib-3p-ext/jquery
   try
-    pushd "./app"
+    pushd "./site/app"
     ba = Brsify \./boot.js
     for l in LIBS then ba.external l
     ba.transform Brfs
@@ -138,33 +137,39 @@ function compile-batch tid
   for f in files then WFor compile, t, f
   G.ok "...done #info!"
 
+function copy-package-json
+  # ensure package.json resides alongside /api and /app
+  cp \-f, './package.json', './site'
+
 function get-opath t, ipath
-  p = ipath.replace("#ROOT/", '').replace t.ixt, t.oxt
+  p = ipath.replace("#{Dir.ROOT}/", '').replace t.ixt, t.oxt
   return p unless (xsub = t.xsub?split '->')?
   p.replace xsub.0, xsub.1
 
 function markdown ipath, opath, cb
-  e, obj <- Md cat ipath
-  obj.to opath unless e?
+  e, html <- Md cat ipath
+  html.to opath unless e?
   cb e
 
 function finalise ipath
   return if /\/task\//.test ipath
-  rx = new RegExp "^#ROOT/(app|lib)"
+  rx = new RegExp "^#{Dir.ROOT}/(app|lib)"
   bundle! if not ipath? or rx.test ipath
+  copy-package-json!
   opts.on-built!
 
 function prune-empty-dirs
-  Assert _.contains pwd!, BUILDOBJ
+  Assert.equal pwd!, Dir.DEV
   code, out <- exec "find . -type d -empty -delete"
   G.err "prune failed: #code #out" if code
 
 function start-watching tid
   log "start watching #tid"
-  Assert.equal pwd!, ROOT
+  Assert.equal pwd!, Dir.ROOT
   t = tasks[tid]
-  t.gaze = Gaze [ "**/*.#{t.ixt}", "!#BUILD/**" ], ->
+  t.gaze = Gaze [ "**/*.#{t.ixt}", "!#{Dirname.BUILD}/**" ], ->
     act, ipath <- t.gaze.on \all
+    log act, ipath
     return if '/' is ipath.slice -1 # BUG: Gaze might fire when dir added
     WFib ->
       if t.mixn? and (Path.basename ipath).0 is t.mixn then

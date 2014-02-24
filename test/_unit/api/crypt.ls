@@ -1,5 +1,5 @@
 Chai  = require \chai
-Crypt = require \../../../api/crypt
+Crypt = require "#{process.cwd!}/site/api/crypt"
 
 const TEXT = 'The quick brown fox !@#$%^ .com'
 

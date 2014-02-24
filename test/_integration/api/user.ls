@@ -5,7 +5,7 @@ C     = require \./_crud
 H     = require \./_http
 S     = require \../state
 U     = require \../spec/user
-Users = require \../../../api/model/users
+Users = require "#{process.cwd!}/site/api/model/users"
 
 c = C \users
 module.exports = U.get-spec create, c.read, c.update, c.remove, c.list, verify

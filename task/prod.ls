@@ -1,11 +1,8 @@
 Assert = require \assert
 Shell  = require \shelljs
 W4     = require \wait.for .for
+Dir    = require \./constants .dir
 G      = require \./growl
-
-const OBJ = Shell.pwd!
-const DIS = OBJ.replace /_build\/obj$/, \_build/dist
-Assert DIS isnt OBJ
 
 try
   cfg = (JSON.parse env.prod).appfog
@@ -44,7 +41,7 @@ module.exports =
 
 function exec-then-logout fn
   try
-    pushd DIS
+    pushd Dir.STAGING
     fn!
   catch e
     log e
