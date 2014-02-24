@@ -13,10 +13,6 @@ const DIS = OBJ.replace /_build\/obj$/, \_build/dist
 Assert DIS isnt OBJ
 mkdir DIS unless test '-e', DIS
 
-# shelljs doesn't seem to raise exceptions. Next best thing is for this
-# process to die on error
-config.fatal = true
-
 module.exports =
   generate: ->
     try

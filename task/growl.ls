@@ -13,8 +13,12 @@ module.exports =
   ok   : (text, opts)   -> send SUCCESS, text, opts
   say  : (text, opts)   -> send DEFAULT, text, opts
 
-client = new Gntp.Client! <<< host:process.env.growl_at
-register!
+if enabled = (growl-at = process.env.growl-at)?
+  log "growl at #growl-at"
+  client = new Gntp.Client! <<< host:growl-at
+  register!
+else
+  log "growl disabled"
 
 ## helpers
 
@@ -29,5 +33,6 @@ function register
 function send note, text, opts = {}
   if text instanceof Error then text .= message
   Util.log note.chalk text unless opts.nolog
+  return unless enabled
   req = note.toRequest! <<< (applicationName:APP, text:text) <<< opts
   client.sendMessage req.toRequest!

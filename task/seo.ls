@@ -5,7 +5,7 @@ WFor   = require \wait.for .for
 W4m    = require \wait.for .forMethod
 
 const OBJ = pwd!
-const SEO = OBJ.replace /_build\/obj$/, \_build/dist-seo
+const SEO = OBJ.replace /_build\/obj$/, \_build/seo
 
 Assert SEO isnt OBJ
 mkdir SEO unless test '-e', SEO

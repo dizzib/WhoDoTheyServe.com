@@ -9,7 +9,7 @@ W4m = require \wait.for .forMethod
 const POLL-TIME = 50ms
 const SITE-URL  = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
 
-md = new Mc.Drivers.Tcp host:process.env.FIREFOX_HOST
+md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host or \localhost)
 mc = new Mc.Client md
 
 module.exports = B =
@@ -60,7 +60,9 @@ module.exports = B =
     w4mc \executeScript, (-> window.location.href = it), [ url ]
 
   init: ->
+    log "connecting to firefox marionette at #host"
     W4m md, \connect
+    log "connected"
     w4mc \startSession
     w4mc \setSearchTimeout 500
     w4mc \goUrl SITE-URL

@@ -1,4 +1,4 @@
-build:
+dev:
   primary:
     NODE_ENV                        : \development
     PORT                            : 4000
