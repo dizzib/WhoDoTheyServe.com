@@ -16,11 +16,11 @@ Source code for [WhoDoTheyServe.com][wdts]
 
 * clone the [repository][wdts-repo] from GitHub
 
-The build tasks are written in LiveScript so run this command to compile them into javascript and install the node modules from npm:
+The build tasks are written in LiveScript so issue the following command to make them runnable:
 
 * `task/bootstrap`
 
-You should then be able to launch the task runner:
+Now launch the task runner:
 
 * `node _build/dev/task/repl`
 
