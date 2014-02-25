@@ -1,35 +1,35 @@
 Assert = require \assert
 Shell  = require \shelljs/global
 
-const build   = \_build
-const dev     = \dev
-const site    = \site
-const staging = \staging
-const seo     = \seo
+const BUILD   = \_build
+const DEV     = \dev
+const SITE    = \site
+const STAGING = \staging
+const SEO     = \seo
 
-const dir-root         = pwd!
-const dir-build        = "#dir-root/#build"
-const dir-dev          = "#dir-build/#dev"
-const dir-site-dev     = "#dir-dev/#site"
-const dir-site-staging = "#dir-build/#staging"
-const dir-site-seo     = "#dir-build/#seo"
+const DIR-ROOT         = pwd!
+const DIR-BUILD        = "#DIR-ROOT/#BUILD"
+const DIR-DEV          = "#DIR-BUILD/#DEV"
+const DIR-SITE-DEV     = "#DIR-DEV/#SITE"
+const DIR-SITE-STAGING = "#DIR-BUILD/#STAGING"
+const DIR-SITE-SEO     = "#DIR-BUILD/#SEO"
 
 module.exports = M =
   dirname:
-    BUILD  : build
-    DEV    : dev
-    SITE   : site
-    STAGING: staging
-    SEO    : seo
+    BUILD  : BUILD
+    DEV    : DEV
+    SITE   : SITE
+    STAGING: STAGING
+    SEO    : SEO
   dir:
-    ROOT : dir-root
-    BUILD: dir-build
-    DEV  : dir-dev
+    ROOT : DIR-ROOT
+    BUILD: DIR-BUILD
+    DEV  : DIR-DEV
     site :
-      DEV    : dir-site-dev
-      STAGING: dir-site-staging
-      SEO    : dir-site-seo
+      DEV    : DIR-SITE-DEV
+      STAGING: DIR-SITE-STAGING
+      SEO    : DIR-SITE-SEO
 
-Assert test \-e "#dir-root/#site"
-Assert test \-e "#dir-root/task"
-Assert test \-e "#dir-root/test"
+Assert test \-e "#DIR-ROOT/#SITE"
+Assert test \-e "#DIR-ROOT/task"
+Assert test \-e "#DIR-ROOT/test"
