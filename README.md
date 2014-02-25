@@ -10,7 +10,7 @@ Source code for [WhoDoTheyServe.com][wdts]
 
 * [mongodb][mongodb] (run with [`mongod`][mongod])
 
-* [LiveScipt][LiveScript]
+* [LiveScript][LiveScript]
 
 ## Clone and build
 
