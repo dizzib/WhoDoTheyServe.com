@@ -47,7 +47,7 @@ test User.a.password.b.update.ok
 test Session.signout.ok
 test Session.a.signin.password.a.bad
 test Session.a.signin.password.b.ok
-it 'graph'
+it 'node'
 test Node.list.is0
 test Node.a.create.ok
 test Node.a.name.max.update.ok
@@ -64,6 +64,7 @@ test Evidence.a.list.is2
 test Evidence.a1.update.ok
 test Node.b.create.ok
 test Evidence.b0.create.ok
+it 'edge'
 test Edge.list.is0
 test Edge.ab.create.ok
 test Edge.list.is1
@@ -83,6 +84,13 @@ test Note.a.text.max.update.ok
 test Note.a.list.is2
 test Note.a.remove.ok
 test Note.a.list.is1
+it 'graph', R ->
+  B.refresh!
+  B.click \Graph
+  B.wait-for-visible sel:'.view>.graph'
+  B.assert.count 2, sel:'.graph g.node'
+# TODO: why does B.assert.count think line is not displayed ?
+# B.assert.count 1, sel:'.graph line.edge'
 it '---userA remove entities'
 test Session.signout.ok
 test Session.a.signin.password.b.ok

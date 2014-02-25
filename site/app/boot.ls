@@ -1,4 +1,7 @@
-window.log = console.log
+# Set global log fn.
+# Note we can't just set window.log = console.log becuase we'll get
+# 'illegal invocation' errors, since console.log expects 'this' to be console.
+window.log = -> console.log ...&
 
 B       = require \backbone
 F       = require \fs # inlined by brfs

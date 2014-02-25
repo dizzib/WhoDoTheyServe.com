@@ -1,21 +1,21 @@
 B  = require \backbone
-F  = require \fs
+Fs = require \fs
 _  = require \underscore
 V  = require \../view
 E  = require \./graph/edge
-EG = require \./graph/edge-glyph
-FZ = require \./graph/freezer
+Eg = require \./graph/edge-glyph
+Fz = require \./graph/freezer
 N  = require \./graph/node
 O  = require \./graph/overlay
-OB = require \./graph/overlay/bil
-OS = require \./graph/overlay/slit
+Ob = require \./graph/overlay/bil
+Os = require \./graph/overlay/slit
 P  = require \./graph/persister
 
-T = F.readFileSync __dirname + \/graph.html
+T = Fs.readFileSync __dirname + \/graph.html
 
 const SIZE = 3000
 
-overlays = [ OB, O.Ac, O.Bis, O.Cfr ]
+overlays = [ Ob, O.Ac, O.Bis, O.Cfr ]
 
 module.exports = B.View.extend do
   init: ->
@@ -46,8 +46,8 @@ function refresh el, f then
   # is empty, typically at start of app integration tests
   return unless nodes?length and edges?length
 
-  edges = (OB.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
-  nodes = (OB.filter-nodes >> P.apply-layout >> FZ.fix-unless-admin) nodes
+  edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
+  nodes = (Ob.filter-nodes >> P.apply-layout >> Fz.fix-unless-admin) nodes
 
   f.nodes nodes
    .links edges
@@ -63,12 +63,12 @@ function refresh el, f then
   # order matters: svg uses painter's algo
   E .init svg, f
   N .init svg, f
-  OS.init svg, f
-  EG.init svg, f
+  Os.init svg, f
+  Eg.init svg, f
   _.each overlays, -> it.init svg, f
 
-  FZ.make-draggable-if-admin svg, f
-  OS.align svg, f
+  Fz.make-draggable-if-admin svg, f
+  Os.align svg, f
 
   n-tick = 0
   f.on \end  , -> _.each overlays, -> it.render!
@@ -77,4 +77,4 @@ function refresh el, f then
     if n-tick++ % 4 is 0 then
       N .on-tick!
       E .on-tick!
-      EG.on-tick!
+      Eg.on-tick!

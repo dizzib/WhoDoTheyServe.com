@@ -37,7 +37,7 @@ module.exports = (ent-name, opts) ->
 
     list: function list n-expect, key
       go-list key
-      B.assert.count n-expect, sel:".#{opts.coll-name!}>ul>li", require-unique:false
+      B.assert.count n-expect, sel:".#{opts.coll-name!}>ul>li"
 
 ## private helpers
 

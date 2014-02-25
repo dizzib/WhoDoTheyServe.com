@@ -87,7 +87,7 @@ test User.a.password.weak-ucase.update.bad
 test Session.signout.ok
 test Session.a.signin.password.a.bad
 test Session.a.signin.password.b.ok
-it 'graph'
+it 'node'
 test Node.list.is0
 test Node.a.create.ok
 test Node.a.read.ok
@@ -127,6 +127,7 @@ test Evidence.a.url.path-qs.remove.ok
 test Evidence.a.list.is1
 test Node.b.create.ok
 test Evidence.b.list.is0
+it 'edge'
 test Edge.aa.create.bad # loop
 test Edge.ab.create.bad # b missing evidence
 test Node.c.create.bad # prior node missing evidence

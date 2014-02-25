@@ -30,6 +30,6 @@ module.exports = M =
       STAGING: dir-site-staging
       SEO    : dir-site-seo
 
-Assert test \-e "#dir-root/site"
+Assert test \-e "#dir-root/#site"
 Assert test \-e "#dir-root/task"
 Assert test \-e "#dir-root/test"

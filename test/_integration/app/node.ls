@@ -15,7 +15,7 @@ module.exports = SP.get-spec c.create, void, c.update, c.remove, c.list
 ## helpers
 
 function go-entity key then
-  B.click name = ST.nodes[key], \a
+  B.click name = ST.nodes[key], \li>a
   B.wait-for name, \h2>.name
 
 function on-save key, fields then

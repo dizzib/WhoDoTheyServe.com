@@ -22,11 +22,16 @@ module.exports = B =
   assert:
     ok: (is-ok = true) -> B.assert.displayed !is-ok, class:\alert-error
 
-    count: (n-expect, ...args) ->
+    count: (n-expect, opts) ->
+      sig = "count(#n-expect, #{U.inspect opts})"
       poll-for-ok 3000ms, ->
-        n = B.wait-for ...args
-        return \ok if n is n-expect
-        "count(#{U.inspect ...args}) expect=#n-expect, actual=#n"
+        n-actual = B.wait-for (opts <<< require-unique:false)
+        if n-actual > 0
+          el = w4mc \executeScript -> window.el
+          vis = W4m el, \displayed
+          return "#sig: el is not visible" unless vis
+        return \ok if n-actual is n-expect
+        "#sig expect=#n-expect, actual=#n-actual"
 
     displayed: (expect = true, ...args) ->
       poll-for-ok 3000ms, ->
@@ -66,9 +71,11 @@ module.exports = B =
     w4mc \startSession
     w4mc \setSearchTimeout 500
     w4mc \goUrl SITE-URL
-    view = w4mc \findElement, \.view
-    w4mc \waitFor -> view.displayed!
-    w4mc \executeScript init-sandbox
+    init-sandbox!
+
+  refresh: ->
+    w4mc \refresh
+    init-sandbox!
 
   send-keys: (keys) ->
     el = w4mc \executeScript -> window.el
@@ -106,7 +113,7 @@ module.exports = B =
     poll-for-ok opts.timeout, ->
       n := w4mc \executeScript, remote-fn, remote-args
       return \ok if n is 1 or not opts.require-unique
-      "Found #{n} occurrences of #{U.inspect args}."
+      "Found #{n} occurrences of #{U.inspect remote-args} but require only 1."
     n
 
   wait-for-visible: ->
@@ -114,58 +121,59 @@ module.exports = B =
 
 ## helpers
 
-function w4mc then W4m mc, ...&
-
 function init-sandbox
-  log = console.log
+  view = w4mc \findElement, \.view
+  w4mc \waitFor -> view.displayed!
+  w4mc \executeScript ->
+    log = console.log
 
-  window.click-el = ->
-    tag = (el = window.el).tagName
-    return el.click! unless tag is \A
-    # for some reason anchor clicks occasionally fail (bug in firefox?)
-    # so we must verify it worked
-    old-url = window.location.href
-    new-path = el.getAttribute \href
-    el.click!
-    return if (new RegExp new-path).test old-url
-    function verify
-      return if old-url isnt window.location.href
-      log 'CLICK FAIL', old-url, new-path
-      window.location.href = new-path # retry by direct navigation
-    # This delay determines how long
-    # to wait before verify. It must be long enough to allow the click
-    # to take effect, but no longer (otherwise later operations may
-    # change the window.location)
-    setTimeout verify, 10ms
+    window.click-el = ->
+      tag = (el = window.el).tagName
+      return el.click! unless tag is \A
+      # for some reason anchor clicks occasionally fail (bug in firefox?)
+      # so we must verify it worked
+      old-url = window.location.href
+      new-path = el.getAttribute \href
+      el.click!
+      return if (new RegExp new-path).test old-url
+      function verify
+        return if old-url isnt window.location.href
+        log 'CLICK FAIL', old-url, new-path
+        window.location.href = new-path # retry by direct navigation
+      # This delay determines how long
+      # to wait before verify. It must be long enough to allow the click
+      # to take effect, but no longer (otherwise later operations may
+      # change the window.location)
+      setTimeout verify, 10ms
 
-  window.fetch = (cond-fn = (-> true), filter, scope) ->
-    n = 0
-    scope-el = switch scope
-    | \document  => window.document
-    | \el        => window.el
-    | \el.parent => window.el.parentNode
-    | _          => throw new Error "invalid scope #{scope}"
-    for el in scope-el.querySelectorAll filter
-      if cond-fn el.textContent
-        window.el = el
-        n++
-    n
+    window.fetch = (cond-fn = (-> true), filter, scope) ->
+      n = 0
+      scope-el = switch scope
+      | \document  => window.document
+      | \el        => window.el
+      | \el.parent => window.el.parentNode
+      | _          => throw new Error "invalid scope #{scope}"
+      for el in scope-el.querySelectorAll filter
+        if cond-fn el.textContent
+          window.el = el
+          n++
+      n
 
-  window.fetch-by-text = (text, filter, scope) ->
-    window.fetch (-> it.trim() is text), filter, scope
+    window.fetch-by-text = (text, filter, scope) ->
+      window.fetch (-> it.trim() is text), filter, scope
 
-  window.fetch-by-regex = (text-rx, filter, scope) ->
-    rx = new RegExp text-rx
-    window.fetch (-> rx.test it), filter, scope
+    window.fetch-by-regex = (text-rx, filter, scope) ->
+      rx = new RegExp text-rx
+      window.fetch (-> rx.test it), filter, scope
 
-  window.fill = ->
-    id = window.el.getAttribute \for
-    el = document.querySelector "input##{id},textarea##{id}"
-    switch attr = el.getAttribute \type
-    | \text     => el.value = it
-    | \password => el.value = it
-    | \radio    => el.checked = it
-    attr
+    window.fill = ->
+      id = window.el.getAttribute \for
+      el = document.querySelector "input##{id},textarea##{id}"
+      switch attr = el.getAttribute \type
+      | \text     => el.value = it
+      | \password => el.value = it
+      | \radio    => el.checked = it
+      attr
 
 function poll-for-ok timeout, fn
   start-time = Date.now!
@@ -177,3 +185,5 @@ function poll-for-ok timeout, fn
     W4 pause, POLL-TIME
 
   function pause ms, cb then setTimeout (-> cb!), ms
+
+function w4mc then W4m mc, ...&

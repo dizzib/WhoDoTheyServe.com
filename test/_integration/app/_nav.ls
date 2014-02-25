@@ -14,5 +14,5 @@ module.exports =
 
     B.click (legend = if is-node then \Actors else \Connections), \a
     B.wait-for-visible (new RegExp legend), \legend
-    B.click name, \a
+    B.click name, 'li a'
     B.wait-for-visible name, if is-node then 'h2>.name' else 'h2>.how'

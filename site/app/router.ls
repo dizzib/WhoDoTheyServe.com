@@ -1,22 +1,19 @@
 B  = require \backbone
 _  = require \underscore
-H  = require \./helper
-HS = require \./history
+H  = require \./history
 C  = require \./collection
 F  = require \./fireprox
 M  = require \./model
 V  = require \./view
-VC = require \./view-composer
-VD = require \./view-directive
-VH = require \./view-handler
+Vc = require \./view-composer
+Vh = require \./view-handler
 
 Router = B.Router.extend do
   after: ->
-    VH.ready!
+    Vh.ready!
   before: ->
-    H.log \route, it
     B.trigger \route-before
-    VH.reset!
+    Vh.reset!
   routes:
     ''                 : \graph
     \doc/about         : \doc_about
@@ -44,21 +41,21 @@ Router = B.Router.extend do
     \user/:id          : \user
     \users             : \users
   doc_about   : -> V.doc-about.render!
-  edge        : -> HS.set-edge VC.edge ...
+  edge        : -> H.set-edge Vc.edge ...
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
-  edges       : VC.edges
+  edges       : Vc.edges
   fireprox    : F.setup-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
-  node        : -> HS.set-node-id VC.node ...
+  node        : -> H.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
-  nodes       : VC.nodes
+  nodes       : Vc.nodes
   session     : -> V.session.render!
-  user        : VC.user
+  user        : Vc.user
   user_edit   : -> V.user-edit.render (M.User.create it), C.Users
   user_signin : -> V.user-signin.render M.Session.create!, C.Sessions
   user_signout: -> V.user-signout.render!
   user_signup : -> V.user-signup.render M.Signup.create!, C.Users
-  users       : VC.users
+  users       : Vc.users
 
 module.exports = new Router!

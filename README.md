@@ -36,7 +36,7 @@ Navigate to `http://localhost:4000/#/user/signup` to create an admin user who sh
 
 The APP integration tests will fail until [this issue][mjs-81] is fixed (I'm currently using a locally patched [marionette-js]).
 
-Also the build tasks rely on Linux shell exec commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
+Also the build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
 
 [bcrypt-deps]: https://github.com/ncb000gt/node.bcrypt.js#dependencies

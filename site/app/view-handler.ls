@@ -57,11 +57,11 @@ exports
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
 
   ..reset = ->
-    $ \.view .off \focus, 'input[type=text]'
-    $ \.view>* .off!hide!empty! # call off() so different views can use same element
+    $ '.view' .off \focus, 'input[type=text]'
+    $ '.view>*' .off!hide! # call off() so different views can use same element
+    $ '.view>:not(.persist)' .empty! # leave persistent views e.g. graph
     V.navigator.render!
     VE.ResetEditView!
-    $ '.view>:not(.persist)' .empty! # for seo
 
   ..ready = ->
     $ \.timeago .timeago!

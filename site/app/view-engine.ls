@@ -50,14 +50,15 @@ exports
       @$el.html $tem .set-access S .show!
 
   ..ListView = B.View.extend do
-    # For fast ui, render happens in 2 phases:
-    # 1. render current content immediately; 2. render async-fetched content
+    # For fast ui render happens in 2 passes:
+    # 1. render current content immediately
+    # 2. render async-fetched content
     render: (coll, directive, opts) ->
       @$el.attr \data-loc, B.history.fragment # to detemine if navigated away
-      return render coll unless coll.url      # filtered collection won't have url
-      render coll
-      coll.fetch error:H.on-err, success: -> render it, show:false
-      ~function render c, inner-opts then
+      render coll, 0
+      return unless coll.url # filtered collection won't have url
+      coll.fetch error:H.on-err, success: -> render it, 1
+      ~function render c, pass then
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
         #return opts.void-view.render! if c.length is 0 and opts.void-view?
@@ -66,7 +67,7 @@ exports
           return opts.void-view.render!
         ($tem = $ @options.template).filter \.items .render c.toJSON-T!, directive
         @$el.html $tem
-        @$el.set-access S .show! unless inner-opts?show is false
+        @$el.set-access S .show! if pass is 0
 
   ..SelectView = B.View.extend do
     get-selected-id: ->

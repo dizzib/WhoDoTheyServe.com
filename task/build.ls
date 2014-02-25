@@ -1,10 +1,10 @@
-_       = require \lodash
 Assert  = require \assert
 Brsify  = require \browserify
 Brfs    = require \brfs
 Cron    = require \cron
 Fs      = require \fs
 Gaze    = require \gaze
+_       = require \lodash
 Md      = require \marked
 Path    = require \path
 Shell   = require \shelljs/global
@@ -153,8 +153,7 @@ function markdown ipath, opath, cb
 
 function finalise ipath
   return if /\/task\//.test ipath
-  rx = new RegExp "^#{Dir.ROOT}/(app|lib)"
-  bundle! if not ipath? or rx.test ipath
+  bundle! if _.contains ipath, Dirname.SITE
   copy-package-json!
   opts.on-built!
 
