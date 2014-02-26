@@ -41,13 +41,15 @@ module.exports =
         W4m mc, \executeScript, (-> window.location.href = it), [ url ]
         W4m mc, \findElement \.ready
         html = W4m mc, \pageSource
-        win = W4m Jsdom, \env, html, [ \../site/app/lib-3p/jquery.js ]
+        # zepto uses much less ram than jQuery for around the same speed
+        win = W4m Jsdom, \env, html, [ \./lib-3p/zepto.min.js ]
         amend-css win.$
         amend-scripts win.$
         strip-html win.$
         queue-links pending, done, win.$
         seoify-links win.$
         html = win.document.doctype.toString! + win.document.innerHTML
+        win.close!
         save-html-to-file html, route
       mins = (Date.now! - start)/60000
       G.ok "SEO: generated #{done.length} files in #mins minutes", sticky:true
