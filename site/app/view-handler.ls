@@ -9,8 +9,8 @@ VE  = require \./view-engine
 
 const KEYCODE-ESC = 27
 
-exports
-  ..init = (router) ->
+module.exports =
+  init: (router) ->
     $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
     V
       ..edge-edit
@@ -56,14 +56,14 @@ exports
     function nav-extra-done name
       navigate B.history.fragment.replace new RegExp("/#{name}-.*$", \g), ''
 
-  ..reset = ->
-    $ '.view' .off \focus, 'input[type=text]'
+  reset: ->
+    $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
     $ '.view>*' .off!hide! # call off() so different views can use same element
     $ '.view>:not(.persist)' .empty! # leave persistent views e.g. graph
     V.navigator.render!
     VE.ResetEditView!
 
-  ..ready = ->
+  ready: ->
     $ \.timeago .timeago!
     # use a delgated event since view may still be rendering asyncly
     $ \.view .on \focus, 'input[type=text]', ->
@@ -72,3 +72,4 @@ exports
       _.defer ~> @select!
     <- _.defer
     $ \.btnNew:visible:first .focus!
+    $ \.view .addClass \ready

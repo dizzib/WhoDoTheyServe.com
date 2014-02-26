@@ -1,10 +1,9 @@
 B = require \backbone
 F = require \fs
 H = require \../../helper
-I = require \../../lib-3p/insert-css
 S = require \../../session
 
-I F.readFileSync __dirname + \/toolbar.css
+H.insert-css F.readFileSync __dirname + \/toolbar.css
 T = F.readFileSync __dirname + \/toolbar.html
 
 module.exports = B.View.extend do

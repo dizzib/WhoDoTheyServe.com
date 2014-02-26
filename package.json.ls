@@ -17,11 +17,11 @@ devDependencies:
   browserify          : \~3.24.13
   chai                : \~1.8.1
   chalk               : \~0.4.0
-  colors              : \~0.6.2
   cron                : \~1.0.3
   gaze                : \~0.5.0
   gntp                : \~0.1.1
   jade                : \~0.27.7
+  jsdom               : \~0.10.1
   LiveScript          : \~1.2.0
   lodash              : \~2.4.1
   marked              : \~0.3.1

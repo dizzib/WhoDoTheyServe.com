@@ -1,8 +1,8 @@
-F        = require \fs # inlined by brfs
-Ins-css  = require \../lib-3p/insert-css
-V        = require \../view
+F = require \fs # inlined by brfs
+H = require \../helper
+V = require \../view
 
-Ins-css F.readFileSync __dirname + \/footer.css
+H.insert-css F.readFileSync __dirname + \/footer.css
 
 exports.init = ->
   V.footer.render!

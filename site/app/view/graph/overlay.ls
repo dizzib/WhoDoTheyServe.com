@@ -1,9 +1,9 @@
 F = require \fs
 C = require \../../collection
-I = require \../../lib-3p/insert-css
+H = require \../../helper
 V = require \../../view
 
-I F.readFileSync __dirname + \/overlay.css
+H.insert-css F.readFileSync __dirname + \/overlay.css
 
 class Overlay
   (@tag, @fn-edge-is-match, @fn-node-is-match) ->

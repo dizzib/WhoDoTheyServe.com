@@ -1,5 +1,5 @@
 F           = require \fs # browserified
-Insert-css  = require \./lib-3p/insert-css
+H           = require \./helper
 V           = require \./view-engine
 V-Graph     = require \./view/graph
 V-GraphTBar = require \./view/graph/toolbar
@@ -9,7 +9,7 @@ V-Session   = require \./view/session
 V-SignOut   = require \./view/user-signout
 V-Version   = require \./view/version
 
-Insert-css F.readFileSync __dirname + \/view.css
+H.insert-css-seo F.readFileSync __dirname + \/view.css
 
 D-About         = F.readFileSync __dirname + \/doc/about.html
 T-EdgeEdit      = F.readFileSync __dirname + \/view/edge-edit.html

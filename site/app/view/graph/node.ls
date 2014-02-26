@@ -1,10 +1,10 @@
 F = require \fs
 _ = require \underscore
-I = require \../../lib-3p/insert-css
 C = require \../../collection
+H = require \../../helper
 M = require \../../model
 
-I F.readFileSync __dirname + \/node.css
+H.insert-css F.readFileSync __dirname + \/node.css
 
 exports
   ..data = ->

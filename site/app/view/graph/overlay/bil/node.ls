@@ -1,9 +1,9 @@
 F = require \fs
 C = require \../../../../collection
-I = require \../../../../lib-3p/insert-css
+H = require \../../../../helper
 E = require \./edge
 
-I F.readFileSync __dirname + \/node.css
+H.insert-css F.readFileSync __dirname + \/node.css
 
 const BADGE-SIZE-Y  = 16
 const BADGE-SIZE-X  = 20

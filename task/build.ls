@@ -9,7 +9,7 @@ Md      = require \marked
 Path    = require \path
 Shell   = require \shelljs/global
 WFib    = require \wait.for .launchFiber
-WFor    = require \wait.for .for
+W4      = require \wait.for .for
 W4m     = require \wait.for .forMethod
 Dir     = require \./constants .dir
 Dirname = require \./constants .dirname
@@ -53,7 +53,7 @@ module.exports =
   delete-files: ->
     log "delete-files #{pwd!}"
     Assert.equal pwd!, Dir.DEV
-    WFor exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
+    W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
 
   delete-modules: ->
     log "delete-modules #{pwd!}"
@@ -62,8 +62,8 @@ module.exports =
 
   refresh-modules: ->
     Assert.equal pwd!, Dir.DEV
-    WFor exec, 'npm prune'
-    WFor exec, 'npm install'
+    W4 exec, 'npm prune'
+    W4 exec, 'npm install'
 
   start: ->
     G.say 'build started'
@@ -91,7 +91,6 @@ function bundle
     \./lib-3p/backbone.routefilter
     \./lib-3p/backbone-validation-bootstrap
     \./lib-3p/bootstrap-combobox
-    \./lib-3p/insert-css
     \./lib-3p/transparency
     \./lib-3p-ext/jquery
   try
@@ -134,7 +133,7 @@ function compile-batch tid
     when '/' isnt f.slice -1 and (Path.basename f).0 isnt t.mixn ]
   info = "#{files.length} #tid files"
   G.say "compiling #info..."
-  for f in files then WFor compile, t, f
+  for f in files then W4 compile, t, f
   G.ok "...done #info!"
 
 function copy-package-json
@@ -178,7 +177,7 @@ function start-watching tid
         catch e then G.err e
       else switch act
         | \added, \changed, \renamed
-          try opath = WFor compile, t, ipath
+          try opath = W4 compile, t, ipath
           catch e then return G.err e
           G.ok opath
           finalise ipath

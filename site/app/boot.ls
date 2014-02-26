@@ -3,23 +3,22 @@
 # 'illegal invocation' errors, since console.log expects 'this' to be console.
 window.log = -> console.log ...&
 
-B       = require \backbone
-F       = require \fs # inlined by brfs
-Ins-css = require \./lib-3p/insert-css
-Api     = require \./api
-C       = require \./collection
-H       = require \./helper
-M       = require \./model
-M-Ext   = require \./model-ext
-P       = require \./view/graph/persister
-VAL     = require \./validator
-V       = require \./view
-V-Hdlr  = require \./view-handler
-V-Foot  = require \./view/footer
-Router  = require \./router
+B      = require \backbone
+F      = require \fs # inlined by brfs
+Api    = require \./api
+C      = require \./collection
+H      = require \./helper
+M      = require \./model
+M-Ext  = require \./model-ext
+P      = require \./view/graph/persister
+VAL    = require \./validator
+V      = require \./view
+V-Hdlr = require \./view-handler
+V-Foot = require \./view/footer
+Router = require \./router
 
-Ins-css F.readFileSync __dirname + \/lib/form.css
-Ins-css F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
+H.insert-css F.readFileSync __dirname + \/lib/form.css
+H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 B.Model.prototype.idAttribute = \_id  # mongodb
 

@@ -75,7 +75,8 @@ function run-tests cwd, cfg, desc
 function start-mocha cwd, cfg, grep, cb
   if _.isFunction grep then [grep, cb] = [void, grep] # variadic
   log \start-mocha, cwd, cfg, grep
-  cfg <<< JSON.parse env.tester if env.tester?
+  cfg <<< firefox-host:env.firefox-host or \localhost
+  log cfg
   args = "#MOCHA #MARGS"
   args += " --grep #grep" if grep?
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg, stdio:[ 0, 1, void ]

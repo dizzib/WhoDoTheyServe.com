@@ -2,7 +2,6 @@ B = require \backbone
 F = require \fs # inlined by brfs
 T = require \transparency
 _ = require \underscore
-I = require \./lib-3p/insert-css
 H = require \./helper
 S = require \./session
 
@@ -73,7 +72,7 @@ exports
     get-selected-id: ->
       $ \option:selected, @dropdown .attr \value
     render: (coll, fname, sel-id) ->
-      I F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
+      H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
       T-Sel = F.readFileSync __dirname + \/view/select.html
       $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
         html    : -> @[fname]

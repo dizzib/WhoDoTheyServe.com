@@ -2,11 +2,10 @@ F = require \fs
 _ = require \underscore
 C = require \../../../../collection
 H = require \../../../../helper
-I = require \../../../../lib-3p/insert-css
 E = require \../../edge-glyph
 N = require \./node
 
-I F.readFileSync __dirname + \/edge.css
+H.insert-css F.readFileSync __dirname + \/edge.css
 
 exports
   ..filter = (edges) ->

@@ -3,7 +3,7 @@ Chalk  = require \chalk
 _      = require \lodash
 Shell  = require \shelljs/global
 Ug     = require \uglify-js
-WFor   = require \wait.for .for
+W4     = require \wait.for .for
 W4m    = require \wait.for .forMethod
 Dir    = require \./constants .dir
 Site   = require \./constants .dir.site
@@ -20,8 +20,8 @@ module.exports =
       copy-minified-files!
       set-load-from-cdn!
       copy-seo-files!
-      WFor exec, 'npm prune'
-      WFor exec, 'npm install'
+      W4 exec, 'npm prune'
+      W4 exec, 'npm install'
       G.ok 'generated staging site'
     finally then popd!
 
@@ -40,16 +40,23 @@ function copy-minified-files
 
 function copy-files
   log "copy files to #{Site.STAGING}"
-  const FILTER = "'. #{Dir.DEV}/task/stage-files.txt'"
-  WFor exec, "rsync -r --filter=#FILTER #{Site.DEV}/ #{Site.STAGING}/"
+  const FILTER = "'. #{Dir.DEV}/task/staging-files.txt'"
+  W4 exec, "rsync -r --filter=#FILTER #{Site.DEV}/ #{Site.STAGING}/"
 
 function copy-seo-files
-  void
+  const N-MIN = 300
+  try
+    pushd Site.SEO
+    n = (W4 exec, "ls -1R | grep .*.html | wc -l").split('\n').0
+    log "copy #n seo files"
+    G.alert "too few seo files: actual=#n, expecting >= #N-MIN" if n < N-MIN
+    cp \-r, "#{Site.SEO}/*", "#{Site.STAGING}/app"
+  finally then popd!
 
 function delete-files
   log "delete files from #{pwd!}"
   Assert.equal pwd!, Site.STAGING
-  WFor exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules)'"
+  W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules)'"
 
 function generate-package-json
   log "generating package.json"
