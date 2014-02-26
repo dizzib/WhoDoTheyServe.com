@@ -26,13 +26,13 @@ module.exports =
       W4 exec, 'npm shrinkwrap'
       test \-e \npm-shrinkwrap.json
 
-      #W4 exec, 'af update whodotheyserve'
+      W4 exec, 'af update whodotheyserve'
       G.ok "pushed site to appfog PRODUCTION"
 
   send-env-vars: ->
     exec-then-logout ->
-      #for k, v in cfg.env
-      #  W4 exec, "af env-add whodotheyserve #k=#v"
+      for k, v in cfg.env
+        W4 exec, "af env-add whodotheyserve #k=#v"
       G.ok "sent env-vars to appfog PRODUCTION"
 
   show-config: -> log cfg
@@ -41,13 +41,13 @@ module.exports =
 
 function exec-then-logout fn
   try
-    pushd Dir.STAGING
+    pushd Dir.site.STAGING
     fn!
   catch e
     log e
   finally
-    logout!
     popd!
+    logout!
 
 function logout
   try
