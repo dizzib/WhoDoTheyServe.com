@@ -8,22 +8,21 @@ const ERROR   = create-note \Error  , Chalk.red
 const SUCCESS = create-note \Success, Chalk.green
 
 module.exports =
-  alert: (e, opts = {}) -> send ERROR, e, opts <<< sticky:true
-  err  : (e, opts)      -> send ERROR, e, opts
-  ok   : (text, opts)   -> send SUCCESS, text, opts
-  say  : (text, opts)   -> send DEFAULT, text, opts
+  alert: (e, opts)    -> send ERROR, e, sticky:true <<< opts
+  err  : (e, opts)    -> send ERROR, e, opts
+  ok   : (text, opts) -> send SUCCESS, text, opts
+  say  : (text, opts) -> send DEFAULT, text, opts
 
 if enabled = (growl-at = process.env.growl-at)?
   log "growl at #growl-at"
   client = new Gntp.Client! <<< host:growl-at
   register!
-else
-  log "growl disabled"
+else log "growl disabled"
 
 ## helpers
 
 function create-note name, chalk
-  new Gntp.Notification! <<< name:name, displayName:name, chalk:chalk
+  new Gntp.Notification! <<< name:name, displayName:APP, chalk:chalk
 
 function register
   req = (new Gntp.Application APP).toRequest!

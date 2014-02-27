@@ -1,21 +1,20 @@
-H = require \./helper
 C = require \./collection
 M = require \./model
 S = require \./session
 V = require \./view
 D = require \./view-directive
 
-exports
-  ..edge = (id, act, child-id) ->
+module.exports =
+  edge: (id, act, child-id) ->
     V.edge.render (edge = C.Edges.get id), D.edge
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes id, act
     return edge
-  ..edges = ->
+  edges: ->
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
-  ..node = (id, act, child-id) ->
+  node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!
     V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
@@ -24,16 +23,16 @@ exports
     render-evidences id, act, child-id
     render-notes id, act
     return id
-  ..nodes = ->
+  nodes: ->
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes
-  ..user = ->
-    V.user.render (C.Users.get(id = it or C.Sessions.models.0?id)), D.user
+  user: ->
+    V.user.render C.Users.get(id = it or C.Sessions.models.0?id), D.user
     render-user-entities id, V.edges, C.Edges, D.edges
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
     render-user-entities id, V.nodes, C.Nodes, D.nodes
     render-user-entities id, V.notes, C.Notes, D.user-notes
-  ..users = ->
+  users: ->
     V.users-head.render!
     V.users.render C.Users, D.users
 

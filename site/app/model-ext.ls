@@ -1,7 +1,6 @@
 _  = require \underscore
 C  = require \./collection
-H  = require \./helper
-HS = require \./history
+Hs = require \./history
 M  = require \./model
 
 exports.init = ->
@@ -50,9 +49,9 @@ exports.init = ->
   M.Edge.create = ->
     m = create M.Edge, it
     unless it then # auto-populate new edge with 2 last nodes
-      m.set \a_node_id, HS.get-node-id 0
-      m.set \b_node_id, HS.get-node-id 1
-      if (edge = HS.get-edge!) then m.set \how, edge.get \how
+      m.set \a_node_id, Hs.get-node-id 0
+      m.set \b_node_id, Hs.get-node-id 1
+      if (edge = Hs.get-edge!) then m.set \how, edge.get \how
     return m
 
   add-factory-method M.Evidence

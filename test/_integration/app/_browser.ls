@@ -134,6 +134,7 @@ function init-sandbox
       # so we must verify it worked
       old-url = window.location.href
       new-path = el.getAttribute \href
+      return log 'NO HREF' unless new-path?
       el.click!
       return if (new RegExp new-path).test old-url
       function verify
@@ -155,6 +156,7 @@ function init-sandbox
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
         if cond-fn el.textContent
+          log el.outerHTML
           window.el = el
           n++
       n

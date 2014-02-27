@@ -1,5 +1,4 @@
 B = require \backbone
-_ = require \underscore
 C = require \./collection
 H = require \./helper
 S = require \./session
@@ -19,8 +18,7 @@ const EDGE =
 
 const GLYPH =
   glyph:
-    href: ->
-      "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
+    href: -> "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
 
 const GLYPH-EVI =
   glyph:
@@ -60,37 +58,38 @@ const URL =
   href: -> @url
   text: -> @url
 
-exports
-  ..edge = _.extend {},
-    EDGE
+module.exports =
+  edge: {
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/edge/edit/#{@_id}"
-  ..edges = _.extend {},
-    GLYPHS
-    EDGE
-  ..evidences = _.extend {},
-    GLYPH-EVI
-    META
+    } <<< EDGE
+  edges:
+    GLYPHS with EDGE
+  evidences: {
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
     url: URL
-  ..evidences-head =
+    } <<< GLYPH-EVI with META
+  evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
-  ..glyph = GLYPH
-  ..meta = META
-  ..node =
+  glyph:
+    GLYPH
+  meta:
+    META
+  node:
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/node/edit/#{@_id}"
-  ..nodes = _.extend {},
-    GLYPHS
+  nodes: {
     name:
-      href: -> get-node-href @_id
-  ..notes = META
-  ..notes-head =
+        href: -> get-node-href @_id
+    } <<< GLYPHS
+  notes:
+    META
+  notes-head:
     btn-edit:
       href: -> "#/#{B.history.fragment}/note-edit"
     btn-new:
@@ -99,21 +98,21 @@ exports
       class: -> \hide unless _.isEmpty this
     editable:
       class: -> \hide if _.isEmpty this
-  ..user =
+  user:
     btn-edit:
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
       href : -> "#/user/edit/#{@_id}"
     url:
       href: -> @info
       text: -> @info
-  ..user-evidences = _.extend {},
-    GLYPH-EVI
+  user-evidences: {
     btn : HIDE
     meta: HIDE
     url : URL
-  ..user-notes =
+    } <<< GLYPH-EVI
+  user-notes:
     meta: HIDE
-  ..users =
+  users:
     login:
       href: -> get-user-href @_id
 
