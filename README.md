@@ -34,15 +34,12 @@ Navigate to `http://localhost:4000/#/user/signup` to create an admin user who sh
 
 # Notes
 
-The APP integration tests will fail until [this issue][mjs-81] is fixed (I'm currently using a locally patched [marionette-js]).
-
-Also the build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
+The build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
 
 [bcrypt-deps]: https://github.com/ncb000gt/node.bcrypt.js#dependencies
 [LiveScript]: http://livescript.net/#installation
 [marionette-js]: https://github.com/mozilla-b2g/marionette-js-client
-[mjs-81]: https://github.com/mozilla-b2g/marionette-js-client/issues/81
 [mongod]: http://docs.mongodb.org/manual/reference/program/mongod/
 [mongodb]: http://docs.mongodb.org/manual/installation/
 [nodejs]: http://nodejs.org/download/
