@@ -1,4 +1,5 @@
 Mc  = require \marionette-client
+Mjl = require \marionette-js-logger
 Os  = require \os
 _   = require \underscore
 U   = require \util
@@ -11,6 +12,7 @@ const SITE-URL  = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host)
 mc = new Mc.Client md
+mc.plugin \logger, Mjl
 
 module.exports = B =
   arrange:
@@ -156,7 +158,6 @@ function init-sandbox
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
         if cond-fn el.textContent
-          log el.outerHTML
           window.el = el
           n++
       n

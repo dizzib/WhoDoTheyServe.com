@@ -25,6 +25,7 @@ const COMMANDS =
   * cmd:'b    ' lev:0 desc:'build - recycle + test'  fn:Run.recycle-site-dev-tests
   * cmd:'b.fc ' lev:0 desc:'build - files compile'   fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'    fn:Build.delete-files
+  * cmd:'b.l  ' lev:0 desc:'build - loop tests'      fn:Run.loop-site-dev-tests
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'      fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'     fn:Build.refresh-modules
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'  fn:Run.recycle-site-staging-tests
@@ -46,14 +47,13 @@ for c in COMMANDS
 
 rl = Rl.createInterface input:process.stdin, output:process.stdout
   ..setPrompt "wdts >"
-  ..prompt!
   ..on \line, (cmd) -> WFib ->
     switch cmd
     | '' =>
       <- Run.cancel-testrun
       rl.prompt!
     | _  =>
-      for c in COMMANDS when cmd is c.cmd.trim! then c.fn!
+      for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
       rl.prompt!
 
 Build.start on-built:Run.recycle-site-dev-tests
@@ -70,3 +70,7 @@ function generate-staging
 
 function show-help
   for c in COMMANDS when !c.disabled then log c.display
+
+function try-fn
+  try it!
+  catch e then log e

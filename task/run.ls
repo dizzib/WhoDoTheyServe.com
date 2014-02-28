@@ -14,6 +14,7 @@ const MARGS = "--reporter spec --bail --recursive"
 
 module.exports =
   cancel-testrun : -> kill-mocha it
+  loop-site-dev-tests       : -> loop-site-dev-tests!
   recycle-site-dev          : -> recycle-site DirSite.DEV, Cfg.dev.primary
   recycle-site-dev-tests    : -> recycle-site-tests DirSite.DEV, Cfg.dev
   recycle-site-staging      : -> recycle-site DirSite.STAGING, Cfg.staging.primary
@@ -44,16 +45,21 @@ function kill-node args, cb
   throw new Error "#cmd returned #code" if code > 1
   cb!
 
+function loop-site-dev-tests
+  <- recycle-site-tests DirSite.DEV, Cfg.dev, ''
+  loop-site-dev-tests!
+
 function recycle-site cwd, cfg, cb
   <- stop-site cfg
   <- start-site cwd, cfg
-  cb! if cb
+  cb! if cb?
 
-function recycle-site-tests cwd, cfg, desc = ''
+function recycle-site-tests cwd, cfg, desc = '', cb
   <- recycle-site cwd, cfg.primary
-  run-tests cwd, cfg, desc
+  <- run-tests cwd, cfg, desc
+  cb! if cb?
 
-function run-tests cwd, cfg, desc
+function run-tests cwd, cfg, desc, cb
   const API = "Unit & api tests"
   const APP = "App tests"
   [test, tester] = [cfg.test, cfg.tester]
@@ -71,6 +77,7 @@ function run-tests cwd, cfg, desc
   <- start-site cwd, test
   e <- start-mocha Dir.DEV, tester, 'app'
   G.ok "#APP#desc passed" unless e?
+  cb! if cb?
 
 function start-mocha cwd, cfg, grep, cb
   if _.isFunction grep then [grep, cb] = [void, grep] # variadic

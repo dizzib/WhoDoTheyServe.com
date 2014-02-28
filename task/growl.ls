@@ -3,7 +3,7 @@ Gntp  = require \gntp
 Util  = require \util
 
 const APP     = \wdts
-const DEFAULT = create-note \Default, Chalk.stripColor
+const INFO    = create-note \Info   , Chalk.stripColor
 const ERROR   = create-note \Error  , Chalk.red
 const SUCCESS = create-note \Success, Chalk.green
 
@@ -11,7 +11,7 @@ module.exports =
   alert: (e, opts)    -> send ERROR, e, sticky:true <<< opts
   err  : (e, opts)    -> send ERROR, e, opts
   ok   : (text, opts) -> send SUCCESS, text, opts
-  say  : (text, opts) -> send DEFAULT, text, opts
+  say  : (text, opts) -> send INFO, text, opts
 
 if enabled = (growl-at = process.env.growl-at)?
   log "growl at #growl-at"
@@ -22,11 +22,11 @@ else log "growl disabled"
 ## helpers
 
 function create-note name, chalk
-  new Gntp.Notification! <<< name:name, displayName:APP, chalk:chalk
+  new Gntp.Notification! <<< name:name, displayName:"#APP #name", chalk:chalk
 
 function register
   req = (new Gntp.Application APP).toRequest!
-  for note in [DEFAULT, ERROR, SUCCESS] then req.addNotification note
+  for note in [INFO, ERROR, SUCCESS] then req.addNotification note
   client.sendMessage req.toRequest!
 
 function send note, text, opts = {}
