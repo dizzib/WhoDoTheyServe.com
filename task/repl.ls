@@ -56,8 +56,8 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
       for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
       rl.prompt!
 
-Build.on \built  , Run.run-dev-test_1
-Build.on \bundled, Run.run-dev-test_2
+Build.on \built-api, Run.run-dev-test_1
+Build.on \built-app, Run.run-dev-test_2
 Build.start!
 Run.recycle-dev!
 Run.recycle-staging!

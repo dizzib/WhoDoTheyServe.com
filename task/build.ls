@@ -108,7 +108,7 @@ function bundle
     bl.bundle detectGlobals:false, insertGlobals:false
       ..on \end, -> G.say 'Bundled lib.js'
       ..pipe Fs.createWriteStream \lib.js
-    me.emit \bundled
+    me.emit \built-app
   finally
     popd!
 
@@ -151,10 +151,12 @@ function markdown ipath, opath, cb
 
 function finalise ipath
   return if /\/task\//.test ipath
-  me.emit \built
-  for dir in <[ app lib ]>
-    bundle! if _.contains ipath, "#{Dirname.SITE}/#dir"
+  runif <[ api lib ]>, -> me.emit \built-api
+  runif <[ app lib ]>, bundle
   copy-package-json!
+
+  function runif dirs, fn
+    for dir in dirs then fn! if _.contains ipath, "#{Dirname.SITE}/#dir"
 
 function prune-empty-dirs
   Assert.equal pwd!, Dir.DEV
