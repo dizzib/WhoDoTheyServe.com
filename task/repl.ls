@@ -22,13 +22,13 @@ config.fatal = true
 
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'   fn:show-help
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'  fn:Run.recycle-site-dev-tests
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'  fn:Run.run-dev-tests
   * cmd:'b.fc ' lev:0 desc:'build - files compile'   fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'    fn:Build.delete-files
-  * cmd:'b.l  ' lev:0 desc:'build - loop tests'      fn:Run.loop-site-dev-tests
+  * cmd:'b.la ' lev:0 desc:'build - loop app tests'  fn:Run.loop-dev-test_2
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'      fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'     fn:Build.refresh-modules
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'  fn:Run.recycle-site-staging-tests
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'  fn:Run.run-staging-tests
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test' fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'    fn:Seo.generate
   * cmd:'p    ' lev:0 desc:'prod  - show config'     fn:Prod.show-config
@@ -50,15 +50,18 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
   ..on \line, (cmd) -> WFib ->
     switch cmd
     | '' =>
-      <- Run.cancel-testrun
+      <- Run.cancel
       rl.prompt!
     | _  =>
       for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
       rl.prompt!
 
-Build.start on-built:Run.recycle-site-dev-tests
-Run.recycle-site-dev!
-Run.recycle-site-staging!
+Build.on \built  , Run.run-dev-test_1
+Build.on \bundled, Run.run-dev-test_2
+Build.start!
+Run.recycle-dev!
+Run.recycle-staging!
+
 setTimeout ->
   show-help!
   rl.prompt!

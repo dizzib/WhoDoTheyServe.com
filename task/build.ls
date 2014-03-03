@@ -2,6 +2,7 @@ Assert  = require \assert
 Brsify  = require \browserify
 Brfs    = require \brfs
 Cron    = require \cron
+Emitter = require \events .EventEmitter
 Fs      = require \fs
 Gaze    = require \gaze
 _       = require \lodash
@@ -17,7 +18,6 @@ G       = require \./growl
 
 const NMODULES = './node_modules'
 
-opts   = on-built: ->
 pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
 tasks  =
   jade:
@@ -43,7 +43,7 @@ tasks  =
     oxt : \css
     mixn: \_
 
-module.exports =
+module.exports = me = (new Emitter!) with
   compile-files: ->
     try
       for tid of tasks then compile-batch tid
@@ -67,7 +67,6 @@ module.exports =
 
   start: ->
     G.say 'build started'
-    opts <<< it
     try
       pushd Dir.ROOT
       for tid of tasks then start-watching tid
@@ -104,12 +103,12 @@ function bundle
       ..bundle detectGlobals:false, insertGlobals:false
         ..on \end, -> G.say 'Bundled app.js'
         ..pipe Fs.createWriteStream \app.js
-
     bl = Brsify LIBS
     for l in LIBS then bl.require l
     bl.bundle detectGlobals:false, insertGlobals:false
       ..on \end, -> G.say 'Bundled lib.js'
       ..pipe Fs.createWriteStream \lib.js
+    me.emit \bundled
   finally
     popd!
 
@@ -152,9 +151,10 @@ function markdown ipath, opath, cb
 
 function finalise ipath
   return if /\/task\//.test ipath
-  bundle! if _.contains ipath, Dirname.SITE
+  me.emit \built
+  for dir in <[ app lib ]>
+    bundle! if _.contains ipath, "#{Dirname.SITE}/#dir"
   copy-package-json!
-  opts.on-built!
 
 function prune-empty-dirs
   Assert.equal pwd!, Dir.DEV

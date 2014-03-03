@@ -5,25 +5,41 @@ dev:
     WDTS_DB_URI                     : \mongodb://localhost/wdts_dev
     WDTS_DB_CACHE_ENABLE            : true
     WDTS_DB_CACHE_SWEEP_PERIOD_MINS : 10
-  test:
+  test_1:
     NODE_ENV                        : \test
     PORT                            : 4001
-    WDTS_DB_URI                     : \mongodb://localhost/wdts_test
+    WDTS_DB_URI                     : \mongodb://localhost/wdts_test_1
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
-  tester:
+  test_2:
+    NODE_ENV                        : \test
+    PORT                            : 4002
+    WDTS_DB_URI                     : \mongodb://localhost/wdts_test_2
+    WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
+  tester_1:
     NODE_ENV                        : \tester
     SITE_PORT                       : 4001
+  tester_2:
+    NODE_ENV                        : \tester
+    SITE_PORT                       : 4002
 
 staging:
   primary:
     NODE_ENV                        : \staging
     PORT                            : 4003
     WDTS_DB_URI                     : \mongodb://localhost/wdts_staging
-  test:
+  test_1:
     NODE_ENV                        : \staging
-    PORT                            : 4002
-    WDTS_DB_URI                     : \mongodb://localhost/wdts_test
+    PORT                            : 4004
+    WDTS_DB_URI                     : \mongodb://localhost/wdts_test_1
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
-  tester:
+  test_2:
+    NODE_ENV                        : \staging
+    PORT                            : 4005
+    WDTS_DB_URI                     : \mongodb://localhost/wdts_test_2
+    WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
+  tester_1:
     NODE_ENV                        : \tester
-    SITE_PORT                       : 4002
+    SITE_PORT                       : 4004
+  tester_2:
+    NODE_ENV                        : \tester
+    SITE_PORT                       : 4005

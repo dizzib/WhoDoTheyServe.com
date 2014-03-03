@@ -12,13 +12,18 @@ G       = require \./growl
 const MOCHA = "#{Dir.DEV}/node_modules/mocha/bin/mocha"
 const MARGS = "--reporter spec --bail --recursive"
 
+Cfg.dev     <<< dirsite:DirSite.DEV
+Cfg.staging <<< dirsite:DirSite.STAGING
+
 module.exports =
-  cancel-testrun : -> kill-mocha it
-  loop-site-dev-tests       : -> loop-site-dev-tests!
-  recycle-site-dev          : -> recycle-site DirSite.DEV, Cfg.dev.primary
-  recycle-site-dev-tests    : -> recycle-site-tests DirSite.DEV, Cfg.dev
-  recycle-site-staging      : -> recycle-site DirSite.STAGING, Cfg.staging.primary
-  recycle-site-staging-tests: -> recycle-site-tests DirSite.STAGING, Cfg.staging, ' for staging'
+  cancel           : -> kill-mocha it
+  loop-dev-test_2  : -> loop-dev-test_2!
+  recycle-dev      : -> recycle-primary Cfg.dev
+  recycle-staging  : -> recycle-primary Cfg.staging
+  run-dev-test_1   : -> run-test_1 Cfg.dev
+  run-dev-test_2   : -> run-test_2 Cfg.dev
+  run-dev-tests    : -> run-tests Cfg.dev
+  run-staging-tests: -> run-tests Cfg.staging, ' for staging'
 
 ## helpers
 
@@ -45,48 +50,46 @@ function kill-node args, cb
   throw new Error "#cmd returned #code" if code > 1
   cb!
 
-function loop-site-dev-tests
-  <- recycle-site-tests DirSite.DEV, Cfg.dev, ''
-  loop-site-dev-tests!
+function loop-dev-test_2
+  <- run-test_2 Cfg.dev, ''
+  loop-dev-test_2!
 
-function recycle-site cwd, cfg, cb
-  <- stop-site cfg
-  <- start-site cwd, cfg
+function recycle-primary cfg, cb
+  <- stop-site cfg.primary
+  <- start-site cfg.dirsite, cfg.primary
   cb! if cb?
 
-function recycle-site-tests cwd, cfg, desc = '', cb
-  <- recycle-site cwd, cfg.primary
-  <- run-tests cwd, cfg, desc
-  cb! if cb?
+function run-tests
+  run-test_1 ...
+  run-test_2 ...
 
-function run-tests cwd, cfg, desc, cb
-  const API = "Unit & api tests"
-  const APP = "App tests"
-  [test, tester] = [cfg.test, cfg.tester]
-  G.say "#API#desc started"
-  <- kill-mocha
+function run-test_1 cfg, desc = ''
+  <- kill-mocha # this should always run before test-2, so safe to kill mocha
+  <- recycle-primary cfg
+  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, 'app --invert', "Unit & api tests#desc"
+
+function run-test_2 cfg, desc = '', cb
+  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, 'app', "App tests#desc", cb
+
+function recycle-tests test, tester, dirsite, grep, desc, cb
+  G.say "#desc started"
+  start = Date.now!
   <- stop-site test
   <- drop-db test
-  <- start-site cwd, test
-  e <- start-mocha Dir.DEV, tester, 'app --invert'
-  return if e?
-  G.ok "#API#desc passed"
-  <- stop-site test
-  <- drop-db test
-  G.say "#APP#desc started"
-  <- start-site cwd, test
-  e <- start-mocha Dir.DEV, tester, 'app'
-  G.ok "#APP#desc passed" unless e?
+  <- start-site dirsite, test
+  e <- start-mocha tester, grep
+  return G.err e if e?
+  G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb! if cb?
 
-function start-mocha cwd, cfg, grep, cb
+function start-mocha cfg, grep, cb
   if _.isFunction grep then [grep, cb] = [void, grep] # variadic
-  log \start-mocha, cwd, cfg, grep
+  log \start-mocha, cfg, grep
   cfg <<< firefox-host:env.firefox-host or \localhost
   log cfg
   args = "#MOCHA #MARGS"
   args += " --grep #grep" if grep?
-  Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg, stdio:[ 0, 1, void ]
+  Cp.spawn \node, (args.split ' '), cwd:Dir.DEV, env:cfg, stdio:[ 0, 1, void ]
     ..on \exit, ->
       cb if it then new Error "Exited with code #it" else void
     ..stderr.on \data, ->
