@@ -99,8 +99,9 @@ function start-mocha cfg, grep, cb
         G.alert (Chalk.stripColor s), nolog:true
 
 function start-site cwd, cfg, cb
-  log "start site #{id = cfg.NODE_ENV} #{port = cfg.PORT}"
-  args = "#{cfg.NODE_ARGS || ''} boot #id #port".trim!
+  v = exec 'node --version', silent:true .output.replace '\n', ''
+  log "start site #{id = cfg.NODE_ENV} #{port = cfg.PORT} in node #v"
+  args = "boot #id #port".trim!
   return log "unable to start non-existent site at #cwd" unless test \-e, cwd
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg
     ..stderr.on \data, log-data
