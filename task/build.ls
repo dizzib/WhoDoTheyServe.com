@@ -62,6 +62,7 @@ module.exports = me = (new Emitter!) with
 
   refresh-modules: ->
     Assert.equal pwd!, Dir.DEV
+    W4 exec, 'npm -v'
     W4 exec, 'npm prune'
     W4 exec, 'npm install'
 

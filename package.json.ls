@@ -25,8 +25,8 @@ devDependencies:
   LiveScript            : \~1.2.0
   lodash                : \~2.4.1
   marked                : \~0.3.1
-  'marionette-client'   : 'git://github.com/dizzib/marionette-js-client.git#newSandbox'
-  'marionette-js-logger': 'git://github.com/dizzib/marionette-js-logger.git#remote-host'
+  'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
+  'marionette-js-logger': \~0.1.2
   mocha                 : \~1.15.1
   mongodb               : \~1.2.14
   nib                   : \~0.9.0
