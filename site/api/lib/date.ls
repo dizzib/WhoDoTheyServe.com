@@ -1,9 +1,9 @@
 # http://stackoverflow.com/questions/542938/how-do-i-get-the-number-of-days-between-two-dates-in-javascript?rq=1
-exports
-  ..get-current-year = ->
+module.exports =
+  get-current-year: ->
     new Date!getFullYear!
 
-  ..get-current-deciweek-of-year = ->
+  get-current-deciweek-of-year: ->
     return Math.floor(get-current-day-of-year! / 10)
 
     function get-current-day-of-year then

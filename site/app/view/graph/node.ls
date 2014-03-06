@@ -6,18 +6,18 @@ M = require \../../model
 
 H.insert-css F.readFileSync __dirname + \/node.css
 
-exports
-  ..data = ->
+module.exports = me =
+  data: ->
     _.map C.Nodes.models, (m) -> m.toJSON-T!
 
-  ..init = (svg, d3-force) ~>
+  init: (svg, d3-force) ~>
     @nodes = svg.selectAll \g.node
       .data d3-force.nodes!
       .enter!append \svg:g
-        .attr \class, -> "node id_#{it._id} #{if exports.is-you it then \you}"
+        .attr \class, -> "node id_#{it._id} #{if me.is-you it then \you}"
 
     @nodes.append \svg:circle
-      .attr \r, -> 5 + it.weight + if exports.is-you it then 10 else 0
+      .attr \r, -> 5 + it.weight + if me.is-you it then 10 else 0
 
     @nodes.append \svg:a
       .attr \xlink:href, -> "#/node/#{it._id}"
@@ -43,11 +43,11 @@ exports
             .attr \width , 2 + parseInt size.0
             .attr \height, 2 + parseInt size.1
 
-  ..is-bis = ->
+  is-bis: ->
     /^BIS /.test it.name
 
-  ..is-you = ->
+  is-you: ->
     /^YOU/.test it.name
 
-  ..on-tick = ~>
+  on-tick: ~>
     @nodes.attr \transform, ~> "translate(#{it.x},#{it.y})"

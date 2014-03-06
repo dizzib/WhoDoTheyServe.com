@@ -3,8 +3,8 @@ CryptPwd = require \../crypt-pwd
 H        = require \../helper
 Users    = require \../model/users
 
-exports
-  ..create = ->
+module.exports =
+  create: ->
     (req, res, next) ->
       freeze-secs = process.env.WDTS_USER_SIGNIN_BAD_FREEZE_SECS or 5s
       return next new Error 'signout required' if req.session.signin
@@ -39,7 +39,7 @@ exports
         function reply then next new H.ApiError do
           "Login failed! Please ensure your username and password are correct."
 
-  ..delete = ->
+  delete: ->
     (req, res, next) ->
       return next new Error 'signin required' unless si = req.session.signin
       return next new Error 'signin mismatch' unless req.id is si.id

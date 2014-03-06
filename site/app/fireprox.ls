@@ -3,8 +3,8 @@
 
 const STORE-KEY = \fireprox-url
 
-exports
-  ..setup-url = ->
+module.exports =
+  setup-url: ->
     return console.error 'localStorage not supported' unless localStorage
     url = prompt 'Fireprox url', localStorage.getItem STORE-KEY
     return if url is null
@@ -13,7 +13,7 @@ exports
     else
       localStorage.removeItem STORE-KEY
 
-  ..send-request = (command, cb) ->
+  send-request: (command, cb) ->
     return cb! unless url = localStorage?getItem STORE-KEY
     $.ajax "#{url}/exec/#{command}",
       error: ->

@@ -8,14 +8,11 @@ s-hive =
 
 schema = new M.Schema s-hive, { collection:\hive }
 
-Model = M.model \hive, schema
+module.exports = me = M.model \hive, schema
   ..load = (cb) ->
-    err, docs <- Model.find
+    err, docs <- me.find
     cb err, docs
-
   ..upsert = (key, value, cb) ->
     data = key:key, value:value
-    err, doc <- Model.findOneAndUpdate key:key, data, {+upsert}
+    err, doc <- me.findOneAndUpdate key:key, data, {+upsert}
     cb err, doc if cb
-
-module.exports = Model

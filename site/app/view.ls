@@ -38,7 +38,7 @@ T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 
-# cannot refactor to 'module.exports =' due to use of 'new'
+# not clear why refactoring to 'module.exports' breaks things
 exports
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main

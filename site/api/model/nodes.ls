@@ -12,13 +12,13 @@ schema
   # TODO: refactor when mongo allows case-insensitive unique index
   # https://jira.mongodb.org/browse/SERVER-90
   ..pre \save, (next) ->
-    err, node <~ M-Nodes.findOne name:get-regexp @name
+    err, node <~ me.findOne name:get-regexp @name
     return next err if err
     return next! unless node
     return next new H.ApiError "Duplicate detected: #{node.name}"
     next!
 
-module.exports = M-Nodes = Crud.set-fns M.model(\nodes, schema)
+module.exports = me = Crud.set-fns (M.model \nodes, schema)
 
 function get-regexp name then
   name = name.replace /\!/g, '\\!'

@@ -7,8 +7,8 @@ N = require \./node
 
 H.insert-css F.readFileSync __dirname + \/edge.css
 
-exports
-  ..filter = (edges) ->
+module.exports =
+  filter: (edges) ->
     function is-conference-yyyy then
       N.is-conference-yyyy it.source or N.is-conference-yyyy it.target
     function is-steering then
@@ -19,14 +19,14 @@ exports
       if N.is-steering it.source then it.target else it.source
     _.difference edges, @edges-attend, @edges-steer
 
-  ..render-attend = (g, d3-force) ->
+  render-attend: (g, d3-force) ->
     return unless @edges-attend
     edges = _.reject @edges-attend, (edge) ~>
       !!_.find @nodes-steer, -> it._id in [edge.source._id, edge.target._id]
     @g-attend = render g, d3-force, edges,
       N.is-annual-conference, N.is-conference-yyyy, \bil-attend
 
-  ..render-steer = (g, d3-force) ->
+  render-steer: (g, d3-force) ->
     return unless edges = @edges-steer
     @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bil-steer
     glyphs = @g-steer.selectAll \g.edge-glyphs
@@ -36,7 +36,7 @@ exports
     glyphs.each E.append
     glyphs.attr \transform E.get-transform
 
-  ..render-clear = ->
+  render-clear: ->
     @g-attend?remove!
     @g-steer?remove!
 

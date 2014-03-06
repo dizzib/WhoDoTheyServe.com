@@ -4,12 +4,12 @@ const ALGO = \aes-256-cbc
 
 secret = process.env.WDTS_CRYPTO_SECRET or \secret
 
-exports
-  ..encrypt = (data) ->
+module.exports =
+  encrypt: (data) ->
     c    = Crypto.createCipher ALGO, secret
     res  = c.update data, \utf8, \hex
     res += c.final \hex
-  ..decrypt = (data) ->
+  decrypt: (data) ->
     try
       d    = Crypto.createDecipher ALGO, secret
       res  = d.update data, \hex, \utf8

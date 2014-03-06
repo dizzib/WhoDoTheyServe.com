@@ -5,24 +5,24 @@ M-Hive = require \./model/hive
 
 cache = {}
 
-exports
-  ..init = (cb) ->
+module.exports = me =
+  init: (cb) ->
     err, docs <- M-Hive.load
     throw err if err
     _.each docs, -> cache[it.key] = it.value
     cb! if cb
 
-  ..get = (key) ->
+  get: (key) ->
     cache[key]
 
-  ..set = (key, value, cb) ->
+  set: (key, value, cb) ->
     cache[key] = value
     M-Hive.upsert ...
 
-  ..read = (req, res, next) ->
-    res.json value:exports.get req.key
+  read: (req, res, next) ->
+    res.json value:me.get req.key
 
-  ..write = (req, res, next) ->
-    exports.set req.key, req.body.value, (err, doc) ->
+  write: (req, res, next) ->
+    me.set req.key, req.body.value, (err, doc) ->
       return next err if err
       res.json doc

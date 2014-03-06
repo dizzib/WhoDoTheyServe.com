@@ -7,11 +7,11 @@ S = require \./session
 
 const CLASS-EDITING = \editing
 
-exports
-  ..DocuView = B.View.extend do
+module.exports =
+  DocuView: B.View.extend do
     render: -> @$el.html @options.document .show!
 
-  ..EditView = B.View.extend do
+  EditView: B.View.extend do
     events:
       'click .cancel': \cancel
       'click .delete': \delete
@@ -39,16 +39,16 @@ exports
       (m = @model).attributes = $ it.currentTarget .serializeObject!
       @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, @model, is-new }
       false
-  ..ResetEditView = -> $ \.view .removeClass CLASS-EDITING
+  ResetEditView: -> $ \.view .removeClass CLASS-EDITING
 
-  ..InfoView = B.View.extend do
+  InfoView: B.View.extend do
     render: (model, directive) ->
       data = if model then model.toJSON-T! else {}
       # NOTE: transparency won't process directive if data is void, hence {}
       ($tem = $ @options.template).render data, directive
       @$el.html $tem .set-access S .show!
 
-  ..ListView = B.View.extend do
+  ListView: B.View.extend do
     # For fast ui render happens in 2 passes:
     # 1. render current content immediately
     # 2. render async-fetched content
@@ -65,7 +65,7 @@ exports
         @$el.html $tem
         @$el.set-access S .show! if pass is 0
 
-  ..SelectView = B.View.extend do
+  SelectView: B.View.extend do
     get-selected-id: ->
       $ \option:selected, @dropdown .attr \value
     render: (coll, fname, sel-id) ->

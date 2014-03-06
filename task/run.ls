@@ -107,14 +107,14 @@ function start-mocha cfg, grep, cb
 
 function start-site cwd, cfg, cb
   v = exec 'node --version', silent:true .output.replace '\n', ''
-  log "start site #{id = cfg.NODE_ENV} #{port = cfg.PORT} in node #v"
+  log "start site #{id = cfg.NODE_ENV}@#{port = cfg.PORT} in node #v"
   args = "boot #id #port".trim!
   return log "unable to start non-existent site at #cwd" unless test \-e, cwd
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg
     ..stderr.on \data, ->
       log-data it
       # data may be fragmented, so only growl relevant packet
-      if RX-ERR.test s = it.toString! then G.alert s, nolog:true
+      if RX-ERR.test s = it.toString! then G.alert "#id@#port\n#s", nolog:true
     ..stdout.on \data, ->
       #log-data it
       cb! if cb and /listening on port/.test it
@@ -123,6 +123,6 @@ function start-site cwd, cfg, cb
     log Chalk.gray "#{Chalk.underline id} #{it.slice 0, -1}"
 
 function stop-site cfg, cb
-  log "stop site #{id = cfg.NODE_ENV} #{port = cfg.PORT}"
+  log "stop site #{id = cfg.NODE_ENV}@#{port = cfg.PORT}"
   <- kill-node args = "boot #id #port"
   cb!

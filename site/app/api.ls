@@ -2,17 +2,17 @@ B = require \backbone
 
 const API-URL = \http://whodotheyserve.eu01.aws.af.cm/api
 
-exports
-  ..init      = init-for-cross-domain
+module.exports =
+  init     : init-for-cross-domain
   # endpoints
-  ..edges     = get-url \edges
-  ..evidences = get-url \evidences
-  ..hive      = get-url \hive
-  ..nodes     = get-url \nodes
-  ..notes     = get-url \notes
-  ..sessions  = get-url \sessions
-  ..sys       = get-url \sys
-  ..users     = get-url \users
+  edges    : get-url \edges
+  evidences: get-url \evidences
+  hive     : get-url \hive
+  nodes    : get-url \nodes
+  notes    : get-url \notes
+  sessions : get-url \sessions
+  sys      : get-url \sys
+  users    : get-url \users
 
 function get-url endpoint then
   loc = window.location

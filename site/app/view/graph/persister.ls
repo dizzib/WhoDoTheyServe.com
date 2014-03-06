@@ -2,8 +2,8 @@ _ = require \underscore
 H = require \../../helper
 M = require \../../model
 
-exports
-  ..apply-layout = (nodes) ~>
+module.exports =
+  apply-layout: (nodes) ~>
     if json = M.Hive.Graph.get \value then
       @value = JSON.parse json
       _.each nodes, ~>
@@ -12,10 +12,10 @@ exports
           it.y = pos.y
     nodes
 
-  ..is-persisted = ->
+  is-persisted: ->
     M.Hive.Graph.has \value
 
-  ..save-layout = (d3-force) ~>
+  save-layout: (d3-force) ~>
     return alert 'no @value' unless @value
     @value.layout = _.map d3-force.nodes!, ->
       id: it._id

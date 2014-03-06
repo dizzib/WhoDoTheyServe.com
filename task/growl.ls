@@ -3,9 +3,9 @@ Gntp  = require \gntp
 Util  = require \util
 
 const APP     = \wdts
-const INFO    = create-note \Info   , Chalk.stripColor
-const ERROR   = create-note \Error  , Chalk.red
-const SUCCESS = create-note \Success, Chalk.green
+const INFO    = create-note \info   , Chalk.stripColor
+const ERROR   = create-note \error  , Chalk.red
+const SUCCESS = create-note \success, Chalk.green
 
 module.exports =
   alert: (e, opts)    -> send ERROR, e, (sticky:true) <<< opts

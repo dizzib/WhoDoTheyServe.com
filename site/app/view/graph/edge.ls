@@ -6,8 +6,8 @@ N = require \./node
 
 H.insert-css F.readFileSync __dirname + \/edge.css
 
-exports
-  ..data = (nodes) ->
+module.exports =
+  data: (nodes) ->
     d3-edges = _.map (edges = C.Edges.toJSON-T!), (edge) -> _.extend do
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
@@ -43,7 +43,7 @@ exports
           it.year_from is d3-edge.year_to and
           (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
 
-  ..init = (svg, d3-force) ~>
+  init: (svg, d3-force) ~>
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
       .enter!append \svg:marker
@@ -61,12 +61,12 @@ exports
         .attr \class     , -> "edge #{it.class}".trim!
         .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''
 
-  ..get-strength = ->
+  get-strength: ->
     x = if it.class is \minor then 1 else 20
     w = it.source.weight + it.target.weight
     x / w
 
-  ..on-tick = ~>
+  on-tick: ~>
     @lines
       .attr \x1, -> it.source.x
       .attr \y1, -> it.source.y

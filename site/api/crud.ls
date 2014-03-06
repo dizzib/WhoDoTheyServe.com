@@ -1,43 +1,44 @@
 _ = require \underscore
 
-exports
-  ..set-fns = (Model, opts) ->
+module.exports = me =
+  set-fns: (Model, opts) ->
     Model.crud-fns =
-      create : exports.get-invoker Model, exports.create
-      read   : exports.get-invoker Model, exports.read
-      update : exports.get-invoker Model, exports.update
-      delete : exports.get-invoker Model, exports.delete
-      list   : exports.get-invoker Model, exports.list
+      create : me.get-invoker Model, me.create
+      read   : me.get-invoker Model, me.read
+      update : me.get-invoker Model, me.update
+      delete : me.get-invoker Model, me.delete
+      list   : me.get-invoker Model, me.list
     Model
 
   ## crud
-  ..create = (req, res, next, Model, opts) ->
+  create: (req, res, next, Model, opts) ->
     err, doc <- (new Model req.body).save
     respond req, res, next, err, doc, opts
 
-  ..read = (req, res, next, Model, opts) ->
+  read: (req, res, next, Model, opts) ->
     err, doc <- Model.findById req.id .lean!exec
     respond req, res, next, err, doc, opts
 
-  ..update = (req, res, next, Model, opts) ->
+  update: (req, res, next, Model, opts) ->
     # to apply validation and middleware we must retrieve and save
     # http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
     err, doc <- Model.findById req.id
     return next err if err
-    doc = _.extend doc, req.body
+    doc : _.extend doc, req.body
     err, doc <- doc.save!
     respond req, res, next, err, doc, opts
 
-  ..delete = (req, res, next, Model, opts) ->
+  delete: (req, res, next, Model, opts) ->
     err <- Model.findByIdAndRemove req.id
     respond req, res, next, err, req.body, opts
 
-  ..list = (req, res, next, Model, opts) ->
+  list: (req, res, next, Model, opts) ->
     err, docs <- Model.find!lean!exec
     respond req, res, next, err, docs, opts
 
   ## public helpers
-  ..get-invoker = (Model, op, opts) ->
+
+  get-invoker: (Model, op, opts) ->
     (req, res, next) ->
       try
         op req, res, next, Model, opts
@@ -45,6 +46,7 @@ exports
         next e
 
 ## private helpers
+
 function respond req, res, next, err, obj, opts = {} then
   return next err if err
   success = opts.success or on-success

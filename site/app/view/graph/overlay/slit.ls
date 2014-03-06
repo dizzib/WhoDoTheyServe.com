@@ -1,12 +1,12 @@
 F = require \fs
 _ = require \underscore
 
-exports
-  ..init = ->
+module.exports =
+  init: ->
     d3.selectAll \.node .append \svg:g
       .attr \class, \slit
 
-  ..align = ->
+  align: ->
     const BADGE-WIDTH = 24
     d3.selectAll \.slit .each ->
       slit = d3.select this

@@ -23,15 +23,15 @@ schema = new M.Schema spec
       @invalidate \a_node_id, 'Nodes A and B must differ'
     next!
   ..pre \save, (next) ->
-    err, edge <~ M-Edges.findById @_id
+    err, edge <~ me.findById @_id
     return next err if err
     # If update then allow inversion a--b to b--a
     return next! if edge?a_node_id.equals @b_node_id and edge?b_node_id.equals @a_node_id
-    err, obj <~ M-Edges.findOne $and:
+    err, obj <~ me.findOne $and:
       * a_node_id:@b_node_id
       * b_node_id:@a_node_id
     return next err if err
     return next new H.ApiError 'Reciprocal duplicate detected' if obj
     next!
 
-module.exports = M-Edges = Crud.set-fns M.model(\edges, schema) #,
+module.exports = me = Crud.set-fns (M.model \edges, schema)

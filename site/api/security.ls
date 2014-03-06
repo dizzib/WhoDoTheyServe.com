@@ -1,13 +1,13 @@
 H       = require \./helper
 M-Users = require \./model/users
 
-exports
-  ..admin = (req, res, next) ->
+module.exports =
+  admin: (req, res, next) ->
     return next new Error 'signin required' unless si = req.session.signin
     return next! if si.role is \admin
     return next new Error 'admin signin required'
 
-  ..create = (Model) ->
+  create: (Model) ->
     (req, res, next) ->
       return next new Error 'signin required' unless si = req.session.signin
 
@@ -32,7 +32,7 @@ exports
       (req.body.meta = {}).create_user_id = si.id
       next!
 
-  ..amend = (Model) ->
+  amend: (Model) ->
     (req, res, next) ->
       err, doc <- Model.findOne _id:req.id
       return next err if err

@@ -9,8 +9,8 @@ const BADGE-SIZE-Y  = 16
 const BADGE-SIZE-X  = 20
 const BADGE-SPACE-X = 24
 
-exports
-  ..init = (svg) ->
+module.exports = me =
+  init: (svg) ->
     svg.selectAll \g.node .each (node) ->
       edges = _.filter E.edges-attend, ->
         node._id is it.a_node_id or node._id is it.b_node_id
@@ -39,14 +39,14 @@ exports
             .attr \dy, 13
             .text -> edge.yy
 
-  ..filter = (nodes) ->
-    _.filter nodes, -> not exports.is-conference-yyyy it
+  filter: (nodes) ->
+    _.filter nodes, -> not me.is-conference-yyyy it
 
-  ..is-annual-conference = ->
+  is-annual-conference: ->
     'Bilderberg Annual Conference' is it.name
 
-  ..is-conference-yyyy = ->
+  is-conference-yyyy: ->
     /^Bilderberg Conference [0-9]{4}$/.test it.name
 
-  ..is-steering = ->
+  is-steering: ->
     'Bilderberg Steering Committee' is it.name

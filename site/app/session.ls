@@ -1,19 +1,19 @@
 C = require \./collection
 
-exports
-  ..auto-sync-el = ($el) ->
-    C.Sessions.on \sync, -> $el.set-access exports
-    $el.set-access exports
+module.exports = me =
+  auto-sync-el: ($el) ->
+    C.Sessions.on \sync, -> $el.set-access me
+    $el.set-access me
 
-  ..id = ->
+  id: ->
     C.Sessions.models.0?id
 
-  ..is-signed-in = ->
+  is-signed-in: ->
     return C.Sessions.length > 0 unless it
-    return exports.id! is it
+    return me.id! is it
 
-  ..is-signed-in-admin = ->
+  is-signed-in-admin: ->
     \admin is C.Sessions.models.0?get \role
 
-  ..is-signed-out = ->
+  is-signed-out: ->
     C.Sessions.length is 0

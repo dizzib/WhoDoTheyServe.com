@@ -4,10 +4,10 @@ class ApiError extends Error
     @name    = \ApiError
     @message = it
 
-exports
-  ..ApiError = ApiError
+module.exports =
+  ApiError: ApiError
 
-  ..get-date-yesterday = ->
+  get-date-yesterday: ->
       d = new Date!
       d.setDate d.getDate! - 1
       return d

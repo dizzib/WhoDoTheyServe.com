@@ -12,9 +12,8 @@ schema = new M.Schema s-evidences
   ..plugin P-Meta
   ..index { entity_id:1, 'meta.create_user_id':1 }, {+unique}
 
-module.exports = Model = Crud.set-fns M.model \notes, schema
-
-Model.crud-fns.list-for-entity = (req, res, next) ->
-  err, docs <- Model.find entity_id:req.id .lean!exec
-  return next err if err
-  res.json docs
+module.exports = me = Crud.set-fns M.model \notes, schema
+  ..crud-fns.list-for-entity = (req, res, next) ->
+    err, docs <- me.find entity_id:req.id .lean!exec
+    return next err if err
+    res.json docs

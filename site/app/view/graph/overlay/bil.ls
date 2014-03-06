@@ -2,8 +2,8 @@ E = require \./bil/edge
 N = require \./bil/node
 V = require \../../../view
 
-exports
-  ..init = (svg, @f) ~>
+module.exports =
+  init: (svg, @f) ~>
     @ga = svg.append \svg:g .attr \class, \bil-attend
     @gs = svg.append \svg:g .attr \class, \bil-steer
 
@@ -15,15 +15,15 @@ exports
     function add-handler g, event then
       V.graph-toolbar.on event, -> g.attr \display, if it then '' else \none
 
-  ..filter-edges = ->
+  filter-edges: ->
     E.filter it
 
-  ..filter-nodes = ->
+  filter-nodes: ->
     N.filter it
 
-  ..render = ~>
+  render: ~>
     E.render-attend @ga, @f
     E.render-steer  @gs, @f
 
-  ..render-clear = ->
+  render-clear: ->
     E.render-clear!
