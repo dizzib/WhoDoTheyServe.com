@@ -1,4 +1,4 @@
-global.log = console.log
+global.log    = console.log
 
 Express = require \express
 _       = require \underscore
@@ -19,7 +19,7 @@ env = (server = Express!).settings.env
 module.exports = server
   ..set \port, process.env.PORT || 80
   ..use Express.favicon \./app/asset/favicon.png, static-opts
-  ..use Express.logger \dev
+  ..use Express.logger \dev if env in <[ development ]>
   ..use Express.compress! if env in <[ staging production ]>
   ..use Express.cookieParser!
   ..use Express.cookieSession cookie-opts
@@ -43,12 +43,15 @@ function handle-error err, req, res, next then
   msg = switch
     | err instanceof H.ApiError    => err.message
     | err.name is \ValidationError => get-validation-msg err
-    | otherwise                    => 'Internal server error, sorry! :('
+    | _ =>
+      if env in <[ development test ]> then err.stack
+      else 'Internal server error, sorry! :('
   res.send 500, msg
 
 function log-error opts then
   (err, req, res, next) ->
     msg = if err.name is \ValidationError then get-validation-msg err else err.message
+    # to avoid a flood of growls during a test run, we log rather than logerr
     log if opts.show-stack and err.stack then err.stack else msg
     next err
 

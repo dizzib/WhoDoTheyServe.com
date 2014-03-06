@@ -1,13 +1,16 @@
+global.log = console.log
+
+const DB-CACHE = "#{process.cwd!}/site/api/db-cache"
+
 Should   = require \chai .should!
 Client   = require \mongodb .MongoClient
 Mongoose = require \mongoose
 W        = require \wait.for
 R        = require \../helper .run
-db-cache = "#{process.cwd!}/site/api/db-cache"
-Cache-C  = require "#db-cache/collection-cache"
-Cache-Q  = require "#db-cache/query-by-entity-cache"
-Store    = require "#db-cache/in-process-store"
-Sweeper  = require "#db-cache/sweeper"
+Cache-C  = require "#DB-CACHE/collection-cache"
+Cache-Q  = require "#DB-CACHE/query-by-entity-cache"
+Store    = require "#DB-CACHE/in-process-store"
+Sweeper  = require "#DB-CACHE/sweeper"
 
 (...) <- describe 'db-cache'
 @timeout 5000

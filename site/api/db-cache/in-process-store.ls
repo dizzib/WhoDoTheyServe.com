@@ -2,7 +2,6 @@
 
 M = require \mongoose
 _ = require \underscore
-H = require \../helper
 
 exports.create = -> new Store!
 
@@ -10,7 +9,7 @@ class Store
   -> @reset!
 
   clear: (coll-name, key-raw) ->
-    #H.log 'CLEAR'
+    #log 'CLEAR'
     if coll-name then
       assert-coll-name coll-name
       return null unless _.has @_store, coll-name
@@ -19,7 +18,7 @@ class Store
     @reset!
 
   get: (coll-name, key-raw) ->
-    #H.log 'GET', coll-name, key-raw
+    #log 'GET', coll-name, key-raw
     assert-coll-name coll-name
     if _.has @_store, coll-name then
       coll-store = @_store[coll-name]
@@ -31,7 +30,7 @@ class Store
     return null
 
   set: (coll-name, key-raw, value) ->
-    #H.log 'SET', coll-name, key-raw, value
+    #log 'SET', coll-name, key-raw, value
     assert-coll-name coll-name
     @_store[coll-name] = {} unless _.has @_store, coll-name
     @_store[coll-name][get-key key-raw] = value

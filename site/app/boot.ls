@@ -1,7 +1,12 @@
-# Set global log fn.
-# Note we can't just set window.log = console.log becuase we'll get
+# set global log fn
+# note we can't just set window.log = console.log becuase we'll get
 # 'illegal invocation' errors, since console.log expects 'this' to be console.
 window.log = -> console.log ...&
+
+# ensure untrapped errors are logged for marionette-js-logger test runner
+window.onerror = (msg, url, line) ->
+  log "#msg (#url line #line)"
+  false # propogate
 
 B      = require \backbone
 F      = require \fs # inlined by brfs

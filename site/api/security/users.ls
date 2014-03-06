@@ -3,8 +3,8 @@ Users = require \../model/users
 
 const DAILY_SIGNUP_MAX = 5
 
-exports
-  ..create = ->
+module.exports =
+  create: ->
     (req, res, next) ->
       err, n <- Users.count
       return next err if err
@@ -19,7 +19,7 @@ exports
       #return next new Error 'only admin can add quota_daily' if req.body.quota_daily
       next!
 
-  ..maintain = ->
+  maintain: ->
     (req, res, next) ->
       return next new Error 'signin required' unless si = req.session.signin
       return next! if si.role is \admin

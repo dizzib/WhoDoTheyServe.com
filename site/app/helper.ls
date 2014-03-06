@@ -1,6 +1,6 @@
 inserted-css = []
 
-module.exports = H =
+module.exports = me =
   # based on https://github.com/substack/insert-css
   insert-css: ->
     return if (inserted-css.indexOf it) >= 0
@@ -13,12 +13,12 @@ module.exports = H =
     el
 
   insert-css-seo: ->
-    el = H.insert-css it
+    el = me.insert-css it
     el.setAttribute 'data-seo-emit', ''
 
   on-err: (coll, xhr) ->
     const MSG = 'An error occurred (check the debug console for more details)'
-    H.show-error xhr.responseText || MSG
+    me.show-error xhr.responseText || MSG
 
   show-error: ->
     $ \.alert-error .text it .show!

@@ -94,7 +94,7 @@ function bundle
     \./lib-3p/transparency
     \./lib-3p-ext/jquery
   try
-    pushd "./site/app"
+    pushd "#{Dir.site.DEV}/app"
     ba = Brsify \./boot.js
     for l in LIBS then ba.external l
     ba.transform Brfs
@@ -151,13 +151,12 @@ function markdown ipath, opath, cb
   cb e
 
 function finalise ipath
-  return if /\/task\//.test ipath
-  runif <[ api lib ]>, -> me.emit \built-api
-  runif <[ app lib ]>, bundle
+  function contains then _.contains ipath, "/#it/"
+  return if contains \task
+  me.emit \built-api unless contains \app
+  for dir in <[ app lib ]> then bundle! if contains dir
   copy-package-json!
-
-  function runif dirs, fn
-    for dir in dirs then fn! if _.contains ipath, "#{Dirname.SITE}/#dir"
+  me.emit \built
 
 function prune-empty-dirs
   Assert.equal pwd!, Dir.DEV

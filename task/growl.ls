@@ -8,7 +8,7 @@ const ERROR   = create-note \Error  , Chalk.red
 const SUCCESS = create-note \Success, Chalk.green
 
 module.exports =
-  alert: (e, opts)    -> send ERROR, e, sticky:true <<< opts
+  alert: (e, opts)    -> send ERROR, e, (sticky:true) <<< opts
   err  : (e, opts)    -> send ERROR, e, opts
   ok   : (text, opts) -> send SUCCESS, text, opts
   say  : (text, opts) -> send INFO, text, opts

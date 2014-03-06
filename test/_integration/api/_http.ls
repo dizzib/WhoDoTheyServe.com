@@ -5,7 +5,7 @@ ST     = require \../state
 
 r = R.defaults jar:R.jar! # clear cookie jar (signout)
 
-module.exports = M =
+module.exports = me =
   del: (path, cb) ->
     function del url, cb then r.del url, standardise cb
     W.for del, url path
@@ -24,14 +24,14 @@ module.exports = M =
     W.for put, url(path), obj
 
   list: (route, n) ->
-    res = W.for M.get, route
-    M.assert res
+    res = W.for me.get, route
+    me.assert res
     Should.exist list = res.object
     list.length.should.equal n
 
   ## assertions
 
-  assert: (res, is-ok = true) -> (if is-ok then M.ok else M.err) res
+  assert: (res, is-ok = true) -> (if is-ok then me.ok else me.err) res
 
   is-ok: -> it.statusCode is 200
 
@@ -47,5 +47,6 @@ function standardise cb then (err, resp, body) ->
 function url path then "http://localhost:#{process.env.SITE_PORT}/api/#{path}"
 
 function assert-result res, status-code-expect then
-  log res.body unless res.statusCode is status-code-expect
+  # log failure to console.error so test runner can respond accordingly
+  console.error res.body unless res.statusCode is status-code-expect
   res.statusCode.should.equal status-code-expect

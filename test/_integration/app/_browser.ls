@@ -71,6 +71,7 @@ module.exports = B =
     W4m md, \connect
     log "connected"
     w4mc \startSession
+    mc.logger.handleMessage = handle-remote-log
     w4mc \setSearchTimeout 500
     w4mc \goUrl SITE-URL
     init-sandbox!
@@ -122,6 +123,11 @@ module.exports = B =
     B.assert.displayed true, ...&
 
 ## helpers
+
+function handle-remote-log
+  log "[marionette log] #{msg = it.message}"
+  # any browser error should halt the test run
+  throw new Error msg if /error/i.test msg
 
 function init-sandbox
   view = w4mc \findElement, \.view

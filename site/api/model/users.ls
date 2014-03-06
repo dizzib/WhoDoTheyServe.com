@@ -1,5 +1,4 @@
 M          = require \mongoose
-H          = require \../helper
 Cons       = require \../../lib/model-constraints
 Crypt      = require \../crypt
 CryptPwd   = require \../crypt-pwd
@@ -38,19 +37,19 @@ schema = new M.Schema spec
     @invalidate \password, 'Invalid password' unless is-valid
     next!
 
-module.exports = Users = M.model \users, schema
+module.exports = me = M.model \users, schema
   ..crud-fns =
     create: (req, res, next) ->
-      err, n <- Users.count
+      err, n <- me.count
       return next err if err
       (b = req.body).role = role = if n++ is 0 then \admin else \user
       #b.create_token = Signup.create-token!
-      H.log "Create new user ##{n} as #{role}"
-      Crud.create req, res, next, Users,
+      log "Create new user ##{n} as #{role}"
+      Crud.create req, res, next, me,
         return-fields: <[ login ]>
         #success: Signup.send-email
     read: (req, res, next) ->
-      Crud.read req, res, next, Users,
+      Crud.read req, res, next, me,
         return-fields: <[ login email info quota_daily ]>
         success: (req, user, done) ->
           user.email = Crypt.decrypt user.email
@@ -58,10 +57,10 @@ module.exports = Users = M.model \users, schema
     update: (req, res, next) ->
       # TODO: stop backbone sending password:''
       unless (b = req.body).password?length then delete b.password
-      Crud.update req, res, next, Users, return-fields:<[ login ]>
-    delete: Crud.get-invoker Users, Crud.delete, return-fields:<[ login ]>
-    list: Crud.get-invoker Users, Crud.list, return-fields:<[ login info ]>
+      Crud.update req, res, next, me, return-fields:<[ login ]>
+    delete: Crud.get-invoker me, Crud.delete, return-fields:<[ login ]>
+    list: Crud.get-invoker me, Crud.list, return-fields:<[ login info ]>
   #..verify = (req, res, next) ->
-  #    err, user <- Users.findById req.id
+  #    err, user <- me.findById req.id
   #    return next err if err
   #    Signup.verify req, res, next, user

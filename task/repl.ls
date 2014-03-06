@@ -56,9 +56,11 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
       for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
       rl.prompt!
 
+Build.on \built, Run.recycle-dev
 Build.on \built-api, Run.run-dev-test_1
 Build.on \built-app, Run.run-dev-test_2
 Build.start!
+
 Run.recycle-dev!
 Run.recycle-staging!
 
@@ -69,7 +71,8 @@ setTimeout ->
 
 function generate-staging
   Staging.generate!
-  Run.recycle-site-staging-tests!
+  Run.recycle-staging!
+  Run.run-staging-tests!
 
 function show-help
   for c in COMMANDS when !c.disabled then log c.display
