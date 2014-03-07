@@ -36,9 +36,7 @@ function drop-db cfg, cb
   cb!
 
 function get-mocha-cmd grep, opts
-  cmd = "#{Dir.DEV}/node_modules/mocha/bin/mocha"
-  # mocha spawns a _mocha child process
-  cmd = cmd.replace '/bin/mocha', '/bin/_mocha' if opts?child
+  cmd = "#{Dir.DEV}/node_modules/mocha/bin/_mocha"
   "#cmd --grep #grep --reporter spec --bail --recursive"
 
 function kill-all-mocha cb
@@ -47,7 +45,6 @@ function kill-all-mocha cb
   cb!
 
 function kill-mocha grep, cb
-  <- kill-node (get-mocha-cmd grep, child:true)
   <- kill-node (get-mocha-cmd grep)
   cb!
 
