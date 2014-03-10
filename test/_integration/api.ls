@@ -1,7 +1,10 @@
 global.log = console.log
 
-W        = require \wait.for
+Sh       = require \chai .should!
+U        = require \util
+W4       = require \wait.for .for
 R        = require \./helper .run
+Http     = require \./api/_http
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
 Hive     = require \./api/hive
@@ -13,8 +16,14 @@ User     = require \./api/user
 unless \tester is env = process.env.NODE_ENV
   throw new Error "unexpected environment #env"
 
+function test spec then it spec.info, spec.fn
+
 (...) <- describe 'api'
 @timeout 10000
+
+it '/sys access should increment hit count after a short while', R ->
+  Http.assert W4 Http.get, \sys
+  # this test completes at the end of this file
 
 it 'signup'
 test User.list.is0
@@ -255,4 +264,7 @@ test Edge.ab.remove.bad # signed out
 test Hive.a.get.ok
 test Hive.b.get.ok
 
-function test spec then it spec.info, spec.fn
+it '/sys access should have incremented hit count after a short while', R ->
+  Http.assert res = W4 Http.get, "hive/n-hits-#{new Date!getFullYear!}"
+  n-hits = JSON.parse res.object.value
+  n-hits[*-1].should.equal 1
