@@ -39,6 +39,12 @@ function get-mocha-cmd grep, opts
   cmd = "#{Dir.DEV}/node_modules/mocha/bin/_mocha"
   "#cmd --grep #grep --reporter spec --bail --recursive"
 
+function get-site-desc cfg
+  "#{cfg.NODE_ENV}@#{cfg.PORT}"
+
+function get-start-site-args cfg
+  "#{cfg.NODE_ARGS or ''} boot #{get-site-desc cfg}".trim!
+
 function kill-all-mocha cb
   <- kill-mocha GREP_1
   <- kill-mocha GREP_2
@@ -104,22 +110,24 @@ function start-mocha cfg, grep, cb
 
 function start-site cwd, cfg, cb
   v = exec 'node --version', silent:true .output.replace '\n', ''
-  log "start site #{id = cfg.NODE_ENV}@#{port = cfg.PORT} in node #v"
-  args = "boot #id #port".trim!
+  desc = get-site-desc cfg
+  args = get-start-site-args cfg
+  log "start site in node #v: #args"
   return log "unable to start non-existent site at #cwd" unless test \-e, cwd
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg
     ..stderr.on \data, ->
       log-data it
       # data may be fragmented, so only growl relevant packet
-      if RX-ERR.test s = it.toString! then G.alert "#id@#port\n#s", nolog:true
+      if RX-ERR.test s = it.toString! then G.alert "#desc\n#s", nolog:true
     ..stdout.on \data, ->
       #log-data it
       cb! if cb and /listening on port/.test it
 
   function log-data
-    log Chalk.gray "#{Chalk.underline id} #{it.slice 0, -1}"
+    log Chalk.gray "#{Chalk.underline desc} #{it.slice 0, -1}"
 
 function stop-site cfg, cb
-  log "stop site #{id = cfg.NODE_ENV}@#{port = cfg.PORT}"
-  <- kill-node args = "boot #id #port"
+  args = get-start-site-args cfg
+  log "stop site: #args"
+  <- kill-node args
   cb!

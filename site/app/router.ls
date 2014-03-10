@@ -1,6 +1,7 @@
 B  = require \backbone
 _  = require \underscore
-H  = require \./history
+H  = require \./helper
+Hi = require \./history
 C  = require \./collection
 F  = require \./fireprox
 M  = require \./model
@@ -40,14 +41,17 @@ Router = B.Router.extend do
     \user/signup       : \user_signup
     \user/:id          : \user
     \users             : \users
+    \__coverage        : ->
+      # https://github.com/gotwarlost/istanbul-middleware
+      H.post-json '/coverage/client', window.__coverage__
   doc_about   : -> V.doc-about.render!
-  edge        : -> H.set-edge Vc.edge ...
+  edge        : -> Hi.set-edge Vc.edge ...
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
   edges       : Vc.edges
   fireprox    : F.setup-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
-  node        : -> H.set-node-id Vc.node ...
+  node        : -> Hi.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes       : Vc.nodes
   session     : -> V.session.render!

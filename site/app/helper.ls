@@ -20,5 +20,11 @@ module.exports = me =
     const MSG = 'An error occurred (check the debug console for more details)'
     me.show-error xhr.responseText || MSG
 
+  post-json: (url, obj) ->
+    new XMLHttpRequest!
+      ..open \POST, url
+      ..setRequestHeader 'Content-Type', 'application/json; charset=UTF-8'
+      ..send JSON.stringify obj
+
   show-error: ->
     $ \.alert-error .text it .show!

@@ -109,7 +109,6 @@ function bundle
     bl.bundle detectGlobals:false, insertGlobals:false
       ..on \end, -> G.say 'Bundled lib.js'
       ..pipe Fs.createWriteStream \lib.js
-    me.emit \built-app
   finally
     popd!
 
@@ -155,6 +154,7 @@ function finalise ipath
   return if contains \task
   me.emit \built-api unless contains \app
   for dir in <[ app lib ]> then bundle! if contains dir
+  me.emit \built-app unless contains \api
   copy-package-json!
   me.emit \built
 

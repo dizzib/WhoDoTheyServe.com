@@ -3,13 +3,13 @@ global.log    = console.log
 if (is-cover = process.env.COVERAGE) then
   Im = require \istanbul-middleware
   Im.hookLoader __dirname
-log "is-cover=#is-cover"
 
 Express = require \express
 _       = require \underscore
 H       = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms
+const DIR-APP  = "#{__dirname}/app"
 
 cookie-opts =
   secret: process.env.WDTS_COOKIE_SECRET or \secret
@@ -32,7 +32,8 @@ module.exports = server
   ..use Express.bodyParser!
   ..use allow-cross-domain
   ..use server.router
-  ..use Express.static "#{__dirname}/app", static-opts
+  ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
+  ..use Express.static DIR-APP, static-opts
   ..use log-error show-stack:env in <[ development ]>
   ..use handle-error
   ..use Express.errorHandler! if env in <[ development ]>
@@ -45,6 +46,10 @@ function allow-cross-domain req, res, next then
   res.set \Access-Control-Allow-Origin     , req.headers.origin
   next!
 
+function get-validation-msg err
+  return _.reduce err.errors, iterator, ''
+  function iterator memo, err then memo + "#{err.message}\n"
+
 function handle-error err, req, res, next then
   msg = switch
     | err instanceof H.ApiError    => err.message
@@ -54,13 +59,12 @@ function handle-error err, req, res, next then
       else 'Internal server error, sorry! :('
   res.send 500, msg
 
-function log-error opts then
+function log-error opts
   (err, req, res, next) ->
     msg = if err.name is \ValidationError then get-validation-msg err else err.message
     # to avoid a flood of growls during a test run, we log rather than logerr
     log if opts.show-stack and err.stack then err.stack else msg
     next err
 
-function get-validation-msg err
-  return _.reduce err.errors, iterator, ''
-  function iterator memo, err then memo + "#{err.message}\n"
+function matcher req
+  /(app|loader)\.js/.test req.url

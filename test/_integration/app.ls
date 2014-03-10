@@ -11,11 +11,16 @@ User     = require \./app/user
 unless \tester is env = process.env.NODE_ENV
   throw new Error "unexpected environment #env"
 
+function test spec then it spec.info, spec.fn
+
 (...) <- describe 'app'
 @timeout 10000
 
 before R ->
   B.init!
+
+after R ->
+  B.go \__coverage # https://github.com/gotwarlost/istanbul-middleware
 
 it 'click About', R ->
   B.click \About
@@ -112,5 +117,3 @@ test Session.admin.signin.password.a.ok
 test User.b.remove.ok
 test User.a.remove.ok
 test User.list.is1
-
-function test spec then it spec.info, spec.fn
