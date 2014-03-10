@@ -20,6 +20,7 @@ devDependencies:
   cron                  : \~1.0.3
   gaze                  : \~0.5.0
   gntp                  : \~0.1.1
+  'istanbul-middleware' : \~0.1.1
   jade                  : \~0.27.7
   jsdom                 : \~0.10.1
   LiveScript            : \~1.2.0

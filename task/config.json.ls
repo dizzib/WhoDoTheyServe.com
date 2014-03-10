@@ -6,6 +6,7 @@ dev:
     WDTS_DB_CACHE_ENABLE            : true
     WDTS_DB_CACHE_SWEEP_PERIOD_MINS : 10
   test_1:
+    COVERAGE                        : true
     NODE_ENV                        : \test
     PORT                            : 4001
     WDTS_DB_URI                     : \mongodb://localhost/wdts_test_1

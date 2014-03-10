@@ -1,5 +1,10 @@
 global.log    = console.log
 
+if (is-cover = process.env.COVERAGE) then
+  Im = require \istanbul-middleware
+  Im.hookLoader __dirname
+log "is-cover=#is-cover"
+
 Express = require \express
 _       = require \underscore
 H       = require \./api/helper
@@ -18,6 +23,7 @@ static-opts =
 env = (server = Express!).settings.env
 module.exports = server
   ..set \port, process.env.PORT || 80
+  ..use '/coverage', Im.createHandler! if is-cover
   ..use Express.favicon \./app/asset/favicon.png, static-opts
   ..use Express.logger \dev if env in <[ development ]>
   ..use Express.compress! if env in <[ staging production ]>
