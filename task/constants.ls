@@ -6,6 +6,8 @@ const DEV     = \dev
 const SITE    = \site
 const STAGING = \staging
 const SEO     = \seo
+const TASK    = \task
+const TEST    = \test
 
 const DIR-ROOT         = pwd!
 const DIR-BUILD        = "#DIR-ROOT/#BUILD"
@@ -21,6 +23,8 @@ module.exports =
     SITE   : SITE
     STAGING: STAGING
     SEO    : SEO
+    TASK   : TASK
+    TEST   : TEST
   dir:
     ROOT : DIR-ROOT
     BUILD: DIR-BUILD
@@ -31,5 +35,5 @@ module.exports =
       SEO    : DIR-SITE-SEO
 
 Assert test \-e "#DIR-ROOT/#SITE"
-Assert test \-e "#DIR-ROOT/task"
-Assert test \-e "#DIR-ROOT/test"
+Assert test \-e "#DIR-ROOT/#TASK"
+Assert test \-e "#DIR-ROOT/#TEST"

@@ -166,8 +166,9 @@ function prune-empty-dirs
 function start-watching tid
   log "start watching #tid"
   Assert.equal pwd!, Dir.ROOT
-  t = tasks[tid]
-  t.gaze = Gaze [ "**/*.#{t.ixt}", "!#{Dirname.BUILD}/**" ], ->
+  ixt = (t = tasks[tid]).ixt
+  pat = "#{Dirname.SITE},#{Dirname.TASK},#{Dirname.TEST}"
+  t.gaze = Gaze [ "*.#ixt" "{#pat}/**/*.#ixt" ], ->
     act, ipath <- t.gaze.on \all
     log act, ipath
     return if '/' is ipath.slice -1 # BUG: Gaze might fire when dir added
