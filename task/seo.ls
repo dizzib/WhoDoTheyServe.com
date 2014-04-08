@@ -1,6 +1,6 @@
 Assert  = require \assert
 _       = require \lodash
-Jsdom   = require \jsdom
+Cheerio = require \cheerio
 Mc      = require \marionette-client
 Os      = require \os
 Path    = require \path
@@ -41,15 +41,13 @@ module.exports =
         W4m mc, \executeScript, (-> window.location.href = it), [ url ]
         W4m mc, \findElement \.ready
         html = W4m mc, \pageSource
-        # zepto uses much less ram than jQuery for around the same speed
-        win = W4m Jsdom, \env, html, [ \./lib-3p/zepto.min.js ]
-        amend-css win.$
-        amend-scripts win.$
-        strip-html win.$
-        queue-links pending, done, win.$
-        seoify-links win.$
-        html = win.document.doctype.toString! + win.document.innerHTML
-        win.close!
+        $ = Cheerio.load html
+        amend-css $
+        amend-scripts $
+        strip-html $
+        queue-links pending, done, $
+        seoify-links $
+        html = $.html!
         save-html-to-file html, route
       mins = (Date.now! - start)/60000
       G.ok "SEO: generated #{done.length} files in #mins minutes", sticky:true
@@ -77,7 +75,7 @@ module.exports =
         </script>"
 
     function queue-links pending, done, $
-      links = _.map ($ \a), -> it.getAttribute \href
+      links = _.map ($ \a), -> $ it .attr \href
       for l in links
         if not _.contains done, l and not _.contains pending, l
         and /^#/.test l and not EXCLUDE-ROUTES.test l
@@ -92,7 +90,9 @@ module.exports =
       html.to path
 
     function seoify-links $
-      $ "a[href^='#']" .each -> @href = "#{@hash.replace('#', '')}.html"
+      $ "a[href^='#']" .each ->
+        href = ($el = $ this).attr \href
+        $el.attr \href, "#{href.replace('#', '')}.html"
 
     function strip-html $
       $ 'a.btn, a.hide, .meta, .seo-remove' .remove!
