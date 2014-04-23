@@ -97,10 +97,11 @@ function recycle-tests test, tester, dirsite, grep, desc, cb
 
 function start-mocha cfg, grep, cb
   if _.isFunction grep then [grep, cb] = [void, grep] # variadic
-  log \start-mocha, cfg, grep
+  v = exec 'node --version', silent:true .output.replace '\n', ''
+  log "start mocha in node #v: #grep"
   cfg <<< firefox-host:env.firefox-host or \localhost
   cmd = get-mocha-cmd grep
-  Cp.spawn \node, (cmd.split ' '), cwd:Dir.DEV, env:cfg, stdio:[ 0, 1, void ]
+  Cp.spawn \node, (cmd.split ' '), cwd:Dir.DEV, env:(env with cfg), stdio:[ 0, 1, void ]
     ..on \exit, ->
       cb if it then new Error "Exited with code #it" else void
     ..stderr.on \data, ->
@@ -114,11 +115,11 @@ function start-site cwd, cfg, cb
   args = get-start-site-args cfg
   log "start site in node #v: #args"
   return log "unable to start non-existent site at #cwd" unless test \-e, cwd
-  Cp.spawn \node, (args.split ' '), cwd:cwd, env:cfg
+  Cp.spawn \node, (args.split ' '), cwd:cwd, env:env with cfg
     ..stderr.on \data, ->
-      log-data it
+      log-data s = it.toString!
       # data may be fragmented, so only growl relevant packet
-      if RX-ERR.test s = it.toString! then G.alert "#desc\n#s", nolog:true
+      if RX-ERR.test s then G.alert "#desc\n#s", nolog:true
     ..stdout.on \data, ->
       #log-data it
       cb! if cb and /listening on port/.test it

@@ -5,6 +5,6 @@ DEV="_build/dev"
 lsc -o $DEV/task -c task/*.ls
 lsc -o $DEV -c *.json.ls
 
-cd $DEV
-npm install
-npm prune
+#cd $DEV
+#npm install
+#npm prune
