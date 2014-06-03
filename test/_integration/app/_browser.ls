@@ -26,7 +26,7 @@ module.exports = B =
 
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
-      poll-for-ok 3000ms, ->
+      poll-for-ok 5000ms, ->
         n-actual = B.wait-for (opts <<< require-unique:false)
         if n-actual > 0
           el = w4mc \executeScript -> window.el
@@ -36,7 +36,7 @@ module.exports = B =
         "#sig expect=#n-expect, actual=#n-actual"
 
     displayed: (expect = true, ...args) ->
-      poll-for-ok 3000ms, ->
+      poll-for-ok 5000ms, ->
         try
           B.wait-for ...args
           el = w4mc \executeScript -> window.el
@@ -96,7 +96,7 @@ module.exports = B =
       .form \opts
   , (args) ->
     #log \wait-for, args
-    opts = require-unique:true scope:\document timeout:3000ms
+    opts = require-unique:true scope:\document timeout:5000ms
     opts <<< args.opts
 
     filter = switch
