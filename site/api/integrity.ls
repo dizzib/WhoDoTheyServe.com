@@ -18,9 +18,9 @@ module.exports =
     return next! if req.session.signin.role is \admin
     err, edge <- M-Edges.findById req.id
     return next err if err
-    if b.a_node_id and not edge.a_node_id.equals b.a_node_id then
+    if b.a_node_id and edge.a_node_id isnt b.a_node_id then
       return next new H.ApiError 'Only admin can update a_node_id'
-    if b.b_node_id and not edge.b_node_id.equals b.b_node_id then
+    if b.b_node_id and edge.b_node_id isnt b.b_node_id then
       return next new H.ApiError 'Only admin can update b_node_id'
     next!
   edge-delete: (req, res, next) ->

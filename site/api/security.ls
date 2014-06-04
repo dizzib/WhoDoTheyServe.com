@@ -40,6 +40,6 @@ module.exports =
         return next new Error "entity #{req.id} not found for update/delete"
       unless si = req.session.signin then
         return next new Error 'signin required'
-      unless doc.meta.create_user_id.equals si.id or si.role is \admin then
+      unless doc.meta.create_user_id is si.id or si.role is \admin then
         return next new Error 'signin must be the creator or admin'
       next!

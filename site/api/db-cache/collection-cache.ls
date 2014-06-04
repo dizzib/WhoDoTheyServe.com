@@ -68,7 +68,7 @@ class Cache
       return miss! unless (opts = @_optionsForExec @model).lean
 
       return miss! unless docs = @@store.get @model.modelName, STORE-KEY
-      doc = _.find docs, (d) -> d._id.equals conds._id # handle ObjectId / string compare
+      doc = _.find docs, (d) -> d._id is conds._id
       callback null, doc
 
       ~function miss then
@@ -93,6 +93,6 @@ class Cache
     #log 'REFRESH'
     docs = @@store.get coll-name, STORE-KEY
     docs = docs or {}
-    docs = _.reject docs, (d) -> d._id.equals id
+    docs = _.reject docs, (d) -> d._id is id
     docs.push doc if doc
     @@store.set coll-name, STORE-KEY, docs

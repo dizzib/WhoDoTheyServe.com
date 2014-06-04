@@ -2,12 +2,14 @@ M         = require \mongoose
 Cons      = require \../../lib/model-constraints
 Crud      = require \../crud
 H         = require \../helper
+P-Id      = require \./plugin-id
 P-Meta    = require \./plugin-meta
 
 schema = new M.Schema do
   name : type:String, required:yes, match:Cons.node.name.regex
 
 schema
+  ..plugin P-Id
   ..plugin P-Meta
   # TODO: refactor when mongo allows case-insensitive unique index
   # https://jira.mongodb.org/browse/SERVER-90

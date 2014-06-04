@@ -47,7 +47,6 @@ class Store
   function get-key key-raw then
     key = switch
       case _.isString key-raw then key-raw
-      case key-raw instanceof M.Types.ObjectId then key-raw.toString!
       case _.isObject key-raw then JSON.parse key-raw
       default then throw new Error "invalid key #{key-raw}"
     if key.length > 32 then throw new Error "key is too long #{key}"

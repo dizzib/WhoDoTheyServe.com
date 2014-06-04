@@ -4,6 +4,7 @@ Crypt      = require \../crypt
 CryptPwd   = require \../crypt-pwd
 Crud       = require \../crud
 M-Sessions = require \./sessions
+P-Id       = require \./plugin-id
 Signup     = require \../signup
 
 spec =
@@ -17,6 +18,7 @@ spec =
   freeze_until: type:String  # allow sign-in only after this datetime
 
 schema = new M.Schema spec
+  ..plugin P-Id
   ..plugin Signup.plugin
   # email
   ..pre \save, (next) ->

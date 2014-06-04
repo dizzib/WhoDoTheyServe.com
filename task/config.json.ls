@@ -13,6 +13,7 @@ dev:
     NODE_ENV                        : \test
     PORT                            : 4001
     WDTS_DB_URI                     : \mongodb://localhost/wdts_test_1
+    WDTS_DB_CACHE_ENABLE            : true
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
   test_2:
     COVERAGE                        : true
@@ -20,6 +21,7 @@ dev:
     NODE_ENV                        : \test
     PORT                            : 4002
     WDTS_DB_URI                     : \mongodb://localhost/wdts_test_2
+    WDTS_DB_CACHE_ENABLE            : true
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
   tester_1:
     NODE_ENV                        : \tester

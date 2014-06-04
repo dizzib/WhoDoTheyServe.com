@@ -11,6 +11,7 @@ dependencies:
   crypto    : \0.0.3
   express   : \3.1.1
   mongoose  : \3.5.5
+  shortid   : \2.0.0
   underscore: \1.4.4
 devDependencies:
   brfs                  : \~0.0.9

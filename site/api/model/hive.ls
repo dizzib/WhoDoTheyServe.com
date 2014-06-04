@@ -1,12 +1,14 @@
-M = require \mongoose
-_ = require \underscore
-H = require \../helper
+M    = require \mongoose
+_    = require \underscore
+H    = require \../helper
+P-Id = require \./plugin-id
 
 s-hive =
   key  : type:String, required:yes, index:{+unique}
   value: type:String, required:yes
 
 schema = new M.Schema s-hive, { collection:\hive }
+  ..plugin P-Id
 
 module.exports = me = M.model \hive, schema
   ..load = (cb) ->

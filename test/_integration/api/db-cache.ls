@@ -9,6 +9,7 @@ W        = require \wait.for
 R        = require \../helper .run
 Cache-C  = require "#DB-CACHE/collection-cache"
 Cache-Q  = require "#DB-CACHE/query-by-entity-cache"
+P-Id     = require "#DB-CACHE/../model/plugin-id"
 Store    = require "#DB-CACHE/in-process-store"
 Sweeper  = require "#DB-CACHE/sweeper"
 
@@ -29,9 +30,12 @@ before R ->
   Mongoose.connect DB-URL
   drop-db!
 
-  M-Foos := Mongoose.model \foos, new Mongoose.Schema do
+  spec =
     tag      : type:String
     entity_id: type:String
+  schema = new Mongoose.Schema spec
+    ..plugin P-Id
+  M-Foos := Mongoose.model \foos, schema
   database = W.forMethod Client, \connect, DB-URL
 
   db := database
