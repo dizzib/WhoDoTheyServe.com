@@ -168,7 +168,7 @@ function start-watching tid
   Assert.equal pwd!, Dir.ROOT
   ixt = (t = tasks[tid]).ixt
   pat = "#{Dirname.SITE},#{Dirname.TASK},#{Dirname.TEST}"
-  t.gaze = Gaze [ "*.#ixt" "{#pat}/**/*.#ixt" ], ->
+  t.gaze = Gaze [ "*.#ixt" "{#pat}/**/*.#ixt" ], { interval:1000ms }, ->
     act, ipath <- t.gaze.on \all
     log act, ipath
     return if '/' is ipath.slice -1 # BUG: Gaze might fire when dir added
