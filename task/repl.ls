@@ -21,24 +21,25 @@ cd Dir.DEV
 config.fatal = true
 
 const COMMANDS =
-  * cmd:'h    ' lev:0 desc:'help  - show commands'   fn:show-help
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'  fn:Run.run-dev-tests
-  * cmd:'b.fc ' lev:0 desc:'build - files compile'   fn:Build.compile-files
-  * cmd:'b.fd ' lev:0 desc:'build - files delete'    fn:Build.delete-files
-  * cmd:'b.la ' lev:0 desc:'build - loop app tests'  fn:Run.loop-dev-test_2
-  * cmd:'b.nd ' lev:0 desc:'build - npm delete'      fn:Build.delete-modules
-  * cmd:'b.nr ' lev:0 desc:'build - npm refresh'     fn:Build.refresh-modules
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'  fn:Run.run-staging-tests
-  * cmd:'s.g  ' lev:1 desc:'stage - generate + test' fn:generate-staging
-  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'    fn:Seo.generate
-  * cmd:'p    ' lev:0 desc:'prod  - show config'     fn:Prod.show-config
-  * cmd:'p.l  ' lev:1 desc:'prod  - login'           fn:Prod.login
-  * cmd:'p.s2p' lev:2 desc:'prod  - staging ->PROD'  fn:Prod.push
-# * cmd:'p.env' lev:2 desc:'prod  - env vars->PROD'  fn:Prod.send-env-vars
-  * cmd:'d    ' lev:0 desc:'data  - show config'     fn:Data.show-config
-  * cmd:'d.ba ' lev:0 desc:'data  - PROD->bak'       fn:Data.dump-prod-to-backup
-  * cmd:'d.st ' lev:1 desc:'data  - bak->staging'    fn:Data.restore-backup-to-staging
-# * cmd:'d.b2p' lev:2 desc:'data  - bak->PROD'       fn:Data.restore-backup-to-prod
+  * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:Run.run-dev-tests
+  * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
+  * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
+  * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2
+  * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
+  * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:Run.run-staging-tests
+  * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
+  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
+  * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-config
+  * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.login
+  * cmd:'p.PSH' lev:2 desc:'prod  - push stage->PROD'   fn:Prod.push
+  * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.update
+  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.send-env-vars
+  * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-config
+  * cmd:'d.ba ' lev:0 desc:'data  - PROD->bak'          fn:Data.dump-prod-to-backup
+  * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
+  * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
 
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 for c in COMMANDS

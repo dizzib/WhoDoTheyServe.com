@@ -159,6 +159,7 @@ function finalise ipath
   me.emit \built
 
 function prune-empty-dirs
+  unless pwd! is Dir.DEV then return log 'bypass prune-empty-dirs'
   Assert.equal pwd!, Dir.DEV
   code, out <- exec "find . -type d -empty -delete"
   G.err "prune failed: #code #out" if code
