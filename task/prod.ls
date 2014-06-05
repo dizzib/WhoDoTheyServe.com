@@ -4,8 +4,7 @@ W4     = require \wait.for .for
 Dir    = require \./constants .dir
 G      = require \./growl
 
-const AF-APPNAME = \whodotheyserve
-const AF-RUNTIME = \node08
+const AF-APPNAME = \wdts10
 
 try
   cfg = (JSON.parse env.prod).appfog
@@ -22,23 +21,22 @@ module.exports =
     catch e
       log e
 
-  push: ->
-    exec-then-logout ->
-      W4 exec, "af push #AF-APPNAME --runtime #AF-RUNTIME"
-      G.ok "pushed site to appfog PRODUCTION"
-
   send-env-vars: ->
     exec-then-logout ->
-      for k, v in cfg.env
+      W4 exec, "af stop #AF-APPNAME"
+      for k, v of cfg.env
         W4 exec, "af env-add #AF-APPNAME #k=#v"
+      W4 exec, "af start #AF-APPNAME"
       G.ok "sent env-vars to appfog PRODUCTION"
 
-  show-config: -> log cfg
+  show-config: ->
+    log "AF-APPNAME=#AF-APPNAME"
+    log cfg
 
   update: ->
     exec-then-logout ->
-      # prevent node 0.8/0.10 bcrypt version mismatch
-      # TODO: find a better solution
+      # shrinkwrap ensures exact staging dependency tree gets deployed,
+      # otherwise there's a small risk of breakage in production
       W4 exec, 'npm shrinkwrap'
       test \-e \npm-shrinkwrap.json
 

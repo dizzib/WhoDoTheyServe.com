@@ -2,7 +2,7 @@ name   : \wdts
 version: \0.1.0
 private: true
 engines:
-  node: '>=0.8.x'
+  node: '>=0.10.x'
   npm : '>=1.0.x'
 scripts:
   start: 'node boot.js'

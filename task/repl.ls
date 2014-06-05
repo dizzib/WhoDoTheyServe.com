@@ -33,7 +33,6 @@ const COMMANDS =
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-config
   * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.login
-  * cmd:'p.PSH' lev:2 desc:'prod  - push stage->PROD'   fn:Prod.push
   * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.update
   * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.send-env-vars
   * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-config
