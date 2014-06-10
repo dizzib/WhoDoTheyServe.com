@@ -27,16 +27,23 @@ module.exports =
     catch e
       log e
 
+  dump-stage-to-backup: ->
+    try
+      W4 exec, "mongodump --db #STAGING-DB -o #BAK-ROOT"
+      G.ok 'dumped STAGING db to backup'
+    catch e
+      log e
+
   restore-backup-to-staging: ->
     try
-      W4 exec, "mongorestore --db #STAGING-DB --drop #BAK-DIR"
+      W4 exec, "mongorestore --drop --db #STAGING-DB #BAK-DIR"
       G.ok "restored backup db to #STAGING-DB"
     catch e
       log e
 
   restore-backup-to-prod: ->
     try
-      #W4 exec, "mongorestore --host #host --db #dbid -u #uid -p #pwd --drop #BAK-DIR"
+      W4 exec, "mongorestore --drop --host #host --db #dbid -u #uid -p #pwd #BAK-DIR"
       G.ok "restored backup db to PRODUCTION"
     catch e
       log e

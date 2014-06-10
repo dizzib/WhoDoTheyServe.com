@@ -4,10 +4,9 @@ W4     = require \wait.for .for
 Dir    = require \./constants .dir
 G      = require \./growl
 
-const AF-APPNAME = \wdts10
-
 try
   cfg = (JSON.parse env.prod).appfog
+  Assert appname = cfg.appname
   Assert uid = cfg.account.uid
   Assert pwd = cfg.account.pwd
 catch
@@ -23,14 +22,13 @@ module.exports =
 
   send-env-vars: ->
     exec-then-logout ->
-      W4 exec, "af stop #AF-APPNAME"
+      W4 exec, "af stop #appname"
       for k, v of cfg.env
-        W4 exec, "af env-add #AF-APPNAME #k=#v"
-      W4 exec, "af start #AF-APPNAME"
+        W4 exec, "af env-add #appname #k=#v"
+      W4 exec, "af start #appname"
       G.ok "sent env-vars to appfog PRODUCTION"
 
   show-config: ->
-    log "AF-APPNAME=#AF-APPNAME"
     log cfg
 
   update: ->
@@ -40,7 +38,7 @@ module.exports =
       W4 exec, 'npm shrinkwrap'
       test \-e \npm-shrinkwrap.json
 
-      W4 exec, "af update #AF-APPNAME"
+      W4 exec, "af update #appname"
       G.ok "updated site to appfog PRODUCTION"
 
 ## helpers
