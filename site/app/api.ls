@@ -1,6 +1,6 @@
 B = require \backbone
 
-const API-URL = \http://whodotheyserve.eu01.aws.af.cm/api
+const API-URL = \http://wdts10.eu01.aws.af.cm/api
 
 module.exports =
   init     : init-for-cross-domain

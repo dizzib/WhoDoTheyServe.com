@@ -15,10 +15,10 @@ you can add to [github issues][issues].
 ### Data
 
 The data is freely available in [JSON] format via an [API]:
-[nodes](http://whodotheyserve.eu01.aws.af.cm/api/nodes)
-[edges](http://whodotheyserve.eu01.aws.af.cm/api/edges)
-[evidences](http://whodotheyserve.eu01.aws.af.cm/api/evidences)
-[users](http://whodotheyserve.eu01.aws.af.cm/api/users)
+[nodes](http://wdts10.eu01.aws.af.cm/api/nodes)
+[edges](http://wdts10.eu01.aws.af.cm/api/edges)
+[evidences](http://wdts10.eu01.aws.af.cm/api/evidences)
+[users](http://wdts10.eu01.aws.af.cm/api/users)
 
 A [production database dump][db-dump] is maintained in github.
 
@@ -35,7 +35,7 @@ Even so, you might want to use a [disposable email address][disp-email].
 
 This site does not use 3rd party tracking tools like Google analytics.
 The only information captured is
-[visitor count per 10-days](http://wdts.eu01.aws.af.cm/api/hive/n-hits-2013).
+[visitor count per 10-days](http://wdts10.eu01.aws.af.cm/api/hive/n-hits-2013).
 
 ### Credits
 
@@ -49,31 +49,30 @@ backbone-validation
 bcrypt
 brfs
 browserify
-casperjs
 chai
 crypto
 d3
 express
 git
 glyphicons
-guard
 icomoon
 jade
 jquery
 livescript
+lodash
+marionette
 mocha
 mongodb
 mongoose
-node
-nodemon
+node.js
 request
+shortid
 stylus
 timeago
 transparency
 twitter-bootstrap
 underscore
 yepnope
-zombie
 
 Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
 
