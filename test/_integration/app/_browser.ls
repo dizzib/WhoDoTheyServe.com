@@ -7,8 +7,9 @@ V   = require \variadic.js
 W4  = require \wait.for .for
 W4m = require \wait.for .forMethod
 
-const POLL-TIME = 50ms
-const SITE-URL  = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
+const POLL-TIME    = 50ms
+const SITE-URL     = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
+const WAIT-TIMEOUT = 10000ms
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host)
 mc = new Mc.Client md
@@ -26,7 +27,7 @@ module.exports = B =
 
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
-      poll-for-ok 5000ms, ->
+      poll-for-ok WAIT-TIMEOUT, ->
         n-actual = B.wait-for (opts <<< require-unique:false)
         if n-actual > 0
           el = w4mc \executeScript -> window.el
@@ -36,7 +37,7 @@ module.exports = B =
         "#sig expect=#n-expect, actual=#n-actual"
 
     displayed: (expect = true, ...args) ->
-      poll-for-ok 5000ms, ->
+      poll-for-ok WAIT-TIMEOUT, ->
         try
           B.wait-for ...args
           el = w4mc \executeScript -> window.el
@@ -96,7 +97,7 @@ module.exports = B =
       .form \opts
   , (args) ->
     #log \wait-for, args
-    opts = require-unique:true scope:\document timeout:5000ms
+    opts = require-unique:true scope:\document timeout:WAIT-TIMEOUT
     opts <<< args.opts
 
     filter = switch
