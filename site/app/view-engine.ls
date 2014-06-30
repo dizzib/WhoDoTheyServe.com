@@ -67,18 +67,16 @@ module.exports =
 
   SelectView: B.View.extend do
     get-selected-id: ->
-      $ \option:selected, @dropdown .attr \value
-    render: (coll, fname, sel-id) ->
+      @dropdown.val!
+    render: (coll, fname, sel-id = '') ->
       H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
       T-Sel = F.readFileSync __dirname + \/view/select.html
       $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
-        html    : -> @[fname]
-        selected: -> \selected if @_id is sel-id
-        value   : -> @_id
-      $prompt = $T.filter \.prompt .find \option
-      unless $T-Sel.find 'option[selected]' .length then $prompt.attr \selected, ''
-      $T-Sel.prepend $prompt
+        html : -> @[fname]
+        value: -> @_id
+      if coll.findWhere _id:sel-id .length is 0 then $T-Sel.prepend ($T.filter \.prompt .find \option)
       @dropdown = $ @tagName
         ..html $T-Sel.children! # children! prevents duplicate nested select
+        ..val sel-id
         ..combobox!
         ..change ~> @trigger \selected
