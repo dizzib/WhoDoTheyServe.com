@@ -65,7 +65,8 @@ module.exports =
       href : -> "#/edge/edit/#{@_id}"
     } <<< EDGE
   edges:
-    GLYPHS with EDGE
+    # for some reason livescript's cloneport -- GLYPHS with EDGE -- doesn't work
+    (_.deepClone EDGE) <<< GLYPHS
   evidences: {
     btn-edit:
       class: SHOW-IF-CREATOR
