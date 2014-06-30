@@ -14,11 +14,11 @@ module.exports = SP.get-spec c.create, void, c.update, c.remove, c.list
 
 ## helpers
 
-function go-entity key then
+function go-entity key
   B.click name = ST.nodes[key], \li>a
   B.wait-for name, \h2>.name
 
-function on-save key, fields then
+function on-save key, fields
   (ST.nodes ?= {})[key] = fields.name
   B.wait-for fields.name, \h2>.name
   B.click \Actors
