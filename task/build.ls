@@ -82,34 +82,41 @@ module.exports = me = (new Emitter!) with
 
 ## helpers
 
-function bundle
-  const LIBS =
-    # execution order is random
-    # https://github.com/substack/node-browserify/issues/355
-    \./lib-3p/underscore.mixin.deepExtend
-    \./lib-3p/backbone-deep-model
-    \./lib-3p/backbone.routefilter
-    \./lib-3p/backbone-validation
-    \./lib-3p/backbone-validation-bootstrap
-    \./lib-3p/bootstrap/js/bootstrap-typeahead.js
-    \./lib-3p/bootstrap-combobox
-    \./lib-3p/transparency
-    \./lib-3p/jquery.timeago.js
-    \./lib-3p-ext/jquery
+const LIBS =
+  # execution order is random
+  # https://github.com/substack/node-browserify/issues/355
+  \./lib-3p/underscore.mixin.deepExtend
+  \./lib-3p/backbone-deep-model
+  \./lib-3p/backbone.routefilter
+  \./lib-3p/backbone-validation
+  \./lib-3p/backbone-validation-bootstrap
+  \./lib-3p/bootstrap/js/bootstrap-typeahead.js
+  \./lib-3p/bootstrap-combobox
+  \./lib-3p/transparency
+  \./lib-3p/jquery.timeago.js
+  \./lib-3p-ext/jquery
+
+function bundle-app
   try
     pushd "#{Dir.site.DEV}/app"
-    ba = Brsify \./boot.js
-    for l in LIBS then ba.external l
-    ba.transform Brfs
+    b = Brsify \./boot.js
+    for l in LIBS then b.external l
+    b.transform Brfs
       ..require \./lib-3p/transparency   , expose:\transparency
       ..require \./lib-3p-shim/backbone  , expose:\backbone
       ..require \./lib-3p-shim/underscore, expose:\underscore
       ..bundle detectGlobals:false, insertGlobals:false
         ..on \end, -> G.say 'Bundled app.js'
         ..pipe Fs.createWriteStream \app.js
-    bl = Brsify LIBS
-    for l in LIBS then bl.require l
-    bl.bundle detectGlobals:false, insertGlobals:false
+  finally
+    popd!
+
+function bundle-lib
+  try
+    pushd "#{Dir.site.DEV}/app"
+    b = Brsify LIBS
+    for l in LIBS then b.require l
+    b.bundle detectGlobals:false, insertGlobals:false
       ..on \end, -> G.say 'Bundled lib.js'
       ..pipe Fs.createWriteStream \lib.js
   finally
@@ -153,10 +160,10 @@ function markdown ipath, opath, cb
   cb e
 
 function finalise ipath
-  function contains then _.contains ipath, "/#it/"
+  function contains then _.contains ipath, "/#it"
   return if contains \task
   me.emit \built-api unless contains \app
-  for dir in <[ app lib ]> then bundle! if contains dir
+  if contains \app then if contains \lib then bundle-lib! else bundle-app!
   me.emit \built-app unless contains \api
   copy-package-json!
   me.emit \built
