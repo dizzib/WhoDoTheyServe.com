@@ -34,9 +34,7 @@ function copy-minified dir, files
 function copy-minified-files
   log "copy minified files"
   copy-minified \app, <[ app lib loader ]>
-  # CDN fallbacks
-  copy-minified \app/lib-3p, <[ backbone backbone-validation d3 jquery jquery.timeago ]>
-  copy-minified \app/lib-3p, <[ bootstrap/js/bootstrap-typeahead underscore ]>
+  copy-minified \app/lib-3p, <[ backbone d3 jquery underscore ]> # CDN fallbacks
 
 function copy-files
   log "copy files to #{Site.STAGING}"

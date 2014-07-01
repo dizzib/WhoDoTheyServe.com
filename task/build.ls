@@ -89,9 +89,12 @@ function bundle
     \./lib-3p/underscore.mixin.deepExtend
     \./lib-3p/backbone-deep-model
     \./lib-3p/backbone.routefilter
+    \./lib-3p/backbone-validation
     \./lib-3p/backbone-validation-bootstrap
+    \./lib-3p/bootstrap/js/bootstrap-typeahead.js
     \./lib-3p/bootstrap-combobox
     \./lib-3p/transparency
+    \./lib-3p/jquery.timeago.js
     \./lib-3p-ext/jquery
   try
     pushd "#{Dir.site.DEV}/app"
