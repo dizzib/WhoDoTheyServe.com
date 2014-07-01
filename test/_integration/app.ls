@@ -14,7 +14,7 @@ unless \tester is env = process.env.NODE_ENV
 function test spec then it spec.info, spec.fn
 
 (...) <- describe 'app'
-@timeout 10000
+@timeout 15000
 
 before R ->
   B.init!

@@ -1,34 +1,34 @@
 const LIBS =
   backbone:
-    cdn: \backbone.js/1.0.0/backbone-min.js
+    cdn: '//cdn.jsdelivr.net/backbonejs/1.0.0/backbone-min.js'
     loc: \backbone.js
     ok : -> Backbone?
   backbone_validation:
-    cdn: \backbone.validation/0.7.1/backbone-validation-min.js
+    #cdn: '//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.7.1/backbone-validation-min.js'
     loc: \backbone-validation.js
     ok : -> Backbone?.Validation?
   bootstrap_css:
-    cdn: \twitter-bootstrap/2.3.1/css/bootstrap.min.css
+    cdn: '//maxcdn.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css'
     loc: \bootstrap/css/bootstrap.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   bootstrap_typeahead:
-    cdn: \twitter-bootstrap/2.3.1/js/bootstrap-typeahead.min.js
+    #cdn: '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap-typeahead.min.js'
     loc: \bootstrap/js/bootstrap-typeahead.js
     ok : -> $?.fn.typeahead?
   d3:
-    cdn: \d3/3.1.6/d3.min.js
+    cdn: '//cdn.jsdelivr.net/d3js/3.1.6/d3.min.js'
     loc: \d3.js
     ok : -> d3?
   jquery:
-    cdn: \jquery/2.0.1/jquery.min.js
+    cdn: '//cdn.jsdelivr.net/jquery/2.0.1/jquery.min.js'
     loc: \jquery.js
     ok : -> $?
   jquery_timeago:
-    cdn: \jquery-timeago/1.1.0/jquery.timeago.min.js
+    #cdn: '//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.1.0/jquery.timeago.min.js'
     loc: \jquery.timeago.js
     ok : -> $?.timeago?
   underscore:
-    cdn: \underscore.js/1.4.4/underscore-min.js
+    cdn: '//cdn.jsdelivr.net/underscorejs/1.4.4/underscore-min.js'
     loc: \underscore.js
     ok : -> _?
 
@@ -44,12 +44,12 @@ resources # order is important for dependencies
   ..push get-resource \d3
   ..push load:\lib.js
   ..push load:\app.js
-yepnope.errorTimeout = 4000ms
+yepnope.errorTimeout = 2500ms
 yepnope resources
 
 function get-resource name then
-  test    : window.is-load-from-cdn # set by /task/stage.ls
-  yep     : "//cdnjs.cloudflare.com/ajax/libs/#{LIBS[name].cdn}"
+  test    : window.is-load-from-cdn and LIBS[name].cdn # set by /task/stage.ls
+  yep     : LIBS[name].cdn
   nope    : get-url-local name
   complete: ->
     console.log name
