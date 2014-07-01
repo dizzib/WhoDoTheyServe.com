@@ -83,8 +83,8 @@ module.exports = me = (new Emitter!) with
 ## helpers
 
 const LIBS =
-  # execution order is random
-  # https://github.com/substack/node-browserify/issues/355
+  # bundle order is random: https://github.com/substack/node-browserify/issues/355
+  # UPDATE: this now appears to be fixed in browserify, so files get bundled in the correct order.
   \./lib-3p/underscore.mixin.deepExtend
   \./lib-3p/backbone-deep-model
   \./lib-3p/backbone.routefilter
