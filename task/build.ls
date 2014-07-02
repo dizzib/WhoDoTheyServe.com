@@ -97,8 +97,8 @@ const LIBS =
   \./lib-3p-ext/jquery
 
 function bundle-app
+  pushd "#{Dir.site.DEV}/app"
   try
-    pushd "#{Dir.site.DEV}/app"
     b = Brsify \./boot.js
     for l in LIBS then b.external l
     b.transform Brfs
@@ -112,8 +112,8 @@ function bundle-app
     popd!
 
 function bundle-lib
+  pushd "#{Dir.site.DEV}/app"
   try
-    pushd "#{Dir.site.DEV}/app"
     b = Brsify LIBS
     for l in LIBS then b.require l
     b.bundle detectGlobals:false, insertGlobals:false
