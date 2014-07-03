@@ -5,6 +5,8 @@ S = require \../session
 
 T = F.readFileSync __dirname + \/navbar.html
 
+H.insert-css F.readFileSync __dirname + \/navbar.css
+
 module.exports = B.View.extend do
   render: ->
     @set-active-tab $t = $ T
