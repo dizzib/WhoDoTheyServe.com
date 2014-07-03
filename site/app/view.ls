@@ -42,8 +42,8 @@ T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 exports
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
-  ..edge-a-node-sel = new V.SelectView                         tagName:\#a_node_id
-  ..edge-b-node-sel = new V.SelectView                         tagName:\#b_node_id
+  ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id
+  ..edge-b-node-sel = new V.SelectView                         sel:\#b_node_id
   ..edge-edit       = new V.EditView template:T-EdgeEdit     , el:\.view>.main
   ..edges           = new V.ListView template:T-Edges        , el:\.view>.edges
   ..edges-head      = new V.InfoView template:T-EdgesHead    , el:\.view>.main
