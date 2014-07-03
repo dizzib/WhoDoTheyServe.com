@@ -3,10 +3,6 @@ const LIBS =
     cdn: '//cdn.jsdelivr.net/backbonejs/1.0.0/backbone-min.js'
     loc: \backbone.js
     ok : -> Backbone?
-  font_awesome_css:
-    cdn: '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
-    loc: \font-awesome-4.1.0/css/font-awesome.css
-    ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   bootstrap_css:
     cdn: '//maxcdn.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css'
     loc: \bootstrap/css/bootstrap.css
@@ -15,6 +11,10 @@ const LIBS =
     cdn: '//cdn.jsdelivr.net/d3js/3.1.6/d3.min.js'
     loc: \d3.js
     ok : -> d3?
+  font_awesome_css:
+    cdn: '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
+    loc: \font-awesome-4.1.0/css/font-awesome.css
+    ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   jquery:
     cdn: '//cdn.jsdelivr.net/jquery/2.0.1/jquery.min.js'
     loc: \jquery.js
