@@ -1,4 +1,4 @@
-_    = require \underscore
+_    = require \lodash
 Hive = require \./hive
 D    = require \./lib/date
 

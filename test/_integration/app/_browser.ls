@@ -1,7 +1,7 @@
 Mc  = require \marionette-client
 Mjl = require \marionette-js-logger
 Os  = require \os
-_   = require \underscore
+_   = require \lodash
 U   = require \util
 V   = require \variadic.js
 W4  = require \wait.for .for

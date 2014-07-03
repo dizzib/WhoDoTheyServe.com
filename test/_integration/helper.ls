@@ -1,5 +1,5 @@
 R = require \readline
-_ = require \underscore
+_ = require \lodash
 W = require \wait.for
 
 module.exports =

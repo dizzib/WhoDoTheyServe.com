@@ -1,5 +1,5 @@
 Query = require \mongoose .Query
-_     = require \underscore
+_     = require \lodash
 
 exports.create = (store) -> new Sweeper store
 

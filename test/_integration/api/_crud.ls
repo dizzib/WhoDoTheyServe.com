@@ -1,4 +1,4 @@
-_  = require \underscore
+_  = require \lodash
 W  = require \wait.for
 H  = require \./_http
 ST = require \../state

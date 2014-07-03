@@ -1,4 +1,4 @@
-_ = require \underscore
+_ = require \lodash
 H = require \./helper
 
 exports.get-spec = (...args) ->

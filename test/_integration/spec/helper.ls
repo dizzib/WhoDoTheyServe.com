@@ -1,4 +1,4 @@
-_ = require \underscore
+_ = require \lodash
 U = require \util
 H = require \../helper
 

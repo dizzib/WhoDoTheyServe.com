@@ -1,4 +1,4 @@
-_  = require \underscore
+_  = require \lodash
 C  = require \./_crud
 SP = require \../spec/edge
 ST = require \../state

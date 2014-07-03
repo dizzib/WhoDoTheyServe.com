@@ -1,5 +1,5 @@
 SH = require \chai .should!
-_  = require \underscore
+_  = require \lodash
 B  = require \./_browser
 
 module.exports = (ent-name, opts) ->

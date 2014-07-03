@@ -1,4 +1,4 @@
-_  = require \underscore
+_  = require \lodash
 H  = require \./_http
 SP = require \../spec/session
 ST = require \../state

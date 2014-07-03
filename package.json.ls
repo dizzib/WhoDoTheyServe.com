@@ -10,9 +10,9 @@ dependencies:
   bcrypt    : \0.7.5
   crypto    : \0.0.3
   express   : \3.1.1
+  lodash    : \~2.4.1
   mongoose  : \3.5.5
   shortid   : \2.0.0
-  underscore: \1.4.4
 devDependencies:
   brfs                  : \~0.0.9
   browserify            : \~3.24.13
@@ -25,7 +25,6 @@ devDependencies:
   'istanbul-middleware' : \~0.1.1
   jade                  : \~0.27.7
   LiveScript            : \~1.2.0
-  lodash                : \~2.4.1
   marked                : \~0.3.1
   'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
   'marionette-js-logger': \~0.1.2

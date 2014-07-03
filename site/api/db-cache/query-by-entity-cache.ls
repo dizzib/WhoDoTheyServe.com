@@ -1,6 +1,6 @@
 Model = require \mongoose .Model
 Query = require \mongoose .Query
-_     = require \underscore
+_     = require \lodash
 
 exports.create = (store) -> new Cache store
 

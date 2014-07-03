@@ -5,7 +5,7 @@ if (is-cover = process.env.COVERAGE) then
   Im.hookLoader __dirname
 
 Express = require \express
-_       = require \underscore
+_       = require \lodash
 H       = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms

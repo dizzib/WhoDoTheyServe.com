@@ -1,4 +1,4 @@
-_           = require \underscore
+_           = require \lodash
 H           = require \./helper
 M-Edges     = require \./model/edges
 M-Nodes     = require \./model/nodes

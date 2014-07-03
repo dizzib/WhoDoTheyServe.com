@@ -1,4 +1,4 @@
-_        = require \underscore
+_        = require \lodash
 CryptPwd = require \../crypt-pwd
 H        = require \../helper
 Users    = require \../model/users

@@ -1,5 +1,5 @@
 M      = require \mongoose
-_      = require \underscore
+_      = require \lodash
 H      = require \./helper
 M-Hive = require \./model/hive
 

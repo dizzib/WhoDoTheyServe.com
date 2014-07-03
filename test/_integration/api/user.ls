@@ -1,5 +1,5 @@
 Chai  = require \chai .should!
-_     = require \underscore
+_     = require \lodash
 W     = require \wait.for
 C     = require \./_crud
 H     = require \./_http

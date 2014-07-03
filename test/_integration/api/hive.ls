@@ -1,5 +1,5 @@
 Should = require \chai .should!
-_      = require \underscore
+_      = require \lodash
 H      = require \./_http
 S      = require \../spec/hive
 

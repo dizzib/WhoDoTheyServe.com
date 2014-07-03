@@ -1,5 +1,5 @@
 M      = require \mongoose
-_      = require \underscore
+_      = require \lodash
 Cons   = require \../../lib/model-constraints
 Crud   = require \../crud
 P-Id   = require \./plugin-id

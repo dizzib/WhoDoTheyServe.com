@@ -1,7 +1,7 @@
 # DANGER! Using in a multi-process cloud may result in stale data being served
 
 M = require \mongoose
-_ = require \underscore
+_ = require \lodash
 
 exports.create = -> new Store!
 
