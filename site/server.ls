@@ -1,10 +1,8 @@
-global.log    = console.log
-
-if (is-cover = process.env.COVERAGE) then
-  Im = require \istanbul-middleware
-  Im.hookLoader __dirname
+global.log = console.log
+is-cover   = process.env.COVERAGE is \true
 
 Express = require \express
+Im      = require \istanbul-middleware if is-cover
 _       = require \lodash
 H       = require \./api/helper
 
@@ -20,7 +18,9 @@ cookie-opts =
 static-opts =
   maxAge: ONE-HOUR
 
+Im.hookLoader __dirname if is-cover
 env = (server = Express!).settings.env
+
 module.exports = server
   ..set \port, process.env.PORT || 80
   ..use '/coverage', Im.createHandler! if is-cover
