@@ -117,6 +117,6 @@ module.exports =
     login:
       href: -> get-user-href @_id
 
-function get-icon ev then if ev.is-video then \fa-youtube-play else \fa-camera
+function get-icon ev then if ev.is-video then \fa-video-camera else \fa-file-text-o
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
