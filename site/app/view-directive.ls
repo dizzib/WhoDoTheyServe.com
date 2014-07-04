@@ -22,7 +22,7 @@ const GLYPH =
 
 const GLYPH-EVI =
   glyph:
-    class: -> "glyph #{get-icon this}"
+    class: -> "fa #{get-icon this}"
 
 const GLYPHS =
   glyphs:
@@ -32,11 +32,11 @@ const GLYPHS =
       for ev in evs.models
         $el.append "
           <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='#{get-icon ev.toJSON-T!}'/>
+            <i class='fa #{get-icon ev.toJSON-T!}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
-        $el.append "<i title='#{note.get \text}' class='icon-comment'/>"
+        $el.append "<i title='#{note.get \text}' class='fa fa-comment'/>"
       return ''
 
 const HIDE =
@@ -117,6 +117,6 @@ module.exports =
     login:
       href: -> get-user-href @_id
 
-function get-icon ev then if ev.is-video then \icon-facetime-video else \icon-camera
+function get-icon ev then if ev.is-video then \fa-youtube-play else \fa-camera
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it

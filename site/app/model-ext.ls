@@ -26,8 +26,8 @@ exports.init = ->
       function get-period is-tip then
         return '' if node-yyyy and not is-tip
         if yyyy then return "in #{yyyy}"
-        period = "from #{year-from or '?'} "
-        period + if year-to then "to #{year-to}" else ''
+        period = "from #{year-from or '?'}"
+        period + if year-to then " to #{year-to}" else ''
       ~function get-tip then
         how = "#{if how = @get \how then ' - ' + how else ''}"
         "Evidence#{how} #{get-period true}"
