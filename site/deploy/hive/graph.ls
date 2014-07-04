@@ -9,9 +9,10 @@ exports
     return console.error err if err
     json = Hive.get \graph
     value = if json then JSON.parse json else {}
-    value.images = []
+    delete value.images # migrate away from images TODO: remove this line when done
+    value.glyphs = []
     for node in nodes
-      for d in Data.images
+      for d in Data.glyphs
         if node.name.match d.name then
-          value.images.push id:node._id, url:d.url, size:d.size
+          value.glyphs.push id:node._id, ucid:d.ucid, img:d.img, size:d.size
     Hive.set \graph, JSON.stringify value

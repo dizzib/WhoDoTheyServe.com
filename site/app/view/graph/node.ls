@@ -4,6 +4,8 @@ C = require \../../collection
 H = require \../../helper
 M = require \../../model
 
+const ICON-SIZE = 24
+
 H.insert-css F.readFileSync __dirname + \/node.css
 
 module.exports = me =
@@ -26,22 +28,31 @@ module.exports = me =
         .attr \text-anchor, \middle
         .text -> it.name
 
-    if images = (JSON.parse M.Hive.Graph.get \value).images then
-      for image in images
-        size = image.size / \x
-        g = svg.select "g.id_#{image.id}"
-        g.append \svg:image
-          .attr \xlink:href, image.url
-          .attr \x     , x = -size.0 / 2
-          .attr \y     , y = -size.1 - 12
-          .attr \width , size.0
-          .attr \height, size.1
-        if size.2 then
-          g.append \svg:rect
-            .attr \x     , x - 1
-            .attr \y     , y - 1
-            .attr \width , 2 + parseInt size.0
-            .attr \height, 2 + parseInt size.1
+    if glyphs = (JSON.parse M.Hive.Graph.get \value).glyphs then
+      for glyph in glyphs
+        g = svg.select "g.id_#{glyph.id}"
+        if glyph.ucid
+          g.append \text
+            .attr \class, \fa
+            .attr \font-family, \FontAwesome
+            .attr \font-size, ICON-SIZE
+            .attr \x, - ICON-SIZE / 2
+            .attr \y, - ICON-SIZE
+            .text -> glyph.ucid
+        else if glyph.img
+          size = glyph.size / \x
+          g.append \svg:image
+            .attr \xlink:href, glyph.img
+            .attr \x     , x = -size.0 / 2
+            .attr \y     , y = -size.1 - 12
+            .attr \width , size.0
+            .attr \height, size.1
+          if size.2 then
+            g.append \svg:rect
+              .attr \x     , x - 1
+              .attr \y     , y - 1
+              .attr \width , 2 + parseInt size.0
+              .attr \height, 2 + parseInt size.1
 
   is-bis: ->
     /^BIS /.test it.name
