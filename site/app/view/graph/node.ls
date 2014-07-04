@@ -36,8 +36,8 @@ module.exports = me =
             .attr \class, \fa
             .attr \font-family, \FontAwesome
             .attr \font-size, ICON-SIZE
-            .attr \x, - ICON-SIZE / 2
-            .attr \y, - ICON-SIZE
+            .attr \x, - ICON-SIZE * 0.5
+            .attr \y, - ICON-SIZE * 0.75
             .text -> glyph.ucid
         else if glyph.img
           size = glyph.size / \x

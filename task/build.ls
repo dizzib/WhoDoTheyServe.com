@@ -160,10 +160,10 @@ function markdown ipath, opath, cb
   cb e
 
 function finalise ipath
-  function contains then _.contains ipath, "/#it"
+  function contains then _.contains ipath, "/#it/"
   return if contains \task
   me.emit \built-api unless contains \app
-  if contains \app then if contains \lib then bundle-lib! else bundle-app!
+  if contains \app then if contains \lib-3p or contains \lib-3p-ext then bundle-lib! else bundle-app!
   me.emit \built-app unless contains \api
   copy-package-json!
   me.emit \built
