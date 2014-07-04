@@ -4,7 +4,7 @@ C = require \../../collection
 H = require \../../helper
 M = require \../../model
 
-const ICON-SIZE = 24
+const ICON-SIZE = 20
 
 H.insert-css F.readFileSync __dirname + \/node.css
 
