@@ -29,7 +29,12 @@ const GLYPHS =
     null: ->
       $el = $ it.element
       evs = C.Evidences.find ~> @_id is it.get \entity_id
-      for ev in evs.models
+      if evs.models.length is 0
+        $el.append "
+          <a class='glyph' title='Please add some evidence'>
+            <i class='fa fa-lg fa-exclamation'/>
+          </a>"
+      else for ev in evs.models
         $el.append "
           <a class='glyph' target='_blank' title='#{@tip}' href='#{ev.get \url}'>
             <i class='fa #{get-icon ev.toJSON-T!}'/>
