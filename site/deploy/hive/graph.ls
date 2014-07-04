@@ -14,5 +14,9 @@ exports
     for node in nodes
       for d in Data.glyphs
         if node.name.match d.name then
-          value.glyphs.push id:node._id, ucid:d.ucid, img:d.img, size:d.size
+          o = { id:node._id }
+            ..ucid ?= d.ucid
+            ..img  ?= d.img
+            ..size ?= d.size
+          value.glyphs.push o
     Hive.set \graph, JSON.stringify value
