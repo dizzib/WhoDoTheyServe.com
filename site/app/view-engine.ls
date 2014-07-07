@@ -80,7 +80,6 @@ module.exports =
         html : -> @[fname]
         value: -> @_id
       if coll.findWhere _id:sel-id .length is 0 then $T-Sel.prepend ($T.filter \.prompt .find \option)
-      log @sel
       @dropdown = $ @sel
         ..html $T-Sel.children! # children! prevents duplicate nested select
         ..val sel-id
