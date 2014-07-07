@@ -37,8 +37,8 @@ exports.init = ->
         glyph: @get-glyph!
     get-glyph: ->
       const GLYPHS =
-        * name:\fa-file-pdf-o   unicode:\\uf1c1 regex:/\.pdf$/
-        * name:\fa-video-camera unicode:\\uf03d regex:/youtube\.com|vimeo\.com/
+        * name:\fa-file-pdf-o   unicode:\\uf1c1 regex:/\.pdf$/i
+        * name:\fa-video-camera unicode:\\uf03d regex:/youtube\.com|vimeo\.com/i
       for g in GLYPHS then return g if g.regex.test @get \url
       name:\fa-file-text-o unicode:\\uf0f6
   M.Node .= extend do
