@@ -22,7 +22,7 @@ const GLYPH =
 
 const GLYPH-EVI =
   glyph:
-    class: -> "fa #{get-icon this}"
+    class: -> "glyph fa #{@glyph.name}"
 
 const GLYPHS =
   glyphs:
@@ -31,13 +31,13 @@ const GLYPHS =
       evs = C.Evidences.find ~> @_id is it.get \entity_id
       if evs.models.length is 0
         $el.append "
-          <a class='glyph' title='Please add some evidence'>
-            <i class='fa fa-lg fa-exclamation'/>
+          <a title='Please add some evidence'>
+            <i class='glyph fa fa-lg fa-exclamation'/>
           </a>"
       else for ev in evs.models
         $el.append "
-          <a class='glyph' target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='fa #{get-icon ev.toJSON-T!}'/>
+          <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
+            <i class='glyph fa #{ev.get-glyph!name}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
@@ -122,6 +122,5 @@ module.exports =
     login:
       href: -> get-user-href @_id
 
-function get-icon ev then if ev.is-video then \fa-video-camera else \fa-file-text-o
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it

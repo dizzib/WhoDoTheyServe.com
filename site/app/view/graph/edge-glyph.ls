@@ -1,7 +1,5 @@
 C = require \../../collection
 
-const FA-FILETEXT = \\uf0f6
-const FA-VIDEO    = \\uf03d
 const ICON-GAP    = 1
 const ICON-SIZE   = 16
 const ICON-SPACE  = ICON-SIZE + ICON-GAP
@@ -28,7 +26,7 @@ module.exports = me =
             .attr \font-family, \FontAwesome
             .attr \x, dx + i * ICON-SPACE
             .attr \y, dy
-            .text -> if ev.toJSON-T!is-video then FA-VIDEO else FA-FILETEXT
+            .text -> ev.get-glyph!unicode
 
   get-transform: ->
     x = it.source.x + (it.target.x - it.source.x - ICON-SIZE) / 2

@@ -34,7 +34,13 @@ exports.init = ->
   M.Evidence .= extend do
     toJSON-T: (opts) ->
       _.extend (@toJSON opts),
-        is-video: /youtube\.com/.test @get \url
+        glyph: @get-glyph!
+    get-glyph: ->
+      const GLYPHS =
+        * name:\fa-file-pdf-o   unicode:\\uf1c1 regex:/\.pdf$/
+        * name:\fa-video-camera unicode:\\uf03d regex:/youtube\.com|vimeo\.com/
+      for g in GLYPHS then return g if g.regex.test @get \url
+      name:\fa-file-text-o unicode:\\uf0f6
   M.Node .= extend do
     toJSON-T: (opts) ->
       return _.extend (@toJSON opts),
