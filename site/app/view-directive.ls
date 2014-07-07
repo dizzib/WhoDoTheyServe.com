@@ -119,7 +119,7 @@ module.exports =
   user-notes:
     meta: HIDE
   users:
-    login:
+    user:
       href: -> get-user-href @_id
 
 function get-node-href then "#/node/#{it}"
