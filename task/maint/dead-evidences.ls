@@ -5,6 +5,7 @@ _     = require \lodash
 Chalk = require \chalk
 M     = require \mongoose
 Mc    = require \mongodb .MongoClient
+Req   = require \request
 Shell = require \shelljs/global
 W     = require \wait.for
 W4    = require \wait.for .for
@@ -27,15 +28,15 @@ function run db-uri
   db = W4m Mc, \connect, db-uri
   coll = db.collection \evidences
   curs = W4m coll, \find
-  while n-max-- >= 0 and ev = W4m curs, \nextObject
-    W4 pause, 100ms # otherwise we end up with a EMFILE error
+  while n-max-- > 0 and ev = W4m curs, \nextObject
+    W4 pause, 50ms # avoid running too many requests in parallel
     check ev
   db.close!
 
   # helpers
 
-  function add-dead ev, reason
-    print Chalk.red reason
+  function add-dead ev, err
+    print Chalk.red "#{ev.url} #{err}"
     dead.push ev
     save-if-done!
 
@@ -43,13 +44,18 @@ function run db-uri
     print url = ev.url
     n-pending++
     try
-      code, res <- exec "curl --silent --range 0-499 --max-time 15 #url", silent:true
-      return add-dead ev, "curl #url exited with code #code" if code > 0
-      return add-dead ev, "curl returned nothing from #url" unless res
-      print Chalk.green "#url is ok (#{res.length} bytes)"
-      save-if-done!
+      r = Req url, timeout:15000ms, (err, res) ->
+        return add-dead ev, err if err
+        sc = res.statusCode
+        # for some reason, cpexposed.com returns 402 (payment required) even though it's ok
+        return add-dead ev, Chalk.magenta "response code = #sc" unless sc in [ 200, 402 ]
+        save-if-done!
+      r.on \data, ->
+        r.abort!
+        print Chalk.green "#url is ok"
+        save-if-done!
     catch e
-      add-dead ev, "#url #{e.message}"
+      add-dead ev, e
 
   function pause ms, cb
     _.delay cb, ms
@@ -60,7 +66,8 @@ function run db-uri
   function save-if-done
     if --n-pending is 0
       dead-ids = _.pluck dead, \_id
-      log value = 'dead-ids':dead-ids
+      value = 'dead-ids':dead-ids
+      log "found #{Chalk.yellow dead-ids.length} dead-ids: #dead-ids"
       M.connect db-uri
       err <- Hive.set \evidences, JSON.stringify value
       log err if err
