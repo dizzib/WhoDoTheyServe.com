@@ -61,10 +61,14 @@ const META =
 const SHOW-IF-CREATOR = ->
   \hide unless S.is-signed-in @meta?create_user_id
 
-const URL =
-  href: -> @url
-  text: -> @url
+const URL-EVI =
+  url-outer:
+    href: -> @url
+  url-inner:
+    text: -> @url
 
+# for some reason livescript's cloneport doesn't work with multiple constants
+# e.g. GLYPHS with EDGE, so we'll use _.extend instead
 module.exports =
   edge: {
     btn-edit:
@@ -72,14 +76,12 @@ module.exports =
       href : -> "#/edge/edit/#{@_id}"
     } <<< EDGE
   edges:
-    # for some reason livescript's cloneport -- GLYPHS with EDGE -- doesn't work
     (_.deepClone EDGE) <<< GLYPHS
-  evidences: {
+  evidences: _ {} .extend {
     btn-edit:
       class: SHOW-IF-CREATOR
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
-    url: URL
-    } <<< GLYPH-EVI with META
+    }, GLYPH-EVI, META, URL-EVI
   evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
@@ -113,11 +115,10 @@ module.exports =
     url:
       href: -> @info
       text: -> @info
-  user-evidences: {
+  user-evidences: _ {} .extend {
     btn : HIDE
     meta: HIDE
-    url : URL
-    } <<< GLYPH-EVI
+    }, GLYPH-EVI, URL-EVI
   user-notes:
     meta: HIDE
   users:
