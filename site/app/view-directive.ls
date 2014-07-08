@@ -1,4 +1,5 @@
 B = require \backbone
+E = require \./view/evidence
 C = require \./collection
 H = require \./helper
 S = require \./session
@@ -22,7 +23,8 @@ const GLYPH =
 
 const GLYPH-EVI =
   glyph:
-    class: -> "glyph fa #{@glyph.name}"
+    class: ->
+      "glyph fa #{@glyph.name} #{if E.is-dead @_id then \dead else ''}"
 
 const GLYPHS =
   glyphs:
@@ -37,7 +39,7 @@ const GLYPHS =
       else for ev in evs.models
         $el.append "
           <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='glyph fa #{ev.get-glyph!name}'/>
+            <i class='glyph fa #{ev.get-glyph!name} #{if E.is-dead ev.id then \dead else ''}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models

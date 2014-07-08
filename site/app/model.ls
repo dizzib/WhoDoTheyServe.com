@@ -30,7 +30,8 @@ module.exports =
       'year_from': range:[Cons.edge.year.min, Cons.edge.year.max] required:no
       'year_to'  : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
   Hive:
-    Graph: new (Model.extend urlRoot:"#{Api.hive}/graph")!
+    Evidences: new (Model.extend urlRoot:"#{Api.hive}/evidences")!
+    Graph    : new (Model.extend urlRoot:"#{Api.hive}/graph")!
   Node: Model.extend do
     urlRoot: Api.nodes
     validation:

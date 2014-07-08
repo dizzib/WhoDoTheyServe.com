@@ -35,12 +35,13 @@ V-Hdlr.init Router
 V-Foot.init!
 
 $.when(
-  C.Evidences .fetch!
-  C.Edges     .fetch!
-  C.Nodes     .fetch!
-  C.Sessions  .fetch!
-  C.Users     .fetch!
-  M.Hive.Graph.fetch!
+  C.Evidences     .fetch!
+  C.Edges         .fetch!
+  C.Nodes         .fetch!
+  C.Sessions      .fetch!
+  C.Users         .fetch!
+  M.Hive.Graph    .fetch!
+  M.Hive.Evidences.fetch!
 ).then start, fail
 
 C.Notes.fetch error:fail

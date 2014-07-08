@@ -3,14 +3,16 @@
 
 _     = require \lodash
 Chalk = require \chalk
-Hive  = require \../../site/api/hive
 M     = require \mongoose
 Mc    = require \mongodb .MongoClient
 Shell = require \shelljs/global
 W     = require \wait.for
 W4    = require \wait.for .for
 W4m   = require \wait.for .forMethod
+Cfg   = require \../config
+Hive  = require \../../site/api/hive
 
+#const DB-URI = \mongodb://localhost/wdts_dev
 const DB-URI = \mongodb://localhost/wdts_staging
 
 log       = console.log
@@ -22,7 +24,7 @@ n-pending = 0     # current number of http requests curling
 db = W4m Mc, \connect, DB-URI
 coll = db.collection \evidences
 curs = W4m coll, \find
-while n-max-- > 0 and ev = W4m curs, \nextObject
+while n-max-- >= 0 and ev = W4m curs, \nextObject
   W4 pause, 100ms # otherwise we end up with a EMFILE error
   check ev
 db.close!
@@ -46,14 +48,22 @@ function check ev
   catch e
     add-dead ev, "#url #{e.message}"
 
+function get-db-uri env-name
+  switch env-name
+    | \dev     => Cfg.dev.primary.WDTS_DB_URI
+    | \staging => Cfg.staging.primary.WDTS_DB_URI
+    | \prod    => (JSON.parse env.prod).mongolab.uri
+
 function pause ms, cb
   _.delay cb, ms
 
 function save-if-done
   if --n-pending is 0
+    #log dead
     dead-ids = _.pluck dead, \_id
     log value = 'dead-ids':dead-ids
     M.connect DB-URI
     Hive.set \evidences, JSON.stringify value
     M.disconnect!
     log 'DONE!'
+  log n-pending
