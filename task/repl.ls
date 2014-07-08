@@ -7,6 +7,7 @@ WFib    = require \wait.for .launchFiber
 Build   = require \./build
 Dir     = require \./constants .dir
 Data    = require \./data
+MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
 Run     = require \./run
 Staging = require \./staging
@@ -28,11 +29,14 @@ const COMMANDS =
   * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
+  * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:Run.run-staging-tests
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
+  * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
   * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-config
   * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.login
+  * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'  fn:MaintDE.prod
   * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.update
   * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.send-env-vars
   * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-config
