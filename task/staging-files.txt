@@ -5,16 +5,11 @@
 + /app/index.html
 + /app/lib-3p/
 + /app/lib-3p/bootstrap/
-+ /app/lib-3p/bootstrap/img/
 + /app/lib-3p/bootstrap/css/
-+ /app/lib-3p/bootstrap/css/bootstrap.css
-+ /app/lib-3p/bootstrap/js/
-+ /app/lib-3p/bootstrap/js/*
 + /app/lib-3p/yepnope.1.5.4-min.js
 - /app/*
 - /app/lib-3p/*
 - /app/lib-3p/bootstrap/*
-- /app/lib-3p/bootstrap/css/*
 - /node_modules/
 - /task/
 - /test/
