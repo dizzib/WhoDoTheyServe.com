@@ -1,13 +1,12 @@
 ### About
 
-WhoDoTheyServe.com is a non-profit [opensource] effort to visualise the
+WhoDoTheyServe.com is a non-profit [opensource] effort to map the
 global political, financial and corporate power structure.
 A secondary purpose is to highlight possible
 [conflict of interest][coi].
 
-Actors and connections are backed up with evidence from reputable and official
-sources in an attempt to keep this site grounded in fact and not speculation
-or conspiracy theory.
+Actors and connections are backed up with evidence from reputable sources
+in an attempt to keep this site grounded in fact.
 
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
@@ -22,20 +21,11 @@ The data is freely available in [JSON] format via an [API]:
 
 A [production database dump][db-dump] is maintained in github.
 
-### Security
-
-Contributor passwords are hashed using [bcrypt] before storing in the
-database, so are irretrievable.
-
-Contributor email addresses are encrypted using [256-bit aes][aes]
-and never revealed.
-Even so, you might want to use a [disposable email address][disp-email].
-
 ### Privacy
 
 This site does not use 3rd party tracking tools like Google analytics.
 The only information captured is
-[visitor count per 10-days](http://wdts10.eu01.aws.af.cm/api/hive/n-hits-2013).
+[visitor count per 10-days](http://wdts10.eu01.aws.af.cm/api/hive/n-hits-2014).
 
 ### Credits
 
@@ -47,6 +37,7 @@ backbone-deep-model
 backbone-routefilter
 backbone-validation
 bcrypt
+bootstrap
 brfs
 browserify
 chai
@@ -86,13 +77,10 @@ Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
 
 
 [appfog]:     http://appfog.com
-[aes]:        http://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 [api]:        http://en.wikipedia.org/wiki/Application_programming_interface
-[bcrypt]:     https://github.com/ncb000gt/node.bcrypt.js
 [beta]:       https://en.wikipedia.org/wiki/Software_release_life_cycle
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
 [db-dump]:    https://github.com/dizzib/prod-db-dump 
-[disp-email]: http://en.wikipedia.org/wiki/Disposable_e-mail_address
 [github]:     https://github.com
 [graph]:      #/graph
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
