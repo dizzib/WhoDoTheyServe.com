@@ -21,6 +21,9 @@ cd Dir.DEV
 # process to die on error
 config.fatal = true
 
+# flags
+build-tests-enabled = true
+
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:Run.run-dev-tests
@@ -29,6 +32,7 @@ const COMMANDS =
   * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
+  * cmd:'b.t  ' lev:0 desc:'build - toggle tests ($BT)' fn:toggle-build-tests
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:Run.run-staging-tests
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
@@ -62,17 +66,16 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
       rl.prompt!
 
 Build.on \built, Run.recycle-dev
-Build.on \built-api, Run.run-dev-test_1
-Build.on \built-app, Run.run-dev-test_2
+Build.on \built-api, -> Run.run-dev-test_1! if build-tests-enabled
+Build.on \built-app, -> Run.run-dev-test_2! if build-tests-enabled
 Build.start!
 
 Run.recycle-dev!
 Run.recycle-staging!
 
-setTimeout ->
-  show-help!
-  rl.prompt!
-, 500ms
+setTimeout show-help, 1000ms
+
+# helpers
 
 function generate-staging
   Staging.generate!
@@ -80,7 +83,13 @@ function generate-staging
   Run.run-staging-tests!
 
 function show-help
-  for c in COMMANDS when !c.disabled then log c.display
+  bt = if build-tests-enabled then Chalk.bold.green \yes else Chalk.bold.cyan \no
+  for c in COMMANDS when !c.disabled then log c.display.replace \$BT, bt
+  rl.prompt!
+
+function toggle-build-tests
+  build-tests-enabled := not build-tests-enabled
+  show-help!
 
 function try-fn
   try it!
