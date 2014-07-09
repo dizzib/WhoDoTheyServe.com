@@ -1,12 +1,10 @@
 ### About
 
 WhoDoTheyServe.com is a non-profit [opensource] effort to map the
-global political, financial and corporate power structure.
-A secondary purpose is to highlight possible
-[conflict of interest][coi].
+global political, financial and corporate power structure at the highest levels.
+A secondary purpose is to highlight possible [conflict of interest][coi].
 
-Actors and connections are backed up with evidence from reputable sources
-in an attempt to keep this site grounded in fact.
+Actors and connections are backed up with evidence.
 
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
