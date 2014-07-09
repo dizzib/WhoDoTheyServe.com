@@ -42,7 +42,7 @@ function get-resource name then
   yep     : LIBS[name].cdn
   nope    : get-url-local name
   complete: ->
-    console.log name
+    #console.log name
     return if LIBS[name].ok!
     console.log "Fallback to #{url = get-url-local name}"
     yepnope url
