@@ -3,20 +3,20 @@ Hive    = require \../../api/hive
 M-Nodes = require \../../api/model/nodes
 
 exports
-  # store graph image-url data in hive since it's not core data
-  ..set-images = ->
+  # store graph icon data in hive since it's not core
+  ..set-icons = ->
     err, nodes <- M-Nodes.find!lean!exec
     return console.error err if err
     json = Hive.get \graph
     value = if json then JSON.parse json else {}
-    delete value.images # migrate away from images TODO: remove this line when done
-    value.glyphs = []
+    delete value.glyphs # TODO: remove this line when migrated
+    value.icons = []
     for node in nodes
-      for d in Data.glyphs
+      for d in Data.icons
         if node.name.match d.name then
           o = { id:node._id }
-            ..ucid ?= d.ucid
-            ..img  ?= d.img
-            ..size ?= d.size
-          value.glyphs.push o
+            ..glyph ?= d.glyph
+            ..image ?= d.image
+            ..size  ?= d.size
+          value.icons.push o
     Hive.set \graph, JSON.stringify value

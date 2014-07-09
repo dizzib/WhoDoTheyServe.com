@@ -8,7 +8,7 @@ ApiRouter = require \./api/router
 DH-Graph  = require \./deploy/hive/graph
 
 DB.connect!
-Hive.init DH-Graph.set-images
+Hive.init DH-Graph.set-icons
 ApiRouter.init Server
 
 <- Http.createServer(Server).listen port = Server.settings.port

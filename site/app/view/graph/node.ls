@@ -28,21 +28,21 @@ module.exports = me =
         .attr \text-anchor, \middle
         .text -> it.name
 
-    if glyphs = (JSON.parse M.Hive.Graph.get \value).glyphs then
-      for glyph in glyphs
-        g = svg.select "g.id_#{glyph.id}"
-        if glyph.ucid
+    if icons = (JSON.parse M.Hive.Graph.get \value).icons then
+      for icon in icons
+        g = svg.select "g.id_#{icon.id}"
+        if icon.glyph
           g.append \text
             .attr \class, \fa
             .attr \font-family, \FontAwesome
             .attr \font-size, ICON-SIZE
             .attr \x, - ICON-SIZE * 0.5
             .attr \y, - ICON-SIZE * 0.75
-            .text -> glyph.ucid
-        else if glyph.img
-          size = glyph.size / \x
+            .text -> icon.glyph
+        else if icon.image
+          size = icon.size / \x
           g.append \svg:image
-            .attr \xlink:href, glyph.img
+            .attr \xlink:href, icon.image
             .attr \x     , x = -size.0 / 2
             .attr \y     , y = -size.1 - 12
             .attr \width , size.0
