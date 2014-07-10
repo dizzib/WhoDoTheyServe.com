@@ -8,9 +8,17 @@ ul.nav.nav-tabs
   li(active='^edge')
     a(href='#/edges')
       i(class='fa fa-chain') Connections
-  li(active='^$|^graph').seo-remove
-    a(href='#/graph')
-      i(class='fa fa-share-alt') Graph
+  li(active='^$|^maps').seo-remove.dropdown
+    a(href='#', data-toggle='dropdown').dropdown-toggle
+      i.fa.fa-share-alt Maps
+      b.caret
+    ul(role='menu').dropdown-menu
+      li
+        a(href='#/graph') foo
+      li
+        a(href='#/graph') bar
+      li
+        a(href='#/graph') baz
   li(active='^user/signin').seo-remove.pull-right.signed-out
     a(href='#/user/signin')
       i(class='fa fa-sign-in') Login

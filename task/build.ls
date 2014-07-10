@@ -90,6 +90,7 @@ const LIBS =
   \./lib-3p/backbone.routefilter
   \./lib-3p/backbone-validation
   \./lib-3p/backbone-validation-bootstrap
+  \./lib-3p/bootstrap/js/bootstrap-dropdown.js
   \./lib-3p/bootstrap/js/bootstrap-typeahead.js
   \./lib-3p/bootstrap-combobox
   \./lib-3p/transparency
@@ -163,7 +164,7 @@ function finalise ipath
   function contains then _.contains ipath, "/#it/"
   return if contains \task
   me.emit \built-api unless contains \app
-  if contains \app then if contains \lib-3p or contains \lib-3p-ext then bundle-lib! else bundle-app!
+  if contains \app then if contains \lib-3p or contains \lib-3p-ext/jquery then bundle-lib! else bundle-app!
   me.emit \built-app unless contains \api
   copy-package-json!
   me.emit \built

@@ -14,7 +14,7 @@ module.exports = B.View.extend do
     S.auto-sync-el @$el
 
   set-active-tab: ($t) ->
-    $t.find \li .each ->
+    $t.find \>li .each ->
       regex = new RegExp ($this = $ this).attr(\active), \i
       $this.toggleClass \active, regex.test (clean-hash location.hash)
 
