@@ -32,6 +32,13 @@ module.exports =
   Hive:
     Evidences: new (Model.extend urlRoot:"#{Api.hive}/evidences")!
     Graph    : new (Model.extend urlRoot:"#{Api.hive}/graph")!
+  Map: Model.extend do
+    urlRoot: Api.maps
+    validation:
+      'name':
+        * required: yes
+        * pattern : Cons.map.name.regex
+          msg     : "Name should be #{Cons.map.name.info}"
   Node: Model.extend do
     urlRoot: Api.nodes
     validation:

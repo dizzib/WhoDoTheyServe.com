@@ -6,7 +6,7 @@ P-Id      = require \./plugin-id
 P-Meta    = require \./plugin-meta
 
 schema = new M.Schema do
-  name : type:String, required:yes, match:Cons.node.name.regex
+  name: type:String, required:yes, match:Cons.node.name.regex
 
 schema
   ..plugin P-Id

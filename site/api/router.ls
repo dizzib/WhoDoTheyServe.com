@@ -1,6 +1,7 @@
 Analytics   = require \./analytics
 H           = require \./helper
 M-Edges     = require \./model/edges
+M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
 M-Notes     = require \./model/notes
 M-Evidences = require \./model/evidences
@@ -31,12 +32,14 @@ exports.init = (server) ->
   set-api-sec-users!
   set-api-sec \evidences , M-Evidences
   set-api-sec \edges     , M-Edges
+  set-api-sec \maps      , M-Maps
   set-api-sec \nodes     , M-Nodes
   set-api-sec \notes     , M-Notes
   set-api-hive!
   set-api-integrity!
   set-api-crud \evidences, M-Evidences
   set-api-crud \edges    , M-Edges
+  set-api-crud \maps     , M-Maps
   set-api-crud \nodes    , M-Nodes
   set-api-crud \notes    , M-Notes
   set-api-crud \users    , M-Users

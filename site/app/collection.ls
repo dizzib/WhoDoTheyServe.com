@@ -23,6 +23,9 @@ exports.init = ->
   evidences =
     url  : Api.evidences
     model: M.Evidence
+  maps =
+    url  : Api.maps
+    model: M.Map
   nodes =
     url       : Api.nodes
     model     : M.Node
@@ -41,6 +44,7 @@ exports.init = ->
   exports
     ..Edges     = new (Collection.extend edges)!
     ..Evidences = new (Collection.extend evidences)!
+    ..Maps      = new (Collection.extend maps)!
     ..Nodes     = new (Collection.extend nodes)!
     ..Notes     = new (Collection.extend notes)!
     ..Sessions  = new (Collection.extend sessions)!

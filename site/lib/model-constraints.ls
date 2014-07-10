@@ -12,6 +12,10 @@ module.exports =
   login:
     info : 'a string of 2 to 12 lower-case letters or numbers (a-z 0-9) e.g. foobar123'
     regex: /^[a-z]{2,2}[a-z0-9]{2,10}$/
+  map:
+    name:
+      info: 'a string of 4 to 50 letters or numbers e.g. Mainstream Media'
+      regex: /^(?!( ))([a-z0-9\,!&\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
   node:
     name:
       info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'
