@@ -27,6 +27,8 @@ Router = B.Router.extend do
     \fireprox          : \fireprox
     \graph             : \graph
     \home              : \home
+    \map/new           : \map
+    \map/:id           : \map
     \node/edit/:id     : \node_edit
     \node/new          : \node_edit
     \node/:id          : \node
@@ -51,6 +53,7 @@ Router = B.Router.extend do
   fireprox    : F.setup-url
   graph       : -> V.graph.render!
   home        : -> V.home.render!
+  map         : Vc.map
   node        : -> Hi.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes       : Vc.nodes

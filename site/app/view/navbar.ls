@@ -1,5 +1,7 @@
 B = require \backbone
 F = require \fs
+C = require \../collection
+D = require \../view-directive
 H = require \../helper
 S = require \../session
 
@@ -10,6 +12,7 @@ H.insert-css F.readFileSync __dirname + \/navbar.css
 module.exports = B.View.extend do
   render: ->
     @set-active-tab $t = $ T
+    $t.find \ul.maps .render(C.Maps.toJSON-T!, D.maps) .append $t.find \li.map-new
     @$el.html $t .show!
     S.auto-sync-el @$el
 

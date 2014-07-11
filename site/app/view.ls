@@ -22,6 +22,7 @@ T-Evidences     = F.readFileSync __dirname + \/view/evidences.html
 T-EvidencesHead = F.readFileSync __dirname + \/view/evidences-head.html
 T-EvidencesVoid = F.readFileSync __dirname + \/view/evidences-void.html
 T-Footer        = F.readFileSync __dirname + \/view/footer.html
+T-MapEdit       = F.readFileSync __dirname + \/view/graph/edit.html
 T-Meta          = F.readFileSync __dirname + \/view/meta.html
 T-Node          = F.readFileSync __dirname + \/view/node.html
 T-NodeEdit      = F.readFileSync __dirname + \/view/node-edit.html
@@ -55,6 +56,8 @@ exports
   ..graph           = new V-Graph                              el:\.view>.graph
   ..graph-toolbar   = new V-GraphTBar                          el:\.view>.graph
   ..home            = new V-Home                               el:\.view>.main
+  ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
+  ..map-nodes-sel   = new V.MultiSelectView                    sel:\#map_nodes, opts:{ filter:true maxHeight:800 selectAll:false width:540 }
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main

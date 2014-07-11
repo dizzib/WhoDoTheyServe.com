@@ -1,7 +1,7 @@
 B  = require \backbone
 Fs = require \fs
 _  = require \underscore
-V  = require \../view
+C  = require \../collection
 E  = require \./graph/edge
 Eg = require \./graph/edge-glyph
 Fz = require \./graph/freezer
@@ -10,6 +10,7 @@ O  = require \./graph/overlay
 Ob = require \./graph/overlay/bil
 Os = require \./graph/overlay/slit
 P  = require \./graph/persister
+V  = require \../view
 
 T = Fs.readFileSync __dirname + \/graph.html
 

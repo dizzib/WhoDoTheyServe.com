@@ -9,7 +9,7 @@ W4m = require \wait.for .forMethod
 
 const POLL-TIME    = 50ms
 const SITE-URL     = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
-const WAIT-TIMEOUT = 15000ms
+const WAIT-TIMEOUT = 10000ms
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host)
 mc = new Mc.Client md
@@ -28,7 +28,7 @@ module.exports = B =
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
       poll-for-ok WAIT-TIMEOUT, ->
-        n-actual = B.wait-for (opts <<< require-unique:false)
+        n-actual = B.wait-for (opts <<< expect-unique:false)
         if n-actual > 0
           el = w4mc \executeScript -> window.el
           vis = W4m el, \displayed
@@ -96,8 +96,7 @@ module.exports = B =
       .form \text-rx, \?filter, \?opts
       .form \opts
   , (args) ->
-    #log \wait-for, args
-    opts = require-unique:true scope:\document timeout:WAIT-TIMEOUT
+    opts = expect-unique:true scope:\document timeout:WAIT-TIMEOUT
     opts <<< args.opts
 
     filter = switch
@@ -116,8 +115,8 @@ module.exports = B =
     n = void
     poll-for-ok opts.timeout, ->
       n := w4mc \executeScript, remote-fn, remote-args
-      return \ok if n is 1 or not opts.require-unique
-      "Found #{n} occurrences of #{U.inspect remote-args} but require only 1."
+      return \ok if n is 1 or not opts.expect-unique
+      "Found #{n} occurrences of #{U.inspect remote-args} expecting exactly 1."
     n
 
   wait-for-visible: ->
@@ -128,7 +127,9 @@ module.exports = B =
 function handle-remote-log
   log "[marionette log] #{msg = it.message}"
   # any browser error should halt the test run
-  throw new Error msg if /error/i.test msg
+  # update: commented out since sometimes we want to log html containing 'error'
+  # TODO: find a better way
+  #throw new Error msg if /error/i.test msg
 
 function init-sandbox
   view = w4mc \findElement, \.view
@@ -165,6 +166,7 @@ function init-sandbox
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
         if cond-fn el.textContent
+          #log 'match:', el.outerHTML
           window.el = el
           n++
       n

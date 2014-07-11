@@ -1,6 +1,7 @@
 Bh  = require \backbone .history
 _   = require \underscore
 C   = require \./collection
+S   = require \./session
 V   = require \./view
 Ve  = require \./view-engine
 Vee = require \./view/edge-edit
@@ -22,6 +23,10 @@ module.exports =
         ..on \destroyed, -> nav-extra-done \evi
         ..on \rendered ,    Vev.init
         ..on \saved    , -> nav-extra-done \evi
+      ..map-edit
+        ..on \destroyed,    on-map-destroyed
+        ..on \rendered , -> V.map-nodes-sel.render C.Nodes, \name # .on \click, -> log it
+        ..on \saved    ,    on-map-saved
       ..node-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed, -> navigate \nodes
@@ -54,6 +59,14 @@ module.exports =
 
     function nav-extra-done name
       navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
+
+    function on-map-destroyed
+      V.navigator.render!
+      navigate \session
+
+    function on-map-saved map, is-new
+      V.navigator.render!
+      navigate "map/#{map.id}" if is-new
 
   reset: ->
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready

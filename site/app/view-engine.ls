@@ -5,6 +5,8 @@ _ = require \underscore
 H = require \./helper
 S = require \./session
 
+T-Sel = F.readFileSync __dirname + \/view/select.html
+
 const CLASS-EDITING = \editing
 
 module.exports =
@@ -70,12 +72,23 @@ module.exports =
         @$el.html $tem
         @$el.set-access S .show! if pass is 0
 
+  MultiSelectView: B.View.extend do
+    initialize: ->
+      @sel  = it.sel
+      @opts = it.opts <<< onClick: ~> @trigger \click, it
+    render: (coll, fname, sel-ids = []) ->
+      $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
+        html : -> @[fname]
+        value: -> @_id
+      @dropdown = $ @sel
+        ..html $T-Sel.children! # children! prevents duplicate nested select
+        ..attr \multiple, \multiple
+        ..multipleSelect @opts
+
   SelectView: B.View.extend do
     get-selected-id: -> @dropdown.val!
     initialize: -> @sel = it.sel
     render: (coll, fname, sel-id = '') ->
-      H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
-      T-Sel = F.readFileSync __dirname + \/view/select.html
       $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
         html : -> @[fname]
         value: -> @_id
@@ -83,5 +96,5 @@ module.exports =
       @dropdown = $ @sel
         ..html $T-Sel.children! # children! prevents duplicate nested select
         ..val sel-id
-        ..combobox!
+        ..combobox bsVersion:2
         ..change ~> @trigger \selected

@@ -87,6 +87,10 @@ module.exports =
       href: -> "#/#{B.history.fragment}/evi-new"
   glyph:
     GLYPH
+  maps:
+    map:
+      href: -> "#/map/#{@_id}"
+      text: -> @name
   meta:
     META
   node:

@@ -10,4 +10,4 @@ module.exports = (schema) ->
     meta:
       create_date   : type:Date  , index:yes, default:Date.now
       create_user_id: type:String, index:yes, required:yes
-      votes         : type:[S-Vote]
+      #votes         : type:[S-Vote]

@@ -10,10 +10,13 @@ module.exports =
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    return edge
+    edge
   edges: ->
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
+  map: ->
+    V.graph.render!
+    V.map-edit.render (M.Map.create it), C.Maps
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!
@@ -22,7 +25,7 @@ module.exports =
     V.meta.render node, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    return id
+    id
   nodes: ->
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes

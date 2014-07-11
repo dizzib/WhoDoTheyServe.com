@@ -22,14 +22,14 @@ function go-create key
   N.go-edge-or-node key
   wait-for-list!
   B.click \New, scope:\el
-  B.wait-for /Create/
+  B.wait-for /Create/, \button
 
 function go-maintain key
   N.go-edge-or-node key
   wait-for-list!
   B.wait-for ST.evidences[key], \a
   B.click \Edit, scope:\el.parent
-  B.wait-for /Update/
+  B.wait-for /Update/, \button
 
 function on-remove key
   wait-for-list!

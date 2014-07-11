@@ -1,0 +1,12 @@
+include ../../lib/_form
+
+form.form-horizontal.well.signed-in
+  legend
+    span.create Create Map
+    span.update Edit Map
+  fieldset
+    span.input-xxlarge
+      +field-text('name', 'Name')
+    +field-select('map_nodes', 'Actors')
+  hr
+  +button-bar
