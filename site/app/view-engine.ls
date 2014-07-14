@@ -42,6 +42,7 @@ module.exports =
       unless @model then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = @model.isNew!
       (m = @model).attributes = $ it.currentTarget .serializeObject!
+      @trigger \serialized, m
       @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, @model, is-new }
       false
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING
@@ -73,28 +74,40 @@ module.exports =
         @$el.set-access S .show! if pass is 0
 
   MultiSelectView: B.View.extend do
+    get-selected-ids: -> @dropdown.multipleSelect \getSelects
     initialize: ->
       @sel  = it.sel
-      @opts = it.opts <<< onClick: ~> @trigger \click, it
+      @opts = it.opts <<<
+        placeholder: (get-select-placeholder $ T-Sel).text!
+        onClick    : ~> @trigger \click, it
     render: (coll, fname, sel-ids = []) ->
-      $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
-        html : -> @[fname]
-        value: -> @_id
+      $t-sel = get-select $ T-Sel
+      render-select $t-sel, coll, fname
       @dropdown = $ @sel
-        ..html $T-Sel.children! # children! prevents duplicate nested select
+        ..html $t-sel.children! # children! prevents duplicate nested select
         ..attr \multiple, \multiple
         ..multipleSelect @opts
+        ..multipleSelect \setSelects, sel-ids
 
   SelectView: B.View.extend do
     get-selected-id: -> @dropdown.val!
     initialize: -> @sel = it.sel
     render: (coll, fname, sel-id = '') ->
-      $T-Sel = ($T = $ T-Sel) .filter \select .render coll.toJSON!, item:
-        html : -> @[fname]
-        value: -> @_id
-      if coll.findWhere _id:sel-id .length is 0 then $T-Sel.prepend ($T.filter \.prompt .find \option)
+      $t-sel = get-select $t = $ T-Sel
+      render-select $t-sel, coll, fname
+      if coll.findWhere _id:sel-id .length is 0 then $t-sel.prepend get-select-placeholder $t
       @dropdown = $ @sel
-        ..html $T-Sel.children! # children! prevents duplicate nested select
+        ..html $t-sel.children! # children! prevents duplicate nested select
         ..val sel-id
         ..combobox bsVersion:2
         ..change ~> @trigger \selected
+
+# helpers
+
+function get-select             $tem then $tem.filter \select
+function get-select-placeholder $tem then $tem.filter \.placeholder .find \option
+
+function render-select $sel, coll, fname
+  $sel.render coll.toJSON!, item:
+    html : -> @[fname]
+    value: -> @_id

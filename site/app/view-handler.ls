@@ -24,9 +24,13 @@ module.exports =
         ..on \rendered ,    Vev.init
         ..on \saved    , -> nav-extra-done \evi
       ..map-edit
-        ..on \destroyed,    on-map-destroyed
-        ..on \rendered , -> V.map-nodes-sel.render C.Nodes, \name # .on \click, -> log it
-        ..on \saved    ,    on-map-saved
+        ..on \destroyed ,    on-map-destroyed
+        ..on \rendered  , ->
+          V.map-nodes-sel.render C.Nodes, \name, _.pluck it.attributes.nodes, \_id
+          # .on \click, -> log it
+        ..on \saved     ,    on-map-saved
+        ..on \serialized, ->
+          it.attributes.nodes = for id in V.map-nodes-sel.get-selected-ids! then _id:id
       ..node-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed, -> navigate \nodes

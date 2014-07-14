@@ -57,7 +57,7 @@ exports
   ..graph-toolbar   = new V-GraphTBar                          el:\.view>.graph
   ..home            = new V-Home                               el:\.view>.main
   ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
-  ..map-nodes-sel   = new V.MultiSelectView                    sel:\#map_nodes, opts:{ filter:true maxHeight:800 selectAll:false width:540 }
+  ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 selectAll:false width:540 }
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navigator       = new V-NavBar                             el:\.navigator
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main

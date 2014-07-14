@@ -12,13 +12,15 @@ $.fn.set-access = (session) ->
 
 # http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
 $.fn.serializeObject = ->
-  a = @serializeArray()
+  const IGNORE-NAME = /^selectItem/ # jquery.multi.select
+  a = @serializeArray!
   o = {}
   $.each a, ->
-    value = if @value? then @value else ''
-    if o[@name]?
-      o[@name] = [o[@name]] unless o[@name].push
-      o[@name].push value
-    else
-      o[@name] = value
+    unless IGNORE-NAME.test @name
+      value = if @value? then @value else ''
+      if o[@name]?
+        o[@name] = [o[@name]] unless o[@name].push
+        o[@name].push value
+      else
+        o[@name] = value
   o
