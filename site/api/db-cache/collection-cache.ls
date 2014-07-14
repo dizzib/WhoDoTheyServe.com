@@ -89,10 +89,9 @@ class Cache
     Query::update = -> throw new Error 'not implemented'
 
   # in-situ update is probably faster than refreshing from db
-  function update-by-id coll-name, id, doc then
+  function update-by-id coll-name, id, o then
     #log 'REFRESH'
-    docs = @@store.get coll-name, STORE-KEY
-    docs = docs or {}
-    docs = _.reject docs, (d) -> d._id is id
-    docs.push doc if doc
+    docs = (@@store.get coll-name, STORE-KEY) or {}
+    docs = _.reject docs, -> it._id is id
+    docs.push(o._doc or o) if o
     @@store.set coll-name, STORE-KEY, docs

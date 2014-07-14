@@ -11,8 +11,6 @@ module.exports = B.View.extend do
     @$el.append T
     S.auto-sync-el @$el.find \.toolbar
 
-    $ \#btnSaveLayout .click ~> @trigger \save-layout
-
     init-overlay-chk \#chkAc       , \toggle-ac        , false
     init-overlay-chk \#chkBilAttend, \toggle-bil-attend, false
     init-overlay-chk \#chkBilSteer , \toggle-bil-steer , true

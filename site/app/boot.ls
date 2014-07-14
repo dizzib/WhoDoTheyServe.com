@@ -56,6 +56,5 @@ function fail coll, xhr then
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
 function start then
-  V.graph.init!
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot

@@ -1,17 +1,16 @@
 F = require \fs
 _ = require \underscore
-C = require \../../collection
 H = require \../../helper
 N = require \./node
 
 H.insert-css F.readFileSync __dirname + \/edge.css
 
 module.exports =
-  data: (nodes) ->
-    d3-edges = _.map (edges = C.Edges.toJSON-T!), (edge) -> _.extend do
+  data: (entities) ->
+    d3-edges = _.map entities.edges, (edge) -> _.extend do
       edge
-      source: _.find nodes, -> it._id is edge.a_node_id
-      target: _.find nodes, -> it._id is edge.b_node_id
+      source: _.find entities.nodes, -> it._id is edge.a_node_id
+      target: _.find entities.nodes, -> it._id is edge.b_node_id
     return assign-classes d3-edges
 
     function assign-classes d3-edges then
@@ -38,7 +37,7 @@ module.exports =
 
       # eg Mark Carney cannot govern both BoC and BoE simultaneously
       function has-successor-governor d3-edge then
-        successor = _.find edges, ->
+        successor = _.find entities.edges, ->
           /governor/.test it.how and it.how is d3-edge.how and
           it.year_from is d3-edge.year_to and
           (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)

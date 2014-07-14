@@ -1,8 +1,11 @@
 C = require \./collection
+H = require \./helper
 M = require \./model
 S = require \./session
 V = require \./view
 D = require \./view-directive
+
+var map
 
 module.exports =
   edge: (id, act, child-id) ->
@@ -15,8 +18,12 @@ module.exports =
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
   map: ->
-    V.graph.render!
-    V.map-edit.render (M.Map.create it), C.Maps
+    return show false if it? and it is map?id
+    (map := M.Map.create it).fetch error:H.on-err, success:show
+    function show is-render = true
+      V.graph.show map
+      V.graph.render map if is-render
+      V.map-edit.render map, C.Maps, fetch:no if S.is-signed-in!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

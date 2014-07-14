@@ -1,5 +1,7 @@
 Analytics   = require \./analytics
 H           = require \./helper
+Hive        = require \./hive
+Integrity   = require \./integrity
 M-Edges     = require \./model/edges
 M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
@@ -7,8 +9,6 @@ M-Notes     = require \./model/notes
 M-Evidences = require \./model/evidences
 M-Sessions  = require \./model/sessions
 M-Users     = require \./model/users
-Hive        = require \./hive
-Integrity   = require \./integrity
 Sec         = require \./security
 SecSessions = require \./security/sessions
 SecUsers    = require \./security/users

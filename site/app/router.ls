@@ -16,7 +16,7 @@ Router = B.Router.extend do
     B.trigger \route-before
     Vh.reset!
   routes:
-    ''                 : \graph
+    ''                 : \doc_about
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
     \edge/new          : \edge_edit

@@ -90,11 +90,11 @@ test Note.a.text.max.update.ok
 test Note.a.list.is2
 test Note.a.remove.ok
 test Note.a.list.is1
-it 'graph', R ->
-  B.refresh!
-  B.click \Graph
-  B.wait-for-visible sel:'.view>.graph'
-  B.assert.count 2, sel:'.graph g.node'
+#it 'graph', R ->
+#  B.refresh!
+#  B.click \Graph
+#  B.wait-for-visible sel:'.view>.graph'
+#  B.assert.count 2, sel:'.graph g.node'
 # TODO: why does B.assert.count think line is not displayed ?
 # B.assert.count 1, sel:'.graph line.edge'
 it '---userA remove entities'

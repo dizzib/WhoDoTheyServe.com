@@ -1,6 +1,5 @@
 F = require \fs
 _ = require \underscore
-C = require \../../collection
 H = require \../../helper
 M = require \../../model
 
@@ -9,9 +8,6 @@ const ICON-SIZE = 20
 H.insert-css F.readFileSync __dirname + \/node.css
 
 module.exports = me =
-  data: ->
-    _.map C.Nodes.models, (m) -> m.toJSON-T!
-
   init: (svg, d3-force) ~>
     @nodes = svg.selectAll \g.node
       .data d3-force.nodes!
