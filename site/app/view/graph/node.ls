@@ -12,7 +12,8 @@ module.exports = me =
     @nodes = svg.selectAll \g.node
       .data d3-force.nodes!
       .enter!append \svg:g
-        .attr \class, -> "node id_#{it._id} #{if me.is-you it then \you}"
+        .attr \class, ->
+          "node id_#{it._id} #{if me.is-you it then \you else ''}".trim!
 
     @nodes.append \svg:circle
       .attr \r, -> 5 + it.weight + if me.is-you it then 10 else 0

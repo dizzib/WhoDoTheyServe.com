@@ -10,8 +10,8 @@ P-Meta      = require \./plugin-meta
 
 schema-node = new M.Schema do
   _id: type:String, required:yes
-  #x : type:Number, required:yes
-  #y : type:Number, required:yes
+  x  : type:Number # optional since node may be filtered out of d3
+  y  : type:Number # optional since node may be filtered out of d3
 
 schema = new M.Schema do
   name : type:String, required:yes, match:Cons.map.name.regex

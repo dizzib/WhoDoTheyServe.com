@@ -28,7 +28,7 @@ module.exports =
 
   render-steer: (g, d3-force) ->
     return unless edges = @edges-steer
-    @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bil-steer
+    return unless @g-steer = render g, d3-force, edges, N.is-steering, N.is-steering, \bil-steer
     glyphs = @g-steer.selectAll \g.edge-glyphs
       .data edges
       .enter!append \svg:g
@@ -41,7 +41,7 @@ module.exports =
     @g-steer?remove!
 
 function render g, d3-force, edges, fn-get-hub, fn-is-hub, css-class then
-  hub = _.find d3-force.nodes!, fn-get-hub
+  return unless hub = _.find d3-force.nodes!, fn-get-hub
   g-child = g.append \svg:g
   for edge in edges
     [src, tar] = [edge.source, edge.target]

@@ -24,8 +24,9 @@ exports.init = ->
     url  : Api.evidences
     model: M.Evidence
   maps =
-    url  : Api.maps
-    model: M.Map
+    url       : Api.maps
+    model     : M.Map
+    comparator: -> it.get \name .toLowerCase!
   nodes =
     url       : Api.nodes
     model     : M.Node
