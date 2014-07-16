@@ -80,7 +80,6 @@ module.exports = B.View.extend do
         node = _.findWhere nodes, _id:n._id
         node <<< { x:n.x, y:n.y } if node?
 
-    @svg = d3.select @el .append \svg:svg
     @f.nodes nodes
      .links (edges or [])
      .charge -2000
@@ -93,6 +92,8 @@ module.exports = B.View.extend do
     is-slow-to-cool = @map.isNew! or opts?is-slow-to-cool
     @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
 
+    @svg = d3.select @el .append \svg:svg
+
     # order matters: svg uses painter's algo
     E .init @svg, @f
     N .init @svg, @f
@@ -103,7 +104,7 @@ module.exports = B.View.extend do
     @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
 
-    V.graph-toolbar.render! # toolbar must be rendered here to reset the aspect selections
+    V.graph-toolbar.render! # toolbar renders here to reset the checkboxes
 
   show: ->
     return unless @el # might be undefined for seo

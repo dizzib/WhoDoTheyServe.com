@@ -90,9 +90,9 @@ module.exports =
     GLYPH
   map:
     link:
-      href: -> "#/map/#{@id or \new}"
-    glyph:
-      text: -> @get \name or 'New map'
+      href: -> "#/map/#{@id or @_id or \new}"
+    name:
+      text: -> @name or @get \name or 'New map'
   maps:
     map:
       class: -> \active if @_id is V.graph.map?id
@@ -109,7 +109,7 @@ module.exports =
       href : -> "#/node/edit/#{@_id}"
   nodes: {
     name:
-        href: -> get-node-href @_id
+      href: -> get-node-href @_id
     } <<< GLYPHS
   notes:
     META

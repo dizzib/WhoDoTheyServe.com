@@ -5,19 +5,23 @@ include _mixin
   ul.items.unstyled
     li.item
       span.entity
-        span.edge.edge-title
+        span.sel-edge.edge-title
           a.aNode
           a.how
           a.bNode
           span.period
-        span.evidence
+        span.sel-evidence
           a.glyph
             i.fa.fa-video-camera
           a(target='_blank').url
-        span.node
+        span.sel-map
+          a.link
+            i.glyph.fa.fa-share-alt
+            span.name
+        span.sel-node
           a.name
-        span.note
-          a.glyph
-            i.fa.fa-comment
+        span.sel-note
+          a
+            i.glyph.fa.fa-comment
           span.text
       +meta

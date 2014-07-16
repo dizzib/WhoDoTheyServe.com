@@ -24,7 +24,7 @@ schema
 module.exports = me = Crud.set-fns (M.model \maps, schema)
   ..crud-fns
     ..read = read
-    ..list = Crud.get-invoker me, Crud.list, return-fields:<[ name ]>
+    ..list = Crud.get-invoker me, Crud.list, return-fields:<[ name meta ]>
 
 # helpers
 

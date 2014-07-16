@@ -10,26 +10,28 @@ T-Latest = F.readFileSync __dirname + \/latest.html
 
 module.exports = B.View.extend do
   render: ->
-    @$el
-      .empty!
-      .append render-latest!
-      .show!
+    @$el.html render-latest! .show!
 
-    function render-latest then
-      edges     = get-json C.Edges    , \edge
-      nodes     = get-json C.Nodes    , \node
-      notes     = get-json C.Notes    , \note
-      all       = edges ++ nodes ++ notes
-      by-date   = _.sortBy all, (x) -> x.meta.create_date
-      latest    = _.first by-date.reverse!, 50
+    function render-latest
+      # prefix classes with 'sel-' to ensure they don't clash with directives
+      edges = get-json C.Edges, \sel-edge
+      maps  = get-json C.Maps , \sel-map
+      nodes = get-json C.Nodes, \sel-node
+      notes = get-json C.Notes, \sel-note # possibly may not have loaded (see boot.ls)
+
+      all     = edges ++ maps ++ nodes ++ notes
+      by-date = _.sortBy all, (x) -> x.meta.create_date
+      latest  = _.first by-date.reverse!, 50
+
       directive = items: _.extend do
-        D.edges, D.glyph, D.meta, D.nodes, D.notes
+        D.edges, D.map, D.meta, D.nodes, D.notes
         item:
           fn: ->
             $ it.element .find ".entity>:not(.#{@type})" .remove!
-            return void
+            void
       ($t = $ T-Latest).render items:latest, directive
-      return $t
+      $t
 
-      function get-json coll, type then
-        _.map coll.models, (x) -> _.extend x.toJSON-T!, type:type
+# helpers
+
+function get-json coll, type then _.map coll.models, (x) -> _.extend x.toJSON-T!, type:type
