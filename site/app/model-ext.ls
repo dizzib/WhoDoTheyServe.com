@@ -1,7 +1,8 @@
 _  = require \underscore
 C  = require \./collection
-Hs = require \./history
+Hi = require \./history
 M  = require \./model
+S  = require \./session
 
 exports.init = ->
   M.Edge .= extend do
@@ -41,6 +42,8 @@ exports.init = ->
         * name:\fa-video-camera unicode:\\uf03d regex:/youtube\.com|vimeo\.com/i
       for g in GLYPHS then return g if g.regex.test @get \url
       name:\fa-file-text-o unicode:\\uf0f6
+  M.Map .= extend do
+    get-is-editable: -> S.get-id! is (@get \meta .create_user_id)
   M.Node .= extend do
     toJSON-T: (opts) ->
       return _.extend (@toJSON opts),
@@ -55,9 +58,9 @@ exports.init = ->
   M.Edge.create = ->
     m = create M.Edge, it
     unless it then # auto-populate new edge with 2 last nodes
-      m.set \a_node_id, Hs.get-node-id 0
-      m.set \b_node_id, Hs.get-node-id 1
-      if (edge = Hs.get-edge!) then m.set \how, edge.get \how
+      m.set \a_node_id, Hi.get-node-id 0
+      m.set \b_node_id, Hi.get-node-id 1
+      if (edge = Hi.get-edge!) then m.set \how, edge.get \how
     return m
 
   add-factory-method M.Evidence

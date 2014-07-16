@@ -39,8 +39,8 @@ T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 
-# not clear why refactoring to 'module.exports' breaks things
-exports
+me = exports # not clear why refactoring to 'module.exports' breaks things
+  # views
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id
@@ -79,3 +79,21 @@ exports
   ..users           = new V.ListView template:T-Users        , el:\.view>.users
   ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main
   ..version         = new V-Version                            el:\.version
+
+  # functions
+  ..finalise = ->
+    $ \.timeago .timeago!
+    # use a delgated event since view may still be rendering asyncly
+    $ \.view .on \focus, 'input[type=text]', ->
+      # defer, to workaround Chrome mouseup bug
+      # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
+      _.defer ~> @select!
+    <- _.defer
+    $ \.btnNew:visible:first .focus!
+    $ \.view .addClass \ready
+  ..reset = ->
+    $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
+    $ '.view>*' .off!hide! # call off() so different views can use same element
+    $ '.view>:not(.persist)' .empty! # leave persistent views e.g. graph
+    me.navigator.render!
+    V.ResetEditView!

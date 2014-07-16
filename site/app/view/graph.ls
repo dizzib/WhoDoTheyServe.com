@@ -4,11 +4,11 @@ _  = require \underscore
 C  = require \../collection
 E  = require \./graph/edge
 Eg = require \./graph/edge-glyph
-Fz = require \./graph/freezer
 N  = require \./graph/node
 O  = require \./graph/overlay
 Ob = require \./graph/overlay/bil
 Os = require \./graph/overlay/slit
+S  = require \../session
 V  = require \../view
 
 T = Fs.readFileSync __dirname + \/graph.html
@@ -51,7 +51,10 @@ module.exports = B.View.extend do
 
     edges = E.data entities
     edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
-    nodes = (Ob.filter-nodes >> Fz.fix-unless-admin) nodes
+    nodes = Ob.filter-nodes nodes
+
+    is-editable = @map.get-is-editable!
+    fix-nodes!
 
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
@@ -70,8 +73,8 @@ module.exports = B.View.extend do
     f.links edges if edges
     f.start!
 
-    is-slow-settle = @map.isNew! or opts?is-slow-settle
-    f.alpha 0.01 unless is-slow-settle # must invoke after start
+    is-long-settle = @map.isNew! or opts?is-long-settle
+    f.alpha 0.01 unless is-long-settle # must invoke after start
 
     # order matters: svg uses painter's algo
     E .init svg, f
@@ -80,7 +83,7 @@ module.exports = B.View.extend do
     Eg.init svg, f
     _.each OVERLAYS, -> it.init svg, f
 
-    Fz.make-draggable-if-admin svg, f
+    dragify-nodes!
     Os.align svg, f
 
     n-tick = 0
@@ -98,6 +101,12 @@ module.exports = B.View.extend do
         .attr \height, SIZE
 
     V.graph-toolbar.render!
+
+    # helpers
+
+    function fix-nodes then _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
+
+    function dragify-nodes then if is-editable then svg.selectAll \g.node .call f.drag
 
   show: ->
     return unless @el # might be undefined for seo

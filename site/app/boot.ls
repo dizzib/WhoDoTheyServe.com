@@ -8,19 +8,18 @@ window.onerror = (msg, url, line) ->
   log "#msg (#url line #line)"
   false # propogate
 
-B      = require \backbone
-F      = require \fs # inlined by brfs
-Api    = require \./api
-C      = require \./collection
-H      = require \./helper
-M      = require \./model
-M-Ext  = require \./model-ext
-P      = require \./view/graph/persister
-VAL    = require \./validator
-V      = require \./view
-V-Hdlr = require \./view-handler
-V-Foot = require \./view/footer
-Router = require \./router
+B   = require \backbone
+F   = require \fs # inlined by brfs
+Api = require \./api
+C   = require \./collection
+H   = require \./helper
+M   = require \./model
+Mx  = require \./model-ext
+V   = require \./view
+Val = require \./validator
+Vh  = require \./view-handler
+Vf  = require \./view/footer
+Vme = require \./view/graph/edit
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -29,12 +28,13 @@ H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 B.Model.prototype.idAttribute = \_id # mongodb
 
-Api   .init!
-M-Ext .init!
-C     .init!
-VAL   .init!
-V-Hdlr.init Router
-V-Foot.init!
+Api.init!
+Mx .init!
+C  .init!
+Val.init!
+Vh .init!
+Vf .init!
+Vme.init!
 
 $.when(
   C.Evidences     .fetch!

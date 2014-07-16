@@ -7,14 +7,13 @@ F  = require \./fireprox
 M  = require \./model
 V  = require \./view
 Vc = require \./view-composer
-Vh = require \./view-handler
 
 Router = B.Router.extend do
   after: ->
-    Vh.ready!
+    V.finalise!
   before: ->
     B.trigger \route-before
-    Vh.reset!
+    V.reset!
   routes:
     ''                 : \doc_about
     \doc/about         : \doc_about

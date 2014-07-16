@@ -5,12 +5,12 @@ module.exports = me =
     C.Sessions.on \sync, -> $el.set-access me
     $el.set-access me
 
-  id: ->
+  get-id: ->
     C.Sessions.models.0?id
 
   is-signed-in: ->
     return C.Sessions.length > 0 unless it
-    return me.id! is it
+    return me.get-id! is it
 
   is-signed-in-admin: ->
     \admin is C.Sessions.models.0?get \role

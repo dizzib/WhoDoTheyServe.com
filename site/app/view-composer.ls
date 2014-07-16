@@ -18,11 +18,11 @@ module.exports =
   map: ->
     is-sel-changed = (not (it? or V.graph.map?)) or it isnt V.graph.map?id
     return show! if not is-sel-changed
-    (V.graph.map = M.Map.create it).fetch error:H.on-err, success:show
+    (m = V.graph.map = M.Map.create it).fetch error:H.on-err, success:show
     function show
       V.graph.show!
       V.graph.render! if is-sel-changed
-      V.map-edit.render V.graph.map, C.Maps, fetch:no if S.is-signed-in!
+      V.map-edit.render m, C.Maps, fetch:no if m.get-is-editable!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!
