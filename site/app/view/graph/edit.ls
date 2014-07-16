@@ -1,11 +1,15 @@
+F = require \fs
 C = require \../../collection
+H = require \../../helper
 R = require \../../router
 V = require \../../view
+
+H.insert-css F.readFileSync __dirname + \/edit.css
 
 module.exports.init = ->
   V.map-edit
     ..on \destroyed, ->
-      V.navigator.render!
+      V.navbar.render!
       navigate \session
 
     ..on \rendered, ->
@@ -16,7 +20,7 @@ module.exports.init = ->
           V.graph.render is-long-settle:true
 
     ..on \saved, (map, is-new) ->
-      V.navigator.render!
+      V.navbar.render!
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->

@@ -43,7 +43,7 @@ exports.init = ->
       for g in GLYPHS then return g if g.regex.test @get \url
       name:\fa-file-text-o unicode:\\uf0f6
   M.Map .= extend do
-    get-is-editable: -> S.get-id! is (@get \meta .create_user_id)
+    get-is-editable: -> @isNew! or S.get-id! is (@get \meta .create_user_id)
   M.Node .= extend do
     toJSON-T: (opts) ->
       return _.extend (@toJSON opts),

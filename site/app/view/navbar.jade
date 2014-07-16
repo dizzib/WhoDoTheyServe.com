@@ -1,41 +1,43 @@
 ul.nav.nav-tabs
   li(active='^doc/about')
     a(href='#/doc/about')
-      i(class='fa fa-info-circle') About
+      i.fa.fa-info-circle About
   li(active='^node')
     a(href='#/nodes')
-      i(class='fa fa-male') Actors
+      i.fa.fa-male Actors
   li(active='^edge')
     a(href='#/edges')
-      i(class='fa fa-chain') Connections
-  li(active='^graph')
-    a(href='#/graph')
-      i(class='fa fa-share') Graph
+      i.fa.fa-chain Connections
   li(active='^$|^maps').seo-remove.dropdown
     a(href='#', data-toggle='dropdown').dropdown-toggle
-      i.fa.fa-share-alt Maps
+      i.fa.fa-list Maps
       b.caret
     ul.dropdown-menu.maps
-      li
-        a.map
+      li.map
+        a.link
+          i.edit-indicator
     ul.hide
-      li.map-new.divider.signed-in
+      li.map-new.signed-in.divider
       li.map-new.signed-in
         a(href='#/map/new')
           i.fa.fa-plus Create new
+          i.edit-indicator
+  li(active='^map').map
+    a.link
+      i.glyph.fa.fa-share-alt
   li(active='^user/signin').seo-remove.pull-right.signed-out
     a(href='#/user/signin')
-      i(class='fa fa-sign-in') Login
+      i.fa.fa-sign-in Login
   li(active='^user/signout').seo-remove.pull-right.signed-in
     a(href='#/user/signout')
-      i(class='fa fa-sign-out') Logout
+      i.fa.fa-sign-out Logout
   li(active='^user(/edit|$)').seo-remove.pull-right.signed-in
     a(href='#/user')
-      i(class='fa fa-user') Account 
+      i.fa.fa-user Account 
   li(active='^user/signup').seo-remove.pull-right.signed-in-admin
     a(href='#/user/signup') Signup
   li(active='^user(s|/[0-9a-f]+)$').seo-remove.pull-right.signed-in
     a(href='#/users') Contributors
   li(active='^home').pull-right
     a(href='#/home')
-      i(class='fa fa-history') Latest
+      i.fa.fa-history Latest

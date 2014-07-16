@@ -16,12 +16,13 @@ module.exports =
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
   map: ->
-    is-sel-changed = (not (it? or V.graph.map?)) or it isnt V.graph.map?id
+    is-sel-changed = (not (m = V.graph.map)? and not it?) or it isnt m?id
     return show! if not is-sel-changed
     (m = V.graph.map = M.Map.create it).fetch error:H.on-err, success:show
     function show
       V.graph.show!
       V.graph.render! if is-sel-changed
+      V.navbar.render! if is-sel-changed
       V.map-edit.render m, C.Maps, fetch:no if m.get-is-editable!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node

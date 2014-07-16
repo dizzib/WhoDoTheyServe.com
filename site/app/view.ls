@@ -57,9 +57,9 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..graph-toolbar   = new V-GraphTBar                          el:\.view>.graph
   ..home            = new V-Home                               el:\.view>.main
   ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
-  ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:540 }
+  ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
-  ..navigator       = new V-NavBar                             el:\.navigator
+  ..navbar          = new V-NavBar                             el:\.navigator
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main
   ..node-edit       = new V.EditView template:T-NodeEdit     , el:\.view>.main
   ..node-edges-a    = new V.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
@@ -95,5 +95,5 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
     $ '.view>*' .off!hide! # call off() so different views can use same element
     $ '.view>:not(.persist)' .empty! # leave persistent views e.g. graph
-    me.navigator.render!
+    me.navbar.render!
     V.ResetEditView!

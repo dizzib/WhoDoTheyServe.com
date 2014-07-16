@@ -3,6 +3,7 @@ E = require \./view/evidence
 C = require \./collection
 H = require \./helper
 S = require \./session
+V = require \./view
 
 const EDGE =
   a-node:
@@ -87,8 +88,17 @@ module.exports =
       href: -> "#/#{B.history.fragment}/evi-new"
   glyph:
     GLYPH
+  map:
+    link:
+      href: -> "#/map/#{@id or \new}"
+    glyph:
+      text: -> @get \name or 'New map'
   maps:
     map:
+      class: -> \active if @_id is V.graph.map?id
+    'edit-indicator':
+      class: -> "fa fa-edit" if @_id is V.graph.map?id
+    link:
       href: -> "#/map/#{@_id}"
       text: -> @name
   meta:

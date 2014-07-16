@@ -4,6 +4,7 @@ C = require \../collection
 D = require \../view-directive
 H = require \../helper
 S = require \../session
+V = require \../view
 
 T = F.readFileSync __dirname + \/navbar.html
 
@@ -12,9 +13,21 @@ H.insert-css F.readFileSync __dirname + \/navbar.css
 module.exports = B.View.extend do
   render: ->
     @set-active-tab $t = $ T
-    $t.find \ul.maps .render(C.Maps.toJSON-T!, D.maps) .append $t.find \li.map-new
+    render-map!
+    render-maps-dropdown!
     @$el.html $t .show!
     S.auto-sync-el @$el
+
+    function render-map
+      $el = $t.find \>li.map
+      if (m = V.graph.map)? then $el.render m, D.map else $el.remove!
+
+    function render-maps-dropdown
+      $maps = $t.find \ul.maps
+      if C.Maps.length then ($maps.render C.Maps.toJSON-T!, D.maps) else $maps.empty!
+      $new = $t.find \li.map-new
+      $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-edit' if V.graph.map?isNew!
+      $maps.append $new
 
   set-active-tab: ($t) ->
     $t.find \>li .each ->
