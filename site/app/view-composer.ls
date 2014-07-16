@@ -23,7 +23,9 @@ module.exports =
       V.graph.show!
       V.graph.render! if is-sel-changed
       V.navbar.render! if is-sel-changed
-      V.map-edit.render m, C.Maps, fetch:no if m.get-is-editable!
+      if m.get-is-editable!
+        return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
+        V.map-edit.$el.show!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

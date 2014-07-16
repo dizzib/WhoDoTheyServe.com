@@ -13,11 +13,8 @@ module.exports.init = ->
       navigate \session
 
     ..on \rendered, ->
-      V.map-nodes-sel
-        ..render C.Nodes, \name, _.pluck (it.get \nodes), \_id
-        ..on \click, ->
-          if it.checked then V.graph.add-node it.value else V.graph.remove-node it.value
-          V.graph.render is-long-settle:true
+      disable-buttons! # enabled when d3 has cooled
+      V.map-nodes-sel.render C.Nodes, \name, _.pluck (it.get \nodes), \_id
 
     ..on \saved, (map, is-new) ->
       V.navbar.render!
@@ -34,6 +31,18 @@ module.exports.init = ->
         node <<< { x:d3-node.x, y:d3-node.y } if d3-node?
         node
 
+  V.map-nodes-sel.on \click, ->
+    if it.checked then V.graph.add-node it.value else V.graph.remove-node it.value
+    V.graph.render is-slow-to-cool:true
+
+  V.graph
+    ..on \render  , disable-buttons
+    ..on \rendered, enable-buttons
+
 # helpers
 
 function navigate then R.navigate it, trigger:true
+
+function disable-buttons then V.map-edit.$el.find \.btn .prop \disabled, true .addClass \disabled
+
+function enable-buttons then V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled

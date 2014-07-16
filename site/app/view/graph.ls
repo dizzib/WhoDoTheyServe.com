@@ -29,10 +29,29 @@ module.exports = B.View.extend do
     @map.set \entities, ents
 
   get-nodes: ->
-    _.map @d3-force.nodes!, ->
+    _.map @f.nodes!, ->
       id: it._id
       x : Math.round it.x
       y : Math.round it.y
+
+  initialize: ->
+    n-tick = 0
+    @f = d3.layout.force!
+      ..on \start, ~>
+        @trigger \render
+        _.each OVERLAYS, -> it.render-clear!
+      ..on \tick, ->
+        if n-tick++ > 4
+          N .on-tick!
+          E .on-tick!
+          Eg.on-tick!
+          n-tick := 0
+      ..on \end, ~>
+        _.each OVERLAYS, -> it.render!
+        @svg
+          .attr \width , SIZE
+          .attr \height, SIZE
+        @trigger \rendered
 
   remove-node: (id) ->
     nodes = @map.get \nodes
@@ -44,8 +63,9 @@ module.exports = B.View.extend do
     @map.set \entities, ents
 
   render: (opts) ->
-    return unless @el # might be undefined for seo
+    log \render
     @$el.empty!
+    return unless @el # might be undefined for seo
     return unless entities = @map.get \entities
     return unless (nodes = entities.nodes)?length
 
@@ -61,44 +81,29 @@ module.exports = B.View.extend do
         node = _.findWhere nodes, _id:n._id
         node <<< { x:n.x, y:n.y } if node?
 
-    svg = d3.select @el .append \svg:svg
-    f = @d3-force = d3.layout.force!
-    f.nodes nodes
+    @svg = d3.select @el .append \svg:svg
+    @f.nodes nodes
      .charge -2000
      .friction 0.95
      .linkDistance 100
      .linkStrength E.get-strength
      .size [SIZE, SIZE]
 
-    f.links edges if edges
-    f.start!
+    @f.links (edges or [])
+    @f.start!
 
-    is-long-settle = @map.isNew! or opts?is-long-settle
-    f.alpha 0.01 unless is-long-settle # must invoke after start
+    is-slow-to-cool = @map.isNew! or opts?is-slow-to-cool
+    @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
 
     # order matters: svg uses painter's algo
-    E .init svg, f
-    N .init svg, f
-    Os.init svg, f
-    Eg.init svg, f
-    _.each OVERLAYS, -> it.init svg, f
+    E .init @svg, @f
+    N .init @svg, @f
+    Os.init @svg, @f
+    Eg.init @svg, @f
+    _.each OVERLAYS, ~> it.init @svg, @f
 
     dragify-nodes!
-    Os.align svg, f
-
-    n-tick = 0
-    f.on \start, ->
-      _.each OVERLAYS, -> it.render-clear!
-    f.on \tick, ->
-      if n-tick++ % 4 is 0 then
-        N .on-tick!
-        E .on-tick!
-        Eg.on-tick!
-    f.on \end  , ->
-      _.each OVERLAYS, -> it.render!
-      svg
-        .attr \width , SIZE
-        .attr \height, SIZE
+    Os.align @svg, @f
 
     V.graph-toolbar.render!
 
@@ -106,7 +111,7 @@ module.exports = B.View.extend do
 
     function fix-nodes then _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
 
-    function dragify-nodes then if is-editable then svg.selectAll \g.node .call f.drag
+    ~function dragify-nodes then if is-editable then @svg.selectAll \g.node .call @f.drag
 
   show: ->
     return unless @el # might be undefined for seo
