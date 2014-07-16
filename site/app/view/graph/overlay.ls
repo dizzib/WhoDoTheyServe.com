@@ -37,7 +37,7 @@ class Overlay
     @edges = groups.yes or []
     return groups.no
 
-    ~function node-is-match then
+    ~function node-is-match
       @fn-node-is-match it.source or @fn-node-is-match it.target
 
   render: ~>

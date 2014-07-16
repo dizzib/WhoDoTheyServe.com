@@ -63,7 +63,6 @@ module.exports = B.View.extend do
     @map.set \entities, ents
 
   render: (opts) ->
-    log \render
     @$el.empty!
     return unless @el # might be undefined for seo
     return unless entities = @map.get \entities
@@ -74,7 +73,7 @@ module.exports = B.View.extend do
     nodes = Ob.filter-nodes nodes
 
     is-editable = @map.get-is-editable!
-    fix-nodes!
+    _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
 
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
@@ -83,14 +82,13 @@ module.exports = B.View.extend do
 
     @svg = d3.select @el .append \svg:svg
     @f.nodes nodes
+     .links (edges or [])
      .charge -2000
      .friction 0.95
      .linkDistance 100
      .linkStrength E.get-strength
      .size [SIZE, SIZE]
-
-    @f.links (edges or [])
-    @f.start!
+     .start!
 
     is-slow-to-cool = @map.isNew! or opts?is-slow-to-cool
     @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
@@ -102,16 +100,10 @@ module.exports = B.View.extend do
     Eg.init @svg, @f
     _.each OVERLAYS, ~> it.init @svg, @f
 
-    dragify-nodes!
+    @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
 
-    V.graph-toolbar.render!
-
-    # helpers
-
-    function fix-nodes then _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
-
-    ~function dragify-nodes then if is-editable then @svg.selectAll \g.node .call @f.drag
+    V.graph-toolbar.render! # toolbar must be rendered here to reset the aspect selections
 
   show: ->
     return unless @el # might be undefined for seo

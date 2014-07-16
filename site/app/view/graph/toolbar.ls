@@ -4,13 +4,12 @@ H = require \../../helper
 S = require \../../session
 
 H.insert-css F.readFileSync __dirname + \/toolbar.css
-T = F.readFileSync __dirname + \/toolbar.html
 
 module.exports = B.View.extend do
-  render: ->
-    @$el.append T
-    S.auto-sync-el @$el.find \.toolbar
+  initialize: ->
+    @$el.html F.readFileSync __dirname + \/toolbar.html
 
+  render: ->
     init-overlay-chk \#chkAc       , \toggle-ac        , false
     init-overlay-chk \#chkBilAttend, \toggle-bil-attend, false
     init-overlay-chk \#chkBilSteer , \toggle-bil-steer , true
@@ -22,3 +21,6 @@ module.exports = B.View.extend do
         ..prop \checked, value
         ..click ~> @trigger event, $el.prop \checked
       @trigger event, value
+
+  show: ->
+    @$el.show!

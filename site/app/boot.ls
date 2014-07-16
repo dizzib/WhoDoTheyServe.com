@@ -34,7 +34,6 @@ C  .init!
 Val.init!
 Vh .init!
 Vf .init!
-Vme.init!
 
 $.when(
   C.Evidences     .fetch!
@@ -50,11 +49,13 @@ $.when(
 C.Notes.fetch error:fail
 M.Sys  .fetch error:fail, success: -> V.version.render!
 
-function fail coll, xhr then
+Vme.init!
+
+function fail coll, xhr
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#{info}\n\n#{prompt}" then window.location.reload!
 
-function start then
+function start
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
