@@ -56,13 +56,16 @@ module.exports =
       @$el.html $tem .set-access S .show!
 
   ListView: B.View.extend do
-    initialize: -> @template = it.template
+    initialize: ->
+      @opts     = { fetch:true } <<< it.opts
+      @template = it.template
     # For fast ui render happens in 2 passes:
     # 1. render current content immediately
     # 2. render async-fetched content
     render: (coll, directive, opts) ->
       @$el.attr \data-loc, B.history.fragment # to detemine if navigated away
       render coll, 0
+      return unless @opts.fetch
       return unless coll.url # filtered collection won't have url
       coll.fetch error:H.on-err, success: -> render it, 1
       ~function render c, pass then

@@ -97,7 +97,7 @@ module.exports =
     map:
       class: -> \active if @_id is V.graph.map?id
     'edit-indicator':
-      class: -> "fa fa-edit" if @_id is V.graph.map?id
+      class: -> "fa fa-chevron-left" if @_id is V.graph.map?id
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name

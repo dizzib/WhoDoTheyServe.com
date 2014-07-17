@@ -32,7 +32,10 @@ module.exports.init = ->
         node
 
   V.map-nodes-sel.on 'checkAll click uncheckAll', ->
-    V.graph.refresh-entities(V.map-nodes-sel.get-selected-ids!).render is-slow-to-cool:true
+    # checkAll also fires if all nodes are already selected and the dropdown is opened
+    # even if the selection is unchanged, in which case bail
+    return unless V.graph.refresh-entities V.map-nodes-sel.get-selected-ids!
+    V.graph.render is-slow-to-cool:true
 
   V.graph
     ..on \render  , disable-buttons

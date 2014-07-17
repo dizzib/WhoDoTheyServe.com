@@ -43,18 +43,20 @@ module.exports = B.View.extend do
         @trigger \rendered
 
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
+    return unless node-ids.length isnt @map.get \nodes ?length
     nodes = C.Nodes.filter -> _.contains node-ids, it.id
     edges = C.Edges.filter -> it.is-in-map node-ids
     @map.set \nodes, _.map node-ids, -> _id:it
     @map.set \entities,
       nodes: _.pluck nodes, \attributes
       edges: _.pluck edges, \attributes
-    @
+    true
 
   render: (opts) ->
-    @$el.empty!
     return unless @el # might be undefined for seo
-    return unless entities = @map.get \entities
+    @$el.empty!
+    # clone the entities so they're not modified, as they may be used elsewhere
+    return unless entities = _.deepClone @map.get \entities
     return unless (nodes = entities.nodes)?length
 
     edges = E.data entities
@@ -82,17 +84,15 @@ module.exports = B.View.extend do
     @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
 
     @svg = d3.select @el .append \svg:svg
-
     # order matters: svg uses painter's algo
     E .init @svg, @f
     N .init @svg, @f
     Os.init @svg, @f
-    Eg.init @svg, @f
+    Eg.init @svg, @f, entities.evidences
     _.each OVERLAYS, ~> it.init @svg, @f
 
     @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
-
     V.graph-toolbar.render! # toolbar renders here to reset the checkboxes
 
   show: ->

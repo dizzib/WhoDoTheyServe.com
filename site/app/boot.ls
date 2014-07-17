@@ -19,7 +19,6 @@ V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
 Vf  = require \./view/footer
-Vme = require \./view/graph/edit
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -35,26 +34,13 @@ Val.init!
 Vh .init!
 Vf .init!
 
-$.when(
-  C.Evidences     .fetch!
-  C.Edges         .fetch!
-  C.Maps          .fetch!
-  C.Nodes         .fetch!
-  C.Sessions      .fetch!
-  C.Users         .fetch!
-  M.Hive.Graph    .fetch!
-  M.Hive.Evidences.fetch!
-).then start, fail
-
-C.Notes.fetch error:fail
-M.Sys  .fetch error:fail, success: -> V.version.render!
-
-Vme.init!
+$.when(C.Maps.fetch!, C.Sessions.fetch!, C.Users.fetch!, M.Hive.Graph.fetch!).then start, fail
+M.Sys.fetch error:fail, success: -> V.version.render!
 
 function fail coll, xhr
   info   = "The app failed to start.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
-  if confirm "#{info}\n\n#{prompt}" then window.location.reload!
+  if confirm "#info\n\n#prompt" then window.location.reload!
 
 function start
   B.history.start!

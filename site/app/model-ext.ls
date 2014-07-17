@@ -4,7 +4,7 @@ Hi = require \./history
 M  = require \./model
 S  = require \./session
 
-exports.init = ->
+module.exports.init = ->
   # extend models with custom methods
 
   M.Edge .= extend do
@@ -51,6 +51,14 @@ exports.init = ->
 
   M.Map .= extend do
     get-is-editable: -> @isNew! or S.get-id! is (@get \meta .create_user_id)
+    initialize: ->
+      @on \sync, (map, res, opts) ->
+        return unless opts.parse and ents = res.entities
+        # merge newly read map entities into global entities
+        C.Edges.set (_.map ents.edges, -> new M.Edge it), remove:false
+        C.Evidences.set (_.map ents.evidences, -> new M.Evidence it), remove:false
+        C.Nodes.set (_.map ents.nodes, -> new M.Node it), remove:false
+        C.Notes.set (_.map ents.notes, -> new M.Note it), remove:false
 
   M.Node .= extend do
     get-yyyy: ->

@@ -16,7 +16,9 @@ Collection = B.Collection.extend do
   toJSON-T: (opts) ->
     @map (m) -> if m.toJSON-T then m.toJSON-T opts else m.toJSON opts
 
-exports.init = ->
+# this must run after model extensions have been applied
+# init() needed because model-ext requires this module so we can't simply require \./model-ext
+module.exports.init = ->
   edges =
     url  : Api.edges
     model: M.Edge
@@ -26,11 +28,11 @@ exports.init = ->
   maps =
     url       : Api.maps
     model     : M.Map
-    comparator: -> it.get \name .toLowerCase!
+    comparator: name-comparator
   nodes =
     url       : Api.nodes
     model     : M.Node
-    comparator: -> it.get \name .toLowerCase!
+    comparator: name-comparator
   notes =
     url  : Api.notes
     model: M.Note
@@ -42,7 +44,7 @@ exports.init = ->
     model     : M.User
     find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 
-  exports
+  module.exports
     ..Edges     = new (Collection.extend edges)!
     ..Evidences = new (Collection.extend evidences)!
     ..Maps      = new (Collection.extend maps)!
@@ -50,3 +52,7 @@ exports.init = ->
     ..Notes     = new (Collection.extend notes)!
     ..Sessions  = new (Collection.extend sessions)!
     ..Users     = new (Collection.extend users)!
+
+# helpers
+
+function name-comparator then it.get \name .toLowerCase!

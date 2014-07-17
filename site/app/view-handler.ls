@@ -1,5 +1,4 @@
 Bh  = require \backbone .history
-_   = require \underscore
 C   = require \./collection
 R   = require \./router
 S   = require \./session
@@ -7,6 +6,7 @@ V   = require \./view
 Ve  = require \./view-engine
 Vee = require \./view/edge-edit
 Vev = require \./view/evidence
+Vsi = require \./view/user-signin
 
 const KEYCODE-ESC = 27
 
@@ -39,9 +39,7 @@ module.exports =
         ..on \saved    , -> navigate "user/#{it.id}"
       ..user-signin
         ..on \cancelled, -> Bh.history.back!
-        ..on \saved    , -> navigate \session
-      ..user-signout
-        ..on \destroyed, -> navigate \session
+        ..on \saved    ,    Vsi.on-signin
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> navigate \session
