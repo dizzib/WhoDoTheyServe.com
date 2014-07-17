@@ -78,8 +78,10 @@ module.exports =
     initialize: ->
       @sel  = it.sel
       @opts = it.opts <<<
-        placeholder: (get-select-placeholder $ T-Sel).text!
-        onClick    : ~> @trigger \click, it
+        placeholder : (get-select-placeholder $ T-Sel).text!
+        onCheckAll  : ~> @trigger \checkAll  , it
+        onClick     : ~> @trigger \click     , it
+        onUncheckAll: ~> @trigger \uncheckAll, it
     render: (coll, fname, sel-ids = []) ->
       $t-sel = get-select $ T-Sel
       render-select $t-sel, coll, fname

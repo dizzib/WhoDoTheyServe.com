@@ -32,6 +32,9 @@ exports.init = ->
       ~function get-tip then
         how = "#{if how = @get \how then ' - ' + how else ''}"
         "Evidence#{how} #{get-period true}"
+    is-in-map: (node-ids) ->
+      (_.contains node-ids, @get \a_node_id) and (_.contains node-ids, @get \b_node_id)
+
   M.Evidence .= extend do
     toJSON-T: (opts) ->
       _.extend (@toJSON opts),

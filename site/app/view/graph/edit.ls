@@ -31,9 +31,8 @@ module.exports.init = ->
         node <<< { x:d3-node.x, y:d3-node.y } if d3-node?
         node
 
-  V.map-nodes-sel.on \click, ->
-    if it.checked then V.graph.add-node it.value else V.graph.remove-node it.value
-    V.graph.render is-slow-to-cool:true
+  V.map-nodes-sel.on 'checkAll click uncheckAll', ->
+    V.graph.refresh-entities(V.map-nodes-sel.get-selected-ids!).render is-slow-to-cool:true
 
   V.graph
     ..on \render  , disable-buttons

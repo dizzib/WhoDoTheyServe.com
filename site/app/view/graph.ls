@@ -17,17 +17,6 @@ const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 const SIZE = 1500
 
 module.exports = B.View.extend do
-  add-node: (id) ->
-    nodes = (@map.get \nodes) or []
-    ents  = (@map.get \entities) or { nodes:[] edges:[] evidences:[] }
-    nodes.push _id:id, x:SIZE/2, y:SIZE/2
-    nids = _.pluck nodes, \_id
-    ents.nodes.push C.Nodes.get(id).attributes
-    edges = C.Edges.filter -> (_.contains nids, it.get \a_node_id) and (_.contains nids, it.get \b_node_id)
-    ents.edges = _.pluck edges, \attributes
-    @map.set \nodes, nodes
-    @map.set \entities, ents
-
   get-nodes: ->
     _.map @f.nodes!, ->
       id: it._id
@@ -53,14 +42,14 @@ module.exports = B.View.extend do
           .attr \height, SIZE
         @trigger \rendered
 
-  remove-node: (id) ->
-    nodes = @map.get \nodes
-    ents  = @map.get \entities
-    nodes = _.reject nodes, -> it._id is id
-    ents.nodes = _.reject ents.nodes, -> it._id is id
-    ents.edges = _.reject ents.edges, -> (it.a_node_id is id) or (it.b_node_id is id)
-    @map.set \nodes, nodes
-    @map.set \entities, ents
+  refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
+    nodes = C.Nodes.filter -> _.contains node-ids, it.id
+    edges = C.Edges.filter -> it.is-in-map node-ids
+    @map.set \nodes, _.map node-ids, -> _id:it
+    @map.set \entities,
+      nodes: _.pluck nodes, \attributes
+      edges: _.pluck edges, \attributes
+    @
 
   render: (opts) ->
     @$el.empty!
