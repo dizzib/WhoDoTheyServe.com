@@ -15,8 +15,10 @@ schema-node = new M.Schema do
   y  : type:Number # optional since node may be filtered out of d3
 
 schema = new M.Schema do
-  name : type:String, required:yes, match:Cons.map.name.regex
-  nodes: [schema-node]
+  name    : type:String, required:yes, match:Cons.map.name.regex
+  nodes   : [schema-node]
+  'size-x': type:Number, required:yes
+  'size-y': type:Number, required:yes
 
 schema
   ..plugin P-Id

@@ -21,15 +21,14 @@ module.exports.init = ->
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->
-      # save all selected nodes -- some may have been filtered out of the d3 visualisation in
-      # which case they won't have (x, y)
-      node-ids = V.map-nodes-sel.get-selected-ids!
-      d3-nodes = V.graph.get-nodes!
-      it.set \nodes, _.map node-ids, (id) ->
-        d3-node = _.find d3-nodes, -> it.id is id
-        node = _id:id
-        node <<< { x:d3-node.x, y:d3-node.y } if d3-node?
-        node
+      # save all selected nodes -- some may have been filtered out of the map in
+      # which case they'll be saved without (x, y)
+      nodes = (vg = V.graph).get-nodes-xy!
+      sel-node-ids = V.map-nodes-sel.get-selected-ids!
+      map-node-ids = _.map nodes, -> it._id
+      for id in sel-node-ids then unless _.contains map-node-ids, id
+        nodes.push _id:id # node is selected but filtered out of map
+      it.set { nodes:nodes, 'size-x':vg.get-size-x!, 'size-y':vg.get-size-y! }
 
   V.map-nodes-sel.on 'checkAll click uncheckAll', ->
     # checkAll also fires if all nodes are already selected and the dropdown is opened

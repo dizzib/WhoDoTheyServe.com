@@ -39,11 +39,11 @@ module.exports =
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
         @trigger \rendered, model
     save: ->
-      unless @model then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
-      is-new = @model.isNew!
-      (m = @model).attributes = $ it.currentTarget .serializeObject!
+      unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
+      is-new = m.isNew!
+      m.attributes = $ it.currentTarget .serializeObject!
       @trigger \serialized, m
-      @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, @model, is-new }
+      @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, m, is-new }
       false
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING
 

@@ -8,20 +8,24 @@ N  = require \./graph/node
 O  = require \./graph/overlay
 Ob = require \./graph/overlay/bil
 Os = require \./graph/overlay/slit
+H  = require \../helper
 S  = require \../session
 V  = require \../view
 
-T = Fs.readFileSync __dirname + \/graph.html
+H.insert-css Fs.readFileSync __dirname + \/map.css
 
+const SIZE-NEW = 500px
 const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
-const SIZE = 1500
 
 module.exports = B.View.extend do
-  get-nodes: ->
+  get-nodes-xy: ->
     _.map @f.nodes!, ->
-      id: it._id
-      x : Math.round it.x
-      y : Math.round it.y
+      _id: it._id
+      x  : Math.round it.x
+      y  : Math.round it.y
+
+  get-size-x: -> @svg?attr \width
+  get-size-y: -> @svg?attr \height
 
   initialize: ->
     n-tick = 0
@@ -30,16 +34,10 @@ module.exports = B.View.extend do
         @trigger \render
         _.each OVERLAYS, -> it.render-clear!
       ..on \tick, ->
-        if n-tick++ > 4
-          N .on-tick!
-          E .on-tick!
-          Eg.on-tick!
-          n-tick := 0
+        if n-tick++ % 4 is 0 then on-tick!
       ..on \end, ~>
+        set-map-size this if @map.get-is-editable!
         _.each OVERLAYS, -> it.render!
-        @svg
-          .attr \width , SIZE
-          .attr \height, SIZE
         @trigger \rendered
 
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
@@ -55,7 +53,7 @@ module.exports = B.View.extend do
   render: (opts) ->
     return unless @el # might be undefined for seo
     @$el.empty!
-    # clone the entities so they're not modified, as they may be used elsewhere
+    # clone entities so the originals don't get filtered out, as they may be used elsewhere
     return unless entities = _.deepClone @map.get \entities
     return unless (nodes = entities.nodes)?length
 
@@ -66,6 +64,9 @@ module.exports = B.View.extend do
     is-editable = @map.get-is-editable!
     _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
 
+    size-x = @map.get \size-x or @get-size-x! or SIZE-NEW
+    size-y = @map.get \size-y or @get-size-y! or SIZE-NEW
+
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
         node = _.findWhere nodes, _id:n._id
@@ -74,16 +75,18 @@ module.exports = B.View.extend do
     @f.nodes nodes
      .links (edges or [])
      .charge -2000
-     .friction 0.95
+     .friction 0.85
      .linkDistance 100
      .linkStrength E.get-strength
-     .size [SIZE, SIZE]
+     .size [size-x, size-y]
      .start!
 
     is-slow-to-cool = @map.isNew! or opts?is-slow-to-cool
     @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
 
     @svg = d3.select @el .append \svg:svg
+    set-canvas-size @svg, size-x, size-y
+
     # order matters: svg uses painter's algo
     E .init @svg, @f
     N .init @svg, @f
@@ -104,3 +107,33 @@ module.exports = B.View.extend do
       @scroll.y = $window.scrollTop!
     @$el.show!
     _.defer ~> $window .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
+
+# helpers
+
+function on-tick
+  N .on-tick!
+  E .on-tick!
+  Eg.on-tick!
+
+function set-canvas-size svg, w, h
+  svg.attr \width, w .attr \height, h
+    .style \min-width, w # required to get horizontal scrollbar with flex
+
+function set-map-size v
+  const PADDING = 200px
+
+  nodes = v.get-nodes-xy!
+  xs = _.map nodes, -> it.x
+  ys = _.map nodes, -> it.y
+  w  = (_.max xs) - (xmin = _.min xs) + 2 * PADDING
+  h  = (_.max ys) - (ymin = _.min ys) + 2 * PADDING
+  dx = -xmin + PADDING
+  dy = -ymin + PADDING
+
+  v.svg.selectAll \g.node .each -> # apply (dx, dy) adjustment
+    it.x += dx
+    it.y += dy
+
+  set-canvas-size v.svg, w, h
+  v.f.size [w, h]
+  on-tick! # render adjustments

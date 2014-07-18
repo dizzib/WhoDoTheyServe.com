@@ -15,10 +15,12 @@ C   = require \./collection
 H   = require \./helper
 M   = require \./model
 Mx  = require \./model-ext
+S   = require \./session
 V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
 Vf  = require \./view/footer
+Vsi = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -30,17 +32,29 @@ B.Model.prototype.idAttribute = \_id # mongodb
 Api.init!
 Mx .init!
 C  .init!
-Val.init!
-Vh .init!
-Vf .init!
 
-$.when(C.Maps.fetch!, C.Sessions.fetch!, C.Users.fetch!, M.Hive.Graph.fetch!).then start, fail
-M.Sys.fetch error:fail, success: -> V.version.render!
+C.Sessions.fetch error:fail, success:init
 
-function fail coll, xhr
-  info   = "The app failed to start.\n\n#{xhr.responseText}"
+# helpers
+
+function alert type, xhr
+  info   = "Unable to load #type entities.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#info\n\n#prompt" then window.location.reload!
+
+function init
+  fetch-entities-core (-> Vsi.fetch-entities start, fail-si) if S.is-signed-in!
+  fetch-entities-core start unless S.is-signed-in!
+  Val.init!
+  Vh .init!
+  Vf .init!
+  M.Sys.fetch error:fail, success: -> V.version.render!
+
+function fail-si coll, xhr then alert \signed-in, xhr
+function fail    coll, xhr then alert \core, xhr
+
+function fetch-entities-core cb
+  $.when(C.Maps.fetch!, C.Users.fetch!, M.Hive.Graph.fetch!).then cb, fail
 
 function start
   B.history.start!
