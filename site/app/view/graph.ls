@@ -29,22 +29,30 @@ module.exports = B.View.extend do
 
   initialize: ->
     n-tick = 0
+    is-resized = false
     @f = d3.layout.force!
       ..on \start, ~>
-        @trigger \render
-        _.each OVERLAYS, -> it.render-clear!
-      ..on \tick, ->
-        if n-tick++ % 4 is 0 then on-tick!
-      ..on \end, ~>
-        set-map-size this if @map.get-is-editable!
-        _.each OVERLAYS, -> it.render!
-        @trigger \rendered
+        render-start @
+        is-resized := false
+      ..on \tick , ~>
+        return unless n-tick++ % 4 is 0
+        on-tick!
+        if @map.get-is-editable! and not is-resized and @f.alpha! < 0.03
+          set-map-size @
+          is-resized := true # resize only once during cool-down
+      ..on \end  , ~> render-stop @
 
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
-    return unless node-ids.length isnt @map.get \nodes ?length
+    return unless node-ids.length isnt (nodes = @map.get \nodes)?length
+    # node coords
+    @map.set \nodes, _.map node-ids, (nid) ->
+      node = _.find nodes, -> it._id is nid
+      _id: nid
+      x  : node?x or SIZE-NEW/2
+      y  : node?y or SIZE-NEW/2
+    # entities
     nodes = C.Nodes.filter -> _.contains node-ids, it.id
     edges = C.Edges.filter -> it.is-in-map node-ids
-    @map.set \nodes, _.map node-ids, -> _id:it
     @map.set \entities,
       nodes: _.pluck nodes, \attributes
       edges: _.pluck edges, \attributes
@@ -81,9 +89,6 @@ module.exports = B.View.extend do
      .size [size-x, size-y]
      .start!
 
-    is-slow-to-cool = @map.isNew! or opts?is-slow-to-cool
-    @f.alpha 0.01 unless is-slow-to-cool # must invoke after start
-
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
 
@@ -96,6 +101,11 @@ module.exports = B.View.extend do
 
     @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
+
+    unless @map.isNew! or opts?is-slow-to-cool
+      @f.alpha 0 # must be called after start
+      on-tick!   # single tick required to render frozen map
+
     V.graph-toolbar.render! # toolbar renders here to reset the checkboxes
 
   show: ->
@@ -115,6 +125,14 @@ function on-tick
   E .on-tick!
   Eg.on-tick!
 
+function render-start v
+  v.trigger \render
+  _.each OVERLAYS, -> it.render-clear!
+
+function render-stop v
+  _.each OVERLAYS, -> it.render!
+  v.trigger \rendered
+
 function set-canvas-size svg, w, h
   svg.attr \width, w .attr \height, h
     .style \min-width, w # required to get horizontal scrollbar with flex
@@ -127,13 +145,6 @@ function set-map-size v
   ys = _.map nodes, -> it.y
   w  = (_.max xs) - (xmin = _.min xs) + 2 * PADDING
   h  = (_.max ys) - (ymin = _.min ys) + 2 * PADDING
-  dx = -xmin + PADDING
-  dy = -ymin + PADDING
-
-  v.svg.selectAll \g.node .each -> # apply (dx, dy) adjustment
-    it.x += dx
-    it.y += dy
 
   set-canvas-size v.svg, w, h
   v.f.size [w, h]
-  on-tick! # render adjustments

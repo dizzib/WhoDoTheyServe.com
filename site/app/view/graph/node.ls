@@ -44,7 +44,7 @@ module.exports = me =
             .attr \y     , y = -size.1 - 12
             .attr \width , size.0
             .attr \height, size.1
-          if size.2 then
+          if size.2
             g.append \svg:rect
               .attr \x     , x - 1
               .attr \y     , y - 1
