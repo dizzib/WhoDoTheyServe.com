@@ -39,6 +39,7 @@ module.exports =
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
         @trigger \rendered, model
     save: ->
+      it.preventDefault!
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = m.isNew!
       m.attributes = $ it.currentTarget .serializeObject!

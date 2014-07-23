@@ -1,8 +1,9 @@
-F = require \fs
-C = require \../../collection
-H = require \../../helper
-R = require \../../router
-V = require \../../view
+F  = require \fs
+C  = require \../../collection
+H  = require \../../helper
+M  = require \../../model
+R  = require \../../router
+V  = require \../../view
 
 H.insert-css F.readFileSync __dirname + \/edit.css
 
@@ -15,12 +16,14 @@ module.exports.init = ->
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
       V.map-nodes-sel.render C.Nodes, \name, _.pluck (it.get \nodes), \_id
+      load-is-default it.id
 
     ..on \saved, (map, is-new) ->
       V.navbar.render!
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->
+      save-is-default it.id
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
       nodes = (vg = V.graph).get-nodes-xy!
@@ -42,8 +45,31 @@ module.exports.init = ->
 
 # helpers
 
-function navigate then R.navigate it, trigger:true
+function disable-buttons
+  V.map-edit.$el.find \.btn .prop \disabled, true .addClass \disabled
 
-function disable-buttons then V.map-edit.$el.find \.btn .prop \disabled, true .addClass \disabled
+function enable-buttons
+  V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
 
-function enable-buttons then V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
+function get-hive-graph-value
+  JSON.parse M.Hive.Graph.get \value
+
+function load-is-default id
+  v = get-hive-graph-value! .default?id
+  log v
+  V.map-edit.$el.find \#is-default .prop \checked, v is id
+
+function navigate
+  R.navigate it, trigger:true
+
+function save-is-default id
+  $is-default = V.map-edit.$el.find \#is-default
+  set-default-map if $is-default.prop \checked then id else void
+
+function set-default-map id
+  v = get-hive-graph-value!
+  v.default = id:id
+  M.Hive.Graph
+    ..set \value, JSON.stringify v
+    ..save { error:H.on-err, success: -> log 'saved default map-id' }
+
