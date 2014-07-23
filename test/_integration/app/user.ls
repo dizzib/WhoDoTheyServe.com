@@ -34,4 +34,4 @@ function fill fields then B.fill do
   'Confirm Password': fields.password
   Email             : fields.email
   Homepage          : fields.info
-  'Daily Quota'     : fields.quota_daily
+  'Daily Quota'     : { value:fields.quota_daily, opts:{ include-hidden:true } }

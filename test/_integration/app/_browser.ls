@@ -23,7 +23,8 @@ module.exports = B =
       w4mc \executeScript, (-> window.confirm = -> ok), [ ok ]
 
   assert:
-    ok: (is-ok = true) -> B.assert.displayed !is-ok, class:\alert-error
+    ok: (is-ok = true) ->
+      B.assert.displayed !is-ok, { class:\alert-error, include-hidden:true }
 
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
@@ -57,8 +58,11 @@ module.exports = B =
   fill: (sel, val) ->
     function fill-field label-text, val
       return unless val?
-      B.wait-for label-text, \label
-      w4mc \executeScript, (-> window.fill it), [ val ]
+      # val is either a string or {value, opts}
+      v = if _.has val, \value then val.value else val
+      return unless v?
+      B.wait-for label-text, \label, val.opts
+      w4mc \executeScript, (-> window.fill it), [ v ]
 
     if val? then fill-field ...
     else for [k, v] in _.pairs sel then fill-field k, v
@@ -96,7 +100,7 @@ module.exports = B =
       .form \text-rx, \?filter, \?opts
       .form \opts
   , (args) ->
-    opts = expect-unique:true scope:\document timeout:WAIT-TIMEOUT
+    opts = expect-unique:true include-hidden:false scope:\document timeout:WAIT-TIMEOUT
     opts <<< args.opts
 
     filter = switch
@@ -105,7 +109,7 @@ module.exports = B =
     | _           => opts.sel || args.filter
 
     sel = args.text || args.'text-rx'?toString!slice(1, -1) || void
-    remote-args = [ sel, filter, opts.scope ]
+    remote-args = [ sel, filter, opts.scope, opts.include-hidden ]
 
     remote-fn = switch
     | args.text?      => -> window.fetch-by-text ...
@@ -157,7 +161,7 @@ function init-sandbox
       # change the window.location)
       setTimeout verify, 10ms
 
-    window.fetch = (cond-fn = (-> true), filter, scope) ->
+    window.fetch = (cond-fn = (-> true), filter, scope, include-hidden) ->
       n = 0
       scope-el = switch scope
       | \document  => window.document
@@ -165,18 +169,18 @@ function init-sandbox
       | \el.parent => window.el.parentNode
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
-        if cond-fn el.textContent
+        if cond-fn el.textContent and ((not include-hidden and el.offsetParent) or include-hidden)
           #log 'match:', el.outerHTML
           window.el = el
           n++
       n
 
-    window.fetch-by-text = (text, filter, scope) ->
-      window.fetch (-> it.trim() is text), filter, scope
+    window.fetch-by-text = (text, filter, scope, include-hidden) ->
+      window.fetch (-> it.trim() is text), filter, scope, include-hidden
 
-    window.fetch-by-regex = (text-rx, filter, scope) ->
+    window.fetch-by-regex = (text-rx, filter, scope, include-hidden) ->
       rx = new RegExp text-rx
-      window.fetch (-> rx.test it), filter, scope
+      window.fetch (-> rx.test it), filter, scope, include-hidden
 
     window.fill = ->
       id = window.el.getAttribute \for

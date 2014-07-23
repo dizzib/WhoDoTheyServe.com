@@ -15,7 +15,7 @@ Router = B.Router.extend do
     B.trigger \route-before
     V.reset!
   routes:
-    ''                 : \doc_about
+    ''                 : \map_default
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
     \edge/new          : \edge_edit
@@ -53,6 +53,7 @@ Router = B.Router.extend do
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   map         : Vc.map
+  map_default : -> Vc.map (JSON.parse M.Hive.Graph.get \value).default?id
   node        : -> Hi.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes       : Vc.nodes
