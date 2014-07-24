@@ -17,6 +17,7 @@ module.exports.init = ->
       disable-buttons! # enabled when d3 has cooled
       V.map-nodes-sel.render C.Nodes, \name, _.pluck (it.get \nodes), \_id
       load-is-default it.id
+      @$el.find \legend .on \click, ~> @$el.find \.body .toggle!
 
     ..on \saved, (map, is-new) ->
       V.navbar.render!

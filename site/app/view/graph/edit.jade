@@ -4,11 +4,12 @@ form.map.signed-in.form-horizontal.well
   legend
     span.create Create Map
     span.update Edit Map
-  fieldset
-    span.input-xlarge
-      +field-text('name', 'Name')
-    +field-select('nodes', 'Actors')
-    span.signed-in-admin
-      +field-checkbox('is-default', 'Default')
-  hr
-  +button-bar
+  .body
+    fieldset
+      span.input-xlarge
+        +field-text('name', 'Name')
+      +field-select('nodes', 'Actors')
+      span.signed-in-admin
+        +field-checkbox('is-default', 'Default')
+    hr
+    +button-bar
