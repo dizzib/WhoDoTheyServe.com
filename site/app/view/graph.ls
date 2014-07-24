@@ -43,13 +43,14 @@ module.exports = B.View.extend do
       ..on \end  , ~> render-stop @
 
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
-    return unless node-ids.length isnt (nodes = @map.get \nodes)?length
+    return unless node-ids.length isnt (@map.get \nodes)?length
     # node coords
-    @map.set \nodes, _.map node-ids, (nid) ->
+    nodes = @f.nodes!
+    @map.set \nodes, _.map node-ids, (nid) ~>
       node = _.find nodes, -> it._id is nid
       _id: nid
-      x  : node?x or SIZE-NEW/2
-      y  : node?y or SIZE-NEW/2
+      x  : node?x or @get-size-x!/2 # add new node to center
+      y  : node?y or @get-size-y!/2
     # entities
     nodes = C.Nodes.filter -> _.contains node-ids, it.id
     edges = C.Edges.filter -> it.is-in-map node-ids
