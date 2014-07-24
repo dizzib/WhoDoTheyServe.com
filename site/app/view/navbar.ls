@@ -31,8 +31,8 @@ module.exports = B.View.extend do
 
   set-active-tab: ($t) ->
     $t.find \>li .each ->
-      regex = new RegExp ($this = $ this).attr(\active), \i
-      $this.toggleClass \active, regex.test (clean-hash location.hash)
+      return unless (s = ($this = $ this).attr \active)?
+      $this.toggleClass \active, (new RegExp s, \i).test (clean-hash location.hash)
 
     function clean-hash hash then
       hash

@@ -8,7 +8,7 @@ ul.nav.nav-tabs
   li(active='^edge')
     a(href='#/edges')
       i.fa.fa-chain Connections
-  li(active='^$|^maps').seo-remove.dropdown
+  li.seo-remove.dropdown
     a(href='#', data-toggle='dropdown').dropdown-toggle
       i.fa.fa-list Maps
       b.caret
@@ -22,7 +22,7 @@ ul.nav.nav-tabs
         a(href='#/map/new')
           i.fa.fa-plus Create new
           i.edit-indicator
-  li(active='^map').map
+  li(active='^$|^map').map
     a.link
       i.fa.fa-share-alt
       span.name
