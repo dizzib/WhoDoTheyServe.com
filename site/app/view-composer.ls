@@ -20,12 +20,12 @@ module.exports =
     return show! if not is-sel-changed
     (m = V.graph.map = M.Map.create it).fetch error:H.on-err, success:show
     function show
-      V.graph.show!
-      V.graph-toolbar.show!
       if is-sel-changed
         V.graph.render!
         V.graph-toolbar.render!
         V.navbar.render!
+      V.graph.show!
+      V.graph-toolbar.show!
       if m.get-is-editable!
         return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
         V.map-edit.$el.show!

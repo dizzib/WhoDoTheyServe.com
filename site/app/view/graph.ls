@@ -92,6 +92,7 @@ module.exports = B.View.extend do
 
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
+    justify @
 
     # order matters: svg uses painter's algo
     E .init @svg, @f
@@ -117,6 +118,7 @@ module.exports = B.View.extend do
       @scroll.x = $window.scrollLeft!
       @scroll.y = $window.scrollTop!
     @$el.show!
+    justify @
     _.defer ~> $window .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
 
 # helpers
@@ -125,6 +127,17 @@ function on-tick
   N .on-tick!
   E .on-tick!
   Eg.on-tick!
+
+function justify v
+  w = v.svg.attr \width
+  # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
+  if w < gw = (g = $ \.graph).width!
+    g.css \display, \flex
+    g.css \align-items, \center # vert
+    g.css \justify-content, \center # horiz
+  else
+    g.css \display, \block
+    g.css \justify-content, \flex-start
 
 function render-start v
   v.trigger \render
@@ -136,7 +149,6 @@ function render-stop v
 
 function set-canvas-size svg, w, h
   svg.attr \width, w .attr \height, h
-    .style \min-width, w # required to get horizontal scrollbar with flex
 
 function set-map-size v
   const PADDING = 200px
@@ -148,4 +160,5 @@ function set-map-size v
   h  = (_.max ys) - (ymin = _.min ys) + 2 * PADDING
 
   set-canvas-size v.svg, w, h
+  justify v
   v.f.size [w, h]
