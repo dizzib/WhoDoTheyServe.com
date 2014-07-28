@@ -3,7 +3,7 @@ C   = require \../collection
 M   = require \../model
 R   = require \../router
 V   = require \../view
-Vme = require \./graph/edit
+Vme = require \./map/edit
 
 module.exports = me =
   fetch-entities: (ok, fail) ->
