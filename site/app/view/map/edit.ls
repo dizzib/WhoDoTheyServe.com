@@ -27,7 +27,7 @@ module.exports.init = ->
       save-is-default it.id
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
-      nodes = (vg = V.graph).get-nodes-xy!
+      nodes = (vg = V.map).get-nodes-xy!
       sel-node-ids = V.map-nodes-sel.get-selected-ids!
       map-node-ids = _.map nodes, -> it._id
       for id in sel-node-ids then unless _.contains map-node-ids, id
@@ -37,10 +37,10 @@ module.exports.init = ->
   V.map-nodes-sel.on 'checkAll click uncheckAll', ->
     # checkAll also fires if all nodes are already selected and the dropdown is opened
     # even if the selection is unchanged, in which case bail
-    return unless V.graph.refresh-entities V.map-nodes-sel.get-selected-ids!
-    V.graph.render is-slow-to-cool:true
+    return unless V.map.refresh-entities V.map-nodes-sel.get-selected-ids!
+    V.map.render is-slow-to-cool:true
 
-  V.graph
+  V.map
     ..on \render  , disable-buttons
     ..on \rendered, enable-buttons
 
@@ -52,11 +52,11 @@ function disable-buttons
 function enable-buttons
   V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
 
-function get-hive-graph-value
+function get-hive-map-value
   JSON.parse M.Hive.Map.get \value
 
 function load-is-default id
-  v = get-hive-graph-value! .default?id
+  v = get-hive-map-value! .default?id
   V.map-edit.$el.find \#is-default .prop \checked, v is id
 
 function navigate
@@ -67,9 +67,8 @@ function save-is-default id
   set-default-map if $is-default.prop \checked then id else void
 
 function set-default-map id
-  v = get-hive-graph-value!
+  v = get-hive-map-value!
   v.default = id:id
   M.Hive.Map
     ..set \value, JSON.stringify v
     ..save { error:H.on-err, success: -> log 'saved default map-id' }
-

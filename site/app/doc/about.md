@@ -80,7 +80,6 @@ Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
 [db-dump]:    https://github.com/dizzib/prod-db-dump 
 [github]:     https://github.com
-[graph]:      #/graph
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
 [json]:       http://en.wikipedia.org/wiki/Json
 [mongolab]:   http://mongolab.com

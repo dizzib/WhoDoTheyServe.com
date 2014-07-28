@@ -13,5 +13,5 @@ module.exports = B.View.extend do
     m.destroy error:H.on-err, success:signout
 
     function signout
-      delete V.graph.map # remove editing map
+      delete V.map.map # remove editing map
       R.navigate \session, trigger:true

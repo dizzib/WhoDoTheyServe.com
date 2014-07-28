@@ -95,9 +95,9 @@ module.exports =
       text: -> @name or @get \name or 'New map'
   maps:
     map:
-      class: -> \active if @_id is V.graph.map?id
+      class: -> \active if @_id is V.map.map?id
     'edit-indicator':
-      class: -> "fa fa-chevron-left" if @_id is V.graph.map?id
+      class: -> "fa fa-chevron-left" if @_id is V.map.map?id
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name

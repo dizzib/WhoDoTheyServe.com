@@ -108,7 +108,7 @@ module.exports = B.View.extend do
       @f.alpha 0 # must be called after start
       on-tick!   # single tick required to render frozen map
 
-    V.graph-toolbar.render! # toolbar renders here to reset the checkboxes
+    V.map-toolbar.render! # toolbar renders here to reset the checkboxes
 
   show: ->
     return unless @el # might be undefined for seo

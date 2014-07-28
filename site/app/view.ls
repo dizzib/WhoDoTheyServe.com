@@ -1,9 +1,9 @@
 F           = require \fs # browserified
 H           = require \./helper
 V           = require \./view-engine
-V-Graph     = require \./view/graph
-V-GraphTBar = require \./view/map/toolbar
 V-Home      = require \./view/home
+V-Map       = require \./view/map
+V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
 V-Session   = require \./view/session
 V-SignOut   = require \./view/user-signout
@@ -53,11 +53,11 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..evidences-head  = new V.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
   ..evidences-void  = new V.DocuView document:T-EvidencesVoid, el:\.view>.evidences
   ..footer          = new V.DocuView document:T-Footer       , el:\.footer
-  ..graph           = new V-Graph                              el:\.view>.graph
-  ..graph-toolbar   = new V-GraphTBar                          el:\.view>.graph-toolbar
   ..home            = new V-Home                               el:\.view>.main
+  ..map             = new V-Map                                el:\.view>.graph
   ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
   ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
+  ..map-toolbar     = new V-MapTBar                            el:\.view>.graph-toolbar
   ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
   ..navbar          = new V-NavBar                             el:\.navigator
   ..node            = new V.InfoView template:T-Node         , el:\.view>.main
@@ -94,6 +94,6 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..reset = ->
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
     $ '.view>*' .off!hide! # call off() so different views can use same element
-    $ '.view>:not(.persist)' .empty! # leave persistent views e.g. graph
+    $ '.view>:not(.persist)' .empty! # leave persistent views e.g. map
     me.navbar.render!
     V.ResetEditView!

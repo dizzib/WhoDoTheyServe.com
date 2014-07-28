@@ -11,7 +11,7 @@ class Overlay
   init: (svg, @f) ~>
     @g-root = svg.append \svg:g .attr \class, @tag
     append-badges!
-    V.graph-toolbar.on "toggle-#{@tag}", ~>
+    V.map-toolbar.on "toggle-#{@tag}", ~>
       @g-root.attr \display, if it then '' else \none
 
     ~function append-badges then

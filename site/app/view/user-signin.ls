@@ -23,7 +23,7 @@ module.exports = me =
     me.fetch-entities ok, fail
 
     function ok
-      delete V.graph.map # remove readonly map
+      delete V.map.map # remove readonly map
       R.navigate \session, trigger:true
 
     function fail coll, xhr

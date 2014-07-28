@@ -20,13 +20,13 @@ module.exports = B.View.extend do
 
     function render-map
       $el = $t.find \>li.map
-      if (m = V.graph.map)? then $el.render m, D.map else $el.remove!
+      if (m = V.map.map)? then $el.render m, D.map else $el.remove!
 
     function render-maps-dropdown
       $maps = $t.find \ul.maps
       if C.Maps.length then ($maps.render C.Maps.toJSON-T!, D.maps) else $maps.empty!
       $new = $t.find \li.map-new
-      $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left' if V.graph.map?isNew!
+      $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left' if V.map.map?isNew!
       $maps.append $new
 
   set-active-tab: ($t) ->

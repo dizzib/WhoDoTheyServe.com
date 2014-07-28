@@ -13,7 +13,7 @@ module.exports =
     add-handler @gs, \toggle-bil-steer
 
     function add-handler g, event then
-      V.graph-toolbar.on event, -> g.attr \display, if it then '' else \none
+      V.map-toolbar.on event, -> g.attr \display, if it then '' else \none
 
   filter-edges: ->
     E.filter it

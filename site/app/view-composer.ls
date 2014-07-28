@@ -16,16 +16,16 @@ module.exports =
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
   map: ->
-    is-sel-changed = (not (m = V.graph.map)? and not it?) or it isnt m?id
+    is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show! if not is-sel-changed
-    (m = V.graph.map = M.Map.create it).fetch error:H.on-err, success:show
+    (m = V.map.map = M.Map.create it).fetch error:H.on-err, success:show
     function show
       if is-sel-changed
-        V.graph.render!
-        V.graph-toolbar.render!
+        V.map.render!
+        V.map-toolbar.render!
         V.navbar.render!
-      V.graph.show!
-      V.graph-toolbar.show!
+      V.map.show!
+      V.map-toolbar.show!
       if m.get-is-editable!
         return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
         V.map-edit.$el.show!
