@@ -32,6 +32,7 @@ dev:
 
 staging:
   primary:
+    NODE_ARGS                       : '--debug=5003'
     NODE_ENV                        : \staging
     PORT                            : 4003
     WDTS_DB_URI                     : \mongodb://localhost/wdts_staging

@@ -131,7 +131,7 @@ function on-tick
 function justify v
   w = v.svg.attr \width
   # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
-  if w < gw = (g = $ '.view .map').width!
+  if w < gw = (g = $ '.view>.map').width!
     g.css \display, \flex
     g.css \align-items, \center # vert
     g.css \justify-content, \center # horiz
