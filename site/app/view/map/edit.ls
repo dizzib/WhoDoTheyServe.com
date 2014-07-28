@@ -24,7 +24,7 @@ module.exports.init = ->
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->
-      save-is-default it.id
+      save-is-default it.id if V.map-edit.$el.find \#is-default .prop \checked
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
       nodes = (vg = V.map).get-nodes-xy!
@@ -63,10 +63,6 @@ function navigate
   R.navigate it, trigger:true
 
 function save-is-default id
-  $is-default = V.map-edit.$el.find \#is-default
-  set-default-map if $is-default.prop \checked then id else void
-
-function set-default-map id
   v = get-hive-map-value!
   v.default = id:id
   M.Hive.Map
