@@ -53,11 +53,10 @@ function enable-buttons
   V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
 
 function get-hive-graph-value
-  JSON.parse M.Hive.Graph.get \value
+  JSON.parse M.Hive.Map.get \value
 
 function load-is-default id
   v = get-hive-graph-value! .default?id
-  log v
   V.map-edit.$el.find \#is-default .prop \checked, v is id
 
 function navigate
@@ -70,7 +69,7 @@ function save-is-default id
 function set-default-map id
   v = get-hive-graph-value!
   v.default = id:id
-  M.Hive.Graph
+  M.Hive.Map
     ..set \value, JSON.stringify v
     ..save { error:H.on-err, success: -> log 'saved default map-id' }
 

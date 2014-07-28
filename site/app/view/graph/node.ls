@@ -25,7 +25,7 @@ module.exports = me =
         .attr \text-anchor, \middle
         .text -> it.name
 
-    if icons = (JSON.parse M.Hive.Graph.get \value).icons
+    if icons = (JSON.parse M.Hive.Map.get \value).icons
       for icon in icons
         g = svg.select "g.id_#{icon.id}"
         if icon.glyph

@@ -53,7 +53,7 @@ Router = B.Router.extend do
   graph       : -> V.graph.render!
   home        : -> V.home.render!
   map         : Vc.map
-  map_default : -> Vc.map (JSON.parse M.Hive.Graph.get \value).default?id
+  map_default : -> Vc.map (JSON.parse M.Hive.Map.get \value).default?id
   node        : -> Hi.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes       : Vc.nodes

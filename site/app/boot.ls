@@ -54,7 +54,7 @@ function fail-si coll, xhr then alert \signed-in, xhr
 function fail    coll, xhr then alert \core, xhr
 
 function fetch-entities-core cb
-  $.when(C.Maps.fetch!, C.Users.fetch!, M.Hive.Graph.fetch!).then cb, fail
+  $.when(C.Maps.fetch!, C.Users.fetch!, M.Hive.Map.fetch!).then cb, fail
 
 function start
   B.history.start!
