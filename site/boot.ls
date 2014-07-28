@@ -5,7 +5,7 @@ Server    = require \./server
 DB        = require \./api/db
 Hive      = require \./api/hive
 ApiRouter = require \./api/router
-DH-Graph  = require \./deploy/hive/graph
+DH-Graph  = require \./deploy/hive/map
 
 DB.connect!
 Hive.init DH-Graph.set-icons
