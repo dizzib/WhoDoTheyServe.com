@@ -37,8 +37,8 @@ resources # order is important for dependencies
 yepnope.errorTimeout = 2500ms
 yepnope resources
 
-function get-resource name then
-  test    : window.is-load-from-cdn and LIBS[name].cdn # set by /task/stage.ls
+function get-resource name
+  test    : window.is-load-from-cdn and LIBS[name].cdn # set by /task/staging.ls
   yep     : LIBS[name].cdn
   nope    : get-url-local name
   complete: ->

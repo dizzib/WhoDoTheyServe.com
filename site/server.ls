@@ -34,7 +34,7 @@ module.exports = server
   ..use server.router
   ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
   ..use Express.static DIR-APP, static-opts
-  ..use log-error show-stack:env in <[ development ]>
+  ..use log-error show-stack:env in <[ development staging production ]>
   ..use handle-error
   ..use Express.errorHandler! if env in <[ development ]>
 

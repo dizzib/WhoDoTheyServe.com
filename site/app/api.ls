@@ -1,9 +1,9 @@
 B = require \backbone
 
-const API-URL = \http://wdts10.eu01.aws.af.cm/api
+const PROD-URL = \http://wdts10.eu01.aws.af.cm/api
 
 module.exports =
-  init     : init-for-cross-domain
+  init     : -> init-for-cross-domain! if check-is-prod!
   # endpoints
   edges    : get-url \edges
   evidences: get-url \evidences
@@ -15,13 +15,14 @@ module.exports =
   sys      : get-url \sys
   users    : get-url \users
 
-function get-url endpoint then
+function check-is-prod
   loc = window.location
-  is-prod  = /\.(com|net)$/.test loc.hostname or /prod/.test loc.search
-  url-root = if is-prod then API-URL else \/api
-  "#{url-root}/#{endpoint}"
+  /whodotheyserve\.com$/.test loc.hostname or /prod/.test loc.search
+
+function get-url endpoint
+  "#{if check-is-prod! then PROD-URL else \/api}/#{endpoint}"
 
 # http://backbonetutorials.com/cross-domain-sessions/
-function init-for-cross-domain then
+function init-for-cross-domain
   $.ajaxPrefilter (opts) ->
     opts.xhrFields = withCredentials:true
