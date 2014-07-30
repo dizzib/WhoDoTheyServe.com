@@ -25,7 +25,6 @@ Vsi = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
-H.insert-css F.readFileSync __dirname + \/lib-3p/multiple-select.css
 H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 B.Model.prototype.idAttribute = \_id # mongodb

@@ -16,6 +16,7 @@ module.exports = me =
     ).then init, fail
 
     function init
+      yepnope.injectCss \/lib-3p/multiple-select.css
       Vme.init!
       ok!
 
