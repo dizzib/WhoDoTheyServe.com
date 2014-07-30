@@ -7,7 +7,7 @@ H.insert-css F.readFileSync __dirname + \/footer.css
 exports.init = ->
   V.footer.render!
   attach \twitter-wjs, '//platform.twitter.com/widgets.js'
-  attach \facebook-jssdk, '//connect.facebook.net/en_GB/all.js#xfbml=1'
+  attach \facebook-jssdk, '//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=1655165271375218&version=v2.0'
 
 function attach id, url then
   fjs = (d = document).getElementsByTagName(\script)[0]
