@@ -16,7 +16,9 @@ module.exports = me =
     ).then init, fail
 
     function init
+      # multi-select can't be browserified 'cos it references an adjacent png
       yepnope.injectCss \/lib-3p/multiple-select.css
+
       Vme.init!
       ok!
 
