@@ -2,6 +2,7 @@ B  = require \backbone
 _  = require \underscore
 H  = require \./helper
 Hi = require \./history
+Hv = require \./hive
 C  = require \./collection
 F  = require \./fireprox
 M  = require \./model
@@ -51,7 +52,7 @@ Router = B.Router.extend do
   fireprox    : F.setup-url
   home        : -> V.home.render!
   map         : Vc.map
-  map_default : -> Vc.map (JSON.parse M.Hive.Map.get \value).default?id
+  map_default : -> Vc.map (JSON.parse Hv.Map.get \value).default?id
   node        : -> Hi.set-node-id Vc.node ...
   node_edit   : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes       : Vc.nodes

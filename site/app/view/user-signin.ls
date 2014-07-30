@@ -1,6 +1,6 @@
 Bh  = require \backbone .history
 C   = require \../collection
-M   = require \../model
+Hi  = require \../hive
 R   = require \../router
 V   = require \../view
 Vme = require \./map/edit
@@ -12,7 +12,7 @@ module.exports = me =
       C.Edges.fetch!
       C.Nodes.fetch!
       C.Notes.fetch!
-      M.Hive.Evidences.fetch! # dead evidences
+      Hi.Evidences.fetch! # dead evidences
     ).then init, fail
 
     function init

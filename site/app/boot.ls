@@ -13,6 +13,7 @@ F   = require \fs # inlined by brfs
 Api = require \./api
 C   = require \./collection
 H   = require \./helper
+Hi  = require \./hive
 M   = require \./model
 Mx  = require \./model-ext
 S   = require \./session
@@ -54,7 +55,7 @@ function fail-si coll, xhr then alert \signed-in, xhr
 function fail    coll, xhr then alert \core, xhr
 
 function fetch-entities-core cb
-  $.when(C.Maps.fetch!, C.Users.fetch!, M.Hive.Map.fetch!).then cb, fail
+  $.when(C.Maps.fetch!, C.Users.fetch!, Hi.Map.fetch!).then cb, fail
 
 function start
   B.history.start!

@@ -1,7 +1,7 @@
 F  = require \fs
 C  = require \../../collection
 H  = require \../../helper
-M  = require \../../model
+Hi = require \../../hive
 R  = require \../../router
 V  = require \../../view
 
@@ -53,19 +53,13 @@ function disable-buttons
 function enable-buttons
   V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
 
-function get-hive-map-value
-  JSON.parse M.Hive.Map.get \value
-
 function load-is-default id
-  v = get-hive-map-value! .default?id
-  V.map-edit.$el.find \#is-default .prop \checked, v is id
+  V.map-edit.$el.find \#is-default .prop \checked, id is (Hi.Map.get-prop \default)?id
 
 function navigate
   R.navigate it, trigger:true
 
 function save-is-default id
-  v = get-hive-map-value!
-  v.default = id:id
-  M.Hive.Map
-    ..set \value, JSON.stringify v
+  Hi.Map
+    ..set-prop \default, id:id
     ..save { error:H.on-err, success: -> log 'saved default map-id' }

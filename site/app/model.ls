@@ -7,6 +7,14 @@ B.Validation.configure labelFormatter:\label
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
 
+Model-hive = Model.extend do
+  get-prop: (name) ->
+    if json = @get \value then (JSON.parse json)[name] else void
+  set-prop: (name, value) ->
+    o = if json = @get \value then (JSON.parse json) else {}
+    if value? then o[name] = value else delete o[name]
+    @set \value, JSON.stringify o
+
 module.exports =
   Evidence: Model.extend do
     urlRoot   : Api.evidences
@@ -30,8 +38,8 @@ module.exports =
       'year_from': range:[Cons.edge.year.min, Cons.edge.year.max] required:no
       'year_to'  : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
   Hive:
-    Evidences: new (Model.extend urlRoot:"#{Api.hive}/evidences")!
-    Map      : new (Model.extend urlRoot:"#{Api.hive}/map")!
+    Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
+    Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
   Map: Model.extend do
     urlRoot: Api.maps
     validation:
