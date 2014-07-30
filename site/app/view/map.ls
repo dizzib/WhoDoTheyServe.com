@@ -127,9 +127,9 @@ function on-tick
   Eg.on-tick!
 
 function justify v
-  w = v.svg.attr \width
+  return unless (g = $ '.view>.map').is \:visible # prevent show if it's hidden
   # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
-  if w < gw = (g = $ '.view>.map').width!
+  if v.svg.attr \width < g.width!
     g.css \display, \flex
     g.css \align-items, \center # vert
     g.css \justify-content, \center # horiz
