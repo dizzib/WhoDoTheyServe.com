@@ -61,7 +61,7 @@ module.exports = me = M.model \users, schema
       unless (b = req.body).password?length then delete b.password
       Crud.update req, res, next, me, return-fields:<[ login ]>
     delete: Crud.get-invoker me, Crud.delete, return-fields:<[ login ]>
-    list: Crud.get-invoker me, Crud.list, return-fields:<[ login info ]>
+    list: Crud.get-invoker me, Crud.list, return-fields:<[ login info role ]>
   #..verify = (req, res, next) ->
   #    err, user <- me.findById req.id
   #    return next err if err

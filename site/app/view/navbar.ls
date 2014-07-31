@@ -1,5 +1,6 @@
 B = require \backbone
 F = require \fs
+_ = require \underscore
 C = require \../collection
 D = require \../view-directive
 H = require \../helper
@@ -24,7 +25,16 @@ module.exports = B.View.extend do
 
     function render-maps-dropdown
       $maps = $t.find \ul.maps
-      if C.Maps.length then ($maps.render C.Maps.toJSON-T!, D.maps) else $maps.empty!
+
+      if C.Maps.length
+        uid = S.get-id! or C.Users.find(-> it.get-is-admin!).models.0.id
+        maps = C.Maps.where 'meta.create_user_id':uid
+        json = _.map maps, -> it.toJSON-T!
+        $maps.render json, D.maps
+      else
+        $maps.empty!
+
+      # create new
       $new = $t.find \li.map-new
       $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left' if V.map.map?isNew!
       $maps.append $new

@@ -71,6 +71,10 @@ module.exports.init = ->
         family-name: get-family-name this
         tip        : 'Evidence'
 
+  M.User .= extend do
+    get-is-admin: ->
+      \admin is @get \role
+
   # add factory methods
 
   M.Edge.create = ->
