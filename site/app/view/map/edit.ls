@@ -62,7 +62,8 @@ function navigate
   R.navigate it, trigger:true
 
 function render-dropdown
-  V.map-nodes-sel.render C.Nodes, \name, _.pluck (V.map.map.get \nodes), \_id
+  return unless map = V.map.map # might not be initialised e.g. add node before edit map
+  V.map-nodes-sel.render C.Nodes, \name, _.pluck (map.get \nodes), \_id
 
 function save-is-default id
   Hi.Map

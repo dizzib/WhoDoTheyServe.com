@@ -6,7 +6,6 @@ is-loaded = false
 
 module.exports =
   fetch: (success, fail) ->
-    log \fetch, is-loaded
     return success! if is-loaded
     $.when(
       C.Evidences.fetch!
