@@ -15,7 +15,7 @@ module.exports.init = ->
 
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
-      V.map-nodes-sel.render C.Nodes, \name, _.pluck (it.get \nodes), \_id
+      render-dropdown!
       load-is-default it.id
       @$el.find \legend .on \click, ~> @$el.find \.body .toggle!
 
@@ -45,6 +45,8 @@ module.exports.init = ->
     ..on \render  , disable-buttons
     ..on \rendered, enable-buttons
 
+  C.Nodes.on 'add remove', render-dropdown
+
 # helpers
 
 function disable-buttons
@@ -58,6 +60,9 @@ function load-is-default id
 
 function navigate
   R.navigate it, trigger:true
+
+function render-dropdown
+  V.map-nodes-sel.render C.Nodes, \name, _.pluck (V.map.map.get \nodes), \_id
 
 function save-is-default id
   Hi.Map

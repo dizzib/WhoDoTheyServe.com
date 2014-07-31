@@ -6,17 +6,18 @@ R   = require \../router
 V   = require \../view
 Vme = require \./map/edit
 
-module.exports =
+module.exports = me =
+  init: ->
+    Vme.init!
+    # multi-select can't be browserified 'cos it references an adjacent png
+    yepnope.injectCss \/lib-3p/multiple-select.css
+
   on-signin: ->
     E.fetch ok, fail
 
     function ok
       delete V.map.map # remove readonly map
-
-      # multi-select can't be browserified 'cos it references an adjacent png
-      yepnope.injectCss \/lib-3p/multiple-select.css
-
-      Vme.init!
+      me.init!
       R.navigate \session, trigger:true
 
     function fail coll, xhr
