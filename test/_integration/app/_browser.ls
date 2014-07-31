@@ -24,7 +24,7 @@ module.exports = B =
 
   assert:
     ok: (is-ok = true) ->
-      B.assert.displayed !is-ok, { class:\alert-error, include-hidden:true }
+      B.assert.displayed !is-ok, { class:\alert-error.active, include-hidden:true }
 
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"

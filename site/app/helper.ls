@@ -27,4 +27,5 @@ module.exports = me =
       ..send JSON.stringify obj
 
   show-error: ->
-    $ \.alert-error .text it .show!
+    # The .active class can be used to override the default error alert location
+    $ \.alert-error.active:last .text it .show!

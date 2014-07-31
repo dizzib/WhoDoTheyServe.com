@@ -29,7 +29,7 @@ module.exports =
       V.map-toolbar.show!
       if m.get-is-editable!
         return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
-        V.map-edit.$el.show!
+        V.map-edit.show!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

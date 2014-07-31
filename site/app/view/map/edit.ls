@@ -16,6 +16,7 @@ module.exports.init = ->
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
       render-dropdown!
+      init-error-alert!
       load-is-default it.id
       @$el.find \legend .on \click, ~> @$el.find \.body .toggle!
 
@@ -33,6 +34,10 @@ module.exports.init = ->
       for id in sel-node-ids then unless _.contains map-node-ids, id
         nodes.push _id:id # node is selected but filtered out of map
       it.set { nodes:nodes, 'size-x':vg.get-size-x!, 'size-y':vg.get-size-y! }
+
+    ..show = ->
+      init-error-alert!
+      @$el.show!
 
   V.map-nodes-sel.on 'checkAll click uncheckAll', ->
     # checkAll also fires if all nodes are already selected and the dropdown is opened
@@ -54,6 +59,10 @@ function disable-buttons
 
 function enable-buttons
   V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
+
+function init-error-alert
+  # show errors on this form rather than in base view
+  V.map-edit.$el.find \.alert-error .addClass \active .hide!
 
 function load-is-default id
   V.map-edit.$el.find \#is-default .prop \checked, id is (Hi.Map.get-prop \default)?id

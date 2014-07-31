@@ -41,7 +41,7 @@ T-Users         = F.readFileSync __dirname + \/view/users.html
 T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
-  # views
+  ## views
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id
@@ -82,7 +82,8 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main
   ..version         = new V-Version                            el:\.version
 
-  # functions
+  ## helper functions
+
   ..finalise = ->
     $ \.timeago .timeago!
     # use a delgated event since view may still be rendering asyncly
@@ -93,9 +94,15 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
     <- _.defer
     $ \.btnNew:visible:first .focus!
     $ \.view .addClass \ready
+
   ..reset = ->
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
     $ '.view>*' .off!hide! # call off() so different views can use same element
     $ '.view>:not(.persist)' .empty! # leave persistent views e.g. map
+
+    # clear any error alert location overrides and reset back to default
+    $ '.alert-error' .removeClass \active
+    $ '.view>.alert-error' .addClass \active
+
     me.navbar.render!
     V.ResetEditView!

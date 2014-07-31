@@ -128,6 +128,7 @@ function on-tick
 
 function justify v
   return unless (g = $ '.view>.map').is \:visible # prevent show if it's hidden
+  return unless v.svg # might be undefined e.g. new map
   # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
   if v.svg.attr \width < g.width!
     g.css \display, \flex
