@@ -16,8 +16,8 @@ module.exports =
   generate: ->
     try
       const BROWSER-HOST     = process.env.firefox-host or \localhost
-      const EXCLUDE-ROUTES   = /graph/
-      const ROUTE-HOME       = '#/home'
+      const EXCLUDE-ROUTES   = /map/
+      const ROUTE-HOME       = '#/latest'
       const STAGING-SITE-URL = "http://#{Os.hostname!}:#{Cfg.staging.primary.PORT}"
 
       log "generate seo from #STAGING-SITE-URL via firefox at #BROWSER-HOST"

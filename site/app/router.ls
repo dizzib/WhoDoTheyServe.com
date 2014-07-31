@@ -25,7 +25,7 @@ Router = B.Router.extend do
     \edge/:id/:act/:id : \edge
     \edges             : \edges
     \fireprox          : \fireprox
-    \home              : \home
+    \latest            : \latest
     \map/new           : \map
     \map/:id           : \map
     \node/edit/:id     : \node_edit
@@ -50,7 +50,7 @@ Router = B.Router.extend do
   edge_edit   : -> V.edge-edit.render (M.Edge.create it), C.Edges
   edges       : Vc.edges
   fireprox    : F.setup-url
-  home        : -> V.home.render!
+  latest      : -> V.latest.render!
   map         : Vc.map
   map_default : -> Vc.map (JSON.parse Hv.Map.get \value).default?id
   node        : -> Hi.set-node-id Vc.node ...

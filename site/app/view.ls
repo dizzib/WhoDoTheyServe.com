@@ -1,7 +1,7 @@
 F           = require \fs # browserified
 H           = require \./helper
 V           = require \./view-engine
-V-Home      = require \./view/home
+V-Latest    = require \./view/latest
 V-Map       = require \./view/map
 V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
@@ -54,7 +54,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..evidences-head  = new V.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
   ..evidences-void  = new V.DocuView document:T-EvidencesVoid, el:\.view>.evidences
   ..footer          = new V.DocuView document:T-Footer       , el:\.footer
-  ..home            = new V-Home                               el:\.view>.main
+  ..latest          = new V-Latest                             el:\.view>.main
   ..map             = new V-Map                                el:\.view>.map
   ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
   ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
