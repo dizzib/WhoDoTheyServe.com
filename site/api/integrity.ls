@@ -1,6 +1,7 @@
 _           = require \lodash
 H           = require \./helper
 M-Edges     = require \./model/edges
+M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
 M-Evidences = require \./model/evidences
 
@@ -44,6 +45,12 @@ module.exports =
     err, obj <- M-Evidences.findOne entity_id:req.id
     return next err if err
     return next new H.ApiError 'Cannot delete an evidenced node' if obj
+    err, maps <- M-Maps.find!lean!exec
+    return next err if err
+    if (maps-ref = _.filter maps, -> (_.contains (_.pluck it.nodes, \_id), req.id)).length > 0
+      map-names = (_.map maps-ref, -> it.name).join ', '
+      msg = "Cannot delete node because it appears on the following maps: #map-names"
+      return next new H.ApiError msg
     next!
 
 function get-checker-create Model then (req, res, next) ->
