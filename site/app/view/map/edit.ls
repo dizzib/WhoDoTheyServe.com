@@ -10,6 +10,7 @@ H.insert-css F.readFileSync __dirname + \/edit.css
 module.exports.init = ->
   V.map-edit
     ..on \destroyed, ->
+      delete V.map.map
       V.navbar.render!
       navigate \session
 

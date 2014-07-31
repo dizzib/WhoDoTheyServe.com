@@ -20,12 +20,14 @@ module.exports =
       'click .delete': \delete
       'submit form'  : \save
     initialize: ->
+      @opts     = it.opts
       @template = it.template
       _.extend this, B.Events
     cancel: -> @trigger \cancelled
     delete: ->
-      #TODO: reinstate dialog when Marionette is capable of testing it
-      #return unless confirm 'Are you sure you want to delete this item ?'
+      #TODO: always confirm delete when Marionette is capable of testing it
+      if @opts?is-confirm-delete
+        return unless confirm 'Are you sure you want to delete this item ?'
       @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
       @delegateEvents!
