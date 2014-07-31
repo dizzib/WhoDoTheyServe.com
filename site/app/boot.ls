@@ -12,6 +12,7 @@ B   = require \backbone
 F   = require \fs # inlined by brfs
 Api = require \./api
 C   = require \./collection
+E   = require \./entities
 H   = require \./helper
 Hi  = require \./hive
 M   = require \./model
@@ -21,7 +22,6 @@ V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
 Vf  = require \./view/footer
-Vsi = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -43,7 +43,7 @@ function alert type, xhr
   if confirm "#info\n\n#prompt" then window.location.reload!
 
 function init
-  fetch-entities-core (-> Vsi.fetch-entities start, fail-si) if S.is-signed-in!
+  fetch-entities-core (-> E.fetch start, fail-si) if S.is-signed-in!
   fetch-entities-core start unless S.is-signed-in!
   Val.init!
   Vh .init!

@@ -1,32 +1,22 @@
 Bh  = require \backbone .history
 C   = require \../collection
+E   = require \../entities
 Hi  = require \../hive
 R   = require \../router
 V   = require \../view
 Vme = require \./map/edit
 
-module.exports = me =
-  fetch-entities: (ok, fail) ->
-    $.when(
-      C.Evidences.fetch!
-      C.Edges.fetch!
-      C.Nodes.fetch!
-      C.Notes.fetch!
-      Hi.Evidences.fetch! # dead evidences
-    ).then init, fail
+module.exports =
+  on-signin: ->
+    E.fetch ok, fail
 
-    function init
+    function ok
+      delete V.map.map # remove readonly map
+
       # multi-select can't be browserified 'cos it references an adjacent png
       yepnope.injectCss \/lib-3p/multiple-select.css
 
       Vme.init!
-      ok!
-
-  on-signin: ->
-    me.fetch-entities ok, fail
-
-    function ok
-      delete V.map.map # remove readonly map
       R.navigate \session, trigger:true
 
     function fail coll, xhr

@@ -1,4 +1,5 @@
 C = require \./collection
+E = require \./entities
 H = require \./helper
 M = require \./model
 S = require \./session
@@ -43,6 +44,7 @@ module.exports =
     V.nodes.render C.Nodes, D.nodes
   user: ->
     V.user.render C.Users.get(id = it or C.Sessions.models.0?id), D.user
+    <- E.fetch # all entities must be loaded for subsequent filtering
     render-user-entities id, V.maps, C.Maps, D.map
     render-user-entities id, V.edges, C.Edges, D.edges
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
