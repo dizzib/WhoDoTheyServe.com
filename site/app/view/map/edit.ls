@@ -23,6 +23,7 @@ module.exports.init = ->
 
     ..on \saved, (map, is-new) ->
       V.navbar.render!
+      init-error-alert!
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->

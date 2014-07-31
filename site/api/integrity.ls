@@ -35,6 +35,13 @@ module.exports =
     err, obj <- M-Evidences.findOne entity_id:req.id
     return next err if err
     return next new H.ApiError 'Cannot update an evidenced node' if obj
+    err, maps-having-node <- get-maps-having-node req.id
+    return next err if err
+    maps-not-my-own = _.filter maps-having-node, -> it.meta.create_user_id isnt req.session.signin.id
+    if maps-not-my-own.length > 0
+      map-names = (_.map maps-not-my-own, -> it.name).join ', '
+      msg = "Cannot update node because it appears on the following maps by other users: #map-names"
+      return next new H.ApiError msg
     next!
   node-delete: (req, res, next) ->
     err, obj <- M-Edges.findOne $or:
@@ -45,10 +52,10 @@ module.exports =
     err, obj <- M-Evidences.findOne entity_id:req.id
     return next err if err
     return next new H.ApiError 'Cannot delete an evidenced node' if obj
-    err, maps <- M-Maps.find!lean!exec
+    err, maps-having-node <- get-maps-having-node req.id
     return next err if err
-    if (maps-ref = _.filter maps, -> (_.contains (_.pluck it.nodes, \_id), req.id)).length > 0
-      map-names = (_.map maps-ref, -> it.name).join ', '
+    if maps-having-node.length > 0
+      map-names = (_.map maps-having-node, -> it.name).join ', '
       msg = "Cannot delete node because it appears on the following maps: #map-names"
       return next new H.ApiError msg
     next!
@@ -62,3 +69,8 @@ function get-checker-create Model then (req, res, next) ->
   if (n-no-evidence = ids.length - entity-ids.length) > 0
     return next new H.ApiError "Cannot create while #{n-no-evidence} of your other #{Model.modelName} are missing evidence"
   next!
+
+function get-maps-having-node id, cb
+  err, maps <- M-Maps.find!lean!exec
+  return cb err if err
+  cb void, _.filter maps, -> (_.contains (_.pluck it.nodes, \_id), id)
