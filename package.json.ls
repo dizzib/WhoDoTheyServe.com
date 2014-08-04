@@ -9,6 +9,7 @@ scripts:
 dependencies:
   bcrypt    : \0.7.5
   crypto    : \0.0.3
+  everyauth : \0.4.6
   express   : \3.1.1
   lodash    : \2.4.1
   mongoose  : \3.5.5

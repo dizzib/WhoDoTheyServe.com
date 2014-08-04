@@ -1,10 +1,10 @@
 global.log = console.log
-is-cover   = process.env.COVERAGE is \true
 
-Express = require \express
-Im      = require \istanbul-middleware if is-cover
-_       = require \lodash
-H       = require \./api/helper
+Everyauth = require \everyauth
+Express   = require \express
+Im        = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
+_         = require \lodash
+H         = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms
 const DIR-APP  = "#{__dirname}/app"
@@ -19,24 +19,27 @@ static-opts =
   maxAge: ONE-HOUR
 
 Im.hookLoader __dirname if is-cover
-env = (server = Express!).settings.env
+env = (express = Express!).settings.env
 
-module.exports = server
-  ..set \port, process.env.PORT || 80
-  ..use '/coverage', Im.createHandler! if is-cover
-  ..use Express.favicon \./app/asset/favicon.png, static-opts
-  ..use Express.logger \dev if env in <[ development ]>
-  ..use Express.compress! if env in <[ staging production ]>
-  ..use Express.cookieParser!
-  ..use Express.cookieSession cookie-opts
-  ..use Express.bodyParser!
-  ..use allow-cross-domain
-  ..use server.router
-  ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
-  ..use Express.static DIR-APP, static-opts
-  ..use log-error show-stack:env in <[ development staging production ]>
-  ..use handle-error
-  ..use Express.errorHandler! if env in <[ development ]>
+module.exports =
+  init: ->
+    express
+      ..set \port, process.env.PORT || 80
+      ..use '/coverage', Im.createHandler! if is-cover
+      ..use Express.favicon \./app/asset/favicon.png, static-opts
+      ..use Express.logger \dev if env in <[ development ]>
+      ..use Express.compress! if env in <[ staging production ]>
+      ..use Express.cookieParser!
+      ..use Express.cookieSession cookie-opts
+      ..use Express.bodyParser!
+      ..use Everyauth.middleware!
+      ..use allow-cross-domain
+      ..use express.router
+      ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
+      ..use Express.static DIR-APP, static-opts
+      ..use log-error show-stack:env in <[ development staging production ]>
+      ..use handle-error
+      ..use Express.errorHandler! if env in <[ development ]>
 
 # http://backbonetutorials.com/cross-domain-sessions/
 function allow-cross-domain req, res, next then

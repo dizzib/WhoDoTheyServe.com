@@ -14,13 +14,13 @@ SecSessions = require \./security/sessions
 SecUsers    = require \./security/users
 Sys         = require \./sys
 
-exports.init = (server) ->
-  server
+exports.init = (express) ->
+  express
     ..param \id , (req,, next, req.id)  -> next!
     ..param \key, (req,, next, req.key) -> next!
     ..options \*, (, res) -> res.send 200
 
-  server
+  express
     ..get  "/api/sys"              , Analytics.measure
     ..get  "/api/sys"              , Sys.get
     ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
@@ -46,7 +46,7 @@ exports.init = (server) ->
   set-api-crud-sessions!
 
   function set-api-crud route, Model then
-    server
+    express
       ..get    "/api/#{route}"    , Model.crud-fns.list
       ..post   "/api/#{route}"    , Model.crud-fns.create
       ..get    "/api/#{route}/:id", Model.crud-fns.read
@@ -54,41 +54,41 @@ exports.init = (server) ->
       ..delete "/api/#{route}/:id", Model.crud-fns.delete
 
   function set-api-crud-sessions then
-    server
+    express
       ..get    "/api/sessions"    , M-Sessions.crud-fns.list
       ..post   "/api/sessions"    , M-Sessions.crud-fns.create
       ..delete "/api/sessions/:id", M-Sessions.crud-fns.delete
 
   function set-api-hive then
-    server
+    express
       ..get  "/api/hive/:key"    , Hive.read
       ..post "/api/hive/:key"    , Hive.write
       ..put  "/api/hive/:key/:id", Hive.write
 
   function set-api-sec route, Model then
-    server
+    express
       ..post   "/api/#{route}"    , Sec.create Model
       ..put    "/api/#{route}/:id", Sec.amend Model
       ..delete "/api/#{route}/:id", Sec.amend Model
 
   function set-api-sec-hive then
-    server
+    express
       ..post "/api/hive/:key", Sec.admin
       ..put  "/api/hive/:key", Sec.admin
 
   function set-api-sec-sessions then
-    server
+    express
       ..post   "/api/sessions"    , SecSessions.create!
       ..delete "/api/sessions/:id", SecSessions.delete!
 
   function set-api-sec-users then
-    server
+    express
       ..post   "/api/users"    , SecUsers.create!
       ..put    "/api/users/:id", SecUsers.maintain!
       ..delete "/api/users/:id", SecUsers.maintain!
 
   function set-api-integrity then
-    server
+    express
       ..post   "/api/edges"    , Integrity.edge-create
       ..put    "/api/edges/:id", Integrity.edge-update
       ..delete "/api/edges/:id", Integrity.edge-delete
