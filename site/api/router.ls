@@ -7,6 +7,7 @@ M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
 M-Notes     = require \./model/notes
 M-Evidences = require \./model/evidences
+M-Logins    = require \./model/logins
 M-Sessions  = require \./model/sessions
 M-Users     = require \./model/users
 Sec         = require \./security
@@ -42,6 +43,7 @@ exports.init = (express) ->
   set-api-crud \maps     , M-Maps
   set-api-crud \nodes    , M-Nodes
   set-api-crud \notes    , M-Notes
+  set-api-crud-logins! # must run before M-Users because M-Users.create needs login_id
   set-api-crud \users    , M-Users
   set-api-crud-sessions!
 
@@ -52,6 +54,12 @@ exports.init = (express) ->
       ..get    "/api/#{route}/:id", Model.crud-fns.read
       ..put    "/api/#{route}/:id", Model.crud-fns.update
       ..delete "/api/#{route}/:id", Model.crud-fns.delete
+
+  function set-api-crud-logins then
+    express
+      ..post   "/api/users"       , M-Logins.crud-fns.create
+      ..put    "/api/users/:id"   , M-Logins.crud-fns.update
+      #..delete "/api/users/:id"   , M-Logins.crud-fns.delete
 
   function set-api-crud-sessions then
     express
