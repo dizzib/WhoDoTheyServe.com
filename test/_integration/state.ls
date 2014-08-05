@@ -1,4 +1,4 @@
-module.exports = M =
+module.exports = me =
   add-user: ->
-    M.login = it unless M.users  # autologin admin signup
-    (M.users ?= {})[it.login] = it
+    me.handle = it unless me.users  # autologin admin signup
+    (me.users ?= {})[it.handle] = it

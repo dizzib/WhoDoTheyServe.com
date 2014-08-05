@@ -10,7 +10,7 @@ module.exports =
       freeze-secs = process.env.WDTS_USER_SIGNIN_BAD_FREEZE_SECS or 5s
       return next new Error 'signout required' if req.session.signin
       do
-        err, login <- M-Logins.findOne login:(b = req.body).login
+        err, login <- M-Logins.findOne handle:(b = req.body).handle
         return next err if err
         return fail next unless login
         err, user <- M-Users.findOne login_id:login._id

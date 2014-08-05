@@ -13,31 +13,30 @@ module.exports =
     function do-next
       user = users.shift!
       return cb! unless user
-      #return do-next! if user.login_id # already done ?
+     #return do-next! if user.login_id # already done ?
       return do-next! unless user.login
 
-      err, login <- M-Logins.findOne login:user.login
-      log err, login
+      err, login <- M-Logins.findOne handle:user.login
+     #log err, login
+      return cb err if err
+      return migrate-user user, login if login?
+
+      log "create login #{user.login}"
+      o = { handle:user.login, password:\Pass1! }
+      err, login <- (new M-Logins o).save
+      return cb err if err
+      migrate-user user, login
+
+    function migrate-user user, login
+      user.password  = void
+      user.auth_type = \password
+     #user.login     = void # comment out to enable repeat runs
+      user.login_id  = login._id
+      user.name      = login.handle
+
+      log "migrating user", user
+      err, user <- user.save
       return cb err if err
 
-      if login?
-        migrate-user!
-      else
-        log "create login #{user.login}"
-        o = { login:user.login, password:\Pass1! }
-        err, login <- (new M-Logins o).save
-        return cb err if err
-        migrate-user!
-
-      function migrate-user
-        user.password  = void
-        user.auth_type = \password
-        user.login_id  = login._id
-        user.name      = login.login
-
-        log "migrating user", user
-        err, user <- user.save
-        return cb err if err
-
-        log "migrated #{user.login} ok"
-        do-next!
+      log "migrated #{user.login} ok"
+      do-next!

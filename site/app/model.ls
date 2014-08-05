@@ -64,7 +64,7 @@ module.exports =
   Session: Model.extend do
     urlRoot: Api.sessions
     validation:
-      'login'   : required:yes
+      'handle'  : required:yes
       'password': required:yes
   Signup: Model.extend user-spec pwd-required:yes
   Sys   : new (Model.extend urlRoot: Api.sys)!
@@ -76,10 +76,10 @@ function user-spec opts
     'info'    : 'Homepage'
     'passconf': 'Confirm Password'
   validation:
-    'login':
+    'handle':
       * required: yes
-      * pattern : Cons.login.regex
-        msg     : "Username should be #{Cons.login.info}"
+      * pattern : Cons.handle.regex
+        msg     : "Username should be #{Cons.handle.info}"
     'password':
       * required: opts.pwd-required
       * pattern : Cons.password.regex

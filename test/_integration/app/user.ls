@@ -13,14 +13,14 @@ c = C \user,
 
 module.exports = S.get-spec create, void, c.update, c.remove, c.list
 
-function create login, is-ok, fields = {}
+function create handle, is-ok, fields = {}
   fields
-    ..login       ||= login
+    ..handle      ||= handle
     ..password    ||= \Pass1!
-    ..email       ||= "#{login}@domain.com"
+    ..email       ||= "#{handle}@domain.com"
     ..info        ||= ''
     ..quota_daily ||= \5
-  c.create login, is-ok, fields
+  c.create handle, is-ok, fields
 
 ## helpers
 
@@ -29,7 +29,7 @@ function go-edit
   B.wait-for /Edit Account/, \legend>.update
 
 function fill fields then B.fill do
-  Username          : fields.login
+  Username          : fields.handle
   'Password'        : fields.password
   'Confirm Password': fields.password
   Email             : fields.email

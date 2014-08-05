@@ -40,7 +40,7 @@ exports.get-spec = (...args) ->
   c: h.get-spec \userc
   d: h.get-spec \userd
   e: h.get-spec \usere
-  login:
+  handle:
     num1      : h.get-spec \1xxx      , password:\aaaA1!
     num2      : h.get-spec \x2xx      , password:\aaaA1!
     num3      : h.get-spec \xx3x      , password:\aaaA1!

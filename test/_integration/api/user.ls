@@ -10,22 +10,22 @@ Users = require "#{process.cwd!}/site/api/model/users"
 c = C \users
 module.exports = U.get-spec create, c.read, c.update, c.remove, c.list, verify
 
-function create login, is-ok, fields then
+function create handle, is-ok, fields then
   user =
-    login   : login
+    handle  : handle
     password: \Pass1!
-    email   : "#{login}@domain.com"
+    email   : "#{handle}@domain.com"
   H.assert (res = H.post get-route!, _.extend user, fields), is-ok
   if H.is-ok res then
-    (user = res.body).login.should.equal login
+    (user = res.body).handle.should.equal handle
     S.add-user user
 
-function verify login, is-ok, fields then
-  user = W.forMethod Users, \findOne, login:login
+function verify handle, is-ok, fields then
+  user = W.forMethod Users, \findOne, handle:handle
   token = fields?token or user.create_token
-  res = H.get "#{get-route login}/verify/#{token}"
+  res = H.get "#{get-route handle}/verify/#{token}"
   H.assert res, is-ok
 
-function get-route login then
-  return "users/#{S.users[login]._id}" if login
+function get-route handle then
+  return "users/#{S.users[handle]._id}" if handle
   \users

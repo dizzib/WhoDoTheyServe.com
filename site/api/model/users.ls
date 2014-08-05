@@ -42,18 +42,18 @@ module.exports = me = M.model \users, schema
       # set defaults (req.login should be set by Logins model via routing)
       b.auth_type = AUTHTYPE-PASSWORD
       b.login_id  = req.login?_id
-      b.name    ||= req.login?login
+      b.name    ||= req.login?handle
       Crud.create req, res, next, me,
-        return-fields: <[ login name ]>
+        return-fields: <[ handle name ]>
         success: (req, user, next) ->
-          user.login = req.login?login
+          user.handle = req.login?handle
           next!
     read: (req, res, next) ->
       Crud.read req, res, next, me,
-        return-fields: <[ auth_type login email info name quota_daily ]>
+        return-fields: <[ auth_type handle email info name quota_daily ]>
         success: (req, user, next) ->
           user.email = Crypt.decrypt user.email
-          user.login = req.login?login
+          user.handle = req.login?handle
           next!
     update: Crud.get-invoker me, Crud.update, return-fields:<[ name ]>
     delete: Crud.get-invoker me, Crud.delete, return-fields:<[ name ]>

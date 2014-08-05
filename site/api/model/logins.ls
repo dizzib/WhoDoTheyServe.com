@@ -7,7 +7,7 @@ P-Id     = require \./plugin-id
 M-Users  = require \./users
 
 spec =
-  login   : type:String, required:yes, index:{+unique}, match:Cons.login.regex
+  handle  : type:String, required:yes, index:{+unique}, match:Cons.handle.regex
   password: type:String, required:yes
 
 schema = new M.Schema spec
@@ -24,8 +24,8 @@ schema = new M.Schema spec
 module.exports = me = M.model \logins, schema
   ..crud-fns =
     create: (req, res, next) ->
-      o = _.pick (b = req.body), <[ login password ]>
-      b.login = b.password = void # fields not used by M-Users
+      o = _.pick (b = req.body), <[ handle password ]>
+      b.handle = b.password = void # fields not used by M-Users
       err, req.login <- (new me o).save # set req.login for later use by M-Users
       next err
     read: (req, res, next) ->
@@ -45,8 +45,8 @@ module.exports = me = M.model \logins, schema
       return next err if err
       doc.password = b.password
       doc.save next
-    #delete: Crud.get-invoker me, Crud.delete, return-fields:<[ login ]>
-  #..verify = (req, res, next) ->
-  #    err, user <- me.findById req.id
-  #    return next err if err
-  #    Signup.verify req, res, next, user
+    delete: (req, res, next) ->
+      err, user <- M-Users.findById req.id
+      return next err if err
+      err <- me.findByIdAndRemove user.login_id
+      next err

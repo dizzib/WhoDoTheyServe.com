@@ -5,11 +5,11 @@ module.exports = me =
   crud-fns:
     create: (req, res, next) ->
       me.signin req, req.user
-      res.json _.pick req.user, \_id, \login, \role
+      res.json _.pick req.user, \_id, \name, \role
 
     list: (req, res, next) ->
       return res.json null unless siu = req.session.signin
-      err, user <- Users.findOne _id:siu.id, 'login role'
+      err, user <- Users.findOne _id:siu.id, 'name role'
       return next err if err
       return res.json req.session = null unless user # handle corruption
       res.json user
@@ -18,7 +18,7 @@ module.exports = me =
       me.signout req, res, req.session.signin
 
   signin: (req, user) ->
-    log "SignIn #{user.login} as #{user.role}"
+    log "SignIn #{user.name} as #{user.role}"
     req.session.signin =
       id  : user._id
       role: user.role

@@ -35,7 +35,7 @@ test User.list.is0
 test User.admin.create.ok
 test User.list.is1
 test User.admin.create.bad
-test User.login.min.create.bad
+test User.handle.min.create.bad
 test Session.admin.signin.password.a.ok
 test User.a.create.ok
 test User.a.email.new.update.ok
@@ -44,7 +44,7 @@ test User.b.create.ok
 test User.list.is3
 it '---userA create entities'
 test Session.signout.ok
-test Session.a.signin.bad.login
+test Session.a.signin.bad.handle
 test Session.a.signin.bad.password
 test Session.a.signin.password.a.ok
 it 'maint'

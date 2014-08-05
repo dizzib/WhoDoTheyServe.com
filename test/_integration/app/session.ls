@@ -3,15 +3,15 @@ S = require \../spec/session
 
 module.exports = S.get-spec signin, signout
 
-function signin login, is-ok, fields = {}
+function signin handle, is-ok, fields = {}
   # nav away to clear previous errors
   B.click /About/, \a .wait-for /About/, \h3
 
   fields
-    ..login    ||= login
+    ..handle   ||= handle
     ..password ||= \Pass1!
   B.click \Login, \a
-  B.fill Username:fields.login, Password:fields.password
+  B.fill Username:fields.handle, Password:fields.password
   B.click /Login/, \button
   B.assert.ok is-ok
   B.wait-for \Welcome!, \.main>.show>legend if is-ok
