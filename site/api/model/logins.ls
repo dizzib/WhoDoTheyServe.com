@@ -1,23 +1,21 @@
-_          = require \lodash
-M          = require \mongoose
-Cons       = require \../../lib/model-constraints
-CryptPwd   = require \../crypt-pwd
-P-Id       = require \./plugin-id
-M-Users    = require \./users
-#Signup     = require \../signup
+_        = require \lodash
+M        = require \mongoose
+Cons     = require \../../lib/model-constraints
+CryptPwd = require \../crypt-pwd
+H        = require \../helper
+P-Id     = require \./plugin-id
+M-Users  = require \./users
 
 spec =
   login   : type:String, required:yes, index:{+unique}, match:Cons.login.regex
-  password: type:String, required:yes    # validated below
+  password: type:String, required:yes
 
 schema = new M.Schema spec
   ..plugin P-Id
-  #..plugin Signup.plugin
-  # password
-  ..pre \save, (next) ->
+  ..pre \save, (next) ->     # hash password
     return next! unless @isModified \password
     CryptPwd.hash this, next
-  ..pre \validate, (next) ->
+  ..pre \validate, (next) -> # validate password
     return next! unless @isModified \password
     is-valid = Cons.password.regex.test @password
     @invalidate \password, 'Invalid password' unless is-valid
@@ -26,23 +24,27 @@ schema = new M.Schema spec
 module.exports = me = M.model \logins, schema
   ..crud-fns =
     create: (req, res, next) ->
-      o = _.pick req.body, <[ login password ]>
+      o = _.pick (b = req.body), <[ login password ]>
+      b.login = b.password = void # fields not used by M-Users
       err, req.login <- (new me o).save # set req.login for later use by M-Users
       next err
+    read: (req, res, next) ->
+      err, user <- M-Users.findById req.id
+      return next err if err
+      return next! unless M-Users.check-is-authtype-password user
+      err, req.login <- me.findById user.login_id # set req.login for later use by M-Users
+      next err
     update: (req, res, next) ->
-      if (b = req.body).password?length
-        err, user <- M-Users.findById req.id
-        return next err if err
-        # TODO: assert auth-type is classic
-        err, doc <- me.findById user.login_id
-        #log \logins-update, user, b.password, err, doc
-        return next err if err
-        doc.password = b.password
-        doc.save next
-      else
+      unless (b = req.body).password?length
         delete b.password # TODO: stop backbone sending password:''
-        next!
-
+        return next!
+      err, user <- M-Users.findById req.id
+      return next err if err
+      return next new H.ApiError "auth_type must be password" unless M-Users.check-is-authtype-password user
+      err, doc <- me.findById user.login_id
+      return next err if err
+      doc.password = b.password
+      doc.save next
     #delete: Crud.get-invoker me, Crud.delete, return-fields:<[ login ]>
   #..verify = (req, res, next) ->
   #    err, user <- me.findById req.id

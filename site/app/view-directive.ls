@@ -55,7 +55,7 @@ const META =
     href: -> get-user-href @meta?create_user_id
     text: ->
       return '(deleted user) ' unless creator = C.Users.find-by-id @meta?create_user_id
-      "#{creator.get \login} "
+      "#{creator.get \name} "
   create-date:
     title: -> @meta?create_date # https://github.com/rmm5t/jquery-timeago
 

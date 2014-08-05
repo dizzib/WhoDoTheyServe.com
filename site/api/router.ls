@@ -58,6 +58,7 @@ exports.init = (express) ->
   function set-api-crud-logins then
     express
       ..post   "/api/users"       , M-Logins.crud-fns.create
+      ..get    "/api/users/:id"   , M-Logins.crud-fns.read
       ..put    "/api/users/:id"   , M-Logins.crud-fns.update
       #..delete "/api/users/:id"   , M-Logins.crud-fns.delete
 

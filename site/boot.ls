@@ -2,14 +2,19 @@ F         = require \fs
 Http      = require \http
 Https     = require \https
 Server    = require \./server
-DB        = require \./api/db
+Db        = require \./api/db
 Hive      = require \./api/hive
 Oauth     = require \./api/oauth
 ApiRouter = require \./api/router
-DH-Graph  = require \./deploy/hive/map
+DeployMap = require \./deploy/hive/map
+MigLogins = require \./deploy/migrate-logins
 
-DB.connect!
-Hive.init DH-Graph.set-icons
+Db.connect!
+Hive.init DeployMap.set-icons
+
+# TODO: remove temporary logins migration code
+err <- MigLogins.migrate
+(console.log err) if err
 
 Oauth.init! # must be called prior to setting up express routes (in Server.init)
 ApiRouter.init express = Server.init!
