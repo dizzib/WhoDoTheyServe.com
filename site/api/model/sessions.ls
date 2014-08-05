@@ -4,7 +4,7 @@ Users = require \./users
 module.exports = me =
   crud-fns:
     create: (req, res, next) ->
-      me.signin req, req.user
+      me.signin req.session, req.user
       res.json _.pick req.user, \_id, \name, \role
 
     list: (req, res, next) ->
@@ -17,9 +17,9 @@ module.exports = me =
     delete: (req, res, next) ->
       me.signout req, res, req.session.signin
 
-  signin: (req, user) ->
+  signin: (session, user) ->
     log "SignIn #{user.name} as #{user.role}"
-    req.session.signin =
+    session.signin =
       id  : user._id
       role: user.role
 

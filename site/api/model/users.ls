@@ -1,8 +1,8 @@
-M        = require \mongoose
-Cons     = require \../../lib/model-constraints
-Crypt    = require \../crypt
-Crud     = require \../crud
-P-Id     = require \./plugin-id
+M     = require \mongoose
+Cons  = require \../../lib/model-constraints
+Crypt = require \../crypt
+Crud  = require \../crud
+P-Id  = require \./plugin-id
 
 const AUTHTYPE-PASSWORD = \password
 
@@ -12,7 +12,7 @@ spec =
   name        : type:String, required:yes
   email       : type:String, index:{+unique} # validated below
   info        : type:String, match:Cons.url.regex
-  role        : type:String, required:yes, enum:<[ admin user ]>
+  role        : type:String, required:yes, enum:<[ admin user ]>, default:\user
   create_date : type:Date  , required:yes, default:Date.now
   quota_daily : type:Number, required:yes, default:5
   freeze_until: type:String  # allow sign-in only after this datetime

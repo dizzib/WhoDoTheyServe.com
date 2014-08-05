@@ -32,11 +32,11 @@ module.exports =
       ..use Express.cookieParser!
       ..use Express.cookieSession cookie-opts
       ..use Express.bodyParser!
-      ..use Everyauth.middleware!
       ..use allow-cross-domain
       ..use express.router
-      ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
       ..use Express.static DIR-APP, static-opts
+      ..use Everyauth.middleware! # must follow other routes to avoid redundant calls
+      ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
       ..use log-error show-stack:env in <[ development staging production ]>
       ..use handle-error
       ..use Express.errorHandler! if env in <[ development ]>

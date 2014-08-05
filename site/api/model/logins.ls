@@ -47,7 +47,7 @@ module.exports = me = M.model \logins, schema
 ## helpers
 
 function adjust-fields # for later use by M-Users
-  it.name?  = it.handle # force name to be handle, for now
+  it.name?  = it.handle # force name to be handle (if supplied)
   it.handle = it.password = void # clear fields
 
 function get-login req, cb
