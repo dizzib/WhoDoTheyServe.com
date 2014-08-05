@@ -21,22 +21,22 @@ module.exports =
       return cb err if err
       return migrate-user user, login if login?
 
-      log "create login #{user.login}"
       o = { handle:user.login, password:\Pass1! }
+      log "create login", o
       err, login <- (new M-Logins o).save
       return cb err if err
       migrate-user user, login
 
     function migrate-user user, login
-      user.password  = void
       user.auth_type = \password
-     #user.login     = void # comment out to enable repeat runs
+      user.login     = void # comment out to enable repeat runs
       user.login_id  = login._id
       user.name      = login.handle
+      user.password  = void
 
       log "migrating user", user
       err, user <- user.save
       return cb err if err
 
-      log "migrated #{user.login} ok"
+      log "migrated #{login.handle} ok"
       do-next!

@@ -25,28 +25,35 @@ module.exports = me = M.model \logins, schema
   ..crud-fns =
     create: (req, res, next) ->
       o = _.pick (b = req.body), <[ handle password ]>
-      b.handle = b.password = void # fields not used by M-Users
+      adjust-fields b
       err, req.login <- (new me o).save # set req.login for later use by M-Users
       next err
     read: (req, res, next) ->
-      err, user <- M-Users.findById req.id
-      return next err if err
-      return next! unless M-Users.check-is-authtype-password user
-      err, req.login <- me.findById user.login_id # set req.login for later use by M-Users
+      err, req.login <- get-login req # set req.login for later use by M-Users
       next err
     update: (req, res, next) ->
       unless (b = req.body).password?length
         delete b.password # TODO: stop backbone sending password:''
         return next!
-      err, user <- M-Users.findById req.id
+      err, login <- get-login req
       return next err if err
-      return next new H.ApiError "auth_type must be password" unless M-Users.check-is-authtype-password user
-      err, doc <- me.findById user.login_id
-      return next err if err
-      doc.password = b.password
-      doc.save next
+      login.password = b.password
+      adjust-fields b
+      login.save next
     delete: (req, res, next) ->
       err, user <- M-Users.findById req.id
       return next err if err
       err <- me.findByIdAndRemove user.login_id
       next err
+
+## helpers
+
+function adjust-fields
+  it.name?  = it.handle # force name to be handle, for now
+  it.handle = it.password = void # clear fields not used by M-Users
+
+function get-login req, cb
+  err, user <- M-Users.findById req.id
+  return cb err if err
+  return cb! unless M-Users.check-is-authtype-password user
+  me.findById user.login_id, cb

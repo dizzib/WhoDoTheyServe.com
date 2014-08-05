@@ -42,7 +42,6 @@ module.exports = me = M.model \users, schema
       # set defaults (req.login should be set by Logins model via routing)
       b.auth_type = AUTHTYPE-PASSWORD
       b.login_id  = req.login?_id
-      b.name    ||= req.login?handle
       Crud.create req, res, next, me,
         return-fields: <[ handle name ]>
         success: (req, user, next) ->

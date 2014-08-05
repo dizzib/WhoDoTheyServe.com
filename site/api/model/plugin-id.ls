@@ -1,4 +1,4 @@
-ShortId   = require \shortid
+ShortId = require \shortid
 
 module.exports = (schema) ->
   schema.add do
