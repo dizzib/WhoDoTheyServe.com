@@ -32,12 +32,10 @@ module.exports = me = M.model \logins, schema
       err, req.login <- get-login req # set req.login for later use by M-Users
       next err
     update: (req, res, next) ->
-      unless (b = req.body).password?length
-        delete b.password # TODO: stop backbone sending password:''
-        return next!
       err, login <- get-login req
-      return next err if err
-      login.password = b.password
+      return next err unless login? # bail if openauth
+      delete b.password unless (b = req.body).password?length # TODO: stop backbone sending password:''
+      _.extend login, _.pick b, <[ handle password ]>
       adjust-fields b
       login.save next
     delete: (req, res, next) ->
@@ -48,9 +46,9 @@ module.exports = me = M.model \logins, schema
 
 ## helpers
 
-function adjust-fields
+function adjust-fields # for later use by M-Users
   it.name?  = it.handle # force name to be handle, for now
-  it.handle = it.password = void # clear fields not used by M-Users
+  it.handle = it.password = void # clear fields
 
 function get-login req, cb
   err, user <- M-Users.findById req.id
