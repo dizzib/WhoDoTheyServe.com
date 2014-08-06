@@ -22,22 +22,27 @@ module.exports =
         .appSecret oa-secret
         .entryPath "/api/auth/#ea-id"
         .callbackPath "/api/auth/#ea-id/callback"
-        .findOrCreateUser (session, , , oa-user) ->
-          # at this point, oauth has successfully authenticated the user
+        .findOrCreateUser (session, , , oa-user) -> # oauth has successfully authenticated the user
           p = Ea.everymodule.Promise!
 
           function signin user
             M-Sessions.signin session, user
             p.fulfill user
 
-          M-Users.findOne login_id:oa-user.id, (err, user) ->
+          login-id = oa-user.id.toString! # oa-user.id might be a number
+          M-Users.findOne login_id:login-id .lean!exec (err, user) ->
             return p.fail err if err
-            return signin user if user # user found in db!
-            # user doesn't exist in db so create it before signing in
-            o = { login_id:oa-user.id, auth_type:auth-type, name:oa-user.name }
-            err, user <- (new M-Users o).save
-            return p.fail err if err
-            signin user
+            if user
+              return signin user if user.name is oa-user.name
+              #log 'oauth name changed', user.name, oa-user.name
+              err, user <- M-Users.findOneAndUpdate { login_id:login-id }, name:oa-user.name
+              return p.fail err if err
+              signin user
+            else # user doesn't exist in db so create it before signing in
+              o = { login_id:login-id, auth_type:ea-id, name:oa-user.name }
+              err, user <- (new M-Users o).save
+              return p.fail err if err
+              signin user
           p
         .handleAuthCallbackError (req, res) -> res.send 500, 'openauth authentication failed'
         .myHostname "#{env.OAUTH_HOSTNAME}:#{env.PORT || 80}"

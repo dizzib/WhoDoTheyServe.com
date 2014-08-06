@@ -14,84 +14,88 @@ class Cache
     decorate-query-find!
     decorate-query-findOne!
     decorate-query-findOneAndRemove!
+    decorate-query-findOneAndUpdate!
     decorate-query-remove!
     decorate-query-update!
 
-  function decorate-model-remove then
-    _remove = Model::remove
-    Model::remove = (callback) ->
+  function decorate-model-remove
+    _orig = Model::remove
+    Model::remove = (cb) ->
       #log 'Model::remove'
-      _remove.call this, (err) ~>
-        return callback err if err
-        update-by-id @collection.name, @_id
-        callback ...
+      err <~ _orig.call this
+      refresh-object @collection.name, _id:@_id unless err
+      cb ...
 
-  function decorate-model-save then
-    _save = Model::save
-    Model::save = (callback) ->
+  function decorate-model-save
+    _orig = Model::save
+    Model::save = (cb) ->
       #log 'Model::save'
-      _save.call this, (err, doc) ~>
-        return callback err if err
-        update-by-id @collection.name, doc._id, doc
-        callback ...
+      err, doc <~ _orig.call this
+      refresh-object @collection.name, { _id:doc._id }, doc unless err
+      cb ...
 
-  function decorate-query-find then
-    Query::_execFind = _execFind = Query::execFind
-    Query::execFind = (callback) ->
+  function decorate-query-find
+    _orig = Query::execFind
+    Query::execFind = (cb) ->
       #log 'Query::execFind'
       return miss! unless _.isEmpty conds = @_conditions
       return miss! unless _.isEmpty @_fields
       return miss! unless (opts = @_optionsForExec @model).lean
       return hit docs if docs = @@store.get @model.modelName, STORE-KEY
 
-      _execFind.call this, (err, docs) ~>
-        return callback err if err
-        @@store.set @model.modelName, STORE-KEY, docs
-        @@store.set-query @model.modelName, STORE-KEY, this
-        callback err, docs
+      _orig.call this, (err, docs) ~>
+        unless err
+          @@store.set @model.modelName, STORE-KEY, docs
+          @@store.set-query @model.modelName, STORE-KEY, this
+        cb ...
 
       function hit docs then
         #log 'HIT!'
-        callback null, docs
+        cb null, docs
 
       ~function miss then
         #log 'MISS!'
-        _execFind.call this, callback
+        _orig.call this, cb
 
-  function decorate-query-findOne then
-    _findOne = Query::findOne
-    Query::findOne = (callback) ->
-      #log 'Query.findOne'
-      return miss! unless (cond-keys = _.keys conds = @_conditions).length is 1
-      return miss! unless cond-keys.0 is \_id
+  function decorate-query-findOne
+    _orig = Query::findOne
+    Query::findOne = (cb) ->
+      #log 'Query.findOne', @_conditions
       return miss! unless _.isEmpty @_fields
       return miss! unless (opts = @_optionsForExec @model).lean
-
       return miss! unless docs = @@store.get @model.modelName, STORE-KEY
-      doc = _.find docs, (d) -> d._id is conds._id
-      callback null, doc
 
-      ~function miss then
+      cb null, _.find docs, @_conditions
+
+      ~function miss
         #log 'MISS!'
-        _findOne.call this, callback
+        _orig.call this, cb
 
-  function decorate-query-findOneAndRemove then
-    _findOneAndRemove = Query::findOneAndRemove
-    Query::findOneAndRemove = (callback) ->
+  function decorate-query-findOneAndRemove
+    _orig = Query::findOneAndRemove
+    Query::findOneAndRemove = (cb) ->
       #log 'Query::findOneAndRemove'
-      update-by-id @model.modelName, @_conditions._id
-      _findOneAndRemove ...
+      err <~ _orig.call this
+      refresh-object @model.modelName, @_conditions unless err
+      cb ...
 
-  function decorate-query-remove then
+  function decorate-query-findOneAndUpdate
+    _orig = Query::findOneAndUpdate
+    Query::findOneAndUpdate = (cb) ->
+      #log 'Query::findOneAndUpdate', @_conditions, @_updateArg
+      err, doc <~ _orig.call this
+      refresh-object @model.modelName, @_conditions, doc unless err
+      cb ...
+
+  function decorate-query-remove
     Query::remove = -> throw new Error 'not implemented'
 
-  function decorate-query-update then
+  function decorate-query-update
     Query::update = -> throw new Error 'not implemented'
 
-  # in-situ update is probably faster than refreshing from db
-  function update-by-id coll-name, id, o then
-    #log 'REFRESH'
+  function refresh-object coll-name, conds, o
+    #log 'refresh-object', coll-name, conds, o
     docs = (@@store.get coll-name, STORE-KEY) or {}
-    docs = _.reject docs, -> it._id is id
+    docs = _.reject docs, conds
     docs.push(o._doc or o) if o
     @@store.set coll-name, STORE-KEY, docs
