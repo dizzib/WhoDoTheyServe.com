@@ -7,13 +7,14 @@ Hive      = require \./api/hive
 Oauth     = require \./api/oauth
 ApiRouter = require \./api/router
 DeployMap = require \./deploy/hive/map
-MigLogins = require \./deploy/migrate-logins
+MigUsers  = require \./deploy/migrate-users
 
 Db.connect!
 Hive.init DeployMap.set-icons
 
-# TODO: remove temporary logins migration code
-err <- MigLogins.migrate
+# TODO: remove temporary migration code
+err <- MigUsers.drop-indexes
+err <- MigUsers.migrate
 (console.log err) if err
 
 Oauth.init! # must be called prior to setting up express routes (in Server.init)

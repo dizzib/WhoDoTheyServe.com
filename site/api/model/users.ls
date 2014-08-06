@@ -10,7 +10,7 @@ spec =
   login_id    : type:String, required:yes, index:{+unique} # logins._id or openauth id
   auth_type   : type:String, required:yes, enum:[AUTHTYPE-PASSWORD] ++ <[ facebook github google ]>
   name        : type:String, required:yes
-  email       : type:String, index:{+unique} # validated below
+  email       : type:String # validated below
   info        : type:String, match:Cons.url.regex
   role        : type:String, required:yes, enum:<[ admin user ]>, default:\user
   create_date : type:Date  , required:yes, default:Date.now

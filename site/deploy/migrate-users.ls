@@ -3,6 +3,14 @@ M-Logins = require \../api/model/logins
 M-Users  = require \../api/model/users
 
 module.exports =
+  drop-indexes: (cb) ->
+    err, o <- M-Users.collection.dropIndex \login_1
+    log err, o
+    cb err if err
+    err, o <- M-Users.collection.dropIndex \email_1
+    log err, o
+    cb err
+
   migrate: (cb) ->
     err, users <- M-Users.find
     return cb err if err
