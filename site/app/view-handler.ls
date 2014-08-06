@@ -6,7 +6,8 @@ V   = require \./view
 Ve  = require \./view-engine
 Vee = require \./view/edge-edit
 Vev = require \./view/evidence
-Vsi = require \./view/user-signin
+Vue = require \./view/user-edit
+Vus = require \./view/user-signin
 
 const KEYCODE-ESC = 27
 
@@ -36,10 +37,11 @@ module.exports =
       ..user-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed, -> navigate \users
+        ..on \rendered ,    Vue.init
         ..on \saved    , -> navigate "user/#{it.id}"
       ..user-signin
         ..on \cancelled, -> Bh.history.back!
-        ..on \saved    ,    Vsi.on-signin
+        ..on \saved    ,    Vus.on-signin
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> navigate \session

@@ -27,8 +27,9 @@ schema = new M.Schema spec
     @email = Crypt.encrypt @email
     next!
   ..pre \validate, (next) -> # validate email
+    return next! unless @email
     return next! unless @isModified \email
-    @invalidate \email, 'Invalid email' unless Cons.email.regex.test @email
+    @invalidate \email, "Invalid email #{@email}" unless Cons.email.regex.test @email
     next!
 
 module.exports = me = M.model \users, schema

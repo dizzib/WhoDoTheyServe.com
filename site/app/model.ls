@@ -87,7 +87,7 @@ function user-spec opts
     'passconf':
       equalTo: \password
     'email':
-      * required: yes
+      * required: no
       * pattern : Cons.email.regex
         msg     : "Email should be #{Cons.email.info}"
     'info':

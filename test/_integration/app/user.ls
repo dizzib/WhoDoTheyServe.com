@@ -26,7 +26,7 @@ function create handle, is-ok, fields = {}
 
 function go-edit
   B.click \Edit
-  B.wait-for /Edit Account/, \legend>.update
+  B.wait-for /Edit/, \legend>.update
 
 function fill fields then B.fill do
   Username          : fields.handle
