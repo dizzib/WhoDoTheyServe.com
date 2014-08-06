@@ -7,14 +7,16 @@ module.exports =
     env = process.env
     setup \facebook, env.OAUTH_FACEBOOK_ID, env.OAUTH_FACEBOOK_SECRET
     setup \github  , env.OAUTH_GITHUB_ID  , env.OAUTH_GITHUB_SECRET
+    setup \google  , env.OAUTH_GOOGLE_ID  , env.OAUTH_GOOGLE_SECRET
     Ea
       ..debug = true
-      ..everymodule.findUserById (id, cb) -> cb! # define stub to avoid Everyauth error
+      ..everymodule
+        ..moduleTimeout 15000ms
+        ..findUserById (id, cb) -> cb! # define stub to avoid Everyauth error
       # module specific config
-      ..facebook
-        .fields 'id,name,link'
-      ..github
-        .scope ''
+      ..facebook.fields 'id,name,link'
+      ..github.scope ''
+      ..google.scope 'profile'
 
     function setup ea-id, oa-id, oa-secret
       Ea[ea-id] # module common config
@@ -24,6 +26,8 @@ module.exports =
         .callbackPath "/api/auth/#ea-id/callback"
         .findOrCreateUser (session, , , oa-user) -> # oauth has successfully authenticated the user
           p = Ea.everymodule.Promise!
+          return p.fail new Error 'oa-user.id is empty' unless oa-user.id
+          return p.fail new Error 'oa-user.name is empty' unless oa-user.name
 
           function signin user
             M-Sessions.signin session, user
@@ -40,6 +44,10 @@ module.exports =
               signin user
             else # user doesn't exist in db so create it before signing in
               o = { login_id:login-id, auth_type:ea-id, name:oa-user.name }
+              # Other oa-user fields:
+              # facebook: link
+              # github  : url, avatar_url
+              # google  : link, picture
               err, user <- (new M-Users o).save
               return p.fail err if err
               signin user
