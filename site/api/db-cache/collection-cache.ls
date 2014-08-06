@@ -35,7 +35,7 @@ class Cache
       cb ...
 
   function decorate-query-find
-    _orig = Query::execFind
+    _orig = Query::_execFind = Query::execFind # orig used by sweeper
     Query::execFind = (cb) ->
       #log 'Query::execFind'
       return miss! unless _.isEmpty conds = @_conditions

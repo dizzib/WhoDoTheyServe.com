@@ -16,14 +16,14 @@ class Sweeper
       queries[coll-name] = query
     _.delay sweep, sweep-period-ms
 
-    function sweep then
+    function sweep
       #log 'sweep cache'
       @@store.clear!
       for k, q of queries
         sweep-coll k, q
       _.delay sweep, sweep-period-ms
 
-    function sweep-coll coll-name, query then
+    function sweep-coll coll-name, query
       err, docs <- Query::_execFind.call query
       if err then return console.error "sweep #{coll-name} failed: #{err}"
       @@store.set coll-name, query.store-key, docs
