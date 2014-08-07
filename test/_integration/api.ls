@@ -75,7 +75,7 @@ test Hive.a.set.bad # not admin
 it 'maint'
 test User.a.quota-daily.six.update.bad
 test User.a.password.b.update.ok
-test User.a.email.null.update.bad
+test User.a.email.null.update.ok
 test User.a.email.no-domain.update.bad
 test User.a.email.no-dot.update.bad
 test User.a.email.no-name.update.bad
