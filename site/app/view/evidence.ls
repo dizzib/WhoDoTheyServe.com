@@ -1,4 +1,4 @@
-_  = require \lodash
+_  = require \underscore
 C  = require \../collection
 F  = require \../fireprox
 H  = require \../helper
