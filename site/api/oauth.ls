@@ -1,4 +1,5 @@
 Ea         = require \everyauth
+Url        = require \url
 M-Sessions = require \./model/sessions
 M-Users    = require \./model/users
 
@@ -9,7 +10,7 @@ module.exports =
     setup \github  , env.OAUTH_GITHUB_ID  , env.OAUTH_GITHUB_SECRET
     setup \google  , env.OAUTH_GOOGLE_ID  , env.OAUTH_GOOGLE_SECRET
     Ea
-      ..debug = true
+     #..debug = true
       ..everymodule
         ..moduleTimeout 15000ms
         ..findUserById (id, cb) -> cb! # define stub to avoid Everyauth error
@@ -52,6 +53,9 @@ module.exports =
               return p.fail err if err
               signin user
           p
-        .handleAuthCallbackError (req, res) -> res.send 500, 'openauth authentication failed'
+        .handleAuthCallbackError (req, res) ->
+          # e.g. user cancels out of oauth provider splash page
+          # forward the querystring containing the error info
+          res.redirect "/#/user/signin/error#{(Url.parse req.url).search}"
         .myHostname "#{env.OAUTH_HOSTNAME}:#{env.PORT || 80}"
         .redirectPath '/#/session'

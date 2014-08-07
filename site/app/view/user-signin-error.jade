@@ -1,0 +1,16 @@
+.well
+  legend
+    i.glyph.fa.fa-2x.fa-exclamation-triangle
+    span Login Error
+  span Login failed due to the following error:
+  dl.dl-horizontal
+    // error* class names must match querystring keys from oauth
+    dt Id
+    dd.error
+    dt Desc
+    dd.error_description
+    dt Uri
+    dd.error_uri
+  hr
+  a(href='/#/user/signin').btn Back to login
+    i.fa.fa-arrow-left

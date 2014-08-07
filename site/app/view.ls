@@ -37,6 +37,7 @@ T-NotesHead     = F.readFileSync __dirname + \/view/notes-head.html
 T-User          = F.readFileSync __dirname + \/view/user.html
 T-UserEdit      = F.readFileSync __dirname + \/view/user-edit.html
 T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
+T-UserSigninErr = F.readFileSync __dirname + \/view/user-signin-error.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 
@@ -76,6 +77,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..user            = new V.InfoView template:T-User         , el:\.view>.main
   ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
+  ..user-signin-err = new V.InfoView template:T-UserSigninErr, el:\.view>.main
   ..user-signout    = new V-SignOut
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.users

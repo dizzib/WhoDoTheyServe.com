@@ -1,5 +1,6 @@
 B = require \backbone
 F = require \fs # inlined by brfs
+Q = require \querystring # browserified
 T = require \transparency
 _ = require \underscore
 H = require \./helper
@@ -52,9 +53,11 @@ module.exports =
 
   InfoView: B.View.extend do
     initialize: -> @template = it.template
-    render: (model, directive) ->
-      data = if model then model.toJSON-T! else {}
-      # NOTE: transparency won't process directive if data is void, hence {}
+    render: (model-or-querystring, directive) ->
+      if _.isString (o = model-or-querystring)
+        data = Q.parse if o.0 is \? then o.substring 1 else o
+      else
+        data = if o then o.toJSON-T! else {} # transparency won't process void data, hence {}
       ($tem = $ @template).render data, directive
       @$el.html $tem .set-access S .show!
 
