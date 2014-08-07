@@ -41,6 +41,7 @@ module.exports =
         ..on \saved    , -> navigate "user/#{it.id}"
       ..user-signin
         ..on \cancelled, -> Bh.history.back!
+        ..on \rendered ,    Vus.init
         ..on \saved    ,    Vus.on-signin
       ..user-signup
         ..on \cancelled, -> Bh.history.back!

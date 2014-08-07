@@ -22,7 +22,7 @@ V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
 Vf  = require \./view/footer
-Vsi = require \./view/user-signin
+Vus = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -58,7 +58,7 @@ function fetch-entities-core cb
   $.when(C.Maps.fetch!, C.Users.fetch!, Hi.Map.fetch!).then cb, fail
 
 function start-signed-in
-  Vsi.init!
+  Vus.init-signin!
   start!
 
 function start

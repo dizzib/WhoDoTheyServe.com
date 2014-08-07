@@ -1,18 +1,18 @@
 include ../lib/_form
 
-.well
+.openauth.well
   legend OpenAuth Login
   a(href='api/auth/facebook')
     i.glyph.fa.fa-2x.fa-facebook
-    span Login using your Facebook account
+    span Login with your Facebook account
   hr
   a(href='api/auth/github')
     i.glyph.fa.fa-2x.fa-github
-    span Login using your Github account
+    span Login with your Github account
   hr
   a(href='api/auth/google')
     i.glyph.fa.fa-2x.fa-google-plus
-    span Login using your Google account
+    span Login with your Google account
 
 form.form-horizontal.create.well
   legend Standard Login
@@ -24,3 +24,8 @@ form.form-horizontal.create.well
     i.fa.fa-arrow-left
   button(type='submit').btn.btn-primary.pull-right Login 
     i.fa.fa-sign-in
+
+.please-wait.well.hide
+  legend
+    i.glyph.fa.fa-2x.fa-spin.fa-cog // high cpu usage!
+    span Logging in...
