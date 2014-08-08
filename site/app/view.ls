@@ -7,7 +7,6 @@ V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
 V-Session   = require \./view/session
 V-SignOut   = require \./view/user-signout
-V-Version   = require \./view/version
 
 H.insert-css-seo F.readFileSync __dirname + \/view.css
 
@@ -40,6 +39,7 @@ T-UserSignin    = F.readFileSync __dirname + \/view/user-signin.html
 T-UserSigninErr = F.readFileSync __dirname + \/view/user-signin-error.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
+T-Version       = F.readFileSync __dirname + \/view/version.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
   ## views
@@ -82,7 +82,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.users
   ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main
-  ..version         = new V-Version                            el:\.version
+  ..version         = new V.InfoView template:T-Version      , el:\.view-version
 
   ## helper functions
 

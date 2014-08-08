@@ -49,7 +49,7 @@ function init
   Val.init!
   Vh .init!
   Vf .init!
-  M.Sys.fetch error:fail, success: -> V.version.render!
+  M.Sys.fetch error:fail, success: -> V.version.render M.Sys
 
 function fail-si coll, xhr then alert \signed-in, xhr
 function fail    coll, xhr then alert \core, xhr
