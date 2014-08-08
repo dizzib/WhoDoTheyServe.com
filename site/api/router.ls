@@ -22,14 +22,13 @@ exports.init = (express) ->
     ..options \*, (, res) -> res.send 200
 
   express
-    ..get  "/api/sys"              , Analytics.measure
-    ..get  "/api/sys"              , Sys.get
     ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
     ..get  "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
    #..get "/api/users/:id/verify/:token", M-Users.verify
 
   set-api-sec-hive!
   set-api-sec-sessions!
+  set-api-sec-sys!
   set-api-sec-users!
   set-api-sec \evidences , M-Evidences
   set-api-sec \edges     , M-Edges
@@ -38,6 +37,7 @@ exports.init = (express) ->
   set-api-sec \notes     , M-Notes
   set-api-hive!
   set-api-integrity!
+  set-api-sys!
   set-api-crud \evidences, M-Evidences
   set-api-crud \edges    , M-Edges
   set-api-crud \maps     , M-Maps
@@ -47,7 +47,7 @@ exports.init = (express) ->
   set-api-crud \users    , M-Users
   set-api-crud-sessions!
 
-  function set-api-crud route, Model then
+  function set-api-crud route, Model
     express
       ..get    "/api/#{route}"    , Model.crud-fns.list
       ..post   "/api/#{route}"    , Model.crud-fns.create
@@ -55,48 +55,26 @@ exports.init = (express) ->
       ..put    "/api/#{route}/:id", Model.crud-fns.update
       ..delete "/api/#{route}/:id", Model.crud-fns.delete
 
-  function set-api-crud-logins then
+  function set-api-crud-logins
     express
       ..post   "/api/users"       , M-Logins.crud-fns.create
       ..get    "/api/users/:id"   , M-Logins.crud-fns.read
       ..put    "/api/users/:id"   , M-Logins.crud-fns.update
       ..delete "/api/users/:id"   , M-Logins.crud-fns.delete
 
-  function set-api-crud-sessions then
+  function set-api-crud-sessions
     express
       ..get    "/api/sessions"    , M-Sessions.crud-fns.list
       ..post   "/api/sessions"    , M-Sessions.crud-fns.create
       ..delete "/api/sessions/:id", M-Sessions.crud-fns.delete
 
-  function set-api-hive then
+  function set-api-hive
     express
       ..get  "/api/hive/:key"    , Hive.read
       ..post "/api/hive/:key"    , Hive.write
       ..put  "/api/hive/:key/:id", Hive.write
 
-  function set-api-sec route, Model then
-    express
-      ..post   "/api/#{route}"    , Sec.create Model
-      ..put    "/api/#{route}/:id", Sec.amend Model
-      ..delete "/api/#{route}/:id", Sec.amend Model
-
-  function set-api-sec-hive then
-    express
-      ..post "/api/hive/:key", Sec.admin
-      ..put  "/api/hive/:key", Sec.admin
-
-  function set-api-sec-sessions then
-    express
-      ..post   "/api/sessions"    , SecSessions.create!
-      ..delete "/api/sessions/:id", SecSessions.delete!
-
-  function set-api-sec-users then
-    express
-      ..post   "/api/users"    , SecUsers.create!
-      ..put    "/api/users/:id", SecUsers.maintain!
-      ..delete "/api/users/:id", SecUsers.maintain!
-
-  function set-api-integrity then
+  function set-api-integrity
     express
       ..post   "/api/edges"    , Integrity.edge-create
       ..put    "/api/edges/:id", Integrity.edge-update
@@ -104,3 +82,35 @@ exports.init = (express) ->
       ..post   "/api/nodes"    , Integrity.node-create
       ..put    "/api/nodes/:id", Integrity.node-update
       ..delete "/api/nodes/:id", Integrity.node-delete
+
+  function set-api-sec route, Model
+    express
+      ..post   "/api/#{route}"    , Sec.create Model
+      ..put    "/api/#{route}/:id", Sec.amend Model
+      ..delete "/api/#{route}/:id", Sec.amend Model
+
+  function set-api-sec-hive
+    express
+      ..post "/api/hive/:key", Sec.admin
+      ..put  "/api/hive/:key", Sec.admin
+
+  function set-api-sec-sessions
+    express
+      ..post   "/api/sessions"    , SecSessions.create!
+      ..delete "/api/sessions/:id", SecSessions.delete!
+
+  function set-api-sec-sys
+    express
+      ..put  "/api/sys", Sec.admin
+
+  function set-api-sec-users
+    express
+      ..post   "/api/users"    , SecUsers.create!
+      ..put    "/api/users/:id", SecUsers.maintain!
+      ..delete "/api/users/:id", SecUsers.maintain!
+
+  function set-api-sys
+    express
+      ..get  "/api/sys", Analytics.measure
+      ..get  "/api/sys", Sys.read
+      ..put  "/api/sys", Sys.update

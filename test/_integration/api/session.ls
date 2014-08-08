@@ -5,11 +5,11 @@ ST = require \../state
 
 module.exports = SP.get-spec signin, signout
 
-function signin handle, is-ok, fields then
+function signin handle, is-ok, fields
   sess = handle: handle
   H.assert (res = H.post \sessions, _.extend sess, fields), is-ok
   if H.is-ok res then ST.handle = res.body
 
-function signout then
+function signout
   H.ok res = H.del "sessions/#{ST.handle._id}"
   if H.is-ok res then delete ST.handle
