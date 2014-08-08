@@ -12,27 +12,25 @@ class Cache
     decorate-query-find!
     decorate-query-findOneAndRemove!
 
-  function decorate-model-remove then
-    _remove = Model::remove
-    Model::remove = (callback) ->
+  function decorate-model-remove
+    _orig = Model::remove
+    Model::remove = (cb) ->
       #log 'Model::remove'
-      _remove.call this, (err) ~>
-        return callback err if err
-        @@store.clear @collection.name, @entity_id if @entity_id
-        callback ...
+      err <~ _orig.call this
+      @@store.clear @collection.name, @entity_id if @entity_id unless err
+      cb ...
 
-  function decorate-model-save then
-    _save = Model::save
-    Model::save = (callback) ->
+  function decorate-model-save
+    _orig = Model::save
+    Model::save = (cb) ->
       #log 'Model::save'
-      _save.call this, (err, doc) ~>
-        return callback err if err
-        @@store.clear @collection.name, doc.entity_id if doc.entity_id
-        callback ...
+      err, doc <~ _orig.call this
+      @@store.clear @collection.name, doc.entity_id if doc.entity_id unless err
+      cb ...
 
-  function decorate-query-find then
-    _execFind = Query::execFind
-    Query::execFind = (callback) ->
+  function decorate-query-find
+    _orig = Query::execFind
+    Query::execFind = (cb) ->
       #log 'Query::execFind'
       return miss! unless (cond-keys = _.keys conds = @_conditions).length is 1
       return miss! unless cond-keys.0 is \entity_id
@@ -40,22 +38,21 @@ class Cache
       return miss! unless (opts = @_optionsForExec @model).lean
       return hit docs if docs = @@store.get @model.modelName, (entity-id = _.values conds .0)
 
-      _execFind.call this, (err, docs) ~>
-        return callback err if err
-        @@store.set @model.modelName, entity-id, docs
-        callback err, docs
-
-      function hit docs then
+      function hit docs
         #log 'HIT!'
-        return callback null, docs
+        return cb null, docs
 
-      ~function miss then
+      ~function miss
         #log 'MISS!'
-        _execFind.call this, callback
+        _orig.call this, cb
 
-  function decorate-query-findOneAndRemove then
-    _findOneAndRemove = Query::findOneAndRemove
-    Query::findOneAndRemove = (callback) ->
+      err, docs <~ _orig.call this
+      @@store.set @model.modelName, entity-id, docs unless err
+      cb err, docs
+
+  function decorate-query-findOneAndRemove
+    _orig = Query::findOneAndRemove
+    Query::findOneAndRemove = ->
       #log 'Query::findOneAndRemove'
       @@store.clear @model.modelName # not sure how to get entity_id
-      _findOneAndRemove ...
+      _orig ...
