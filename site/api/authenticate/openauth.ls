@@ -18,13 +18,13 @@ module.exports =
       return done new H.AuthenticateError 'id is empty' unless id
       return done new H.AuthenticateError 'name is empty' unless name
       login-id = id.toString! # id might be a number
-      M-Users.findOne login_id:login-id .lean!exec (err, user) ->
-        return done err if err
-        if user
-          return done null, user if user.name is name
-          M-Users.findOneAndUpdate { login_id:login-id }, name:name, done # name has changed
-        else # user doesn't exist in db so create it
-          (new M-Users { login_id:login-id, auth_type:auth-type, name:name }).save done
+      err, user <- M-Users.findOne login_id:login-id .lean!exec
+      return done err if err
+      if user
+        return done null, user if user.name is name
+        M-Users.findOneAndUpdate { login_id:login-id }, name:name, done # name has changed
+      else # user doesn't exist in db so create it
+        (new M-Users { login_id:login-id, auth_type:auth-type, name:name }).save done
 
     function set-config auth-type, strategy, client-id, client-secret, cfg-extra
       cfg =
@@ -37,6 +37,6 @@ module.exports =
         # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
 
   callback: (req, res) ->
-    log \callback, req.user, req.session
-    M-Sessions.signin req.session, req.user
+    #log \callback, req.user, req.session
+    M-Sessions.signin req
     res.redirect '/#/session'
