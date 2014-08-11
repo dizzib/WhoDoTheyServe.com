@@ -1,9 +1,9 @@
 global.log = console.log
 
-Everyauth = require \everyauth
 Express   = require \express
 Im        = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
 _         = require \lodash
+Passport  = require \passport
 H         = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms
@@ -33,16 +33,16 @@ module.exports =
       ..use Express.cookieSession cookie-opts
       ..use Express.bodyParser!
       ..use allow-cross-domain
+      ..use Passport.initialize!
       ..use express.router
       ..use Express.static DIR-APP, static-opts
-      ..use Everyauth.middleware! # must follow other routes to avoid redundant calls
       ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
       ..use log-error show-stack:env in <[ development staging production ]>
       ..use handle-error
       ..use Express.errorHandler! if env in <[ development ]>
 
 # http://backbonetutorials.com/cross-domain-sessions/
-function allow-cross-domain req, res, next then
+function allow-cross-domain req, res, next
   res.set \Access-Control-Allow-Credentials, true
   res.set \Access-Control-Allow-Headers    , 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
   res.set \Access-Control-Allow-Methods    , 'GET,POST,PUT,DELETE,OPTIONS'
@@ -53,7 +53,9 @@ function get-validation-msg err
   return _.reduce err.errors, iterator, ''
   function iterator memo, err then memo + "#{err.message}\n"
 
-function handle-error err, req, res, next then
+function handle-error err, req, res, next
+  if err instanceof H.AuthenticateError
+    return res.redirect "/#/user/signin/error?error_description=#{err.message}"
   msg = switch
     | err instanceof H.ApiError    => err.message
     | err.name is \ValidationError => get-validation-msg err

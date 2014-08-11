@@ -33,7 +33,11 @@ module.exports = me =
 
   assert: (res, is-ok = true) -> (if is-ok then me.ok else me.err) res
 
+  is-err: -> it.statusCode is 500
+
   is-ok: -> it.statusCode is 200
+
+  is-redirect: -> it.statusCode is 302
 
   ok: -> assert-result it, 200
 

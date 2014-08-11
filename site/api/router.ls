@@ -1,4 +1,7 @@
+Passport    = require \passport
 Analytics   = require \./analytics
+A-OpenAuth  = require \./authenticate/openauth
+A-Password  = require \./authenticate/password
 H           = require \./helper
 Hive        = require \./hive
 Integrity   = require \./integrity
@@ -46,6 +49,9 @@ exports.init = (express) ->
   set-api-crud-logins! # must run before M-Users because M-Users.create needs login_id
   set-api-crud \users    , M-Users
   set-api-crud-sessions!
+  set-api-openauth \facebook
+  set-api-openauth \github
+  set-api-openauth \google
 
   function set-api-crud route, Model
     express
@@ -83,6 +89,14 @@ exports.init = (express) ->
       ..put    "/api/nodes/:id", Integrity.node-update
       ..delete "/api/nodes/:id", Integrity.node-delete
 
+  function set-api-openauth auth-type
+    express
+      ..get "/api/auth/#auth-type"         , SecSessions.before-authenticate
+      ..get "/api/auth/#auth-type"         , Passport.authenticate auth-type
+      ..get "/api/auth/#auth-type/callback", Passport.authenticate auth-type, failureRedirect:'/#/user/signin/error'
+      ..get "/api/auth/#auth-type/callback", SecSessions.after-authenticate
+      ..get "/api/auth/#auth-type/callback", A-OpenAuth.callback
+
   function set-api-sec route, Model
     express
       ..post   "/api/#{route}"    , Sec.create Model
@@ -96,8 +110,10 @@ exports.init = (express) ->
 
   function set-api-sec-sessions
     express
-      ..post   "/api/sessions"    , SecSessions.create!
-      ..delete "/api/sessions/:id", SecSessions.delete!
+      ..post   "/api/sessions"    , SecSessions.before-authenticate
+      ..post   "/api/sessions"    , A-Password.authenticate
+      ..post   "/api/sessions"    , SecSessions.after-authenticate
+      ..delete "/api/sessions/:id", SecSessions.delete
 
   function set-api-sec-sys
     express

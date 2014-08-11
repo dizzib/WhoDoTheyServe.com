@@ -18,7 +18,7 @@ module.exports = me =
       me.signout req, res, req.session.signin
 
   signin: (session, user) ->
-    log "SignIn #{user.name} as #{user.role}"
+    log "SignIn #{user.name} as #{user.role} (via #{user.auth_type})"
     session.signin =
       id  : user._id
       role: user.role

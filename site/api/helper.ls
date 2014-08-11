@@ -4,8 +4,15 @@ class ApiError extends Error
     @name    = \ApiError
     @message = it
 
+class AuthenticateError extends Error
+  ->
+    super ...
+    @name    = \AuthenticateError
+    @message = it
+
 module.exports =
-  ApiError: ApiError
+  ApiError         : ApiError
+  AuthenticateError: AuthenticateError
 
   get-date-yesterday: ->
       d = new Date!

@@ -1,50 +1,21 @@
-_        = require \lodash
-CryptPwd = require \../crypt-pwd
-H        = require \../helper
-M-Logins = require \../model/logins
-M-Users  = require \../model/users
-Sys      = require \../sys
+H       = require \../helper
+M-Users = require \../model/users
+Sys     = require \../sys
 
 module.exports =
-  create: ->
-    (req, res, next) ->
-      freeze-secs = process.env.WDTS_USER_SIGNIN_BAD_FREEZE_SECS or 5s
-      return next new Error 'signout required' if req.session.signin
-      do
-        err, login <- M-Logins.findOne handle:(b = req.body).handle
-        return next err if err
-        return fail next unless login
-        err, user <- M-Users.findOne login_id:login._id
-        return next err if err
-        return fail next unless user
-        if Sys.get-is-mode-maintenance! and user.role is \user
-          return next new H.ApiError "User logins are currently disabled for maintenance. Please try again later."
-        if d = user.freeze_until then
-          if Date.now! < new Date d then return next new H.ApiError do
-            "Account is temporarily frozen. Please retry in #{freeze-secs} seconds"
-        err, is-match <- CryptPwd.check b.password, login.password
-        return next err if err
-        return fail next, user unless is-match
-        #return next new Error 'user not verified' unless user.is_verified
-        user.freeze_until = void
-        err, req.user <- user.save
-        next err
+  after-authenticate: (req, res, next) ->
+    return next new Error 'req.user must be present' unless (u = req.user)?
+    if Sys.get-is-mode-maintenance! and u.role is \user then return next new H.AuthenticateError do
+      "User logins are currently disabled for maintenance. Please try again later."
+    if d = u.freeze_until and Date.now! < new Date d then return next new H.AuthenticateError do
+      "Account is temporarily frozen. Please retry in #{M-Users.get-signin-bad-freeze-secs!} seconds"
+    next!
 
-      function fail next, user then
-        do
-          return reply! unless user and freeze-secs > 0
-          d = new Date!
-          d.setSeconds d.getSeconds! + freeze-secs
-          user.freeze_until = d
-          err, user <- user.save
-          return next err if err
-          reply!
+  before-authenticate: (req, res, next) ->
+    return next new Error 'signout required' if req.session.signin
+    next!
 
-        function reply then next new H.ApiError do
-          "Login failed! Please ensure your username and password are correct."
-
-  delete: ->
-    (req, res, next) ->
-      return next new Error 'signin required' unless si = req.session.signin
-      return next new Error 'signin mismatch' unless req.id is si.id
-      next!
+  delete: (req, res, next) ->
+    return next new Error 'signin required' unless si = req.session.signin
+    return next new Error 'signin mismatch' unless req.id is si.id
+    next!

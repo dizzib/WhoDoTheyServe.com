@@ -5,12 +5,13 @@
   span Login failed due to the following error:
   dl.dl-horizontal
     // error* class names must match querystring keys from oauth
+    // &nbsp; to workaround bug where error_description appears in Id field if Id is empty
     dt Id
-    dd.error
+    dd.error &nbsp;
     dt Desc
-    dd.error_description
+    dd.error_description &nbsp;
     dt Uri
-    dd.error_uri
+    dd.error_uri &nbsp;
   hr
   a(href='/#/user/signin').btn Back to login
     i.fa.fa-arrow-left

@@ -58,3 +58,10 @@ module.exports = me = M.model \users, schema
     update: Crud.get-invoker me, Crud.update, return-fields:<[ name ]>
     delete: Crud.get-invoker me, Crud.delete, return-fields:<[ name ]>
     list: Crud.get-invoker me, Crud.list, return-fields:<[ info name role ]>
+  ..freeze = (user, cb) ->
+    (d = new Date!).setSeconds d.getSeconds! + me.get-signin-bad-freeze-secs!
+    me.findByIdAndUpdate user._id, freeze_until:d, cb
+  ..get-signin-bad-freeze-secs = -> process.env.WDTS_USER_SIGNIN_BAD_FREEZE_SECS or 5s
+  ..unfreeze = (user, cb) ->
+    user.freeze_until = void
+    user.save cb

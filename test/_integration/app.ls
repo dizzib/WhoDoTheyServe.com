@@ -8,8 +8,6 @@ Note     = require \./app/note
 Session  = require \./app/session
 User     = require \./app/user
 
-return
-
 unless \tester is env = process.env.NODE_ENV
   throw new Error "unexpected environment #env"
 
