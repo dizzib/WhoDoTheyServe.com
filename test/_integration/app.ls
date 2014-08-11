@@ -5,6 +5,7 @@ Edge     = require \./app/edge
 Evidence = require \./app/evidence
 Node     = require \./app/node
 Note     = require \./app/note
+OpenAuth = require \./app/openauth
 Session  = require \./app/session
 User     = require \./app/user
 
@@ -42,8 +43,11 @@ test User.a.email.new.update.ok
 test User.a.create.bad
 test User.b.create.ok
 test User.list.is3
-it '---userA create entities'
 test Session.signout.ok
+#it '---openauth signup'
+#test OpenAuth.github
+#test User.list.is4
+it '---userA create entities'
 test Session.a.signin.bad.handle
 test Session.a.signin.bad.password
 test Session.a.signin.password.a.ok

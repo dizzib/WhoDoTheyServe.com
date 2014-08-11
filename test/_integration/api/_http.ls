@@ -11,8 +11,13 @@ module.exports = me =
     W.for del, url path
 
   get: (path, cb) ->
+    #log \get, url path
     function get url, cb then r.get url, (err, response, body) ->
-      cb err, { statusCode:response?statusCode, object:JSON.parse body }
+      try
+        o = JSON.parse body
+      catch
+        throw new Error "Unable to parse body: #body"
+      cb err, { statusCode:response?statusCode, object:o }
     W.for get, url path
 
   post: (path, obj) ->

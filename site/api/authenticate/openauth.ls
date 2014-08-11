@@ -30,7 +30,7 @@ module.exports =
       cfg =
         clientID    : client-id
         clientSecret: client-secret
-        callbackURL : "http://#{env.OAUTH_HOSTNAME}:#{env.PORT || 80}/api/auth/#auth-type/callback"
+        callbackURL : "http://#{env.SITE_DOMAIN_NAME}:#{env.PORT || 80}/api/auth/#auth-type/callback"
       Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
         #log auth-type, profile
         get-user auth-type, (p = profile).id, p.displayName, done
@@ -40,3 +40,7 @@ module.exports =
     #log \callback, req.user, req.session
     M-Sessions.signin req
     res.redirect '/#/session'
+
+#function mock-passport
+#  Cobbler = require \cobbler
+#  Cobbler \passport-github, { provider:\github, id:\12345, displayName:\foobar }

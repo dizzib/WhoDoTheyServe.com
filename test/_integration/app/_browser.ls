@@ -8,7 +8,7 @@ W4  = require \wait.for .for
 W4m = require \wait.for .forMethod
 
 const POLL-TIME    = 50ms
-const SITE-URL     = "http://#{Os.hostname!}:#{process.env.SITE_PORT}"
+const SITE-URL     = "http://#{process.env.SITE_DOMAIN_NAME}:#{process.env.SITE_PORT}"
 const WAIT-TIMEOUT = 10000ms
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host)
