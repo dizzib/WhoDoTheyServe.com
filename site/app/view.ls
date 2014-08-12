@@ -12,6 +12,7 @@ H.insert-css-seo F.readFileSync __dirname + \/view.css
 
 # cannot refactor since Brfs requires this exact code format
 D-About         = F.readFileSync __dirname + \/doc/about.html
+T-Admin         = F.readFileSync __dirname + \/view/admin.html
 T-EdgeEdit      = F.readFileSync __dirname + \/view/edge-edit.html
 T-Edge          = F.readFileSync __dirname + \/view/edge.html
 T-Edges         = F.readFileSync __dirname + \/view/edges.html
@@ -43,6 +44,7 @@ T-Version       = F.readFileSync __dirname + \/view/version.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
   ## views
+  ..admin           = new V.InfoView template:T-Admin        , el:\.view>.main
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id

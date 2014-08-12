@@ -1,16 +1,21 @@
 Chai = require \chai .should!
-H    = require \../spec/helper
+H    = require \../helper
 Http = require \./_http
+Sh   = require \../spec/helper
 
-h = H \sys, void, read, update, void, void
+h = Sh \sys, void, read, void, void, void
 
 module.exports =
   mode:
     maintenance: h.get-spec '', mode:\maintenance
     normal     : h.get-spec '', mode:\normal
+    toggle:
+      ok : get-spec-toggle-mode true
+      bad: get-spec-toggle-mode false
 
-function update key, is-ok, fields
-  Http.assert (res = Http.put \sys, fields), is-ok
+function get-spec-toggle-mode is-ok
+  info: "sys mode toggle #{if is-ok then '' else 'bad '}"
+  fn  : H.run -> Http.assert (res = Http.get \sys/mode/toggle), is-ok
 
 function read key, is-ok, fields
   Http.assert (res = Http.get \sys), is-ok

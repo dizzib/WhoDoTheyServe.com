@@ -117,7 +117,7 @@ exports.init = (express) ->
 
   function set-api-sec-sys
     express
-      ..put  "/api/sys", Sec.admin
+      ..get  "/api/sys/mode/toggle", Sec.admin
 
   function set-api-sec-users
     express
@@ -127,6 +127,6 @@ exports.init = (express) ->
 
   function set-api-sys
     express
-      ..get  "/api/sys", Analytics.measure
-      ..get  "/api/sys", Sys.read
-      ..put  "/api/sys", Sys.update
+      ..get  "/api/sys"            , Analytics.measure
+      ..get  "/api/sys"            , Sys.read
+      ..get  "/api/sys/mode/toggle", Sys.toggle-mode

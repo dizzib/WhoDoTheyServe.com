@@ -12,12 +12,12 @@ module.exports = me =
 
   get: (path, cb) ->
     #log \get, url path
-    function get url, cb then r.get url, (err, response, body) ->
+    function get url, cb then r.get url, (err, res, body) ->
       try
-        o = JSON.parse body
+        o = if me.is-ok res then JSON.parse body else void
       catch
         throw new Error "Unable to parse body: #body"
-      cb err, { statusCode:response?statusCode, object:o }
+      cb err, { statusCode:res?statusCode, object:o }
     W.for get, url path
 
   post: (path, obj) ->

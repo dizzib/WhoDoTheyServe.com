@@ -213,7 +213,7 @@ test Note.a.remove.ok
 test Note.a.list.is0
 test Note.b.list.is1
 it 'sys'
-test Sys.mode.maintenance.update.bad
+test Sys.mode.toggle.bad
 test Session.signout.ok
 it '---userB'
 test Session.b.signin.bad.handle
@@ -260,12 +260,13 @@ test Node.c.remove.ok
 test Node.f.remove.ok
 test Node.list.is4
 it '---sys.mode'
-test Sys.mode.maintenance.update.ok
+test Sys.mode.normal.read.ok
+test Sys.mode.toggle.ok
 test Sys.mode.maintenance.read.ok
 test Session.signout.ok
 test Session.a.signin.password.c.bad
 test Session.admin.signin.password.a.ok
-test Sys.mode.normal.update.ok
+test Sys.mode.toggle.ok
 test Sys.mode.normal.read.ok
 test Session.signout.ok
 test Session.a.signin.password.c.ok

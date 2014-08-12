@@ -19,6 +19,7 @@ Router = B.Router.extend do
   routes:
     \__coverage          : coverage
     ''                   : \map_default
+    \admin               : \admin
     \doc/about           : \doc_about
     \edge/edit/:id       : \edge_edit
     \edge/new            : \edge_edit
@@ -47,6 +48,7 @@ Router = B.Router.extend do
     \user/:id            : \user
     \users               : \users
     \*nomatch            : \map_default
+  admin          : -> V.admin.render M.Sys
   doc_about      : -> V.doc-about.render!
   edge           : -> Hi.set-edge Vc.edge ...
   edge_edit      : -> V.edge-edit.render (M.Edge.create it), C.Edges

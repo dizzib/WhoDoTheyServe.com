@@ -11,8 +11,6 @@ module.exports =
 
   read: (req, res, next) -> res.json { mode:mode, version:Pj.version }
 
-  update: (req, res, next) ->
-    mo = (b = req.body).mode
-    return next new H.ApiError "unexpected mode #mo" unless mo in [ MODE-MAINT, MODE-NORMAL ]
-    mode := mo
+  toggle-mode: (req, res, next) ->
+    mode := if mode is MODE-NORMAL then MODE-MAINT else MODE-NORMAL
     res.json mode:mode
