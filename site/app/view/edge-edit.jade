@@ -5,6 +5,12 @@ form.form-horizontal.well
     span.create Create Connection
     span.update Edit Connection
   fieldset
+    .alert.alert-info
+      | This connection 
+      span.create will be
+      span.update is
+      |  publicly shared and viewable by anyone.
+      | It will appear on any map having both Actors A and B.
     span.input-xxlarge
       +field-select('a_node_id', 'Actor A')
     +field-label('a_is', 'Influence')

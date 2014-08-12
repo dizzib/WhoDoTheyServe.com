@@ -4,20 +4,26 @@ form.form-horizontal.well
   legend
     span.create Create Actor
     span.update Edit Actor
+  .alert.alert-info
+    | This actor 
+    span.create will be
+    span.update is
+    |  publicly shared and viewable by anyone.
+    | It may be used by other users' connections and maps.
   fieldset
     span.input-xxlarge
       +field-text('name', 'Name', 'Enter name')
-    span.help-block
+    .help-block.v-gap
       | A person's name should take the form LastName, FirstName e.g. 
       strong Jefferson, Thomas 
       | rather than 
       strong Thomas Jefferson
-      | .
-    span.help-block
-      | An organisation should begin without indefinite article e.g. 
+      | . An organisation should begin without indefinite article e.g. 
       strong Bank of England 
       | rather than 
       strong The Bank of England
       | .
+    .help-block.v-gap
+      | Use the dropdown to check the node doesn't already exist.
     hr
     +button-bar
