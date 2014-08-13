@@ -8,7 +8,7 @@ c = C \user,
   go-create: -> B.go \user/signup
   go-edit  : go-edit
   go-list  : -> B.go \users
-  on-create: -> B.wait-for /Goodbye|Welcome/, \.main>.show>legend
+  on-create: (key, fields) -> B.wait-for fields.handle, 'h2 .name'
   on-update: -> B.wait-for it, '.main h2'
 
 module.exports = S.get-spec create, void, c.update, c.remove, c.list

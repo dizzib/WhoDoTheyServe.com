@@ -5,7 +5,6 @@ V-Latest    = require \./view/latest
 V-Map       = require \./view/map
 V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
-V-Session   = require \./view/session
 V-SignOut   = require \./view/user-signout
 
 H.insert-css-seo F.readFileSync __dirname + \/view.css
@@ -75,7 +74,6 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..note-edit       = new V.EditView template:T-NoteEdit     , el:\.view>.note-edit
   ..notes           = new V.ListView template:T-Notes        , el:\.view>.notes
   ..notes-head      = new V.InfoView template:T-NotesHead    , el:\.view>.notes-head
-  ..session         = new V-Session                            el:\.view>.main
   ..user            = new V.InfoView template:T-User         , el:\.view>.main
   ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
@@ -101,12 +99,15 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
 
   ..reset = ->
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
-    $ '.view>*' .off!hide! # call off() so different views can use same element
-    $ '.view>:not(.persist)' .empty! # leave persistent views e.g. map
 
-    # clear any error alert location overrides and reset back to default
-    $ '.alert-error' .removeClass \active
-    $ '.view>.alert-error' .addClass \active
+    # handle view persistance -- some views should not be cleared down, for performance
+    $ '.view>:not(.persist-once)' .off!hide! # call off() so different views can use same element
+    $ '.view>:not(.persist-once,.persist)' .empty! # leave persistent views e.g. map
+    $ '.view>.persist-once' .removeClass \persist-once
+
+    # handle errors
+    $ '.alert-error' .removeClass \active    # clear any error alert location overrides
+    $ '.view>.alert-error' .addClass \active # reset back to default
 
     me.navbar.render!
     V.ResetEditView!

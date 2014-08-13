@@ -13,5 +13,6 @@ module.exports = B.View.extend do
     m.destroy error:H.on-err, success:signout
 
     function signout
+      H.show-alert-once 'Goodbye! You are now logged out'
       delete V.map.map # remove editing map
-      R.navigate \session, trigger:true
+      R.navigate \users, trigger:true

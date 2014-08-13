@@ -1,4 +1,5 @@
 C = require \./collection
+H = require \./helper
 
 module.exports = me =
   auto-sync-el: ($el) ->
@@ -17,3 +18,6 @@ module.exports = me =
 
   is-signed-out: ->
     C.Sessions.length is 0
+
+  refresh: (cb) ->
+    C.Sessions.fetch error:H.on-err, success:cb

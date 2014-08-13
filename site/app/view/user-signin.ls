@@ -1,8 +1,10 @@
 Bh  = require \backbone .history
 C   = require \../collection
 E   = require \../entities
+H   = require \../helper
 Hi  = require \../hive
 R   = require \../router
+S   = require \../session
 V   = require \../view
 Vme = require \./map/edit
 
@@ -13,17 +15,19 @@ module.exports = me =
       $ \.please-wait .show!
 
   init-signin: ->
+    H.show-alert-once 'Welcome! You are now logged in'
     Vme.init!
     # multi-select can't be browserified 'cos it references an adjacent png
     yepnope.injectCss \/lib-3p/multiple-select.css
 
   on-signin: ->
+    <- S.refresh
     E.fetch ok, fail
 
     function ok
       delete V.map.map # remove readonly map
       me.init-signin!
-      R.navigate \session, trigger:true
+      R.navigate \user, trigger:true
 
     function fail coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"

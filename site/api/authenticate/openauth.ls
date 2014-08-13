@@ -39,7 +39,7 @@ module.exports =
   callback: (req, res) ->
     #log \callback, req.user, req.session
     M-Sessions.signin req
-    res.redirect '/#/session'
+    res.redirect '/#/user'
 
 #function mock-passport
 #  Cobbler = require \cobbler

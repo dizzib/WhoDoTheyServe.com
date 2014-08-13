@@ -26,6 +26,9 @@ module.exports = me =
       ..setRequestHeader 'Content-Type', 'application/json; charset=UTF-8'
       ..send JSON.stringify obj
 
+  show-alert-once: (msg) ->
+    $ '.view>.alert-info' .addClass \persist-once .text msg .show!
+
   show-error: ->
     # The .active class can be used to override the default error alert location
     $ \.alert-error.active:last .text it .show!
