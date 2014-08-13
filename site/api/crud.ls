@@ -29,8 +29,8 @@ module.exports = me =
     respond req, res, next, err, doc, opts
 
   delete: (req, res, next, Model, opts) ->
-    err <- Model.findByIdAndRemove req.id
-    respond req, res, next, err, req.body, opts
+    err, doc <- Model.findByIdAndRemove req.id
+    respond req, res, next, err, doc, opts
 
   list: (req, res, next, Model, opts) ->
     err, docs <- Model.find!lean!exec

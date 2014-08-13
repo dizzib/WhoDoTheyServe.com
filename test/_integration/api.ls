@@ -238,8 +238,10 @@ test Note.b.text.min.create.bad # count > 1
 it 'userA'
 test User.a.info.path.update.bad
 test User.a.remove.bad
-test User.b.remove.ok
-test Session.signout.ok
+it 'remove self'
+test User.b.remove.ok # remove self
+test Session.signout.bad # should already be signed out
+test Node.f.remove.bad
 test Session.b.signin.password.a.bad
 it '---admin'
 test Session.admin.signin.bad.handle
@@ -249,7 +251,6 @@ test Hive.b.set.ok
 it 'user'
 test User.a.password.c.update.ok
 test User.a.quota-daily.six.update.ok
-test User.c.remove.ok
 it 'graph'
 test Node.a.name.max.update.ok # dispite edge
 test Edge.ab.to-ba.update.ok # dispite immutable

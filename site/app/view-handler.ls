@@ -36,11 +36,12 @@ module.exports =
         ..on \saved    , -> nav-extra-done \note
       ..user-edit
         ..on \cancelled, -> Bh.history.back!
-        ..on \destroyed, -> navigate \users
+        ..on \destroyed,    Vue.after-delete
         ..on \rendered ,    Vue.init
         ..on \saved    , -> navigate "user/#{it.id}"
       ..user-signin
         ..on \cancelled, -> Bh.history.back!
+        ..on \error    , -> Vus.toggle-please-wait false
         ..on \rendered ,    Vus.init
         ..on \saved    ,    Vus.on-signin
       ..user-signup

@@ -15,7 +15,8 @@ module.exports = me =
       res.json user
 
     delete: (req, res, next) ->
-      me.signout req, res, req.session.signin
+      me.signout req, req.session.signin
+      res.json req.body
 
   signin: (req) ->
     log "SignIn #{(u = req.user).name} as #{u.role} (via #{u.auth_type})"
@@ -23,7 +24,6 @@ module.exports = me =
       id  : u._id
       role: u.role
 
-  signout: (req, res, siu) ->
+  signout: (req, siu) ->
     log "SignOut #{siu.id} as #{siu.role}"
     delete req.session.signin
-    res.json req.body

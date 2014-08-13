@@ -10,9 +10,7 @@ Vme = require \./map/edit
 
 module.exports = me =
   init: ->
-    $ '.openauth a, .btn-primary' .click ->
-      $ 'form, .openauth' .hide!
-      $ \.please-wait .show!
+    $ '.openauth a, .btn-primary' .click -> me.toggle-please-wait true
 
   init-signin: ->
     H.show-alert-once 'Welcome! You are now logged in'
@@ -32,3 +30,7 @@ module.exports = me =
     function fail coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
       Bh.history.back!
+
+  toggle-please-wait: ->
+    $ \.please-wait .toggle it
+    $ 'form, .openauth' .toggle not it

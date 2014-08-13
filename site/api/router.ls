@@ -24,11 +24,7 @@ exports.init = (express) ->
     ..param \key, (req,, next, req.key) -> next!
     ..options \*, (, res) -> res.send 200
 
-  express
-    ..get  "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
-    ..get  "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
-   #..get "/api/users/:id/verify/:token", M-Users.verify
-
+  # security
   set-api-sec-hive!
   set-api-sec-sessions!
   set-api-sec-sys!
@@ -38,20 +34,34 @@ exports.init = (express) ->
   set-api-sec \maps      , M-Maps
   set-api-sec \nodes     , M-Nodes
   set-api-sec \notes     , M-Notes
+
+  # general
+  express
+    ..delete "/api/users/:id", (req, res ,next) ->
+      M-Sessions.signout req, id:req.id if req.id is req.session.signin.id # signout before self delete
+      next!
+    ..get "/api/evidences/for/:id", M-Evidences.crud-fns.list-for-entity
+    ..get "/api/notes/for/:id"    , M-Notes.crud-fns.list-for-entity
   set-api-hive!
   set-api-integrity!
   set-api-sys!
+
+  # crud
+  set-api-crud-logins! # must run before M-Users because M-Users needs req.login
+  set-api-crud-sessions!
   set-api-crud \evidences, M-Evidences
   set-api-crud \edges    , M-Edges
   set-api-crud \maps     , M-Maps
   set-api-crud \nodes    , M-Nodes
   set-api-crud \notes    , M-Notes
-  set-api-crud-logins! # must run before M-Users because M-Users.create needs login_id
   set-api-crud \users    , M-Users
-  set-api-crud-sessions!
+
+  # openauth
   set-api-openauth \facebook
   set-api-openauth \github
   set-api-openauth \google
+
+  ## helpers
 
   function set-api-crud route, Model
     express

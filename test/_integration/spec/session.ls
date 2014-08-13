@@ -9,6 +9,10 @@ module.exports =
       info: "signin #{if is-ok then '' else 'bad '}#handle #{JSON.stringify fields}"
       fn  : H.run -> create handle, is-ok, fields
 
+    function get-spec-signout is-ok
+      info: "signout #{if is-ok then '' else 'bad '}"
+      fn  : H.run -> remove is-ok
+
     function get-spec-tests handle, fields
       ok : get-spec-signin handle, true , fields
       bad: get-spec-signin handle, false, fields
@@ -26,7 +30,7 @@ module.exports =
     admin: get-spec \admin
     a: get-spec \usera
     b: get-spec \userb
+    c: get-spec \userc
     signout:
-      ok:
-        info: "signout"
-        fn  : H.run remove
+      ok : get-spec-signout true
+      bad: get-spec-signout false

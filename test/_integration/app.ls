@@ -94,6 +94,9 @@ test Note.a.text.max.update.ok
 test Note.a.list.is2
 test Note.a.remove.ok
 test Note.a.list.is1
+it 'delete self'
+test User.b.remove.ok
+#test Session.signout.bad # should be signed out
 
 #it 'map', R ->
 #  B.refresh!
@@ -111,7 +114,6 @@ test Note.a.list.is1
 
 ## teardown
 it '---userA remove entities'
-test Session.signout.ok
 test Session.a.signin.password.b.ok
 test Edge.ab.remove.bad # still has evidence
 test Evidence.ab0.remove.ok
@@ -128,6 +130,9 @@ test Node.b.remove.ok
 it '---admin remove users'
 test Session.signout.ok
 test Session.admin.signin.password.a.ok
-test User.b.remove.ok
 test User.a.remove.ok
 test User.list.is1
+it '---admin recreate users' # ensure no orphaned logins causing duplicate key error
+test User.a.create.ok
+test User.b.create.ok
+test User.list.is3

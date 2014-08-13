@@ -47,8 +47,11 @@ module.exports =
       is-new = m.isNew!
       m.attributes = $ it.currentTarget .serializeObject!
       @trigger \serialized, m
-      @coll.create m, { +merge, +wait, error:H.on-err, success: ~> @trigger \saved, m, is-new }
-      false
+      @coll.create m, { +merge, +wait, error:on-err, success: ~> @trigger \saved, m, is-new }
+      return false
+      ~function on-err
+        @trigger \error, m
+        H.on-err ...
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING
 
   InfoView: B.View.extend do

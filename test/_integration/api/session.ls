@@ -11,8 +11,9 @@ function signin handle, is-ok, fields
   Ex(H.is-ok res).to.be.true if is-ok
   Ex(H.is-err res or H.is-redirect res).to.be.true unless is-ok
   # TODO: check redirect goes to /user/signin/error
-  if H.is-ok res then St.handle = res.body
+  St.handle = res.body if H.is-ok res
 
-function signout
-  H.ok res = H.del "sessions/#{St.handle._id}"
-  if H.is-ok res then delete St.handle
+function signout is-ok
+  res = H.del "sessions/#{St.handle._id}"
+  H.assert res, is-ok
+  delete St.handle if H.is-ok res
