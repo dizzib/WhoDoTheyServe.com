@@ -96,7 +96,6 @@ test Note.a.remove.ok
 test Note.a.list.is1
 it 'delete self'
 test User.b.remove.ok
-#test Session.signout.bad # should be signed out
 
 #it 'map', R ->
 #  B.refresh!
