@@ -31,8 +31,7 @@ H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 B.Model.prototype.idAttribute = \_id # mongodb
 
 Api.init!
-Mx .init!
-C  .init!
+C.init!
 
 C.Sessions.fetch error:fail, success:init
 

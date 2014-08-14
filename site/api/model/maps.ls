@@ -36,6 +36,7 @@ module.exports = me = Crud.set-fns (M.model \maps, schema)
 function read req, res, next
   err, map <- me.findById req.id .lean!exec
   return next err if err
+  return res.json {} unless map
   map.entities = {}
   # nodes
   map-node-ids = _.pluck map.nodes, \_id

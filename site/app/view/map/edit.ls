@@ -22,12 +22,12 @@ module.exports.init = ->
       @$el.find \legend .on \click, ~> @$el.find \.body .toggle!
 
     ..on \saved, (map, is-new) ->
+      save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked
       V.navbar.render!
       init-error-alert!
       navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->
-      save-is-default it.id if V.map-edit.$el.find \#is-default .prop \checked
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
       nodes = (vg = V.map).get-nodes-xy!
@@ -64,6 +64,7 @@ function enable-buttons
 
 function init-error-alert
   # show errors on this form rather than in base view
+  $ \.alert-error .removeClass \active
   V.map-edit.$el.find \.alert-error .addClass \active .hide!
 
 function load-is-default id

@@ -29,7 +29,7 @@ function render-maps-dropdown $t
   $maps = $t.find \ul.maps
 
   if C.Maps.length
-    uid = S.get-id! or C.Users.find(-> log it; it.get-is-admin!).models.0.id
+    uid = S.get-id! or C.Users.find(-> it.get-is-admin!).models.0.id
     maps = C.Maps.where 'meta.create_user_id':uid
     json = _.map maps, -> it.toJSON-T!
     $maps.render json, D.maps

@@ -104,9 +104,12 @@ module.exports = B.View.extend do
     @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
 
-    unless @map.isNew! or opts?is-slow-to-cool
-      @f.alpha 0 # must be called after start
-      on-tick!   # single tick required to render frozen map
+    # determine whether to freeze immediately
+    return if @map.isNew!
+    return if opts?is-slow-to-cool
+
+    @f.alpha 0 # freeze map -- must be called after start
+    on-tick!   # single tick required to render frozen map
 
   show: ->
     return unless @el # might be undefined for seo

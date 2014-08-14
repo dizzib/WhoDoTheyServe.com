@@ -169,6 +169,7 @@ function init-sandbox
       | \el.parent => window.el.parentNode
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
+        continue if el.disabled
         if cond-fn el.textContent and ((not include-hidden and el.offsetParent) or include-hidden)
           #log 'match:', el.outerHTML
           window.el = el

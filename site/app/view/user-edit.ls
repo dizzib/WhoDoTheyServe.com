@@ -3,7 +3,6 @@ S = require \../session
 
 module.exports =
   init: ->
-    log 1, it.get-is-admin!
     $ 'legend .update' .text "Edit #{it.get \name}"
     $ \.authtype-password .remove! unless \password is it.get \auth_type
 

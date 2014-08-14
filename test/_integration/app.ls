@@ -3,6 +3,7 @@ R        = require \./helper .run
 B        = require \./app/_browser
 Edge     = require \./app/edge
 Evidence = require \./app/evidence
+Map      = require \./app/map
 Node     = require \./app/node
 Note     = require \./app/note
 OpenAuth = require \./app/openauth
@@ -31,7 +32,8 @@ it 'click Latest', R ->
   B.click \Latest
   B.wait-for 'Latest Updates', \legend
 
-it '---admin signup users'
+it '---admin'
+it 'signup users'
 test User.list.is0
 test User.admin.create.ok
 test User.list.is1
@@ -43,11 +45,21 @@ test User.a.email.new.update.ok
 test User.a.create.bad
 test User.b.create.ok
 test User.list.is3
+it 'node'
+test Node.list.is0
+test Node.a.create.ok
+test Node.a.name.max.update.ok
+test Node.a.name.max-gt.update.bad
+test Node.a.name.update.ok
+test Node.a.name.dup.update.bad
+test Node.b.create.bad # node a missing evidence
+it 'map'
+test Map.a.create.ok # default map
 test Session.signout.ok
 #it '---openauth signup'
 #test OpenAuth.github
 #test User.list.is4
-it '---userA create entities'
+it '---userA'
 test Session.a.signin.bad.handle
 test Session.a.signin.bad.password
 test Session.a.signin.password.a.ok
@@ -57,22 +69,18 @@ test Session.signout.ok
 test Session.a.signin.password.a.bad
 test Session.a.signin.password.b.ok
 it 'node'
-test Node.list.is0
-test Node.a.create.ok
-test Node.a.name.max.update.ok
-test Node.a.name.max-gt.update.bad
-test Node.a.name.update.ok
-test Node.a.name.dup.update.bad
-test Node.b.create.bad # prior node missing evidence
 test Evidence.a.list.is0
-test Evidence.a0.create.ok
+test Evidence.a0.create.ok # b can add evidence to a's node
 test Evidence.a0.create.bad
 test Evidence.a0.update.ok
 test Evidence.a1.create.ok
 test Evidence.a.list.is2
 test Evidence.a1.update.ok
 test Node.b.create.ok
+test Node.list.is2
 test Evidence.b0.create.ok
+it 'map'
+test Map.b.create.ok
 it 'edge'
 test Edge.list.is0
 test Edge.ab.create.ok
@@ -112,26 +120,27 @@ test User.b.remove.ok
 # delete map
 
 ## teardown
-it '---userA remove entities'
+it '---userA teardown'
 test Session.a.signin.password.b.ok
 test Edge.ab.remove.bad # still has evidence
 test Evidence.ab0.remove.ok
 test Edge.ab.remove.ok
-test Node.a.remove.bad
 test Note.a.remove.ok
 test Note.a.list.is0
 test Evidence.a0.remove.ok
 test Evidence.a1.remove.ok
 test Evidence.a.list.is0
-test Node.a.remove.ok
 test Evidence.b0.remove.ok
+test Node.b.remove.bad # still on map
+test Map.b.remove.ok
 test Node.b.remove.ok
-it '---admin remove users'
+it '---admin teardown'
 test Session.signout.ok
 test Session.admin.signin.password.a.ok
+it 'remove users'
 test User.a.remove.ok
 test User.list.is1
-it '---admin recreate users' # ensure no orphaned logins causing duplicate key error
+it 'recreate users' # ensure no orphaned logins causing duplicate key error
 test User.a.create.ok
 test User.b.create.ok
 test User.list.is3

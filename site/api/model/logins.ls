@@ -53,5 +53,6 @@ function adjust-fields # for later use by M-Users
 function get-login req, cb
   err, user <- M-Users.findById req.id
   return cb err if err
+  return cb! unless user
   return cb! unless M-Users.check-is-authtype-password user
   me.findById user.login_id, cb

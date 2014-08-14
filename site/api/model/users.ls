@@ -52,6 +52,7 @@ module.exports = me = M.model \users, schema
       Crud.read req, res, next, me,
         return-fields: <[ auth_type handle email info name quota_daily ]>
         success: (req, user, next) ->
+          return next! unless user
           user.email = Crypt.decrypt user.email
           user.handle = req.login?handle
           next!
