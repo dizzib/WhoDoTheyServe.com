@@ -113,12 +113,6 @@ test User.b.remove.ok
 # TODO: why does B.assert.count think line is not displayed ?
 # B.assert.count 1, sel:'.graph line.edge'
 
-# TODO
-# create map
-# update/delete node ref'd by map -> fail
-# update map
-# delete map
-
 ## teardown
 it '---userA teardown'
 test Session.a.signin.password.b.ok
