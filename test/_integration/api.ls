@@ -48,10 +48,6 @@ test User.handle.min.remove.ok
 test User.handle.max.remove.ok
 test User.handle.num4.remove.ok
 test User.handle.num3.remove.ok
-#test Session.admin.signin.password.a.bad
-#test User.admin.token.fake.verify.bad
-#test User.admin.verify.ok
-#test User.admin.verify.bad
 test User.a.create.ok
 test User.a.email.new.update.ok
 test User.a.email.new.read.ok
