@@ -8,6 +8,7 @@ Http     = require \./api/_http
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
 Hive     = require \./api/hive
+Map      = require \./api/map
 Node     = require \./api/node
 Note     = require \./api/note
 Session  = require \./api/session
@@ -26,7 +27,7 @@ it '/sys access should increment hit count after a short while', R ->
   Http.assert W4 Http.get, \sys
   # this test completes at the end of this file
 
-it 'signup'
+it '---admin'
 test User.list.is0
 test User.admin.create.ok
 test User.admin.create.bad
@@ -63,14 +64,14 @@ test User.e.create.bad # daily signup max
 test Hive.a.set.ok
 test Session.a.signin.password.a.bad # signout required
 test Session.signout.ok
+
 it '---public'
 test Hive.a.get.ok
 test Hive.b.get.bad
+
 it '---userA'
 test Session.a.signin.bad.handle
 test Session.a.signin.bad.password
-#test Session.a.signin.password.a.bad
-#test User.a.verify.ok
 test Session.a.signin.password.a.ok
 test Hive.a.set.bad # not admin
 it 'maint'
@@ -120,9 +121,8 @@ test Node.a.name.dup.update.bad
 test Node.b.create.bad # prior node missing evidence
 test Evidence.a.list.is0
 test Evidence.a0.create.ok
-test Evidence.a.list.is1
 test Evidence.a0.create.bad # dup
-test Node.a.name.update.bad # has evidence
+test Evidence.a.list.is1
 test Evidence.a.url.path.create.ok
 test Evidence.a.url.path.read.ok
 test Evidence.a.url.path-qs.create.ok
@@ -135,29 +135,54 @@ test Evidence.a1.remove.ok
 test Evidence.a.url.path.remove.ok
 test Evidence.a.url.path-qs.remove.ok
 test Evidence.a.list.is1
-test Node.b.create.ok
-test Evidence.b.list.is0
+test Node.a.remove.bad # has evidence
+test Node.a.name.update.bad # has evidence
+it 'note'
+test Note.a.list.is0
+test Note.a.create.ok
+test Note.a.list.is1
+test Note.a.text.min.create.bad # count > 1
+test Note.a.text.min.update.ok
+test Note.a.text.min-lt.update.bad
+test Note.a.text.max.update.ok
+test Note.a.text.max-gt.update.bad
 it 'edge'
 test Edge.aa.create.bad # loop
-test Edge.ab.create.bad # b missing evidence
-test Node.c.create.bad # prior node missing evidence
+it 'map'
+test Map.list.is0
+test Map.a.create.ok
+test Map.list.is1
+it 'sys'
+test Sys.mode.toggle.bad
+
+it '---userB'
+test Session.signout.ok
+test Session.b.signin.bad.handle
+test Session.b.signin.bad.password
+test Session.b.signin.password.a.ok
+it 'node'
+test Node.a.name.update.bad
+test Node.a.remove.bad
+test Evidence.a0.remove.bad
+test Node.b.create.ok
+test Evidence.b.list.is0
+it 'note'
+test Note.b.list.is0
+test Note.b.create.ok
+test Note.b.list.is1
+test Note.b.text.min.create.bad # count > 1
+test Note.b.remove.ok
+test Note.b.list.is0
+test Note.a.create.ok
+test Note.a.list.is2
+it 'edge'
 test Evidence.b0.create.ok
 test Evidence.b.list.is1
 test Node.b.create.bad # dup
-test Node.c.create.ok
-test Evidence.c0.create.ok
-test Node.d.create.ok
-test Evidence.d0.create.ok
-test Node.e.create.ok
-test Evidence.e0.create.ok
-test Node.f.create.bad # count > 5
-test Node.list.is5
-test Node.c.remove.bad # has evidence
 test Edge.list.is0
 test Edge.ab.create.ok
 test Edge.ab.create.bad # dup
 test Edge.ab.to-ab.update.ok
-test Edge.ab.to-bc.update.bad # ab immutable
 test Edge.ab.is.eq.update.ok
 test Edge.ab.is.eq.read.ok
 test Edge.ab.is.gt.update.bad
@@ -179,88 +204,73 @@ test Edge.ab.year.from.min-lt.update.bad
 test Edge.ab.year.range.in.update.ok
 test Edge.ab.year.range.in.read.ok
 test Edge.ab.year.range.out.update.bad
-test Edge.ac.create.bad # prior edge missing evidence
-test Evidence.ab0.create.ok
-test Edge.ba.create.bad # reciprocal ab
+test Edge.ba.create.bad # reciprocal
+test Edge.list.is1
+it 'node'
+test Node.a.remove.bad # has edge
+test Node.b.remove.bad # has edge
+test Node.g.create.ok # node g to test map integrity
+it 'users'
+test User.a.info.path.update.bad
+test User.a.remove.bad
+
+it '---userC'
+test Session.signout.ok
+test Session.c.signin.password.a.ok
+it 'graph'
+test Node.c.create.ok
+test Edge.ab.create.bad # already exists
+test Edge.ba.create.bad # already exists
+test Edge.ca.create.bad # a_node missing evidence
+test Edge.ac.create.bad # b_node missing evidence
+test Evidence.c0.create.ok
 test Edge.ac.create.ok
-test Edge.list.is2
-test Edge.ac.to-ba.update.bad # reciprocal ab
-test Edge.bc.create.bad # prior edge missing evidence
 test Evidence.ac0.create.ok
-test Evidence.ac1.create.ok # count > 5
+test Edge.bc.create.ok
+test Edge.list.is3
+test Edge.ac.to-bc.update.bad
+test Node.d.create.ok
+test Evidence.d0.create.ok
+test Edge.ac.to-ad.update.bad
+test Evidence.bc0.create.ok
 test Node.c.remove.bad # has edge
 test Edge.ac.remove.bad # has evidence
 test Evidence.ac0.remove.ok
-test Evidence.ac1.remove.ok
 test Edge.ac.remove.ok
-test Edge.list.is1
-test Node.a.remove.bad # has edge
-test Node.b.remove.bad # has edge
-test Evidence.c0.remove.ok
-test Node.c.remove.ok
-test Node.list.is4
-it 'note'
-test Note.a.list.is0
-test Note.a.create.ok
-test Note.b.text.tqbf.create.ok
-test Note.a.list.is1
-test Note.a.text.min.create.bad # count > 1
-test Note.a.text.min.update.ok
-test Note.a.text.min-lt.update.bad
-test Note.a.text.max.update.ok
-test Note.a.text.max-gt.update.bad
-test Note.a.remove.ok
-test Note.a.list.is0
-test Note.b.list.is1
-it 'sys'
-test Sys.mode.toggle.bad
+test Edge.list.is2
+test Map.c.create.ok
+it 'node quota'
+test Node.e.create.ok
+test Evidence.e0.create.ok
+test Node.f.create.bad # > quota
+
+it '---userB teardown'
 test Session.signout.ok
-it '---userB'
-test Session.b.signin.bad.handle
-#test Session.b.signin.bad.password
-#test User.b.verify.ok
 test Session.b.signin.password.a.ok
-it 'graph'
-test Node.a.name.update.bad
-test Node.a.remove.bad
-test Node.b.remove.bad
-test Evidence.a0.remove.bad
-test Node.c.create.ok
-test Evidence.c0.create.ok
-test Edge.bc.create.ok
-test Evidence.bc0.create.ok
-test Node.f.create.ok
-it 'note'
-test Note.b.remove.bad
-test Note.b.create.ok
-test Note.b.list.is2
-test Note.b.text.min.create.bad # count > 1
-it 'userA'
-test User.a.info.path.update.bad
-test User.a.remove.bad
-it 'remove self'
+test Node.g.name.update.bad # on userC's map
+test Node.g.remove.bad # on userC's map
 test User.b.remove.ok # remove self
 test Session.signout.bad # should already be signed out
-test Node.f.remove.bad
 test Session.b.signin.password.a.bad
+
 it '---admin'
 test Session.admin.signin.bad.handle
 test Session.admin.signin.bad.password
 test Session.admin.signin.password.a.ok
 test Hive.b.set.ok
-it 'user'
-test User.a.password.c.update.ok
-test User.a.quota-daily.six.update.ok
 it 'graph'
-test Node.a.name.max.update.ok # dispite edge
-test Edge.ab.to-ba.update.ok # dispite immutable
+test Node.a.name.max.update.ok # despite edge
+test Edge.ab.to-ba.update.ok # despite immutable
+test Map.c.remove.ok
 test Evidence.bc0.remove.ok
 test Edge.bc.remove.ok
 test Evidence.c0.remove.ok
 test Node.c.remove.ok
-test Node.f.remove.ok
-test Node.list.is4
-it '---sys.mode'
+it 'user'
+test User.a.password.c.update.ok
+test User.a.quota-daily.six.update.ok
+
+it '---sys.mode toggle maintenance/normal'
 test Sys.mode.normal.read.ok
 test Sys.mode.toggle.ok
 test Sys.mode.maintenance.read.ok
@@ -272,10 +282,11 @@ test Sys.mode.normal.read.ok
 test Session.signout.ok
 test Session.a.signin.password.c.ok
 test Session.signout.ok
+
 it '---public'
-test Node.a.create.bad # signed out
-test Edge.ab.create.bad # signed out
-test Edge.ab.remove.bad # signed out
+test Node.a.create.bad
+test Edge.ab.create.bad
+test Edge.ab.remove.bad
 test Hive.a.get.ok
 test Hive.b.get.ok
 

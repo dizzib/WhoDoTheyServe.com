@@ -30,6 +30,10 @@ exports.get-spec = (...args) ->
   d: h.get-spec \d, name:'Node d'
   e: h.get-spec \e, name:'Node e'
   f: h.get-spec \f, name:'Node f'
+  g: _.extend do
+    h.get-spec \g, name:'Node g'
+    name: _.extend do
+      h.get-spec \g, name:'Node gg'
   list:
     is0: h.get-spec-list 0
     is1: h.get-spec-list 1
