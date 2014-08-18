@@ -28,6 +28,12 @@ module.exports =
     err, obj <- M-Evidences.findOne entity_id:req.id
     return next err if err
     return next new H.ApiError 'Cannot delete an evidenced edge' if obj
+    err, maps-having-edge <- get-maps-having-edge req.id
+    return next err if err
+    if maps-having-edge.length > 0
+      map-names = (_.map maps-having-edge, -> it.name).join ', '
+      msg = "Cannot delete edge because it appears on the following maps: #map-names"
+      return next new H.ApiError msg
     next!
   node-create: get-checker-create M-Nodes
   node-update: (req, res, next) ->
@@ -69,6 +75,16 @@ function get-checker-create Model then (req, res, next) ->
   if (n-no-evidence = ids.length - entity-ids.length) > 0
     return next new H.ApiError "Cannot create while #{n-no-evidence} of your other #{Model.modelName} are missing evidence"
   next!
+
+function get-maps-having-edge id, cb
+  err, edge <- M-Edges.findById id
+  return cb err if err
+  err, maps <- M-Maps.find!lean!exec
+  return cb err if err
+  cb void, _.filter maps, ->
+    return false if edge.meta.create_date > it.edge_cutoff_date
+    map-node-ids = _.pluck it.nodes, \_id
+    (_.contains map-node-ids, edge.a_node_id) and (_.contains map-node-ids, edge.b_node_id)
 
 function get-maps-having-node id, cb
   err, maps <- M-Maps.find!lean!exec

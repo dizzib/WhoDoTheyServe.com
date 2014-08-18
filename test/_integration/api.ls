@@ -243,6 +243,8 @@ test Edge.ac.create.ok
 test Map.c.read.ok
 test Map.c.entities.edges.is2 # latest edge ac should be excluded
 test Edge.ac.remove.ok
+test Evidence.bc0.remove.ok
+test Edge.bc.remove.bad # on map c
 it 'node quota'
 test Node.e.create.ok
 test Evidence.e0.create.ok
@@ -266,7 +268,6 @@ it 'graph'
 test Node.a.name.max.update.ok # despite edge
 test Edge.ab.to-ba.update.ok # despite immutable
 test Map.c.remove.ok
-test Evidence.bc0.remove.ok
 test Edge.bc.remove.ok
 test Evidence.c0.remove.ok
 test Node.c.remove.ok
