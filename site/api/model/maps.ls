@@ -15,10 +15,11 @@ schema-node = new M.Schema do
   y  : type:Number # optional since node may be filtered out of d3
 
 schema = new M.Schema do
-  name    : type:String, required:yes, match:Cons.map.name.regex
-  nodes   : [schema-node]
-  'size-x': type:Number, required:yes
-  'size-y': type:Number, required:yes
+  name            : type:String, required:yes, match:Cons.map.name.regex
+  nodes           : [schema-node]
+  edge_cutoff_date: type:Date, default:Date.now # exclude edges created after this cutoff
+  'size-x'        : type:Number, required:yes
+  'size-y'        : type:Number, required:yes
 
 schema
   ..plugin P-Id
@@ -43,10 +44,12 @@ function read req, res, next
   err, nodes <- M-Nodes.find!lean!exec
   return next err if err
   map.entities.nodes = _.filter nodes, -> _.contains map-node-ids, it._id
-  # edges
+  # edges, excluding those created after the cutoff
   err, edges <- M-Edges.find!lean!exec
   return next err if err
-  map.entities.edges = _.filter edges, -> (_.contains map-node-ids, it.a_node_id) and (_.contains map-node-ids, it.b_node_id)
+  map.entities.edges = _.filter edges, ->
+    return false if it.meta.create_date > map.edge_cutoff_date
+    (_.contains map-node-ids, it.a_node_id) and (_.contains map-node-ids, it.b_node_id)
   # evidences
   err, evs <- M-Evidences.find!lean!exec
   return next err if err

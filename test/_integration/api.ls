@@ -234,7 +234,15 @@ test Edge.ac.remove.bad # has evidence
 test Evidence.ac0.remove.ok
 test Edge.ac.remove.ok
 test Edge.list.is2
+it 'map'
 test Map.c.create.ok
+test Map.list.is2
+test Map.c.read.ok
+test Map.c.entities.edges.is2
+test Edge.ac.create.ok
+test Map.c.read.ok
+test Map.c.entities.edges.is2 # latest edge ac should be excluded
+test Edge.ac.remove.ok
 it 'node quota'
 test Node.e.create.ok
 test Evidence.e0.create.ok

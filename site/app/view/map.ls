@@ -53,7 +53,10 @@ module.exports = B.View.extend do
       y  : node?y or @get-size-y!/2
     # entities
     nodes = C.Nodes.filter -> _.contains node-ids, it.id
-    edges = C.Edges.filter -> it.is-in-map node-ids
+    edges = C.Edges.filter ~>
+      return false unless it.is-in-map node-ids
+      return true unless edge-cutoff-date = @map.get \edge_cutoff_date
+      edge-cutoff-date > it.get \meta .create_date
     @map.set \entities,
       nodes: _.pluck nodes, \attributes
       edges: _.pluck edges, \attributes

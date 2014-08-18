@@ -1,4 +1,5 @@
 _  = require \lodash
+U  = require \util
 W  = require \wait.for
 H  = require \./_http
 ST = require \../state
@@ -16,9 +17,10 @@ module.exports = (entity-name) ->
       submit-create key, is-ok, _.extend entity, fields
 
     read: function read key, is-ok, fields
-      throw new Error 'require > 0 fields to assert' unless fields
+      throw new Error 'need > 0 fields to assert' unless fields
       H.assert (res = H.get get-route key), is-ok
-      for k, v of fields then res.object[k].should.equal v
+      for k, v of fields then res.object[k].should.deep.equal v
+      res
 
     update: function update key, is-ok, fields
       entity = _id:ST[entity-name][key]._id
