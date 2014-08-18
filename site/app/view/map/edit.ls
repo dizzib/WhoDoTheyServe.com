@@ -30,12 +30,12 @@ module.exports.init = ->
     ..on \serialized, ->
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
-      nodes = (vg = V.map).get-nodes-xy!
+      nodes = (v = V.map).get-nodes-xy!
       sel-node-ids = V.map-nodes-sel.get-selected-ids!
       map-node-ids = _.map nodes, -> it._id
       for id in sel-node-ids then unless _.contains map-node-ids, id
         nodes.push _id:id # node is selected but filtered out of map
-      it.set { nodes:nodes, 'size-x':vg.get-size-x!, 'size-y':vg.get-size-y! }
+      it.set { nodes:nodes, 'size-x':v.get-size-x!, 'size-y':v.get-size-y! }
 
     ..show = ->
       init-error-alert!

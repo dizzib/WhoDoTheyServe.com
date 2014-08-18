@@ -84,6 +84,7 @@ module.exports = B.View.extend do
         node = _.findWhere nodes, _id:n._id
         node <<< { x:n.x, y:n.y } if node?
 
+    @f.stop!
     @f.nodes nodes
      .links (edges or [])
      .charge -2000
@@ -167,3 +168,6 @@ function set-map-size v
   set-canvas-size v.svg, w, h
   justify v
   v.f.size [w, h]
+
+  v.map.set \size-x, w
+  v.map.set \size-y, h
