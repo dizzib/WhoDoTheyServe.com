@@ -8,7 +8,7 @@ const AUTHTYPE-PASSWORD = \password
 
 spec =
   login_id    : type:String, required:yes, index:{+unique} # logins._id or openauth id
-  auth_type   : type:String, required:yes, enum:[AUTHTYPE-PASSWORD] ++ <[ facebook github google ]>
+  auth_type   : type:String, required:yes, enum:[AUTHTYPE-PASSWORD] ++ <[ facebook github google mock ]>
   name        : type:String, required:yes
   email       : type:String # validated below
   info        : type:String, match:Cons.url.regex

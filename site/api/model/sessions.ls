@@ -7,7 +7,7 @@ module.exports = me =
       me.signin req
       res.json _.pick req.user, \_id, \name, \role
 
-    list: (req, res, next) ->
+    read: (req, res, next) ->
       return res.json null unless siu = req.session.signin
       err, user <- Users.findOne _id:siu.id, 'name role'
       return next err if err

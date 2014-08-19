@@ -11,6 +11,7 @@ Hive     = require \./api/hive
 Map      = require \./api/map
 Node     = require \./api/node
 Note     = require \./api/note
+OpenAuth = require \./api/openauth
 Session  = require \./api/session
 Sys      = require \./api/sys
 User     = require \./api/user
@@ -32,7 +33,7 @@ test User.list.is0
 test User.admin.create.ok
 test User.admin.create.bad
 test User.handle.min.create.bad
-test Session.admin.signin.password.a.ok
+test Session.admin.password.a.signin.ok
 test User.handle.min.create.ok
 test User.handle.max.create.ok
 test User.handle.num4.create.ok
@@ -58,7 +59,14 @@ test User.d.create.ok
 test User.list.is5
 test User.e.create.bad # daily signup max
 test Hive.a.set.ok
-test Session.a.signin.password.a.bad # signout required
+test Session.a.password.a.signin.bad # signout required
+test Session.signout.ok
+
+it '---openauth'
+test Session.null.read.ok
+test OpenAuth.leg1.ok
+test OpenAuth.leg2.ok
+test Session.oa1.read.ok
 test Session.signout.ok
 
 it '---public'
@@ -66,9 +74,9 @@ test Hive.a.get.ok
 test Hive.b.get.bad
 
 it '---userA'
-test Session.a.signin.bad.handle
-test Session.a.signin.bad.password
-test Session.a.signin.password.a.ok
+test Session.z.password.a.signin.bad
+test Session.a.password.z.signin.bad
+test Session.a.password.a.signin.ok
 test Hive.a.set.bad # not admin
 it 'maint'
 test User.a.quota-daily.six.update.bad
@@ -92,8 +100,8 @@ test User.a.password.weak-num.update.bad
 test User.a.password.weak-sym.update.bad
 test User.a.password.weak-ucase.update.bad
 test Session.signout.ok
-test Session.a.signin.password.a.bad
-test Session.a.signin.password.b.ok
+test Session.a.password.a.signin.bad
+test Session.a.password.b.signin.ok
 it 'node'
 test Node.list.is0
 test Node.a.create.ok
@@ -153,9 +161,8 @@ test Sys.mode.toggle.bad
 
 it '---userB'
 test Session.signout.ok
-test Session.b.signin.bad.handle
-test Session.b.signin.bad.password
-test Session.b.signin.password.a.ok
+test Session.b.password.b.signin.bad
+test Session.b.password.a.signin.ok
 it 'node'
 test Node.a.name.update.bad
 test Node.a.remove.bad
@@ -212,7 +219,7 @@ test User.a.remove.bad
 
 it '---userC'
 test Session.signout.ok
-test Session.c.signin.password.a.ok
+test Session.c.password.a.signin.ok
 it 'graph'
 test Node.c.create.ok
 test Edge.ab.create.bad # already exists
@@ -252,17 +259,16 @@ test Node.f.create.bad # > quota
 
 it '---userB teardown'
 test Session.signout.ok
-test Session.b.signin.password.a.ok
+test Session.b.password.a.signin.ok
 test Node.g.name.update.bad # on userC's map
 test Node.g.remove.bad # on userC's map
 test User.b.remove.ok # remove self
 test Session.signout.bad # should already be signed out
-test Session.b.signin.password.a.bad
+test Session.b.password.a.signin.bad
 
 it '---admin'
-test Session.admin.signin.bad.handle
-test Session.admin.signin.bad.password
-test Session.admin.signin.password.a.ok
+test Session.admin.password.z.signin.bad
+test Session.admin.password.a.signin.ok
 test Hive.b.set.ok
 it 'graph'
 test Node.a.name.max.update.ok # despite edge
@@ -280,12 +286,12 @@ test Sys.mode.normal.read.ok
 test Sys.mode.toggle.ok
 test Sys.mode.maintenance.read.ok
 test Session.signout.ok
-test Session.a.signin.password.c.bad
-test Session.admin.signin.password.a.ok
+test Session.a.password.c.signin.bad
+test Session.admin.password.a.signin.ok
 test Sys.mode.toggle.ok
 test Sys.mode.normal.read.ok
 test Session.signout.ok
-test Session.a.signin.password.c.ok
+test Session.a.password.c.signin.ok
 test Session.signout.ok
 
 it '---public'

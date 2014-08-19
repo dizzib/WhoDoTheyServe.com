@@ -3,7 +3,9 @@ R      = require \request
 W      = require \wait.for
 ST     = require \../state
 
-r = R.defaults jar:R.jar! # clear cookie jar (signout)
+r = R.defaults do
+  followRedirect:false
+  jar:R.jar! # clear cookie jar (signout)
 
 module.exports = me =
   del: (path, cb) ->
@@ -29,8 +31,7 @@ module.exports = me =
     W.for put, url(path), obj
 
   list: (route, n) ->
-    res = W.for me.get, route
-    me.assert res
+    me.assert res = W.for me.get, route
     Should.exist list = res.object
     list.length.should.equal n
 
@@ -55,7 +56,7 @@ function standardise cb then (err, resp, body) ->
 
 function url path then "http://localhost:#{process.env.SITE_PORT}/api/#{path}"
 
-function assert-result res, status-code-expect then
+function assert-result res, status-code-expect
   # log failure to console.error so test runner can respond accordingly
   console.error res.body unless res.statusCode is status-code-expect
   res.statusCode.should.equal status-code-expect

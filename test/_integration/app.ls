@@ -39,7 +39,7 @@ test User.admin.create.ok
 test User.list.is1
 test User.admin.create.bad
 test User.handle.min.create.bad
-test Session.admin.signin.password.a.ok
+test Session.admin.password.a.signin.ok
 test User.a.create.ok
 test User.a.email.new.update.ok
 test User.a.create.bad
@@ -60,14 +60,14 @@ test Session.signout.ok
 #test OpenAuth.github
 #test User.list.is4
 it '---userA'
-test Session.a.signin.bad.handle
-test Session.a.signin.bad.password
-test Session.a.signin.password.a.ok
+test Session.z.password.a.signin.bad
+test Session.a.password.z.signin.bad
+test Session.a.password.a.signin.ok
 it 'maint'
 test User.a.password.b.update.ok
 test Session.signout.ok
-test Session.a.signin.password.a.bad
-test Session.a.signin.password.b.ok
+test Session.a.password.a.signin.bad
+test Session.a.password.b.signin.ok
 it 'node'
 test Evidence.a.list.is0
 test Evidence.a0.create.ok # b can add evidence to a's node
@@ -95,7 +95,7 @@ test Note.a.text.jotld.update.ok
 test Note.a.list.is1
 it '---userB'
 test Session.signout.ok
-test Session.b.signin.password.a.ok
+test Session.b.password.a.signin.ok
 it 'note'
 test Note.a.create.ok
 test Note.a.text.max.update.ok
@@ -115,7 +115,7 @@ test User.b.remove.ok
 
 ## teardown
 it '---userA teardown'
-test Session.a.signin.password.b.ok
+test Session.a.password.b.signin.ok
 test Edge.ab.remove.bad # still has evidence
 test Evidence.ab0.remove.ok
 test Edge.ab.remove.ok
@@ -130,7 +130,7 @@ test Map.b.remove.ok
 test Node.b.remove.ok
 it '---admin teardown'
 test Session.signout.ok
-test Session.admin.signin.password.a.ok
+test Session.admin.password.a.signin.ok
 it 'remove users'
 test User.a.remove.ok
 test User.list.is1

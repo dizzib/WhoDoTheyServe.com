@@ -60,6 +60,7 @@ exports.init = (express) ->
   set-api-openauth \facebook
   set-api-openauth \github
   set-api-openauth \google
+  set-api-openauth \mock, successReturnToOrRedirect:\http://foo if process.env.NODE_ENV is \test
 
   ## helpers
 
@@ -80,8 +81,8 @@ exports.init = (express) ->
 
   function set-api-crud-sessions
     express
-      ..get    "/api/sessions"    , M-Sessions.crud-fns.list
       ..post   "/api/sessions"    , M-Sessions.crud-fns.create
+      ..get    "/api/sessions"    , M-Sessions.crud-fns.read
       ..delete "/api/sessions/:id", M-Sessions.crud-fns.delete
 
   function set-api-hive
@@ -99,10 +100,10 @@ exports.init = (express) ->
       ..put    "/api/nodes/:id", Integrity.node-update
       ..delete "/api/nodes/:id", Integrity.node-delete
 
-  function set-api-openauth auth-type
+  function set-api-openauth auth-type, opts
     express
       ..get "/api/auth/#auth-type"         , SecSessions.before-authenticate
-      ..get "/api/auth/#auth-type"         , Passport.authenticate auth-type
+      ..get "/api/auth/#auth-type"         , Passport.authenticate auth-type, opts
       ..get "/api/auth/#auth-type/callback", Passport.authenticate auth-type, failureRedirect:'/#/user/signin/error'
       ..get "/api/auth/#auth-type/callback", SecSessions.after-authenticate
       ..get "/api/auth/#auth-type/callback", A-OpenAuth.callback

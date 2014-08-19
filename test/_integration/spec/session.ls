@@ -1,36 +1,24 @@
 _ = require \lodash
-H = require \../helper
-S = require \../state
+H = require \./helper
 
-module.exports =
-  get-spec: (create, remove) ->
+module.exports.get-spec = (signin, read, signout) ->
+  h = H \session, signin, read, void, signout
 
-    function get-spec-signin handle, is-ok, fields
-      info: "signin #{if is-ok then '' else 'bad '}#handle #{JSON.stringify fields}"
-      fn  : H.run -> create handle, is-ok, fields
+  function get-spec handle, fields
+    _.extend do
+      h.get-spec handle, fields
+      password:
+        a: h.get-spec handle, password:\Pass1!
+        b: h.get-spec handle, password:\Pass2!
+        c: h.get-spec handle, password:\Pass3!
+        z: h.get-spec handle, password:\zzzz
 
-    function get-spec-signout is-ok
-      info: "signout #{if is-ok then '' else 'bad '}"
-      fn  : H.run -> remove is-ok
-
-    function get-spec-tests handle, fields
-      ok : get-spec-signin handle, true , fields
-      bad: get-spec-signin handle, false, fields
-
-    function get-spec handle
-      signin:
-        password:
-          a: get-spec-tests handle, password:\Pass1!
-          b: get-spec-tests handle, password:\Pass2!
-          c: get-spec-tests handle, password:\Pass3!
-        bad:
-          handle  : get-spec-signin \badhandle, false, password:\Pass1!
-          password: get-spec-signin handle    , false, password:\badpass
-
+  _.extend do
+    h.get-spec! # for signout
     admin: get-spec \admin
-    a: get-spec \usera
-    b: get-spec \userb
-    c: get-spec \userc
-    signout:
-      ok : get-spec-signout true
-      bad: get-spec-signout false
+    a    : get-spec \usera
+    b    : get-spec \userb
+    c    : get-spec \userc
+    z    : get-spec \userz
+    oa1  : get-spec \openauth1, name:\oa1
+    null : get-spec \null
