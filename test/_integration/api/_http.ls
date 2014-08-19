@@ -13,13 +13,12 @@ module.exports = me =
     W.for del, url path
 
   get: (path, cb) ->
-    #log \get, url path
     function get url, cb then r.get url, (err, res, body) ->
       try
         o = if me.is-ok res then JSON.parse body else void
       catch
         throw new Error "Unable to parse body: #body"
-      cb err, { statusCode:res?statusCode, object:o }
+      cb err, res <<< statusCode:res?statusCode, object:o
     W.for get, url path
 
   post: (path, obj) ->
@@ -38,6 +37,11 @@ module.exports = me =
   ## assertions
 
   assert: (res, is-ok = true) -> (if is-ok then me.ok else me.err) res
+
+  assert-redirect: (res, path) ->
+    me.is-redirect res .should.equal true
+    loc = res.headers.location.split \? .0
+    loc.should.equal path
 
   is-err: -> it.statusCode is 500
 

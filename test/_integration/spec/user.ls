@@ -59,3 +59,7 @@ exports.get-spec = (...args) ->
     is3: h.get-spec-list 3
     is4: h.get-spec-list 4
     is5: h.get-spec-list 5
+    is6: h.get-spec-list 6
+  # openauth users
+  oa1: h.get-spec \oa1, name:\oa1
+  oa2: h.get-spec \oa2, name:\oa2

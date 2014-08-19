@@ -64,10 +64,19 @@ test Session.signout.ok
 
 it '---openauth'
 test Session.null.read.ok
-test OpenAuth.leg1.ok
-test OpenAuth.leg2.ok
+test OpenAuth.oa1.leg1.ok
+test OpenAuth.oa1.leg2.ok
+#test User.oa1.read.ok
 test Session.oa1.read.ok
 test Session.signout.ok
+test OpenAuth.oa2.leg1.ok # update name
+test OpenAuth.oa2.leg2.ok
+test Session.oa2.read.ok
+test Session.signout.ok
+test OpenAuth.fail.leg1.bad
+test OpenAuth.fail.leg2.bad
+#test User.oa2.read.ok
+test User.list.is6
 
 it '---public'
 test Hive.a.get.ok

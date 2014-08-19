@@ -21,4 +21,5 @@ module.exports.get-spec = (signin, read, signout) ->
     c    : get-spec \userc
     z    : get-spec \userz
     oa1  : get-spec \openauth1, name:\oa1
+    oa2  : get-spec \openauth2, name:\oa2
     null : get-spec \null

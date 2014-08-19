@@ -21,25 +21,24 @@ static-opts =
 Im.hookLoader __dirname if is-cover
 env = (express = Express!).settings.env
 
-module.exports =
-  init: ->
-    express
-      ..set \port, process.env.PORT || 80
-      ..use '/coverage', Im.createHandler! if is-cover
-      ..use Express.favicon \./app/asset/favicon.png, static-opts
-      ..use Express.logger \dev if env in <[ development ]>
-      ..use Express.compress! if env in <[ staging production ]>
-      ..use Express.cookieParser!
-      ..use Express.cookieSession cookie-opts
-      ..use Express.bodyParser!
-      ..use allow-cross-domain
-      ..use Passport.initialize!
-      ..use express.router
-      ..use Express.static DIR-APP, static-opts
-      ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
-      ..use log-error show-stack:env in <[ development staging production ]>
-      ..use handle-error
-      ..use Express.errorHandler! if env in <[ development ]>
+module.exports = express
+  ..set \port, process.env.PORT || 80
+  ..use '/coverage', Im.createHandler! if is-cover
+  ..use Express.favicon \./app/asset/favicon.png, static-opts
+  ..use Express.logger \dev if env in <[ development ]>
+  ..use Express.compress! if env in <[ staging production ]>
+  ..use Express.cookieParser!
+  ..use Express.cookieSession cookie-opts
+  ..use Express.bodyParser!
+  ..use allow-cross-domain
+  ..use Passport.initialize!
+  ..use express.router
+  ..use Express.static DIR-APP, static-opts
+  ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
+  ..use log-error show-stack:env in <[ development staging production ]>
+  ..use handle-error
+  ..use Express.errorHandler! if env in <[ development ]>
+
 
 # http://backbonetutorials.com/cross-domain-sessions/
 function allow-cross-domain req, res, next
@@ -60,7 +59,7 @@ function handle-error err, req, res, next
     | err instanceof H.ApiError    => err.message
     | err.name is \ValidationError => get-validation-msg err
     | _ =>
-      if env in <[ development test staging ]> then err.stack
+      if env in <[ development staging test ]> then err.stack
       else 'Internal server error, sorry! :('
   res.send 500, msg
 
