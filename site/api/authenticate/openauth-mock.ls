@@ -1,3 +1,6 @@
+# This code must reside under /api (not /test) to allow api openauth tests to run in
+# staging where /test isn't deployed.
+# 
 # https://gist.github.com/mweibel/5219403
 
 Passport = require \passport
