@@ -23,7 +23,6 @@ devDependencies:
   chai                  : \~1.8.1
   chalk                 : \~0.4.0
   cheerio               : \~0.14.0
-  cobbler               : \~0.0.6
   cron                  : \~1.0.3
   gaze                  : \~0.5.0
   gntp                  : \~0.1.1
