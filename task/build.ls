@@ -163,10 +163,16 @@ function markdown ipath, opath, cb
 
 function finalise ipath
   function contains then _.contains ipath, "/#it"
-  return if contains \task/
-  me.emit \built-api unless contains \app/ or contains 'app.ls'
-  if contains \app/ then if contains \lib-3p/ or contains \lib-3p-ext/jquery then bundle-lib! else bundle-app!
-  me.emit \built-app unless contains \api/ or contains 'api.ls'
+  if ipath # partial build
+    return if contains \task/
+    me.emit \built-api unless contains \app/ or contains 'app.ls'
+    if contains \app/ then if contains \lib-3p/ or contains \lib-3p-ext/jquery then bundle-lib! else bundle-app!
+    me.emit \built-app unless contains \api/ or contains 'api.ls'
+  else # full build
+    me.emit \built-api
+    bundle-lib!
+    bundle-app!
+    me.emit \built-app
   copy-package-json!
   me.emit \built
 
