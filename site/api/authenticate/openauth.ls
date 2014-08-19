@@ -29,7 +29,7 @@ module.exports = me =
         (new M-Users { login_id:login-id, auth_type:auth-type, name:name }).save done
 
   callback: (req, res) ->
-    log \callback, req.user, req.session
+    #log \callback, req.user, req.session
     M-Sessions.signin req
     res.redirect '/#/user'
 

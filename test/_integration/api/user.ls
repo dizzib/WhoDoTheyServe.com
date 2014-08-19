@@ -1,11 +1,11 @@
-Chai  = require \chai .should!
-_     = require \lodash
-W     = require \wait.for
-C     = require \./_crud
-H     = require \./_http
-S     = require \../state
-U     = require \../spec/user
-Users = require "#{process.cwd!}/site/api/model/users"
+Should = require \chai .should!
+_      = require \lodash
+W      = require \wait.for
+C      = require \./_crud
+H      = require \./_http
+S      = require \../state
+U      = require \../spec/user
+Users  = require "#{process.cwd!}/site/api/model/users"
 
 c = C \users
 module.exports = U.get-spec create, read, c.update, c.remove, c.list
@@ -21,11 +21,11 @@ function create handle, is-ok, fields then
     S.add-user user
 
 function read key, is-ok, fields
-  throw new Error 'need > 0 fields to assert' unless fields
-  H.assert (res = H.get get-route key), is-ok
-  #unless S.users[handle]
-  for k, v of fields then res.object[k].should.deep.equal v
-  res
+  return c.read ... if S.users[key]
+  # an openauth user has been created but doesn't exist in state,
+  # so search list of users for one with matching fields
+  H.assert (res = H.get \users), is-ok
+  Should.exist _.find (list = res.object), fields
 
 function get-route handle then
   return "users/#{S.users[handle]._id}" if handle
