@@ -37,12 +37,12 @@ staging:
     PORT                            : 4003
     WDTS_DB_URI                     : \mongodb://localhost/wdts_staging
   test_1:
-    NODE_ENV                        : \staging
+    NODE_ENV                        : \test
     PORT                            : 4004
     WDTS_DB_URI                     : \mongodb://localhost/wdts_test_1
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
   test_2:
-    NODE_ENV                        : \staging
+    NODE_ENV                        : \test
     PORT                            : 4005
     WDTS_DB_URI                     : \mongodb://localhost/wdts_test_2
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
