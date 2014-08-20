@@ -9,6 +9,16 @@ All actors and connections are backed up with evidence.
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
 
+### Contribute
+
+If you feel like contributing then please login using your Facebook, Google or Github
+account (you can delete your user account at any time).
+
+Any actors and connections you add are shared and usable by other contributors, and your
+maps are viewable by anyone.
+
+This feature is currently in beta test so please log any issues to [github issues][issues].
+
 ### Data
 
 The data is freely available in [JSON] format via an [API]:
@@ -58,6 +68,7 @@ mongodb
 mongoose
 node.js
 node-cron
+passport
 request
 shelljs
 shortid
