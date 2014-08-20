@@ -134,16 +134,16 @@ function on-tick
   Eg.on-tick!
 
 function justify v
-  return unless (g = $ '.view>.map').is \:visible # prevent show if it's hidden
+  return unless ($vm = $ '.view>.map').is \:visible # prevent show if it's hidden
   return unless v.svg # might be undefined e.g. new map
   # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
-  if v.svg.attr \width < g.width!
-    g.css \display, \flex
-    g.css \align-items, \center # vert
-    g.css \justify-content, \center # horiz
+  if (v.svg.attr \width) < $vm.width!
+    $vm.css \display, \flex
+    $vm.css \align-items, \center # vert
+    $vm.css \justify-content, \center # horiz
   else
-    g.css \display, \block
-    g.css \justify-content, \flex-start
+    $vm.css \display, \block
+    $vm.css \justify-content, \flex-start
 
 function render-start v
   v.trigger \render
