@@ -15,8 +15,8 @@ s-node = new M.Schema do
   y  : type:Number # optional since node may be filtered out of d3
 
 s-size =
-  x  : type:Number, required:yes
-  y  : type:Number, required:yes
+  x: type:Number, required:yes
+  y: type:Number, required:yes
 
 schema = new M.Schema do
   edge_cutoff_date: type:Date, default:Date.now # exclude edges created after this cutoff
