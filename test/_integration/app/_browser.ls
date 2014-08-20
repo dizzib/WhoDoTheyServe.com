@@ -16,12 +16,6 @@ mc = new Mc.Client md
 mc.plugin \logger, Mjl
 
 module.exports = B =
-  arrange:
-    # TODO: unable to mock window.confirm since
-    # marionette client's window instance differs from app's ...why?
-    confirm: (ok) ->
-      w4mc \executeScript, (-> window.confirm = -> ok), [ ok ]
-
   assert:
     ok: (is-ok = true) ->
       B.assert.displayed !is-ok, { class:\alert-error.active, include-hidden:true }

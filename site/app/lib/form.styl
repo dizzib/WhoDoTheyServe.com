@@ -1,12 +1,16 @@
-form.update
-  .create
-    display   none
-
-form.create
-  .update
-    display   none
-
 form
+  .button-bar
+    .mode
+      display           flex
+      justify-content   space-between
+      width             100%
+  .button-bar.mode-edit
+    .mode.delete-ask
+      display           none
+  .button-bar.mode-delete-ask
+    .mode.edit
+      display           none
+
   hr
     border-top-color  #ddd
   textarea
@@ -21,3 +25,10 @@ form
   .v-gap
     margin-top          1em
 
+form.create
+  .update
+    display   none
+
+form.update
+  .create
+    display   none

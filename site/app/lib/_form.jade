@@ -37,11 +37,19 @@ mixin field-select(name, label)
     block
 
 mixin button-bar
-  button(type='button').btn.cancel Back
-    i.fa.fa-arrow-left
-  button(type='submit').btn.btn-primary.pull-right.create Create
-    i.fa.fa-check
-  button(type='submit').btn.btn-primary.pull-right.update Update
-    i.fa.fa-check
-  button(type='button').btn.btn-danger.pull-right.update.delete Delete
-    i.fa.fa-trash-o
+  .button-bar.mode-edit
+    .mode.edit
+      button(type='button').btn.cancel Back
+        i.fa.fa-arrow-left
+      button(type='button').btn.btn-danger.update.delete-ask Delete...
+        i.fa.fa-trash-o
+      button(type='submit').btn.btn-primary.create Create
+        i.fa.fa-check
+      button(type='submit').btn.btn-primary.update Update
+        i.fa.fa-check
+    .mode.delete-ask
+      button(type='button').btn.delete-no No, keep it
+        i.fa.fa-arrow-left
+      strong Really delete this item ?
+      button(type='button').btn.btn-danger.delete-yes Yes, get rid of it!
+        i.fa.fa-trash-o

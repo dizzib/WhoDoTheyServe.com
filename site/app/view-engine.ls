@@ -17,19 +17,19 @@ module.exports =
 
   EditView: B.View.extend do
     events:
-      'click .cancel': \cancel
-      'click .delete': \delete
-      'submit form'  : \save
+      'click button.cancel'    : \cancel
+      'click button.delete-ask': \delete-ask
+      'click button.delete-no' : \delete-no
+      'click button.delete-yes': \delete-yes
+      'submit form'            : \save
     initialize: ->
       @opts     = it.opts
       @template = it.template
       _.extend this, B.Events
     cancel: -> @trigger \cancelled
-    delete: ->
-      #TODO: always confirm delete when Marionette is capable of testing it
-      if @opts?is-confirm-delete
-        return unless confirm 'Are you sure you want to delete this item ?'
-      @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
+    'delete-ask': -> $ \.button-bar .addClass \mode-delete-ask .removeClass \mode-edit
+    'delete-no' : -> $ \.button-bar .removeClass \mode-delete-ask .addClass \mode-edit
+    'delete-yes': -> @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
       @delegateEvents!
       $ \.view .addClass CLASS-EDITING

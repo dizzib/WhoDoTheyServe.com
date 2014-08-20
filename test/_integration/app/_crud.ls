@@ -30,10 +30,13 @@ module.exports = (ent-name, opts) ->
       opts.fill fields, key
       submit \Update, opts.on-update, ...&
 
-    remove: function remove key, is-ok
+    remove: function remove key, is-ok, fields
       opts.go-maintain ...
-      B.arrange.confirm true
-      submit \Delete, opts.on-remove, ...&
+      B.click \Delete...
+      B.wait-for-visible 'Really delete this item ?', \strong
+      B.click /Yes/, \button
+      B.assert.ok is-ok
+      opts.on-remove key, fields if is-ok
 
     list: function list n-expect, key
       go-list key
