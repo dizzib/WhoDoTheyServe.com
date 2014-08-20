@@ -55,10 +55,13 @@ crypto
 d3
 express
 font-awesome
+gaze
 git
 istanbul
 jade
 jquery
+jquery.multiple-select
+jquery.timeago
 livescript
 lodash
 marked
@@ -73,7 +76,6 @@ request
 shelljs
 shortid
 stylus
-timeago
 transparency
 twitter-bootstrap
 uglifyjs
