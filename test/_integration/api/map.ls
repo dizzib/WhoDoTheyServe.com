@@ -15,7 +15,6 @@ function read key, is-ok, fields
   ST.maps[key] = res.object
 
 function get-payload fields
-  name    : fields.name
-  nodes   : [ { _id:ST.nodes[k]._id, x:100, y:200 } for k in fields.nodes]
-  'size-x': 500
-  'size-y': 500
+  name : fields.name
+  nodes: [ { _id:ST.nodes[k]._id, x:100, y:200 } for k in fields.nodes]
+  size : { x:500, y:500 }

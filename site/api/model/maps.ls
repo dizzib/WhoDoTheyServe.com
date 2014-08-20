@@ -9,17 +9,20 @@ M-Notes     = require \./notes
 P-Id        = require \./plugin-id
 P-Meta      = require \./plugin-meta
 
-schema-node = new M.Schema do
+s-node = new M.Schema do
   _id: type:String, required:yes
   x  : type:Number # optional since node may be filtered out of d3
   y  : type:Number # optional since node may be filtered out of d3
 
+s-size =
+  x  : type:Number, required:yes
+  y  : type:Number, required:yes
+
 schema = new M.Schema do
-  name            : type:String, required:yes, match:Cons.map.name.regex
-  nodes           : [schema-node]
   edge_cutoff_date: type:Date, default:Date.now # exclude edges created after this cutoff
-  'size-x'        : type:Number, required:yes
-  'size-y'        : type:Number, required:yes
+  name            : type:String, required:yes, match:Cons.map.name.regex
+  nodes           : [s-node]
+  size            : s-size
 
 schema
   ..plugin P-Id

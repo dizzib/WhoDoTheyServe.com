@@ -76,8 +76,8 @@ module.exports = B.View.extend do
     is-editable = @map.get-is-editable!
     _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
 
-    size-x = @map.get \size-x or @get-size-x! or SIZE-NEW
-    size-y = @map.get \size-y or @get-size-y! or SIZE-NEW
+    size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
+    size-y = @map.get \size.y or @get-size-y! or SIZE-NEW
 
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
@@ -169,5 +169,5 @@ function set-map-size v
   justify v
   v.f.size [w, h]
 
-  v.map.set \size-x, w
-  v.map.set \size-y, h
+  v.map.set \size.x, w
+  v.map.set \size.y, h
