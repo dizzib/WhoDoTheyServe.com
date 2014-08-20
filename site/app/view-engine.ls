@@ -19,7 +19,7 @@ module.exports =
     events:
       'click button.cancel'    : \cancel
       'click button.delete-ask': \delete-ask
-      'click button.delete-no' : \delete-no
+      'click button.delete-no' : \delete-ask
       'click button.delete-yes': \delete-yes
       'submit form'            : \save
     initialize: ->
@@ -27,8 +27,7 @@ module.exports =
       @template = it.template
       _.extend this, B.Events
     cancel: -> @trigger \cancelled
-    'delete-ask': -> $ \.button-bar .addClass \mode-delete-ask .removeClass \mode-edit
-    'delete-no' : -> $ \.button-bar .removeClass \mode-delete-ask .addClass \mode-edit
+    'delete-ask': -> $ \.button-bar .toggleClass \mode-delete-ask .toggleClass \mode-edit
     'delete-yes': -> @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
       @delegateEvents!
