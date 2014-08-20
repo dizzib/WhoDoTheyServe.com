@@ -36,7 +36,7 @@ exports.get-spec = (...args) ->
       weak-num  : get-spec-usera password:\aaaaA!
       weak-sym  : get-spec-usera password:\aaaaA1
       weak-ucase: get-spec-usera password:\aaaa!1
-  b: h.get-spec \userb
+  b: h.get-spec \userb email:\b@domain.com
   c: h.get-spec \userc quota_daily:3
   d: h.get-spec \userd
   e: h.get-spec \usere

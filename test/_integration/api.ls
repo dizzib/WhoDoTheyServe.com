@@ -52,8 +52,10 @@ test User.handle.num3.remove.ok
 test User.a.create.ok
 test User.a.email.new.update.ok
 test User.a.email.new.read.ok
+test User.a.email.new.read.ok
 test User.a.create.bad
 test User.b.create.ok
+test User.b.read.ok # admin can see any user's email
 test User.c.create.ok
 test User.d.create.ok
 test User.list.is5
@@ -81,6 +83,8 @@ test User.list.is6
 it '---public'
 test Hive.a.get.ok
 test Hive.b.get.bad
+test User.a.read.bad # cannot read email
+test User.b.read.bad # cannot read email
 
 it '---userA'
 test Session.z.password.a.signin.bad
@@ -222,9 +226,6 @@ it 'node'
 test Node.a.remove.bad # has edge
 test Node.b.remove.bad # has edge
 test Node.g.create.ok # node g to test map integrity
-it 'users'
-test User.a.info.path.update.bad
-test User.a.remove.bad
 
 it '---userC'
 test Session.signout.ok
@@ -265,6 +266,12 @@ it 'node quota'
 test Node.e.create.ok
 test Evidence.e0.create.ok
 test Node.f.create.bad # > quota
+it 'users'
+test User.a.info.path.update.bad
+test User.a.remove.bad
+test User.a.read.bad # cannot read email
+test User.b.read.bad # cannot read email
+test User.c.read.ok  # can only read own email
 
 it '---userB teardown'
 test Session.signout.ok

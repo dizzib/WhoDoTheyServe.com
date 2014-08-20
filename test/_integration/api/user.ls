@@ -8,7 +8,7 @@ U      = require \../spec/user
 Users  = require "#{process.cwd!}/site/api/model/users"
 
 c = C \users
-module.exports = U.get-spec create, read, c.update, c.remove, c.list
+module.exports = U.get-spec create, read, c.update, c.remove, list
 
 function create handle, is-ok, fields then
   user =
@@ -19,6 +19,9 @@ function create handle, is-ok, fields then
   if H.is-ok res then
     (user = res.body).handle.should.equal handle
     S.add-user user
+
+function list n, key
+  (JSON.stringify c.list ...).indexOf \email .should.equal -1
 
 function read key, is-ok, fields
   return c.read ... if S.users[key]

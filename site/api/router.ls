@@ -134,9 +134,10 @@ function set-api-sec-sys
 
 function set-api-sec-users
   Express
-    ..post   "/api/users"    , SecUsers.create!
-    ..put    "/api/users/:id", SecUsers.maintain!
-    ..delete "/api/users/:id", SecUsers.maintain!
+    ..post   "/api/users"    , SecUsers.create
+    ..get    "/api/users/:id", SecUsers.maintain # read is only permitted for maintenance
+    ..put    "/api/users/:id", SecUsers.maintain
+    ..delete "/api/users/:id", SecUsers.maintain
 
 function set-api-sys
   Express

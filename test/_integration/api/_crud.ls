@@ -17,8 +17,9 @@ module.exports = (entity-name) ->
       submit-create key, is-ok, _.extend entity, fields
 
     read: function read key, is-ok, fields
-      throw new Error 'need > 0 fields to assert' unless fields
       H.assert (res = H.get get-route key), is-ok
+      return res unless is-ok
+      throw new Error 'need > 0 fields to assert' unless fields
       for k, v of fields then res.object[k].should.deep.equal v
       res
 

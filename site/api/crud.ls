@@ -47,15 +47,15 @@ module.exports = me =
 
 ## private helpers
 
-function respond req, res, next, err, obj, opts = {} then
+function respond req, res, next, err, obj, opts = {}
   return next err if err
   success = opts.success or on-success
   success req, obj, reply
-  function reply err then
+  function reply err
     return next err if err
-    if fields = opts.return-fields then
+    if fields = opts.return-fields
       fields.push \_id
-      if _.isArray obj then
+      if _.isArray obj
         o = _.map obj, (item) -> _.pick item, fields
       else
         o = _.pick obj, fields

@@ -33,6 +33,7 @@ module.exports = me =
     me.assert res = W.for me.get, route
     Should.exist list = res.object
     list.length.should.equal n
+    list
 
   ## assertions
 
