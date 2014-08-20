@@ -40,17 +40,23 @@ mixin button-bar
   hr
   .button-bar.mode-edit
     .mode.edit
-      button(type='button').btn.cancel Back
+      button(type='button').btn.cancel
+        span Back
         i.fa.fa-arrow-left
-      button(type='button').btn.btn-danger.update.delete-ask Delete...
+      button(type='button').btn.btn-danger.update.delete-ask
+        span Delete...
         i.fa.fa-trash-o
-      button(type='submit').btn.btn-primary.create Create
+      button(type='submit').btn.btn-primary.create
+        span Create
         i.fa.fa-check
-      button(type='submit').btn.btn-primary.update Update
+      button(type='submit').btn.btn-primary.update 
+        span Update
         i.fa.fa-check
     .mode.delete-ask
-      button(type='button').btn.delete-no No, keep it
+      button(type='button').btn.delete-no
+        span No, keep it
         i.fa.fa-arrow-left
       strong Really delete this item ?
-      button(type='button').btn.btn-danger.delete-yes Yes, get rid of it!
+      button(type='button').btn.btn-danger.delete-yes
+        span Yes, get rid of it!
         i.fa.fa-trash-o

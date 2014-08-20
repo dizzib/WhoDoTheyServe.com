@@ -19,11 +19,7 @@ form.form-horizontal.create.well
   fieldset
     +field-text('handle', 'Username')
     +field-password('password', 'Password')
-  hr
-  button(type='button').btn.cancel Back 
-    i.fa.fa-arrow-left
-  button(type='submit').btn.btn-primary.pull-right Login 
-    i.fa.fa-sign-in
+  +button-bar
 
 .please-wait.well.hide
   legend

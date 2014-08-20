@@ -11,6 +11,8 @@ Vme = require \./map/edit
 module.exports = me =
   init: ->
     $ '.openauth a, .btn-primary' .click -> me.toggle-please-wait true
+    $ '.btn-primary span' .text \Login
+    $ '.btn-primary i' .addClass \fa-sign-in
 
   init-signin: ->
     H.show-alert-once 'Welcome! You are now logged in'
