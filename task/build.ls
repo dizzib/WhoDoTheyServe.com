@@ -5,6 +5,7 @@ Cron    = require \cron
 Emitter = require \events .EventEmitter
 Fs      = require \fs
 Gaze    = require \gaze
+Litify  = require \literalify
 _       = require \lodash
 Md      = require \marked
 Path    = require \path
@@ -44,6 +45,10 @@ tasks  =
     mixn: \_
 
 module.exports = me = (new Emitter!) with
+  bundle: ->
+    bundle-lib!
+    bundle-app!
+
   compile-files: ->
     try
       for tid of tasks then compile-batch tid
@@ -104,11 +109,12 @@ function bundle-app
   try
     b = Brsify \./boot.js
     for l in LIBS then b.external l
+    b.transform Litify.configure do
+      backbone  : \window.Backbone
+      underscore: \window._
     b.transform Brfs
-      ..require \./lib-3p/Autolinker     , expose:\Autolinker
-      ..require \./lib-3p/transparency   , expose:\transparency
-      ..require \./lib-3p-shim/backbone  , expose:\backbone
-      ..require \./lib-3p-shim/underscore, expose:\underscore
+      ..require \./lib-3p/Autolinker  , expose:\Autolinker
+      ..require \./lib-3p/transparency, expose:\transparency
       ..bundle detectGlobals:false, insertGlobals:false
         ..on \end, -> G.say 'Bundled app.js'
         ..pipe Fs.createWriteStream \app.js

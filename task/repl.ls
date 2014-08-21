@@ -27,6 +27,7 @@ build-tests-enabled = true
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:Run.run-dev-tests
+  * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Build.bundle
   * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
   * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2

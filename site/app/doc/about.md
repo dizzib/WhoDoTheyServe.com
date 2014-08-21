@@ -63,6 +63,7 @@ jquery
 jquery.multiple-select
 jquery.timeago
 livescript
+literalify
 lodash
 marked
 marionette
