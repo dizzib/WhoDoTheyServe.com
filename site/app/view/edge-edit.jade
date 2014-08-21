@@ -15,17 +15,23 @@ form.form-horizontal.well
       +field-select('a_node_id', 'Actor A')
     +field-label('a_is', 'Influence')
       label.radio(for='a_is_lt')
-        | A is a subordinate of B
-        | (e.g. A is created, employed, funded, owned, or run by B)
+        | A is a 
+        strong subordinate 
+        |of B (e.g. A is created, employed, funded, owned, or run by B)
         input(type='radio', name='a_is', id='a_is_lt', value='lt')
       label.radio(for='a_is_eq')
-        | A is a peer/equal of B, or influence unclear or unknown
+        | A is a 
+        strong peer/equal 
+        |of B, or influence unclear or unknown
         input(type='radio', name='a_is', id='a_is_eq', value='eq')
+      .help-block.v-gap
+        | A good rule of thumb when determining influence is to look at where the money flows.
+        | If money flows from B to A then the 1st option is generally correct.
     +field-text('how', 'How')
-      span.help-block
+      .help-block
         | Optional note of how A relates to B
         | (e.g. owned by, department of, attends).
-      span.help-block
+      .help-block
         | Please use present tense e.g. 'is' rather than 'was',
         | even for past connections.
     span.input-xxlarge

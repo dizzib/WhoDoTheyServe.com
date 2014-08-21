@@ -4,5 +4,11 @@ form.form-horizontal.well
   fieldset
     span.input-max
       +field-text('url', 'Url', 'Enter the url of some good evidence!')
+    .help-block.v-gap
+      | Evidence can take the form of a web page, a document (e.g. pdf), or a video.
+    .help-block.v-gap
+      | Ideally, it should be 
+      a(href='https://en.wikipedia.org/wiki/Corroborating_evidence') corroborated 
+      | from multiple independent sources.
     +field-hidden('entity_id', 'EntityId')
   +button-bar
