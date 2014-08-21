@@ -3,7 +3,10 @@ include ../lib/_form
 form.well
   fieldset
     +field-textarea('text', 'Enter your note below')
-    span.help-block
+    .help-block
       | You can edit it as many times as you like or delete it at any time!
+    .help-block
+      | Add links simply by typing the url, for example 
+      strong google.com
     +field-hidden('entity_id', 'EntityId')
     +button-bar
