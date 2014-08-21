@@ -273,6 +273,12 @@ test User.a.read.bad # cannot read email
 test User.b.read.bad # cannot read email
 test User.c.read.ok  # can only read own email
 
+it '---userD' # daily_quota = 0
+test Session.signout.ok
+test Session.d.password.a.signin.ok
+test Node.f.create.bad
+test Edge.ac.create.bad
+
 it '---userB teardown'
 test Session.signout.ok
 test Session.b.password.a.signin.ok

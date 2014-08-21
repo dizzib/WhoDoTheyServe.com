@@ -23,12 +23,10 @@ module.exports =
           nodes    : 1
           edges    : 1
           evidences: 2
-        if n >= (limit = multipliers[Model.modelName] * user.quota_daily) then
+        if n >= (limit = multipliers[Model.modelName] * user.quota_daily)
           return next new H.ApiError "
           Your 24-hour contribution limit of #{limit} #{Model.modelName} has been reached! 
-          Contact admin to have your limit increased or wait 24 hours before retrying.
-        "
-
+          Contact admin to have your limit increased or wait 24 hours before retrying."
       (req.body.meta = {}).create_user_id = si.id
       next!
 
@@ -36,10 +34,7 @@ module.exports =
     (req, res, next) ->
       err, doc <- Model.findOne _id:req.id
       return next err if err
-      unless doc then
-        return next new Error "entity #{req.id} not found for update/delete"
-      unless si = req.session.signin then
-        return next new Error 'signin required'
-      unless doc.meta.create_user_id is si.id or si.role is \admin then
-        return next new Error 'signin must be the creator or admin'
-      next!
+      return next new Error "entity #{req.id} not found for update/delete" unless doc
+      return next new Error 'signin required' unless si = req.session.signin
+      return next! if doc.meta.create_user_id is si.id or si.role is \admin
+      next new Error 'signin must be the creator or admin'
