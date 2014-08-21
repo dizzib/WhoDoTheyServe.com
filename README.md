@@ -12,6 +12,8 @@ Source code for [WhoDoTheyServe.com][wdts]
 
 * [LiveScript][LiveScript]
 
+* [Firefox][Firefox] (a running local instance is required for the app integration tests to run)
+
 ## Clone and build
 
 * clone the [repository][wdts-repo] from GitHub
@@ -36,8 +38,8 @@ Navigate to `http://localhost:4000/#/user/signup` to create an admin user who sh
 
 The build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
-
 [bcrypt-deps]: https://github.com/ncb000gt/node.bcrypt.js#dependencies
+[Firefox]: https://www.mozilla.org/en-US/firefox/new/
 [LiveScript]: http://livescript.net/#installation
 [marionette-js]: https://github.com/mozilla-b2g/marionette-js-client
 [mongod]: http://docs.mongodb.org/manual/reference/program/mongod/

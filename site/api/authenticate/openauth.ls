@@ -7,13 +7,14 @@ M-Sessions = require \../model/sessions
 M-Users    = require \../model/users
 
 env = process.env
+callback-domain = env.SITE_DOMAIN_NAME or \SITE_DOMAIN_NAME
 
 module.exports = me =
   set-config: (auth-type, strategy, client-id, client-secret, cfg-extra) ->
     cfg =
-      clientID    : client-id
-      clientSecret: client-secret
-      callbackURL : "http://#{env.SITE_DOMAIN_NAME}:#{env.PORT || 80}/api/auth/#auth-type/callback"
+      clientID    : client-id or \CLIENT_ID
+      clientSecret: client-secret or \CLIENT_SECRET
+      callbackURL : "http://#{callback-domain}:#{env.PORT || 80}/api/auth/#auth-type/callback"
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
       #log auth-type, profile
       # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
