@@ -1,3 +1,4 @@
+A = require \Autolinker
 B = require \backbone
 E = require \./view/evidence
 C = require \./collection
@@ -111,8 +112,10 @@ module.exports =
     name:
       href: -> get-node-href @_id
     } <<< GLYPHS
-  notes:
-    META
+  notes: {
+    note:
+      html: -> A.link @text if @text
+  } <<< META
   notes-head:
     btn-edit:
       href: -> "#/#{B.history.fragment}/note-edit"
@@ -134,6 +137,8 @@ module.exports =
     meta: HIDE
     }, GLYPH-EVI, URL-EVI
   user-notes:
+    note:
+      html: -> A.link @text if @text
     meta: HIDE
   users:
     user:

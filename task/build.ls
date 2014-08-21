@@ -86,6 +86,7 @@ const LIBS =
   # bundle order is random: https://github.com/substack/node-browserify/issues/355
   # UPDATE: this now appears to be fixed in browserify, so files get bundled in the correct order.
   \./lib-3p/underscore.mixin.deepExtend
+  \./lib-3p/Autolinker
   \./lib-3p/backbone-deep-model
   \./lib-3p/backbone.routefilter
   \./lib-3p/backbone-validation
@@ -104,6 +105,7 @@ function bundle-app
     b = Brsify \./boot.js
     for l in LIBS then b.external l
     b.transform Brfs
+      ..require \./lib-3p/Autolinker     , expose:\Autolinker
       ..require \./lib-3p/transparency   , expose:\transparency
       ..require \./lib-3p-shim/backbone  , expose:\backbone
       ..require \./lib-3p-shim/underscore, expose:\underscore
