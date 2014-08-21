@@ -43,6 +43,10 @@ module.exports =
   Map: Model.extend do
     urlRoot: Api.maps
     validation:
+      'description':
+        * required: no
+        * pattern : Cons.map.description.regex
+          msg     : "Description should be #{Cons.map.description.info}"
       'name':
         * required: yes
         * pattern : Cons.map.name.regex

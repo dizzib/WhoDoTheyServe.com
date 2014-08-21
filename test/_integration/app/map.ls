@@ -16,6 +16,7 @@ module.exports = Sp.get-spec c.create, void, c.update, c.remove, c.list
 ## helpers
 
 function fill fields
+  B.fill Description:fields.description
   B.fill Name:fields.name
   B.click class:\ms-choice # open multi-select
   for key in fields?nodes then B.click St.nodes[key]

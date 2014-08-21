@@ -20,6 +20,7 @@ s-size =
 
 schema = new M.Schema do
   edge_cutoff_date: type:Date, default:Date.now # exclude edges created after this cutoff
+  description     : type:String, match:Cons.map.description.regex
   name            : type:String, required:yes, match:Cons.map.name.regex
   nodes           : [s-node]
   size            : s-size

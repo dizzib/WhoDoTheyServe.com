@@ -8,7 +8,9 @@ form.map.signed-in.form-horizontal.well
     .alert.alert-error
     fieldset
       span.input-xlarge
-        +field-text('name', 'Name')
+        +field-text('name', 'Name', 'Enter a name for the map')
+      span.input-xlarge
+        +field-text('description', 'Description')
       +field-select('nodes', 'Actors')
       span.signed-in-admin
         +field-checkbox('is-default', 'Default')

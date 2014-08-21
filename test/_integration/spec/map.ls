@@ -6,10 +6,10 @@ ST = require \../state
 module.exports.get-spec = (...args) ->
   h = H \map, ...args
 
-  a: h.get-spec \a, name:'Map a' nodes:<[ a ]> default:true
-  b: h.get-spec \b, name:'Map b' nodes:<[ b ]>
+  a: h.get-spec \a, name:'Map a' description:"a's map" nodes:<[ a ]> default:true
+  b: h.get-spec \b, name:'Map b' description:"b's map" nodes:<[ b ]>
   c: _.extend do
-    h.get-spec \c, name:'Map c' nodes:<[ a b c d g ]>
+    h.get-spec \c, name:"c's map" description:'' nodes:<[ a b c d g ]>
     entities:
       edges:
         is1: get-spec-edges \c, 1
