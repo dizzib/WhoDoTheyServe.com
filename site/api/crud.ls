@@ -24,7 +24,7 @@ module.exports = me =
     # http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
     err, doc <- Model.findById req.id
     return next err if err
-    doc : _.extend doc, req.body
+    doc <<< req.body
     err, doc <- doc.save!
     respond req, res, next, err, doc, opts
 
