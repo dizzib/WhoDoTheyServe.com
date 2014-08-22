@@ -27,7 +27,6 @@ module.exports =
           return next new H.ApiError "
           Your 24-hour contribution limit of #{limit} #{Model.modelName} has been reached! 
           Contact admin to have your limit increased or wait 24 hours before retrying."
-      (req.body.meta = {}).create_user_id = si.id
       next!
 
   amend: (Model) ->

@@ -27,7 +27,11 @@ module.exports = me =
         return done null, user if user.name is name
         M-Users.findOneAndUpdate { login_id:login-id }, name:name, done # name has changed
       else # user doesn't exist in db so create it
-        (new M-Users { login_id:login-id, auth_type:auth-type, name:name }).save done
+        doc = new M-Users do
+          auth_type: auth-type
+          login_id : login-id
+          name     : name
+        doc.save done
 
   callback: (req, res) ->
     #log \callback, req.user, req.session

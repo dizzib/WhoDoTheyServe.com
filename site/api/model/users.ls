@@ -1,8 +1,9 @@
-M     = require \mongoose
-Cons  = require \../../lib/model-constraints
-Crypt = require \../crypt
-Crud  = require \../crud
-P-Id  = require \./plugin-id
+M      = require \mongoose
+Cons   = require \../../lib/model-constraints
+Crypt  = require \../crypt
+Crud   = require \../crud
+P-Id   = require \./plugin-id
+P-Meta = require \./plugin-meta
 
 const AUTHTYPE-PASSWORD = \password
 
@@ -22,15 +23,20 @@ spec =
 
 schema = new M.Schema spec
   ..plugin P-Id
-  ..pre \save, (next) ->     # encrypt email
+  ..pre \save, (next) -> # encrypt email
     return next! unless @isModified \email
     @email = Crypt.encrypt @email
     next!
   ..pre \validate, (next) -> # validate email
+    # Set self-created user's meta. This really belongs in pre-init but doesn't
+    # seem to work there, so we'll leave it in pre-validate for now.
+    if @isNew then @set \meta.create_user_id, @_id unless @get \meta.create_user_id
+    # normal validation
     return next! unless @email
     return next! unless @isModified \email
     @invalidate \email, "Invalid email #{@email}" unless Cons.email.regex.test @email
     next!
+  ..plugin P-Meta # must run after user pre-validate
 
 module.exports = me = M.model \users, schema
   ..check-is-authtype-password = -> it.auth_type is AUTHTYPE-PASSWORD
@@ -50,7 +56,7 @@ module.exports = me = M.model \users, schema
           next!
     read: (req, res, next) ->
       Crud.read req, res, next, me,
-        return-fields: <[ auth_type handle email info name quota_daily ]>
+        return-fields: <[ auth_type handle email info meta name quota_daily ]>
         success: (req, user, next) ->
           return next! unless user
           user.email = Crypt.decrypt user.email
@@ -58,7 +64,7 @@ module.exports = me = M.model \users, schema
           next!
     update: Crud.get-invoker me, Crud.update, return-fields:<[ name ]>
     delete: Crud.get-invoker me, Crud.delete, return-fields:<[ name ]>
-    list: Crud.get-invoker me, Crud.list, return-fields:<[ info name role ]>
+    list: Crud.get-invoker me, Crud.list, return-fields:<[ info meta name role ]>
   ..freeze = (user, cb) ->
     (d = new Date!).setSeconds d.getSeconds! + me.get-signin-bad-freeze-secs!
     me.findByIdAndUpdate user._id, freeze_until:d, cb

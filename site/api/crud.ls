@@ -12,7 +12,9 @@ module.exports = me =
 
   ## crud
   create: (req, res, next, Model, opts) ->
-    err, doc <- (new Model req.body).save
+    doc = new Model req.body
+    doc._req = req # pass req to pre-save middleware
+    err, doc <- doc.save
     respond req, res, next, err, doc, opts
 
   read: (req, res, next, Model, opts) ->

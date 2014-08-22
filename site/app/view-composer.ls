@@ -43,7 +43,8 @@ module.exports =
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes
   user: ->
-    V.user.render C.Users.get(id = it or C.Sessions.models.0?id), D.user
+    V.user.render user = C.Users.get(id = it or C.Sessions.models.0?id), D.user
+    V.meta.render user, D.meta
     <- E.fetch # all entities must be loaded for subsequent filtering
     render-user-entities id, V.maps, C.Maps, D.map
     render-user-entities id, V.edges, C.Edges, D.edges
