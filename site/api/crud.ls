@@ -25,6 +25,7 @@ module.exports = me =
     err, doc <- Model.findById req.id
     return next err if err
     doc <<< req.body
+    doc._req = req # pass req to pre-save middleware
     err, doc <- doc.save!
     respond req, res, next, err, doc, opts
 

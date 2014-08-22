@@ -1,13 +1,14 @@
-M = require \mongoose
-
 module.exports = (schema) ->
 
-  S-Vote = new M.Schema do
-    user_id : type:String, required:yes, index:yes
-    delta   : type:Number, required:yes
-
-  schema.add do
-    meta:
-      create_date   : type:Date  , index:yes, default:Date.now
-      create_user_id: type:String, index:yes, required:yes
-      #votes         : type:[S-Vote]
+  schema
+    ..add do
+      meta:
+        create_date   : type:Date  , default:Date.now
+        create_user_id: type:String, required:yes
+        update_date   : type:Date
+        update_user_id: type:String
+    ..pre \save, (next) ->
+      return next! if @isNew
+      @set \meta.update_date, new Date!
+      @set \meta.update_user_id, @_req.session.signin.id # @_req is populated by crud.update
+      next!
