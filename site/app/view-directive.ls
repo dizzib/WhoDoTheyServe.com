@@ -52,16 +52,30 @@ const HIDE =
   class: -> \hide
 
 const META =
-  create-user:
+  'create-user':
     href: -> get-user-href @meta?create_user_id
-    text: ->
-      return '(deleted user) ' unless creator = C.Users.find-by-id @meta?create_user_id
-      "#{creator.get \name} "
-  create-date:
-    title: -> @meta?create_date # https://github.com/rmm5t/jquery-timeago
+    text: -> get-user-text @meta?create_user_id
+  'create-date':
+    title: -> @meta?create_date
+  update:
+    class: -> \hide unless @meta?update_date
+  'update-user':
+    href: -> get-user-href @meta?update_user_id
+    text: -> get-user-text @meta?update_user_id
+  'update-date':
+    title: -> @meta?update_date
 
-const SHOW-IF-CREATOR = ->
-  \hide unless S.is-signed-in @meta?create_user_id
+const META-COMPACT = # show only the last action
+  act:
+    text: -> if @meta?.update_user_id then \edited else \added
+  user:
+    href: -> get-user-href (@meta?update_user_id or @meta?create_user_id)
+    text: -> get-user-text (@meta?update_user_id or @meta?create_user_id)
+  date:
+    title: -> @meta?update_date or @meta?create_date
+
+const SHOW-IF-CREATOR-OR-ADMIN = ->
+  \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
 
 const URL-EVI =
   url-outer:
@@ -74,16 +88,16 @@ const URL-EVI =
 module.exports =
   edge: {
     btn-edit:
-      class: SHOW-IF-CREATOR
+      class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/edge/edit/#{@_id}"
     } <<< EDGE
   edges:
     (_.deepClone EDGE) <<< GLYPHS
   evidences: _ {} .extend {
     btn-edit:
-      class: SHOW-IF-CREATOR
+      class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
-    }, GLYPH-EVI, META, URL-EVI
+    }, GLYPH-EVI, META-COMPACT, URL-EVI
   evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
@@ -104,9 +118,11 @@ module.exports =
       text: -> @name
   meta:
     META
+  meta-compact:
+    META-COMPACT
   node:
     btn-edit:
-      class: SHOW-IF-CREATOR
+      class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
   nodes: {
     name:
@@ -115,7 +131,7 @@ module.exports =
   notes: {
     note:
       html: -> A.link @text if @text
-  } <<< META
+  } <<< META-COMPACT
   notes-head:
     btn-edit:
       href: -> "#/#{B.history.fragment}/note-edit"
@@ -146,3 +162,4 @@ module.exports =
 
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
+function get-user-text then if (u = C.Users.find-by-id it) then "#{u.get \name} " else '(deleted user) '

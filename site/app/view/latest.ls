@@ -22,11 +22,11 @@ module.exports = B.View.extend do
       notes = get-json C.Notes, \sel-note # possibly may not have loaded (see boot.ls)
 
       all     = edges ++ maps ++ nodes ++ notes
-      by-date = _.sortBy all, (x) -> x.meta.create_date
+      by-date = _.sortBy all, (x) -> x.meta.update_date or x.meta.create_date
       latest  = _.first by-date.reverse!, 50
 
       directive = items: _.extend do
-        D.edges, D.map, D.meta, D.nodes, D.notes
+        D.edges, D.map, D.meta-compact, D.nodes, D.notes
         item:
           fn: ->
             $ it.element .find ".entity>:not(.#{@type})" .remove!

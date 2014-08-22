@@ -1,6 +1,7 @@
-mixin meta(label)
-  - var label = label || ' - added by'
+mixin meta-compact
   small.meta
-    span #{label} 
-    a.createUser
-    abbr.createDate.timeago
+    span  - 
+    span.act
+    span  by 
+    a.user
+    abbr.date.timeago
