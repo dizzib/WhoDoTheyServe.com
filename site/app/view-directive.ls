@@ -56,14 +56,14 @@ const META =
     href: -> get-user-href @meta?create_user_id
     text: -> get-user-text @meta?create_user_id
   'create-date':
-    title: -> @meta?create_date
+    title: -> @meta?create_date # title for timeago
   update:
     class: -> \hide unless @meta?update_date
   'update-user':
     href: -> get-user-href @meta?update_user_id
     text: -> get-user-text @meta?update_user_id
   'update-date':
-    title: -> @meta?update_date
+    title: -> @meta?update_date # title for timeago
 
 const META-COMPACT = # show only the last action
   act:
@@ -72,7 +72,7 @@ const META-COMPACT = # show only the last action
     href: -> get-user-href (@meta?update_user_id or @meta?create_user_id)
     text: -> get-user-text (@meta?update_user_id or @meta?create_user_id)
   date:
-    title: -> @meta?update_date or @meta?create_date
+    title: -> @meta?update_date or @meta?create_date # title for timeago
 
 const SHOW-IF-CREATOR-OR-ADMIN = ->
   \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!

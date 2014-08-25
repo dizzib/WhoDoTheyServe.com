@@ -59,6 +59,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..latest          = new V-Latest                             el:\.view>.main
   ..map             = new V-Map                                el:\.view>.map
   ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
+  ..map-meta        = new V.InfoView template:T-Meta         , el:\.view>.map-meta
   ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
   ..map-toolbar     = new V-MapTBar                            el:\.view>.map-toolbar
   ..maps            = new V.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
