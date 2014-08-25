@@ -22,9 +22,8 @@ module.exports =
 
   send-env-vars: ->
     exec-then-logout ->
-      W4 exec, "af stop #appname"
-      for k, v of cfg.env
-        W4 exec, "af env-add #appname #k=#v"
+      W4 exec, "af stop #appname" # stop to avoid restarting after each add
+      for k, v of cfg.env then W4 exec, "af env-add #appname #k=#v" # normally restarts
       W4 exec, "af start #appname"
       G.ok "sent env-vars to appfog PRODUCTION"
 
