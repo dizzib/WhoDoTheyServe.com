@@ -12,7 +12,7 @@ module.exports.init = ->
     ..on \destroyed, ->
       delete V.map.map
       V.navbar.render!
-      navigate \session
+      navigate \user
 
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
