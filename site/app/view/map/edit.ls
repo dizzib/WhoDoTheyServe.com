@@ -19,7 +19,7 @@ module.exports.init = ->
       render-dropdown!
       init-error-alert!
       load-is-default it.id
-      @$el.find \legend .on \click, ~> @$el.find \.body .toggle!
+      @$el.find \legend .on \click, ~> @$el.find \form .toggleClass \collapsed
 
     ..on \saved, (map, is-new) ->
       save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked

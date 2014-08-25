@@ -2,9 +2,11 @@ include ../../lib/_form
 
 form.map.signed-in.form-horizontal.well
   legend
+    i.glyph.fa.fa-caret-right.show-if-collapsed
+    i.glyph.fa.fa-caret-down.show-if-expanded
     span.create Create Map
     span.update Edit Map
-  .body
+  .body.show-if-expanded
     .alert.alert-error
     fieldset
       span.input-xlarge
