@@ -27,6 +27,7 @@ module.exports =
         V.navbar.render!
       V.map.show!
       V.map-toolbar.show!
+      V.map-info.render m
       V.map-meta.render m, D.meta
       V.map-meta.$el.find \.timeago .timeago! # async .view.finalize timeago runs too soon!
       if m.get-is-editable!
