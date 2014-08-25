@@ -10,9 +10,13 @@ form.form-horizontal.well
       +field-password('password', 'Password', 'Unchanged')
       +field-password('passconf', 'Confirm Password', 'Unchanged')
     +field-text('email', 'Email')
-      span.help-inline (encrypted in database)
+      span.help-inline (encrypted in database and never published)
     span.input-xxlarge
       +field-text('info', 'Homepage')
-    .signed-in-admin
-      +field-text('quota_daily', 'Daily Quota')
+    +field-text('quota_daily', 'Daily Quota')
+      .help-block
+        | This is the maximum number of actors or connections you can add per day.
+      .help-block.v-gap
+        | It's initially set low so I can more easily identify and fix new issues as they arise.
+        | It's not set in stone so please email me if you want it increased.
   +button-bar

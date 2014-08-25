@@ -92,8 +92,6 @@ test Session.a.password.z.signin.bad
 test Session.a.password.a.signin.ok
 test Hive.a.set.bad # not admin
 it 'maint'
-test User.a.quota-daily.six.update.bad
-test User.a.password.b.update.ok
 test User.a.email.null.update.ok
 test User.a.email.no-domain.update.bad
 test User.a.email.no-dot.update.bad
@@ -107,11 +105,13 @@ test User.a.info.no-domain.update.bad
 test User.a.info.path.update.ok
 test User.a.info.path.read.ok
 test User.a.info.path-qs.update.ok
+test User.a.quota-daily.six.update.bad
 test User.a.password.min-lt.update.bad
 test User.a.password.max-gt.update.bad
 test User.a.password.weak-num.update.bad
 test User.a.password.weak-sym.update.bad
 test User.a.password.weak-ucase.update.bad
+test User.a.password.b.update.ok
 test Session.signout.ok
 test Session.a.password.a.signin.bad
 test Session.a.password.b.signin.ok
