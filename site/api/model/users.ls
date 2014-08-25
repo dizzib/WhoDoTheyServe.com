@@ -62,8 +62,8 @@ module.exports = me = M.model \users, schema
           user.email = Crypt.decrypt user.email
           user.handle = req.login?handle
           next!
-    update: Crud.get-invoker me, Crud.update, return-fields:<[ name ]>
-    delete: Crud.get-invoker me, Crud.delete, return-fields:<[ name ]>
+    update: Crud.get-invoker me, Crud.update, return-fields:<[ meta name ]>
+    delete: Crud.get-invoker me, Crud.delete, return-fields:<[ meta name ]>
     list: Crud.get-invoker me, Crud.list, return-fields:<[ info meta name role ]>
   ..freeze = (user, cb) ->
     (d = new Date!).setSeconds d.getSeconds! + me.get-signin-bad-freeze-secs!
