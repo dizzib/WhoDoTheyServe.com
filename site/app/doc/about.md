@@ -11,7 +11,7 @@ you can add to [github issues][issues].
 
 ### Contribute
 
-If you feel like contributing then please login using your Facebook, Google or Github
+If you feel like contributing then please [login] using your Facebook, Google or Github
 account (you can delete your user account at any time).
 
 Any actors and connections you add are shared and usable by other contributors, and your
@@ -96,5 +96,6 @@ Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
 [github]:     https://github.com
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
 [json]:       http://en.wikipedia.org/wiki/Json
+[login]:      #/user/signin
 [mongolab]:   http://mongolab.com
 [opensource]: https://github.com/dizzib/WhoDoTheyServe.com
