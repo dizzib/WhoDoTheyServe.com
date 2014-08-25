@@ -82,6 +82,11 @@ const URL-EVI =
     href: -> @url
   url-inner:
     text: -> @url
+  video:
+    class: -> if @video then @video.service unless get-youtube-embed @url .error
+    text : -> get-youtube-embed @url .error if @video
+  youtube:
+    src: -> get-youtube-embed @url .url if @video
 
 # for some reason livescript's cloneport doesn't work with multiple constants
 # e.g. GLYPHS with EDGE, so we'll use _.extend instead
@@ -163,3 +168,9 @@ module.exports =
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
 function get-user-text then if (u = C.Users.find-by-id it) then "#{u.get \name} " else '(deleted user) '
+
+function get-youtube-embed url
+  # http://stackoverflow.com/questions/21607808/convert-a-youtube-video-url-to-embed-code
+  matches = url.match /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
+  return url:"//www.youtube.com/embed/#{matches.2}" if matches?2.length is 11
+  error:"Cannot get a valid video id from #url. Please check the url is correct."

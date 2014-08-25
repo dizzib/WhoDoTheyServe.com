@@ -1,8 +1,11 @@
+F  = require \fs # inlined by brfs
 _  = require \underscore
 C  = require \../collection
 F  = require \../fireprox
 H  = require \../helper
 Hi = require \../hive
+
+H.insert-css F.readFileSync __dirname + \/evidence.css
 
 const COMMAND-GET-URL = \content.location.href
 
