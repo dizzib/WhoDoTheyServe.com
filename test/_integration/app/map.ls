@@ -9,7 +9,7 @@ c = C \map,
   go-create  : -> B.go \map/new
   go-maintain: go-maintain
   on-create  : on-save
-  on-remove  : -> # override default to do nothing
+  on-remove  : on-remove
 
 module.exports = Sp.get-spec c.create, void, c.update, c.remove, c.list
 
@@ -23,6 +23,9 @@ function fill fields
 
 function go-maintain key, is-ok, fields
   B.click fields.name, '.map a', include-hidden:true
+
+function on-remove
+  B.wait-for \Contributions, \legend
 
 function on-save key, fields
   B.wait-for fields.name, '.nav li'
