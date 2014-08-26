@@ -115,7 +115,7 @@ test User.a.password.b.update.ok
 test Session.signout.ok
 test Session.a.password.a.signin.bad
 test Session.a.password.b.signin.ok
-it 'node'
+it 'node a'
 test Node.list.is0
 test Node.a.create.ok
 test Node.a.read.ok
@@ -154,7 +154,7 @@ test Evidence.a.url.path-qs.remove.ok
 test Evidence.a.list.is1
 test Node.a.remove.bad # has evidence
 test Node.a.name.update.bad # has evidence
-it 'note'
+it 'note a'
 test Note.a.list.is0
 test Note.a.create.ok
 test Note.a.list.is1
@@ -163,12 +163,19 @@ test Note.a.text.min.update.ok
 test Note.a.text.min-lt.update.bad
 test Note.a.text.max.update.ok
 test Note.a.text.max-gt.update.bad
+it 'node b'
+test Node.b.create.ok
+test Evidence.b.list.is0
+test Evidence.b0.create.ok
+test Evidence.b.list.is1
 it 'edge'
 test Edge.aa.create.bad # loop
 it 'map'
 test Map.list.is0
 test Map.a.create.ok
 test Map.list.is1
+test Map.b.create.ok
+test Map.list.is2
 it 'sys'
 test Sys.mode.toggle.bad
 
@@ -176,13 +183,11 @@ it '---userB'
 test Session.signout.ok
 test Session.b.password.b.signin.bad
 test Session.b.password.a.signin.ok
-it 'node'
+it 'node a'
 test Node.a.name.update.bad
 test Node.a.remove.bad
 test Evidence.a0.remove.bad
-test Node.b.create.ok
-test Evidence.b.list.is0
-it 'note'
+it 'note b'
 test Note.b.list.is0
 test Note.b.create.ok
 test Note.b.list.is1
@@ -191,9 +196,7 @@ test Note.b.remove.ok
 test Note.b.list.is0
 test Note.a.create.ok
 test Note.a.list.is2
-it 'edge'
-test Evidence.b0.create.ok
-test Evidence.b.list.is1
+it 'edge ab'
 test Node.b.create.bad # dup
 test Edge.list.is0
 test Edge.ab.create.ok
@@ -222,6 +225,9 @@ test Edge.ab.year.range.in.read.ok
 test Edge.ab.year.range.out.update.bad
 test Edge.ba.create.bad # reciprocal
 test Edge.list.is1
+it 'map'
+test Map.b.read.ok
+test Map.b.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
 it 'node'
 test Node.a.remove.bad # has edge
 test Node.b.remove.bad # has edge
@@ -253,12 +259,12 @@ test Edge.ac.remove.ok
 test Edge.list.is2
 it 'map'
 test Map.c.create.ok
-test Map.list.is2
+test Map.list.is3
 test Map.c.read.ok
 test Map.c.entities.edges.is2
 test Edge.ac.create.ok
 test Map.c.read.ok
-test Map.c.entities.edges.is2 # latest edge ac should be excluded
+test Map.c.entities.edges.is3 # c's latest edge ac should be included on c's map
 test Edge.ac.remove.ok
 test Evidence.bc0.remove.ok
 test Edge.bc.remove.bad # on map c

@@ -20,6 +20,7 @@ module.exports.get-spec = (signin, read, signout) ->
     b    : get-spec \userb
     c    : get-spec \userc
     d    : get-spec \userd
+    e    : get-spec \usere
     z    : get-spec \userz
     oa1  : get-spec \openauth1, name:\oa1
     oa2  : get-spec \openauth2, name:\oa2

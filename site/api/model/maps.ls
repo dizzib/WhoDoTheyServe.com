@@ -48,11 +48,11 @@ function read req, res, next
   err, nodes <- M-Nodes.find!lean!exec
   return next err if err
   map.entities.nodes = _.filter nodes, -> _.contains map-node-ids, it._id
-  # edges, excluding those created after the cutoff
+  # edges, excluding those created by other users after the cutoff
   err, edges <- M-Edges.find!lean!exec
   return next err if err
   map.entities.edges = _.filter edges, ->
-    return false if it.meta.create_date > map.edge_cutoff_date
+    return false if it.meta.create_date > map.edge_cutoff_date and it.meta.create_user_id isnt map.meta.create_user_id
     (_.contains map-node-ids, it.a_node_id) and (_.contains map-node-ids, it.b_node_id)
   # evidences
   err, evs <- M-Evidences.find!lean!exec
