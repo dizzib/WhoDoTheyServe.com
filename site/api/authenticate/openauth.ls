@@ -8,13 +8,14 @@ M-Users    = require \../model/users
 
 env = process.env
 callback-domain = env.SITE_DOMAIN_NAME or \SITE_DOMAIN_NAME
+callback-port   = if env.NODE_ENV in <[ development staging ]> then ":#{env.PORT || 80}" else ''
 
 module.exports = me =
   set-config: (auth-type, strategy, client-id, client-secret, cfg-extra) ->
     cfg =
       clientID    : client-id or \CLIENT_ID
       clientSecret: client-secret or \CLIENT_SECRET
-      callbackURL : "http://#{callback-domain}:#{env.PORT || 80}/api/auth/#auth-type/callback"
+      callbackURL : "http://#callback-domain#callback-port/api/auth/#auth-type/callback"
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
       #log auth-type, profile
       # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
