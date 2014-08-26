@@ -16,8 +16,9 @@ module.exports = me =
       clientID    : client-id or \CLIENT_ID
       clientSecret: client-secret or \CLIENT_SECRET
       callbackURL : "http://#callback-domain#callback-port/api/auth/#auth-type/callback"
+    log \oauth-cburl, cfg.callbackURL
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
-      #log auth-type, profile
+      log \cb1, auth-type, profile
       # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
       return done new H.AuthenticateError 'id is empty' unless id = (p = profile).id
       return done new H.AuthenticateError 'name is empty' unless name = p.displayName
@@ -35,7 +36,7 @@ module.exports = me =
         doc.save done
 
   callback: (req, res) ->
-    #log \callback, req.user, req.session
+    log \cb2, req.user, req.session
     M-Sessions.signin req
     res.redirect '/#/user'
 
