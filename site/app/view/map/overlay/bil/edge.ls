@@ -9,9 +9,9 @@ H.insert-css F.readFileSync __dirname + \/edge.css
 
 module.exports =
   filter: (edges) ->
-    function is-conference-yyyy then
+    function is-conference-yyyy
       N.is-conference-yyyy it.source or N.is-conference-yyyy it.target
-    function is-steering then
+    function is-steering
       it.how is \member and (N.is-steering it.source or N.is-steering it.target)
     @edges-attend = _.filter edges, is-conference-yyyy
     @edges-steer  = _.filter edges, is-steering

@@ -54,10 +54,6 @@ M.Evidence .= extend do
 
 M.Map .= extend do
   get-is-editable: -> @isNew! or S.get-id! is (@get \meta .create_user_id)
-  initialize: ->
-    @on \sync, (map, res, opts) ->
-      return unless opts.parse and o = res.entities
-      E.merge o # merge newly read map entities into global entities
 
 M.Node .= extend do
   get-yyyy: ->

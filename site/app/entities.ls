@@ -23,7 +23,7 @@ module.exports =
       alert "Unable to load entities.\n\n#{xhr.responseText}"
 
   merge: (o) ->
-    C.Edges.set (_.map o.edges, -> new M.Edge it), remove:false
-    C.Evidences.set (_.map o.evidences, -> new M.Evidence it), remove:false
-    C.Nodes.set (_.map o.nodes, -> new M.Node it), remove:false
-    C.Notes.set (_.map o.notes, -> new M.Note it), remove:false
+    C.Edges.set o.edges, remove:false
+    C.Evidences.set o.evidences, remove:false
+    C.Nodes.set o.nodes, remove:false
+    C.Notes.set o.notes, remove:false

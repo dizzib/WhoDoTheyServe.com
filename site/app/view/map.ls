@@ -44,22 +44,17 @@ module.exports = B.View.extend do
 
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
-    # node coords
-    nodes = @f.nodes!
     @map.set \nodes, _.map node-ids, (nid) ~>
-      node = _.find nodes, -> it._id is nid
+      node = _.find @f.nodes!, -> it._id is nid
       _id: nid
       x  : node?x or @get-size-x!/2 # add new node to center
       y  : node?y or @get-size-y!/2
-    # entities
-    nodes = C.Nodes.filter -> _.contains node-ids, it.id
-    edges = C.Edges.filter ~>
-      return false unless it.is-in-map node-ids
-      return true unless edge-cutoff-date = @map.get \edge_cutoff_date
-      edge-cutoff-date > it.get \meta .create_date
     @map.set \entities,
-      nodes: _.pluck nodes, \attributes
-      edges: _.pluck edges, \attributes
+      nodes: C.Nodes.filter -> _.contains node-ids, it.id
+      edges: C.Edges.filter ~>
+        return false unless it.is-in-map node-ids
+        return true unless edge-cutoff-date = @map.get \edge_cutoff_date
+        edge-cutoff-date > it.get \meta .create_date
     true
 
   render: (opts) ->
@@ -67,9 +62,12 @@ module.exports = B.View.extend do
     @$el.empty!
     # clone entities so the originals don't get filtered out, as they may be used elsewhere
     return unless entities = _.deepClone @map.get \entities
-    return unless (nodes = entities.nodes)?length
+    return unless entities.nodes?length
 
-    edges = E.data entities
+    nodes = _.map entities.nodes, -> it.toJSON-T!
+    edges = _.map entities.edges, -> it.toJSON-T!
+
+    edges = E.data nodes, edges
     edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
     nodes = Ob.filter-nodes nodes
 

@@ -19,7 +19,16 @@ module.exports =
   map: ->
     is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show! if not is-sel-changed
-    (m = V.map.map = M.Map.create it).fetch error:H.on-err, success:show
+    (m = V.map.map = M.Map.create it).fetch error:H.on-err, success: ->
+      unless m.isNew!
+        es = m.get \entities
+        E.merge models =
+          edges    : _.map es.edges, -> new M.Edge it
+          evidences: _.map es.evidences, -> new M.Evidence it
+          nodes    : _.map es.nodes, -> new M.Node it
+          notes    : _.map es.notes, -> new M.Note it
+        m.set \entities, models
+      show!
     function show
       if is-sel-changed
         V.map.render!
@@ -30,9 +39,9 @@ module.exports =
       V.map-info.render m
       V.map-meta.render m, D.meta
       V.map-meta.$el.find \.timeago .timeago! # async .view.finalize timeago runs too soon!
-      if m.get-is-editable!
-        return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
-        V.map-edit.show!
+      return unless m.get-is-editable!
+      return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
+      V.map-edit.show!
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!

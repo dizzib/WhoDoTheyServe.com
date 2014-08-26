@@ -1,7 +1,6 @@
 F = require \fs
 C = require \../../../../collection
 H = require \../../../../helper
-E = require \./edge
 
 H.insert-css F.readFileSync __dirname + \/node.css
 
@@ -10,10 +9,9 @@ const BADGE-SIZE-X  = 20
 const BADGE-SPACE-X = 24
 
 module.exports = me =
-  init: (svg) ->
+  init: (svg, edges-attend) ->
     svg.selectAll \g.node .each (node) ->
-      edges = _.filter E.edges-attend, ->
-        node._id is it.a_node_id or node._id is it.b_node_id
+      edges = _.filter edges-attend, -> node._id is it.a_node_id or node._id is it.b_node_id
       edges = _.sortBy edges, -> it.yyyy
       offset-x = - (BADGE-SPACE-X * (edges.length - 1)) / 2
       for edge, i in edges
@@ -35,7 +33,7 @@ module.exports = me =
           .attr \xlink:href , -> url
           .attr \xlink:title, -> tip
           .append \svg:text
-            .attr \dx, 2
+            .attr \dx, 0
             .attr \dy, 13
             .text -> edge.yy
 

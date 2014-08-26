@@ -7,12 +7,12 @@ module.exports =
     @ga = svg.append \svg:g .attr \class, \bil-attend
     @gs = svg.append \svg:g .attr \class, \bil-steer
 
-    N.init svg
+    N.init svg, E.edges-attend
 
     add-handler @ga, \toggle-bil-attend
     add-handler @gs, \toggle-bil-steer
 
-    function add-handler g, event then
+    function add-handler g, event
       V.map-toolbar.on event, -> g.attr \display, if it then '' else \none
 
   filter-edges: ->
