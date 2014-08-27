@@ -23,9 +23,9 @@ const EVI =
   glyph:
     class: ->
       "glyph fa #{@glyph.name} #{if E.is-dead @_id then \dead else ''}"
-  url-outer:
+  'url-outer':
     href: -> @url
-  url-inner:
+  'url-inner':
     text: -> @url
 
 const EVI-VIDEO =
