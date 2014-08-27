@@ -6,16 +6,12 @@ H          = require \../helper
 M-Sessions = require \../model/sessions
 M-Users    = require \../model/users
 
-env = process.env
-callback-domain = env.SITE_DOMAIN_NAME or \SITE_DOMAIN_NAME
-callback-port   = if env.NODE_ENV in <[ development staging ]> then ":#{env.PORT || 80}" else ''
-
 module.exports = me =
   set-config: (auth-type, strategy, client-id, client-secret, cfg-extra) ->
     cfg =
       clientID    : client-id or \CLIENT_ID
       clientSecret: client-secret or \CLIENT_SECRET
-      callbackURL : "http://#callback-domain#callback-port/api/auth/#auth-type/callback"
+      callbackURL : "http://#{H.get-host-api!}/api/auth/#auth-type/callback"
     log \oauth-cburl, cfg.callbackURL
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
       log \cb1, auth-type, profile
@@ -38,8 +34,9 @@ module.exports = me =
   callback: (req, res) ->
     log \cb2, req.user, req.session
     M-Sessions.signin req
-    res.redirect '/#/user'
+    res.redirect "http://#{H.get-host-site!}/#/user"
 
+env = process.env
 Passport.serializeUser (user, done) -> done null, user._id # put into cookie
 me.set-config \facebook, P-Facebook, env.OAUTH_FACEBOOK_ID, env.OAUTH_FACEBOOK_SECRET
 me.set-config \github  , P-Github  , env.OAUTH_GITHUB_ID  , env.OAUTH_GITHUB_SECRET, scope:''

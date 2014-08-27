@@ -31,6 +31,12 @@ module.exports = me =
       ..get "/api/auth/#path/callback", A-OpenAuth.callback
 
 Express
+  ..all '/api/*', (req, res, next) ->
+    # Production api requests normally bypass CF entirely via the api domain (see /app/api.ls).
+    # However, some api requests (such as the openauth initial request) come via
+    # www.whodotheyserve.com/api, and here we prevent CF from caching such requests.
+    res.header \Cache-Control, \no-cache
+    next!
   ..param \id , (req,, next, req.id)  -> next!
   ..param \key, (req,, next, req.key) -> next!
   ..options \*, (, res) -> res.send 200

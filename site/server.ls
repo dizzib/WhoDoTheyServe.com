@@ -54,7 +54,7 @@ function get-validation-msg err
 
 function handle-error err, req, res, next
   if err instanceof H.AuthenticateError
-    return res.redirect "/#/user/signin/error?error_description=#{err.message}"
+    return res.redirect "http://#{H.get-host-site!}/#/user/signin/error?error_description=#{err.message}"
   msg = switch
     | err instanceof H.ApiError    => err.message
     | err.name is \ValidationError => get-validation-msg err
