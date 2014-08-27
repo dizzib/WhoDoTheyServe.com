@@ -12,6 +12,8 @@ module.exports = me =
       clientID    : client-id or \CLIENT_ID
       clientSecret: client-secret or \CLIENT_SECRET
       callbackURL : "http://#{H.get-host-api!}/api/auth/#auth-type/callback"
+      # In production, the callback must happen on the api-domain and not whodotheyserve.com.
+      # This is because the session cookie (for signin) is on the api-domain.
     log \oauth-cburl, cfg.callbackURL
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
       log \cb1, auth-type, profile
@@ -34,6 +36,8 @@ module.exports = me =
   callback: (req, res) ->
     log \cb2, req.user, req.session
     M-Sessions.signin req
+    # In production, the browser is currently pointing at the api-domain (for signin).
+    # The final redirect must take the browser back to whodotheyserve.com.
     res.redirect "http://#{H.get-host-site!}/#/user"
 
 env = process.env

@@ -2,19 +2,17 @@ include ../lib/_form
 
 .openauth.well
   legend OpenAuth Login
-  span Temporarily disabled
-  .hide
-    a(href='api/auth/facebook')
-      i.glyph.fa.fa-2x.fa-facebook
-      span Login with your Facebook account
-    hr
-    a(href='api/auth/github')
-      i.glyph.fa.fa-2x.fa-github
-      span Login with your Github account
-    hr
-    a(href='api/auth/google')
-      i.glyph.fa.fa-2x.fa-google-plus
-      span Login with your Google account
+  a(href='api/auth/facebook')
+    i.glyph.fa.fa-2x.fa-facebook
+    span Login with your Facebook account
+  hr
+  a(href='api/auth/github')
+    i.glyph.fa.fa-2x.fa-github
+    span Login with your Github account
+  hr
+  a(href='api/auth/google')
+    i.glyph.fa.fa-2x.fa-google-plus
+    span Login with your Google account
 
 form.form-horizontal.create.well
   legend Standard Login
