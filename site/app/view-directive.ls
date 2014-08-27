@@ -7,10 +7,10 @@ S = require \./session
 V = require \./view
 
 const EDGE =
-  a-node:
+  'a-node':
     href: -> get-node-href @a_node_id
     text: -> @a_node_name
-  b-node:
+  'b-node':
     href: -> get-node-href @b_node_id
     text: -> @b_node_name
   how:
