@@ -91,20 +91,20 @@ const SHOW-IF-CREATOR-OR-ADMIN = ->
 # _.extend seems to work better then livescript's with (aka the cloneport)
 module.exports =
   edge: _.extend do
-    btn-edit:
+    'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/edge/edit/#{@_id}"
     EDGE
   edges: _.extend {}, EDGE, GLYPHS
   evidences: _.extend do
-    btn-edit:
+    'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
     META-COMPACT
     EVI
     EVI-VIDEO
   evidences-head:
-    btn-new:
+    'btn-new':
       href: -> "#/#{B.history.fragment}/evi-new"
   glyph: GLYPH
   map:
@@ -123,7 +123,7 @@ module.exports =
   meta: META
   meta-compact: META-COMPACT
   node:
-    btn-edit:
+    'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
   nodes: _.extend do
@@ -135,16 +135,16 @@ module.exports =
       html: -> A.link @text if @text
     META-COMPACT
   notes-head:
-    btn-edit:
+    'btn-edit':
       href: -> "#/#{B.history.fragment}/note-edit"
-    btn-new:
+    'btn-new':
       href: -> "#/#{B.history.fragment}/note-new"
     creatable:
       class: -> \hide unless _.isEmpty this
     editable:
       class: -> \hide if _.isEmpty this
   user:
-    btn-edit:
+    'btn-edit':
       class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
       href : -> "#/user/edit/#{@_id}"
     url:

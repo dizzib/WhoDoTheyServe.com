@@ -97,7 +97,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
       # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
       _.defer ~> @select!
     <- _.defer
-    $ \.btnNew:visible:first .focus!
+    $ \.btn-new:visible:first .focus!
     $ \.view .addClass \ready
 
   ..reset = ->
