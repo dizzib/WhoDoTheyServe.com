@@ -19,14 +19,25 @@ const EDGE =
   period:
     text: -> @period
 
-const GLYPH =
-  glyph:
-    href: -> "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
-
-const GLYPH-EVI =
+const EVI =
   glyph:
     class: ->
       "glyph fa #{@glyph.name} #{if E.is-dead @_id then \dead else ''}"
+  url-outer:
+    href: -> @url
+  url-inner:
+    text: -> @url
+
+const EVI-VIDEO =
+  video:
+    class: -> if @video then @video.service unless get-youtube-embed @url .error
+    text : -> get-youtube-embed @url .error if @video
+  youtube:
+    src: -> get-youtube-embed @url .url if @video
+
+const GLYPH =
+  glyph:
+    href: -> "#/#{if C.Edges.get @entity_id then \edge else \node}/#{@entity_id}"
 
 const GLYPHS =
   glyphs:
@@ -77,17 +88,6 @@ const META-COMPACT = # show only the last action
 const SHOW-IF-CREATOR-OR-ADMIN = ->
   \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
 
-const URL-EVI =
-  url-outer:
-    href: -> @url
-  url-inner:
-    text: -> @url
-  video:
-    class: -> if @video then @video.service unless get-youtube-embed @url .error
-    text : -> get-youtube-embed @url .error if @video
-  youtube:
-    src: -> get-youtube-embed @url .url if @video
-
 # for some reason livescript's cloneport doesn't work with multiple constants
 # e.g. GLYPHS with EDGE, so we'll use _.extend instead
 module.exports =
@@ -102,7 +102,7 @@ module.exports =
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
-    }, GLYPH-EVI, META-COMPACT, URL-EVI
+    }, META-COMPACT, EVI, EVI-VIDEO
   evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
@@ -154,9 +154,10 @@ module.exports =
       href: -> @info
       text: -> @info
   user-evidences: _ {} .extend {
-    btn : HIDE
-    meta: HIDE
-    }, GLYPH-EVI, URL-EVI
+    btn  : HIDE
+    meta : HIDE
+    video: HIDE
+    }, EVI
   user-notes:
     note:
       html: -> A.link @text if @text
