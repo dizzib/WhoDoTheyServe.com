@@ -88,18 +88,14 @@ const META-COMPACT = # show only the last action
 const SHOW-IF-CREATOR-OR-ADMIN = ->
   \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
 
-# for some reason livescript's cloneport doesn't work with multiple constants
-# e.g. GLYPHS with EDGE, so we'll use _.extend instead
+# _.extend seems to work better then livescript's with (aka the cloneport)
 module.exports =
   edge: _.extend do
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/edge/edit/#{@_id}"
     EDGE
-  edges: _.extend do
-    {}
-    EDGE
-    GLYPHS
+  edges: _.extend {}, EDGE, GLYPHS
   evidences: _.extend do
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
@@ -110,8 +106,7 @@ module.exports =
   evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
-  glyph:
-    GLYPH
+  glyph: GLYPH
   map:
     link:
       href: -> "#/map/#{@id or @_id or \new}"
@@ -125,10 +120,8 @@ module.exports =
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name
-  meta:
-    META
-  meta-compact:
-    META-COMPACT
+  meta: META
+  meta-compact: META-COMPACT
   node:
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
@@ -169,6 +162,8 @@ module.exports =
   users:
     user:
       href: -> get-user-href @_id
+
+## helpers
 
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
