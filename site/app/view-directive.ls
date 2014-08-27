@@ -91,18 +91,22 @@ const SHOW-IF-CREATOR-OR-ADMIN = ->
 # for some reason livescript's cloneport doesn't work with multiple constants
 # e.g. GLYPHS with EDGE, so we'll use _.extend instead
 module.exports =
-  edge: {
+  edge: _.extend do
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/edge/edit/#{@_id}"
-    } <<< EDGE
-  edges:
-    (_.deepClone EDGE) <<< GLYPHS
-  evidences: _ {} .extend {
+    EDGE
+  edges: _.extend do
+    {}
+    EDGE
+    GLYPHS
+  evidences: _.extend do
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/#{B.history.fragment}/evi-edit/#{@_id}"
-    }, META-COMPACT, EVI, EVI-VIDEO
+    META-COMPACT
+    EVI
+    EVI-VIDEO
   evidences-head:
     btn-new:
       href: -> "#/#{B.history.fragment}/evi-new"
@@ -129,14 +133,14 @@ module.exports =
     btn-edit:
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
-  nodes: {
+  nodes: _.extend do
     name:
       href: -> get-node-href @_id
-    } <<< GLYPHS
-  notes: {
+    GLYPHS
+  notes: _.extend do
     note:
       html: -> A.link @text if @text
-  } <<< META-COMPACT
+    META-COMPACT
   notes-head:
     btn-edit:
       href: -> "#/#{B.history.fragment}/note-edit"
@@ -153,11 +157,11 @@ module.exports =
     url:
       href: -> @info
       text: -> @info
-  user-evidences: _ {} .extend {
+  user-evidences: _.extend do
     btn  : HIDE
     meta : HIDE
     video: HIDE
-    }, EVI
+    EVI
   user-notes:
     note:
       html: -> A.link @text if @text
