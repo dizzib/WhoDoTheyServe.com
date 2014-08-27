@@ -59,8 +59,8 @@ const GLYPHS =
         $el.append "<i title='#{note.get \text}' class='fa fa-comment'/>"
       return ''
 
-const HIDE =
-  class: -> \hide
+const REMOVE =
+  text: -> it.element.remove!
 
 const META =
   'create-user':
@@ -151,14 +151,14 @@ module.exports =
       href: -> @info
       text: -> @info
   user-evidences: _.extend do
-    btn  : HIDE
-    meta : HIDE
-    video: HIDE
+    btn  : REMOVE
+    meta : REMOVE
+    video: REMOVE
     EVI
   user-notes:
     note:
       html: -> A.link @text if @text
-    meta: HIDE
+    meta: REMOVE
   users:
     user:
       href: -> get-user-href @_id
