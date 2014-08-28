@@ -4,7 +4,7 @@ const LIBS =
     loc: \backbone.js
     ok : -> Backbone?
   bootstrap_css:
-    cdn: '//maxcdn.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css'
+    cdn: '//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css'
     loc: \bootstrap/css/bootstrap.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   d3:
