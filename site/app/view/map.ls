@@ -2,6 +2,7 @@ B  = require \backbone
 Fs = require \fs
 _  = require \underscore
 C  = require \../collection
+Cu = require \./map/cursor
 E  = require \./map/edge
 Eg = require \./map/edge-glyph
 N  = require \./map/node
@@ -142,6 +143,7 @@ function justify v
   else
     $vm.css \display, \block
     $vm.css \justify-content, \flex-start
+  Cu.init v
 
 function render-start v
   v.trigger \render
