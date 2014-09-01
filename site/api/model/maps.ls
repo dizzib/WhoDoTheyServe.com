@@ -11,8 +11,9 @@ P-Meta      = require \./plugin-meta
 
 s-node = new M.Schema do
   _id: type:String, required:yes
-  x  : type:Number # optional since node may be filtered out of d3
-  y  : type:Number # optional since node may be filtered out of d3
+  x  : type:Number  # optional since node may be filtered out of d3
+  y  : type:Number  # optional since node may be filtered out of d3
+  pin: type:Boolean # optional since most nodes won't be pinned
 
 s-size =
   x: type:Number, required:yes

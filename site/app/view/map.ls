@@ -25,6 +25,7 @@ module.exports = B.View.extend do
       _id: it._id
       x  : Math.round it.x
       y  : Math.round it.y
+      pin: it.fixed
 
   get-size-x: -> @svg?attr \width
   get-size-y: -> @svg?attr \height
@@ -47,10 +48,11 @@ module.exports = B.View.extend do
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
     @map.set \nodes, _.map node-ids, (nid) ~>
-      node = _.find @f.nodes!, -> it._id is nid
+      node = _.findWhere @f.nodes!, _id:nid
       _id: nid
       x  : node?x or @get-size-x!/2 # add new node to center
       y  : node?y or @get-size-y!/2
+      pin: node?fixed
     @map.set \entities,
       nodes: C.Nodes.filter -> _.contains node-ids, it.id
       edges: C.Edges.filter ~>
@@ -73,16 +75,14 @@ module.exports = B.View.extend do
     edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
     nodes = Ob.filter-nodes nodes
 
-    is-editable = @map.get-is-editable!
-    _.each nodes, -> it.fixed = (not is-editable) or N.is-you it
-
     size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
     size-y = @map.get \size.y or @get-size-y! or SIZE-NEW
 
+    is-editable = @map.get-is-editable!
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
         node = _.findWhere nodes, _id:n._id
-        node <<< { x:n.x, y:n.y } if node?
+        node <<< { x:n.x, y:n.y, fixed:(not is-editable) or n.pin } if node?
 
     @f.stop!
     @f.nodes nodes
@@ -101,10 +101,10 @@ module.exports = B.View.extend do
     # order matters: svg uses painter's algo
     E .init @svg, @f
     N .init @svg, @f
-    P .init @svg, @f
     Os.init @svg, @f
     Eg.init @svg, @f, entities.evidences
     _.each OVERLAYS, ~> it.init @svg, @f
+    P .init @svg, @f if is-editable
 
     @svg.selectAll \g.node .call @f.drag if is-editable
     Os.align @svg, @f
