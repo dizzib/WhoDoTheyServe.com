@@ -5,6 +5,7 @@ Cron    = require \cron
 Emitter = require \events .EventEmitter
 Fs      = require \fs
 Gaze    = require \gaze
+Globule = require \globule
 Litify  = require \literalify
 _       = require \lodash
 Md      = require \marked
@@ -147,9 +148,10 @@ function compile t, ipath, cb
 
 function compile-batch tid
   t = tasks[tid]
-  # https://github.com/shama/gaze/issues/74
-  files = [ f for dir, paths of t.gaze.watched! for f in paths
+  w = W4m t.gaze, \watched
+  files = [ f for dir, paths of w for f in paths
     when '/' isnt f.slice -1 and (Path.basename f).0 isnt t.mixn ]
+  files = _.filter files, t.isMatch # TODO: remove when gaze fixes issue 104
   info = "#{files.length} #tid files"
   G.say "compiling #info..."
   for f in files then W4 compile, t, f
@@ -194,11 +196,14 @@ function start-watching tid
   log "start watching #tid"
   Assert.equal pwd!, Dir.ROOT
   ixt = (t = tasks[tid]).ixt
-  pat = "#{Dirname.SITE},#{Dirname.TASK},#{Dirname.TEST}"
-  t.gaze = Gaze [ "*.#ixt" "{#pat}/**/*.#ixt" ], { interval:1000ms }, ->
+  dirs = "#{Dirname.SITE},#{Dirname.TASK},#{Dirname.TEST}"
+  # TODO: remove t.isMatch when gaze fixes https://github.com/shama/gaze/issues/104
+  t.isMatch = (ipath) -> Globule.isMatch t.patterns, (ipath.replace "#{Dir.ROOT}/", '')
+  t.gaze = Gaze t.patterns = [ "*.#ixt" "{#dirs}/**/*.#ixt" ], ->
     act, ipath <- t.gaze.on \all
-    log act, ipath
     return if '/' is ipath.slice -1 # BUG: Gaze might fire when dir added
+    return unless t.isMatch ipath # TODO: remove when gaze fixes issue 104
+    log act, ipath
     WFib ->
       if t.mixn? and (Path.basename ipath).0 is t.mixn then
         try
