@@ -23,7 +23,7 @@ module.exports =
 
     $ \.map .on \click, \.pin ->
       c = $ this .parent!attr \class
-      id = (c.match /id_(\w+)/).1
+      id = (c.match /id_([-\|\w]+)/).1 # some ids include a pipe | but short-id shouldn't do this !?
       pin = svg.select "g.node.id_#id .pin g"
       t = pin.attr \transform
       pin.attr \transform, if t is PIN-IN then p = PIN-OUT else p = PIN-IN
