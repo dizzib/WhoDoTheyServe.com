@@ -24,7 +24,8 @@ devDependencies:
   chalk                 : \~0.4.0
   cheerio               : \~0.14.0
   cron                  : \~1.0.3
-  gaze                  : \~0.5.0
+  gaze                  : \~0.6.4
+  globule               : \~0.2.0 # TODO: remove when gaze fixes issue 104
   gntp                  : \~0.1.1
   'istanbul-middleware' : \~0.1.1
   jade                  : \~0.27.7
