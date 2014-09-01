@@ -9,6 +9,7 @@ N  = require \./map/node
 O  = require \./map/overlay
 Ob = require \./map/overlay/bil
 Os = require \./map/overlay/slit
+P  = require \./map/pin
 H  = require \../helper
 S  = require \../session
 V  = require \../view
@@ -100,6 +101,7 @@ module.exports = B.View.extend do
     # order matters: svg uses painter's algo
     E .init @svg, @f
     N .init @svg, @f
+    P .init @svg, @f
     Os.init @svg, @f
     Eg.init @svg, @f, entities.evidences
     _.each OVERLAYS, ~> it.init @svg, @f
