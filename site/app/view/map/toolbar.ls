@@ -3,24 +3,33 @@ F = require \fs
 H = require \../../helper
 S = require \../../session
 
-H.insert-css F.readFileSync __dirname + \/toolbar.css
+const OVERLAYS =
+  Ac       : default:false, event:\ac
+  BilAttend: default:false, event:\bil-attend
+  BilSteer : default:true , event:\bil-steer
+  Cfr      : default:false, event:\cfr
+  Bis      : default:false, event:\bis
 
 module.exports = B.View.extend do
+
   initialize: ->
+    H.insert-css F.readFileSync __dirname + \/toolbar.css
     @$el.html F.readFileSync __dirname + \/toolbar.html
 
-  render: ->
-    init-overlay-chk \#chkAc       , \toggle-ac        , false
-    init-overlay-chk \#chkBilAttend, \toggle-bil-attend, false
-    init-overlay-chk \#chkBilSteer , \toggle-bil-steer , true
-    init-overlay-chk \#chkCfr      , \toggle-cfr       , false
-    init-overlay-chk \#chkBis      , \toggle-bis       , false
+    for let k, v of OVERLAYS
+      $el = get-chk$ k .click ~> @trigger (get-toggle-event v), $el.prop \checked
+    @reset!
 
-    ~function init-overlay-chk id, event, value
-      $el = $ id
-        ..prop \checked, value
-        ..click ~> @trigger event, $el.prop \checked
-      @trigger event, value
+  reset: ->
+    for let k, v of OVERLAYS
+      get-chk$ k .prop \checked, v.default
+      @trigger (get-toggle-event v), v.default
 
   show: ->
     @$el.show!
+
+## helpers
+
+function get-chk$ then $ "\#chk#it"
+
+function get-toggle-event then "toggle-#{it.event}"

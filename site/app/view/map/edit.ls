@@ -49,7 +49,7 @@ module.exports.init = -> # should only run once on signin
     # even if the selection is unchanged, in which case bail
     return unless V.map.refresh-entities V.map-nodes-sel.get-selected-ids!
     V.map.render is-slow-to-cool:true
-    V.map-toolbar.render! # reset checkboxes
+    V.map-toolbar.reset!
 
   V.map
     ..on \render  , disable-buttons

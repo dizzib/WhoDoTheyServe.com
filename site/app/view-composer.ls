@@ -32,7 +32,7 @@ module.exports =
     function show
       if is-sel-changed
         V.map.render!
-        V.map-toolbar.render!
+        V.map-toolbar.reset!
         V.navbar.render!
       V.map.show!
       V.map-toolbar.show!
