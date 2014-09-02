@@ -21,7 +21,6 @@ S   = require \./session
 V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
-Vf  = require \./view/footer
 Vus = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
@@ -46,8 +45,8 @@ function init
   fetch-entities-core (-> E.fetch start-signed-in, fail-si) if S.is-signed-in!
   fetch-entities-core start unless S.is-signed-in!
   Val.init!
-  Vh .init!
-  Vf .init!
+  Vh.init!
+  V.footer.render!
   M.Sys.fetch error:fail, success: -> V.version.render M.Sys
 
 function fail-si coll, xhr then alert \signed-in, xhr
