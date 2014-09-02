@@ -17,9 +17,6 @@ spec =
   create_date : type:Date  , required:yes, default:Date.now
   quota_daily : type:Number, required:yes, default:5
   freeze_until: type:String  # allow sign-in only after this datetime
-  # TODO: remove the following deprecated fields after oauth migration
-  login       : type:String
-  password    : type:String
 
 schema = new M.Schema spec
   ..plugin P-Id
