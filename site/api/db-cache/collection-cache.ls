@@ -95,7 +95,7 @@ class Cache
 
   function refresh-object coll-name, conds, o
     #log 'refresh-object', coll-name, conds, o
-    docs = (@@store.get coll-name, STORE-KEY) or {}
+    return unless docs = @@store.get coll-name, STORE-KEY
     docs = _.reject docs, conds
     docs.push(o._doc or o) if o
     @@store.set coll-name, STORE-KEY, docs

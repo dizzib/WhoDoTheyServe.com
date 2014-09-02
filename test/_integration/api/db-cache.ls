@@ -49,12 +49,13 @@ after R ->
 
 # NOTE: each test must leave collection empty for next test
 it 'collection cache', (done) ->
+  <- assert-count 0
   <- add \a, \foo, \andy
-  store-c.hit-count.should.equal 0
-  <- assert-count 1
   store-c.hit-count.should.equal 1
-  <- find-by-id \a
+  <- assert-count 1
   store-c.hit-count.should.equal 2
+  <- find-by-id \a
+  store-c.hit-count.should.equal 3
   <- add \b, \foo, \butch
   <- add \c, \bar, \chris
   <- assert-count 3
@@ -77,6 +78,7 @@ it 'collection cache', (done) ->
   done!
 
 it 'query-by-entity cache', (done) ->
+  <- assert-count 0
   <- add \a, \foo, \andy
   <- assert-count 1
   <- find-by-entity-id \foo, 1

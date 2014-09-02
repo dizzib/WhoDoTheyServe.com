@@ -10,7 +10,7 @@ class Store
 
   clear: (coll-name, key-raw) ->
     #log 'CLEAR'
-    if coll-name then
+    if coll-name
       assert-coll-name coll-name
       return null unless _.has @_store, coll-name
       if key-raw then return delete @_store[coll-name][get-key key-raw]
@@ -20,14 +20,14 @@ class Store
   get: (coll-name, key-raw) ->
     #log 'GET', coll-name, key-raw
     assert-coll-name coll-name
-    if _.has @_store, coll-name then
+    if _.has @_store, coll-name
       coll-store = @_store[coll-name]
       key = get-key key-raw
-      if _.has coll-store, key then
+      if _.has coll-store, key
         @hit-count++
         return @_store[coll-name][get-key key-raw]
     @miss-count++
-    return null
+    null
 
   set: (coll-name, key-raw, value) ->
     #log 'SET', coll-name, key-raw, value
@@ -40,11 +40,11 @@ class Store
     @hit-count  = 0
     @miss-count = 0
 
-  function assert-coll-name coll-name then
-    if not _.isString coll-name or coll-name.length > 10 then
+  function assert-coll-name coll-name
+    if not _.isString coll-name or coll-name.length > 10
       throw new Error "invalid coll-name #{coll-name}"
 
-  function get-key key-raw then
+  function get-key key-raw
     key = switch
       case _.isString key-raw then key-raw
       case _.isObject key-raw then JSON.parse key-raw
