@@ -5,9 +5,12 @@ Hi = require \../../hive
 R  = require \../../router
 V  = require \../../view
 
-H.insert-css F.readFileSync __dirname + \/edit.css
-
 module.exports.init = -> # should only run once on signin
+
+  H.insert-css F.readFileSync __dirname + \/edit.css
+  # multi-select can't be browserified 'cos it references an adjacent png
+  yepnope.injectCss \/lib-3p/multiple-select.css
+
   V.map-edit
     ..on \destroyed, ->
       delete V.map.map

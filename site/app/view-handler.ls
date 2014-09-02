@@ -6,6 +6,7 @@ V   = require \./view
 Ve  = require \./view-engine
 Vee = require \./view/edge-edit
 Vev = require \./view/evidence
+Vme = require \./view/map/edit
 Vue = require \./view/user-edit
 Vus = require \./view/user-signin
 
@@ -44,6 +45,7 @@ module.exports =
         ..on \error    , -> Vus.toggle-please-wait false
         ..on \rendered ,    Vus.init
         ..on \saved    ,    Vus.on-signin
+        ..on \signed-in,    Vme.init
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> navigate "user/#{it.id}"

@@ -6,7 +6,6 @@ Hi  = require \../hive
 R   = require \../router
 S   = require \../session
 V   = require \../view
-Vme = require \./map/edit
 
 module.exports = me =
   init: ->
@@ -16,9 +15,7 @@ module.exports = me =
 
   init-signin: ->
     H.show-alert-once 'Welcome! You are now logged in'
-    Vme.init!
-    # multi-select can't be browserified 'cos it references an adjacent png
-    yepnope.injectCss \/lib-3p/multiple-select.css
+    V.user-signin.trigger \signed-in
 
   on-signin: ->
     <- S.refresh
