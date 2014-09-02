@@ -5,7 +5,10 @@ Hi = require \../../hive
 R  = require \../../router
 V  = require \../../view
 
-module.exports.init = -> # should only run once on signin
+has-run = false
+
+module.exports.init = -> # should only run once on first signin
+  return if has-run
 
   H.insert-css F.readFileSync __dirname + \/edit.css
   # multi-select can't be browserified 'cos it references an adjacent png
@@ -56,6 +59,8 @@ module.exports.init = -> # should only run once on signin
     ..on \rendered, enable-buttons
 
   C.Nodes.on 'add remove', render-dropdown
+
+  has-run := true
 
 # helpers
 
