@@ -21,7 +21,8 @@ module.exports =
     # include this path to show bounding box for debugging pin rotation
     #pin.append \svg:path .attr \d, "M -#{l = SIZE / 2} -#l L #l -#l L #l #l L -#l #l L -#l -#l"
 
-    $ \.map .on \click, \.pin ->
+    $ \.map .off \click, \.pin # otherwise handler runs against old svg in closure
+    $ \.map .on  \click, \.pin ->
       c = $ this .parent!attr \class
       id = (c.match /id_([-\|\w]+)/).1 # some ids include a pipe | but short-id shouldn't do this !?
       pin = svg.select "g.node.id_#id .pin g"

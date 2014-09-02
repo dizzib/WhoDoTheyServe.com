@@ -10,20 +10,14 @@ module.exports =
     svg = map.svg
     $svg = map.$el.find \svg
 
-    map.$el .click ->
-      [x, y] = [it.pageX - $svg.position!left, it.offsetY]
-      id = (find-nearest-node x, y)._id
-      n = svg.select "g.node.id_#id"
-      svg.select \.cursor .remove!
-      n.append \svg:path
-        .attr \class, \cursor
-        .attr \d, get-cursor-path!
+    map.$el.off \click, show-cursor # otherwise handler runs against old svg in closure
+    map.$el.on  \click, show-cursor
 
     ## helpers
 
     function find-nearest-node x, y
       function get-distance x0, x1, y0, y1 then Math.sqrt(((x1 - x0) ^ 2) + ((y1 - y0) ^ 2))
-      dists = _.map map.f.nodes!, ->
+      dists = _.map map.d3f.nodes!, ->
         it: it
         d : get-distance it.x, x, it.y, y
       (_.min dists, -> it.d).it
@@ -38,3 +32,12 @@ module.exports =
         qy = py + LENGTH * sign-y
         "M #px #py L #px #qy L #qx #py L #px #py "
       get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
+
+    function show-cursor
+      [x, y] = [it.pageX - $svg.position!left, it.offsetY]
+      id = (find-nearest-node x, y)._id
+      n = svg.select "g.node.id_#id"
+      svg.select \.cursor .remove!
+      n.append \svg:path
+        .attr \class, \cursor
+        .attr \d, get-cursor-path!
