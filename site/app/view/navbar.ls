@@ -7,13 +7,13 @@ H = require \../helper
 S = require \../session
 V = require \../view
 
-T = F.readFileSync __dirname + \/navbar.html
-
-H.insert-css F.readFileSync __dirname + \/navbar.css
-
 module.exports = B.View.extend do
+  initialize: ->
+    @T = F.readFileSync __dirname + \/navbar.html
+    H.insert-css F.readFileSync __dirname + \/navbar.css
+
   render: ->
-    set-active-tab $t = $ T
+    set-active-tab $t = $ @T
     render-map $t
     render-maps-dropdown $t
     @$el.html $t .show!
@@ -46,7 +46,7 @@ function set-active-tab $t
     return unless (s = ($this = $ this).attr \active)?
     $this.toggleClass \active, (new RegExp s, \i).test (clean-hash location.hash)
 
-  function clean-hash hash then
+  function clean-hash hash
     hash
      .replace '#/', ''
      .replace '#' , ''
