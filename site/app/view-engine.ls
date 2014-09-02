@@ -62,6 +62,7 @@ module.exports =
         data = if o then o.toJSON-T! else {} # transparency won't process void data, hence {}
       ($tem = $ @template).render data, directive
       @$el.html $tem .set-access S .show!
+      @trigger \rendered, o
 
   ListView: B.View.extend do
     initialize: ->

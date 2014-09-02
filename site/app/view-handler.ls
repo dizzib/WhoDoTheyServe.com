@@ -2,6 +2,7 @@ Bh  = require \backbone .history
 C   = require \./collection
 R   = require \./router
 S   = require \./session
+Si  = require \./signin
 V   = require \./view
 Ve  = require \./view-engine
 Vee = require \./view/edge-edit
@@ -44,8 +45,9 @@ module.exports =
         ..on \cancelled, -> Bh.history.back!
         ..on \error    , -> Vus.toggle-please-wait false
         ..on \rendered ,    Vus.init
-        ..on \saved    ,    Vus.on-signin
-        ..on \signed-in,    Vme.init
+        ..on \saved    ,    Si.signin
+      ..user-signout
+        ..on \rendered ,    Si.signout
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> navigate "user/#{it.id}"

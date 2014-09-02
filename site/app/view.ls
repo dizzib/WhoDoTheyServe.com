@@ -6,7 +6,6 @@ V-Latest    = require \./view/latest
 V-Map       = require \./view/map
 V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
-V-SignOut   = require \./view/user-signout
 
 H.insert-css-seo F.readFileSync __dirname + \/view.css
 
@@ -81,7 +80,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
   ..user-signin-err = new V.InfoView template:T-UserSigninErr, el:\.view>.main
-  ..user-signout    = new V-SignOut
+  ..user-signout    = new V.InfoView template:''             , el:\.view>.main
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.users
   ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main

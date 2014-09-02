@@ -18,10 +18,10 @@ Hi  = require \./hive
 M   = require \./model
 Mx  = require \./model-ext
 S   = require \./session
+Si  = require \./signin
 V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
-Vus = require \./view/user-signin
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -31,7 +31,6 @@ B.Model.prototype.idAttribute = \_id # mongodb
 
 Api.init!
 C.init!
-
 C.Sessions.fetch error:fail, success:init
 
 # helpers
@@ -55,10 +54,10 @@ function fail    coll, xhr then alert \core, xhr
 function fetch-entities-core cb
   $.when(C.Maps.fetch!, C.Users.fetch!, Hi.Map.fetch!).then cb, fail
 
-function start-signed-in
-  Vus.init-signin!
-  start!
-
 function start
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
+
+function start-signed-in
+  Si.show-welcome!
+  start!
