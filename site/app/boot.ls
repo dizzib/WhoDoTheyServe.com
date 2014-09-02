@@ -59,5 +59,5 @@ function start
   $ \.hide-during-boot .removeClass \hide-during-boot
 
 function start-signed-in
-  Si.show-welcome!
+  Si.after-signin!
   start!

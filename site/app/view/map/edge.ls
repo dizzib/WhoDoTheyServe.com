@@ -41,7 +41,7 @@ module.exports =
           it.year_from is d3-edge.year_to and
           (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
 
-  init: (svg, d3-force) ~>
+  init: (svg, d3f) ~>
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
       .enter!append \svg:marker
@@ -54,7 +54,7 @@ module.exports =
       .append \svg:path
         .attr \d, 'M0,-5L10,0L0,5'
     @lines = svg.selectAll \line
-      .data d3-force.links!
+      .data d3f.links!
       .enter!append \svg:line
         .attr \class     , -> "edge #{it.class}".trim!
         .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''

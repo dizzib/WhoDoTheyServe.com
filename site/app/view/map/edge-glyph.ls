@@ -31,10 +31,10 @@ module.exports = me =
     y = it.source.y + (it.target.y - it.source.y - ICON-SIZE) / 2
     "translate(#x,#y)"
 
-  init: (svg, d3-force, evs) ->
+  init: (svg, d3f, evs) ->
     evidences := evs
     g := svg.selectAll \g.edge-glyphs
-      .data d3-force.links!
+      .data d3f.links!
       .enter!append \svg:g
         .attr \class, \edge-glyphs
     g.each me.append

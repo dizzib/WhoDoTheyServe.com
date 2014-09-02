@@ -8,9 +8,9 @@ const ICON-SIZE = 20
 H.insert-css F.readFileSync __dirname + \/node.css
 
 module.exports = me =
-  init: (svg, d3-force) ~>
+  init: (svg, d3f) ~>
     @nodes = svg.selectAll \g.node
-      .data d3-force.nodes!
+      .data d3f.nodes!
       .enter!append \svg:g
         .attr \class, ->
           "node id_#{it._id} #{if me.is-you it then \you else ''}".trim!

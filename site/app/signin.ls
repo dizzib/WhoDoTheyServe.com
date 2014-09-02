@@ -8,8 +8,9 @@ V   = require \./view
 Vme = require \./view/map/edit
 
 module.exports = me =
-  show-welcome: ->
+  after-signin: ->
     H.show-alert-once 'Welcome! You are now logged in'
+    Vme.init!
 
   signin: ->
     <- S.refresh
@@ -17,8 +18,7 @@ module.exports = me =
 
     function ok
       clear-active-map!
-      me.show-welcome!
-      Vme.init!
+      me.after-signin!
       R.navigate \user, trigger:true
 
     function fail coll, xhr

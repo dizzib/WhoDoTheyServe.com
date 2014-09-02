@@ -21,7 +21,7 @@ const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 
 module.exports = B.View.extend do
   get-nodes-xy: ->
-    _.map @f.nodes!, ->
+    _.map @d3f.nodes!, ->
       _id: it._id
       x  : Math.round it.x
       y  : Math.round it.y
@@ -33,14 +33,14 @@ module.exports = B.View.extend do
   initialize: ->
     n-tick = 0
     is-resized = false
-    @f = d3.layout.force!
+    @d3f = d3.layout.force!
       ..on \start, ~>
         render-start @
         is-resized := false
       ..on \tick , ~>
         return unless n-tick++ % 4 is 0
         on-tick!
-        if @map.get-is-editable! and not is-resized and @f.alpha! < 0.03
+        if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           set-map-size @
           is-resized := true # resize only once during cool-down
       ..on \end  , ~> render-stop @
@@ -48,7 +48,7 @@ module.exports = B.View.extend do
   refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
     @map.set \nodes, _.map node-ids, (nid) ~>
-      node = _.findWhere @f.nodes!, _id:nid
+      node = _.findWhere @d3f.nodes!, _id:nid
       _id: nid
       x  : node?x or @get-size-x!/2 # add new node to center
       y  : node?y or @get-size-y!/2
@@ -84,8 +84,8 @@ module.exports = B.View.extend do
         node = _.findWhere nodes, _id:n._id
         node <<< { x:n.x, y:n.y, fixed:(not is-editable) or n.pin } if node?
 
-    @f.stop!
-    @f.nodes nodes
+    @d3f.stop!
+    @d3f.nodes nodes
      .links (edges or [])
      .charge -2000
      .friction 0.85
@@ -99,21 +99,21 @@ module.exports = B.View.extend do
     justify @
 
     # order matters: svg uses painter's algo
-    E .init @svg, @f
-    N .init @svg, @f
-    Os.init @svg, @f
-    Eg.init @svg, @f, entities.evidences
-    _.each OVERLAYS, ~> it.init @svg, @f
-    P .init @svg, @f if is-editable
+    E .init @svg, @d3f
+    N .init @svg, @d3f
+    Os.init @svg, @d3f
+    Eg.init @svg, @d3f, entities.evidences
+    _.each OVERLAYS, ~> it.init @svg, @d3f
+    P .init @svg, @d3f if is-editable
 
-    @svg.selectAll \g.node .call @f.drag if is-editable
-    Os.align @svg, @f
+    @svg.selectAll \g.node .call @d3f.drag if is-editable
+    Os.align @svg, @d3f
 
     # determine whether to freeze immediately
     return if @map.isNew!
     return if opts?is-slow-to-cool
 
-    @f.alpha 0 # freeze map -- must be called after start
+    @d3f.alpha 0 # freeze map -- must be called after start
     on-tick!   # single tick required to render frozen map
 
   show: ->
@@ -170,7 +170,7 @@ function set-map-size v
   size-before = x:v.get-size-x!, y:v.get-size-y!
   set-canvas-size v.svg, w, h
   justify v
-  v.f.size [w, h]
+  v.d3f.size [w, h]
 
   v.map.set \size.x, w
   v.map.set \size.y, h
@@ -178,6 +178,6 @@ function set-map-size v
   # reposition fixed nodes
   dx = (w - size-before.x) / 2
   dy = (h - size-before.y) / 2
-  for n in v.f.nodes! when n.fixed
+  for n in v.d3f.nodes! when n.fixed
     n.px += dx
     n.py += dy
