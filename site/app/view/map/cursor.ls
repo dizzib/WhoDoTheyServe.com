@@ -34,8 +34,10 @@ module.exports =
       get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
 
     function show-cursor
-      [x, y] = [it.pageX - $svg.position!left, it.offsetY]
-      id = (find-nearest-node x, y)._id
+      log it.offsetY, it.layerY, it.originalEvent.layerY
+      log [x, y] = [it.pageX - $svg.position!left, it.offsetY or it.originalEvent.layerY ]
+      nd = find-nearest-node x, y
+      id = nd._id
       n = svg.select "g.node.id_#id"
       svg.select \.cursor .remove!
       n.append \svg:path
