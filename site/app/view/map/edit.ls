@@ -7,7 +7,7 @@ V  = require \../../view
 
 H.insert-css F.readFileSync __dirname + \/edit.css
 
-module.exports.init = ->
+module.exports.init = -> # should only run once on signin
   V.map-edit
     ..on \destroyed, ->
       delete V.map.map
