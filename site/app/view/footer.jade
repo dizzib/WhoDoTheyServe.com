@@ -1,4 +1,4 @@
-.navbar.navbar-fixed-bottom.seo-remove
+.navbar.navbar-fixed-bottom.bg-transparent.seo-remove
   #fb-root
   ul.nav.social
     li.twitter
@@ -15,10 +15,20 @@
         data-show-faces="false",
         data-width     ="450")
   ul.nav.pull-right
+    li.dropup
+      a(href='#', data-toggle='dropdown').dropdown-toggle
+        i.fa.fa-list
+          small Switch theme
+        b.caret
+      ul.dropdown-menu.themes
+        li(data-theme-id='dark')
+          a Dark
+        li(data-theme-id='default')
+          a Default
     li
       a(href  ='https://github.com/dizzib/WhoDoTheyServe.com'
         target='_blank')
-        small Source on Github
+        small Source code on Github
     li
       a(href='mailto:&#100;&#105;&#122;&#122;&#105;&#098;&#048;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;')
         small Contact by email

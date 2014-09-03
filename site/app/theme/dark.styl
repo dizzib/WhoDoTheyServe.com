@@ -1,0 +1,42 @@
+@import 'nib'
+
+col0 = #2f2f2f // main background
+col1 = #66ffff // link foreground
+col2 = #c6c6c6 // text foreground
+
+// mixins
+bg-col()
+  background-color  rgba(60, 60, 60, 0.85)
+fg-col()
+  color             col1
+
+a
+  fg-col()
+
+.bg-transparent
+  bg-col()
+
+.dropdown-menu
+  bg-col()
+  box-shadow          0 5px 10px rgba(255, 255, 255, 0.2)
+  border-color        rgba(255, 255, 255, 0.2)
+  li
+    a
+      fg-col()
+
+.map
+  .node
+    a
+      fill          col1
+ 
+// fields
+input[type="text"]
+textarea
+.ms-choice
+.ms-drop
+  background-color    col0
+  color               col2
+
+.view.editing
+  svg
+    border-color    orange

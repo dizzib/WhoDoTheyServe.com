@@ -2,6 +2,7 @@ inserted-css = []
 
 module.exports = me =
   # based on https://github.com/substack/insert-css
+  # used by inline brfs so cannot use jquery
   insert-css: ->
     return if (inserted-css.indexOf it) >= 0
     inserted-css.push it
