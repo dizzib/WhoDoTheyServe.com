@@ -1,3 +1,7 @@
+const TEXT =
+  info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
+  regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{1,200}$/i
+
 module.exports =
   edge:
     how:
@@ -13,9 +17,7 @@ module.exports =
     info : 'a string of 2 to 12 lower-case letters or numbers (a-z 0-9) e.g. foobar123'
     regex: /^[a-z]{2,2}[a-z0-9]{2,10}$/
   map:
-    description:
-      info: "a string of up to 200 letters, numbers or symbols !&',()"
-      regex: /^(?!( ))([a-z0-9!&'\,\(\)]|[- ](?=[a-z0-9&\(])){0,200}$/i
+    description: TEXT
     name:
       info: "a string of 4 to 50 letters, numbers or symbols !&,'() e.g. Mainstream Media"
       regex: /^(?!( ))([a-z0-9!&'\,\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
@@ -23,9 +25,7 @@ module.exports =
     name:
       info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'
       regex: /^(?!(the| ))([a-z0-9\,!&\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
-  note:
-    info: 'a string of 10 to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
-    regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{10,200}$/i
+  note: TEXT
   password:  # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/
     info : 'a mix of 6 to 16 uppercase A-Z, lowercase a-z, digits 0-9 and symbols !@#$%^&*?_~-'
     regex: /^(?=.{6,16}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$/

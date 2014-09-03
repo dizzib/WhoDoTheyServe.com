@@ -112,6 +112,8 @@ module.exports =
       href: -> "#/map/#{@id or @_id or \new}"
     name:
       text: -> @name or @get \name or 'New map'
+    description:
+      html: -> htmlify-text @description
   maps:
     map:
       class: -> \active if @_id is V.map.map?id
@@ -132,7 +134,7 @@ module.exports =
     GLYPHS
   notes: _.extend do
     note:
-      html: -> A.link @text if @text
+      html: -> htmlify-text @text
     META-COMPACT
   notes-head:
     'btn-edit':
@@ -174,3 +176,7 @@ function get-youtube-embed url
   matches = url.match /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
   return url:"//www.youtube.com/embed/#{matches.2}" if matches?2.length is 11
   error:"Cannot get a valid video id from #url. Please check the url is correct."
+
+function htmlify-text
+  return unless it
+  A.link it.replace /\r\n/g, \<br/>

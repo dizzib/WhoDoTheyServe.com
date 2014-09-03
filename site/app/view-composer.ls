@@ -36,7 +36,7 @@ module.exports =
         V.navbar.render!
       V.map.show!
       V.map-toolbar.show!
-      V.map-info.render m
+      V.map-info.render m, D.map
       V.map-meta.render m, D.meta
       V.map-meta.$el.find \.timeago .timeago! # async .view.finalize timeago runs too soon!
       return unless m.get-is-editable!
@@ -67,7 +67,9 @@ module.exports =
     V.users-head.render!
     V.users.render C.Users, D.users
 
-function render-evidences entity-id, act, id then
+## helpers
+
+function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
   ev = C.Evidences.get id if act is \evi-edit
   ev = M.Evidence.create!set \entity_id, entity-id if act is \evi-new
@@ -75,7 +77,7 @@ function render-evidences entity-id, act, id then
   V.evidence-edit.render ev, C.Evidences, fetch:no if ev
   V.evidences.render evs, D.evidences, void-view:V.evidences-void unless act is \evi-new
 
-function render-notes entity-id, act then
+function render-notes entity-id, act
   notes = C.Notes.find -> entity-id is it.get \entity_id
   note-by-signin =
     if act is \note-new then M.Note.create!set \entity_id, entity-id

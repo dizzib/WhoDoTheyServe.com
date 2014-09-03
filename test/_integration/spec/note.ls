@@ -11,8 +11,8 @@ exports.get-spec = (...args) ->
       is1: h.get-spec-list 1, \a
       is2: h.get-spec-list 2, \a
     text:
-      min   : h.get-spec \a, text:\x * 10
-      min-lt: h.get-spec \a, text:\x * 9
+      min   : h.get-spec \a, text:\x * 1
+      min-lt: h.get-spec \a, text:\x * 0
       max   : h.get-spec \a, text:\x * 200
       max-gt: h.get-spec \a, text:\x * 201
       jotld : h.get-spec \a, text:'Jumps over the lazy dog'
