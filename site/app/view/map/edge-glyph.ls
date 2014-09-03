@@ -5,12 +5,9 @@ const ICON-GAP    = 1
 const ICON-SIZE   = 16
 const ICON-SPACE  = ICON-SIZE + ICON-GAP
 
-var g, evidences
-
 module.exports = me =
   append: (edge) -> # called externally
-    evs = _.filter evidences, -> edge._id is it.entity_id
-    evs = _.map evs, -> new M.Evidence it
+    evs = _.filter me.evs, -> edge._id is it.get \entity_id
     dx  = - (ICON-SPACE * (evs.length - 1)) / 2
     dy  = ICON-SIZE / 2
     for ev, i in evs
@@ -32,12 +29,12 @@ module.exports = me =
     "translate(#x,#y)"
 
   init: (svg, d3f, evs) ->
-    evidences := evs
-    g := svg.selectAll \g.edge-glyphs
+    me.evs = evs
+    me.g = svg.selectAll \g.edge-glyphs
       .data d3f.links!
       .enter!append \svg:g
         .attr \class, \edge-glyphs
-    g.each me.append
+    me.g.each me.append
 
   on-tick: ->
-    g.attr \transform me.get-transform
+    me.g.attr \transform me.get-transform
