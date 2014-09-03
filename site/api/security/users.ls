@@ -8,7 +8,7 @@ module.exports =
     err, n <- Users.count
     return next err if err
     return next! if n is 0
-    err, n <- Users.count create_date: $gte:H.get-date-yesterday!
+    err, n <- Users.count 'meta.create_date': $gte:H.get-date-yesterday!
     if n >= DAILY_SIGNUP_MAX then return next new H.ApiError "
       Maximum number of signups exceeded for today. 
       Please try again in 24 hours or contact admin.

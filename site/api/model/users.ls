@@ -14,7 +14,6 @@ spec =
   email       : type:String # validated below
   info        : type:String, match:Cons.url.regex
   role        : type:String, required:yes, enum:<[ admin user ]>, default:\user
-  create_date : type:Date  , required:yes, default:Date.now
   quota_daily : type:Number, required:yes, default:5
   freeze_until: type:String  # allow sign-in only after this datetime
 
