@@ -8,7 +8,9 @@
 + /app/lib-3p/bootstrap/css/
 + /app/lib-3p/multiple-select.css
 + /app/lib-3p/multiple-select.png
++ /app/lib-3p/theme/
 + /app/lib-3p/yepnope.1.5.4-min.js
++ /app/theme/
 - /app/*
 - /app/lib-3p/*
 - /app/lib-3p/bootstrap/*

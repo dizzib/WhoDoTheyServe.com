@@ -22,7 +22,7 @@ const EDGE =
 const EVI =
   glyph:
     class: ->
-      "glyph fa #{@glyph.name} #{if E.is-dead @_id then \dead else ''}"
+      "glyph fa #{@glyph.name} #{get-evi-status @_id}"
   'url-outer':
     href: -> @url
   'url-inner':
@@ -52,11 +52,11 @@ const GLYPHS =
       else for ev in evs.models
         $el.append "
           <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='glyph fa #{ev.get-glyph!name} #{if E.is-dead ev.id then \dead else ''}'/>
+            <i class='glyph fa #{ev.get-glyph!name} #{get-evi-status ev.id}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
-        $el.append "<i title='#{note.get \text}' class='fa fa-comment'/>"
+        $el.append "<i title='#{note.get \text}' class='glyph fa fa-comment'/>"
       return ''
 
 const REMOVE =
@@ -167,6 +167,7 @@ module.exports =
 
 ## helpers
 
+function get-evi-status then if E.is-dead it then \dead else \live
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
 function get-user-text then if (u = C.Users.find-by-id it) then "#{u.get \name} " else '(deleted user) '

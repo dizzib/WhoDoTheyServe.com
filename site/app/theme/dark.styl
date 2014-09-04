@@ -1,42 +1,52 @@
-@import 'nib'
-
 col0 = #2f2f2f // main background
-col1 = #66ffff // link foreground
+col1 = #66dddd // link foreground
 col2 = #c6c6c6 // text foreground
+col3 = #00ff00 // live evidence foreground
 
-// mixins
 bg-col()
-  background-color  rgba(60, 60, 60, 0.85)
-fg-col()
-  color             col1
+  background-color  rgba(70, 70, 70, 0.85)
 
 a
-  fg-col()
-
-.bg-transparent
-  bg-col()
-
-.dropdown-menu
-  bg-col()
-  box-shadow          0 5px 10px rgba(255, 255, 255, 0.2)
-  border-color        rgba(255, 255, 255, 0.2)
-  li
-    a
-      fg-col()
-
-.map
-  .node
-    a
-      fill          col1
+  color             col1
+h1
+  a
+    color           orange
  
 // fields
 input[type="text"]
 textarea
 .ms-choice
 .ms-drop
-  background-color    col0
-  color               col2
+  background-color  col0
+  color             col2
 
-.view.editing
-  svg
-    border-color    orange
+.bg-transparent
+  bg-col()
+
+.dropdown-menu
+  bg-col()
+  box-shadow    0 5px 10px rgba(255, 255, 255, 0.2)
+  border-color  rgba(255, 255, 255, 0.2)
+  li
+    a
+      color       col1
+
+.glyph.live
+  color         col3
+
+.map
+  .badge-ac
+    text
+      fill        cyan
+  .edge.ac
+    stroke      cyan
+  .edge.family
+    stroke      #fff
+  .edge-glyphs
+    text.live
+      fill        col3
+  .node
+    a
+      fill        col1
+    circle
+      fill        #888

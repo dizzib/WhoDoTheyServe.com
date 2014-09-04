@@ -17,7 +17,7 @@ module.exports = me =
           .attr \xlink:href , -> ev.get \url
           .attr \xlink:title, -> edge.tip
           .append \text
-            .attr \class, -> if E.is-dead ev.id then \dead else ''
+            .attr \class, -> if E.is-dead ev.id then \dead else \live
             .attr \font-family, \FontAwesome
             .attr \x, dx + i * ICON-SPACE
             .attr \y, dy

@@ -7,9 +7,7 @@ module.exports = B.View.extend do
   initialize: ->
     H.insert-css F.readFileSync __dirname + \/footer.css
     @T = F.readFileSync __dirname + \/footer.html
-
-    Th.switch-theme \dark
-    #Th.switch-theme \default
+    Th.init!
 
   render: ->
     @$el.html @T .show!
