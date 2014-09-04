@@ -1,3 +1,5 @@
+_ = require \underscore
+
 # persist key to local storage
 const LS-KEY = \theme
 
@@ -12,7 +14,10 @@ const THEMES =
 
 module.exports = me =
   init: ->
-    me.switch-theme (localStorage?getItem(LS-KEY) or \dark)
+    id = localStorage?getItem LS-KEY
+    id = \dark unless _.contains THEMES, id
+    log id
+    me.switch-theme id
 
   switch-theme: ->
     $ \link.theme .remove!
