@@ -5,14 +5,13 @@ Hi = require \./hive
 is-loaded = false
 
 module.exports =
-  fetch: (success, fail) ->
+  fetch-all: (success, fail) ->
     return success! if is-loaded
     $.when(
       C.Evidences.fetch!
       C.Edges.fetch!
       C.Nodes.fetch!
       C.Notes.fetch!
-      Hi.Evidences.fetch! # dead evidences
     ).then done, fail or fail-default
 
     function done
@@ -21,6 +20,14 @@ module.exports =
 
     function fail-default coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
+
+  fetch-core: (success, fail) ->
+    $.when(
+      C.Maps.fetch!
+      C.Users.fetch!
+      Hi.Evidences.fetch! # dead evidences
+      Hi.Map.fetch!
+    ).then success, fail
 
   merge: (o) ->
     C.Edges.set o.edges, remove:false

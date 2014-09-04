@@ -14,7 +14,7 @@ module.exports = me =
 
   signin: ->
     <- S.refresh
-    E.fetch ok, fail
+    E.fetch-all ok, fail
 
     function ok
       clear-active-map!

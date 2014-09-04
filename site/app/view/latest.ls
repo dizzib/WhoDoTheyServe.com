@@ -11,7 +11,7 @@ T-Latest = F.readFileSync __dirname + \/latest.html
 
 module.exports = B.View.extend do
   render: ->
-    <~ E.fetch # ensure all entities are loaded
+    <~ E.fetch-all # ensure all entities are loaded
     @$el.html render-latest! .show!
 
     function render-latest

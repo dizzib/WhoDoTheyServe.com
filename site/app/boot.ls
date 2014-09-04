@@ -41,8 +41,8 @@ function alert type, xhr
   if confirm "#info\n\n#prompt" then window.location.reload!
 
 function init
-  fetch-entities-core (-> E.fetch start-signed-in, fail-si) if S.is-signed-in!
-  fetch-entities-core start unless S.is-signed-in!
+  E.fetch-core (-> E.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
+  E.fetch-core start, fail unless S.is-signed-in!
   Val.init!
   Vh.init!
   V.footer.render!
@@ -50,9 +50,6 @@ function init
 
 function fail-si coll, xhr then alert \signed-in, xhr
 function fail    coll, xhr then alert \core, xhr
-
-function fetch-entities-core cb
-  $.when(C.Maps.fetch!, C.Users.fetch!, Hi.Map.fetch!).then cb, fail
 
 function start
   B.history.start!
