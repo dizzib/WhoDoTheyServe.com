@@ -146,8 +146,10 @@ module.exports =
     editable:
       class: -> \hide if _.isEmpty this
   user:
+    actions:
+      class: -> \hide unless S.is-signed-in @_id
     'btn-edit':
-      class: -> \hide unless S.is-signed-in-admin! or S.is-signed-in @_id
+      class: -> \hide unless S.is-signed-in @_id or S.is-signed-in-admin!
       href : -> "#/user/edit/#{@_id}"
     url:
       href: -> @info
