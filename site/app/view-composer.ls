@@ -57,7 +57,7 @@ module.exports =
   user: ->
     V.user.render user = C.Users.get(id = it or C.Sessions.models.0?id), D.user
     V.meta.render user, D.meta
-    <- E.fetch # all entities must be loaded for subsequent filtering
+    <- E.fetch-all # all entities must be loaded for subsequent filtering
     render-user-entities id, V.maps, C.Maps, D.map
     render-user-entities id, V.edges, C.Edges, D.edges
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
