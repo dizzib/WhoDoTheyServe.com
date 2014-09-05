@@ -12,7 +12,7 @@ module.exports =
       target: _.find nodes, -> it._id is edge.b_node_id
     return assign-classes d3-edges
 
-    function assign-classes d3-edges then
+    function assign-classes d3-edges
       for d3-edge in d3-edges
         cls = []
         if is-out-of-range d3-edge then cls.push \minor
@@ -20,22 +20,22 @@ module.exports =
         d3-edge.class = cls * ' '
       return d3-edges
 
-      function is-family d3-edge then
+      function is-family d3-edge
         return false unless family-name-a = d3-edge.source.family-name
         return false unless family-name-b = d3-edge.target.family-name
         return family-name-a is family-name-b
 
-      function is-out-of-range d3-edge then
+      function is-out-of-range d3-edge
         const RANGE =
-          year_from: 2013
-          year_to  : 2013
+          year_from: 2014
+          year_to  : 2014
         yf = d3-edge.year_from or d3-edge.year or 0
         yt = d3-edge.year_to   or d3-edge.year or 9999
         result = yt < RANGE.year_from or RANGE.year_to < yf
         return result or has-successor-governor d3-edge
 
       # eg Mark Carney cannot govern both BoC and BoE simultaneously
-      function has-successor-governor d3-edge then
+      function has-successor-governor d3-edge
         successor = _.find edges, ->
           /governor/.test it.how and it.how is d3-edge.how and
           it.year_from is d3-edge.year_to and
