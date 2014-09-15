@@ -29,7 +29,7 @@ devDependencies:
   globule               : \~0.2.0 # TODO: remove when gaze fixes issue 104
   gntp                  : \~0.1.1
   'istanbul-middleware' : \~0.1.1
-  jade                  : \~0.27.7
+  jade                  : \~1.6.0
   LiveScript            : \~1.2.0
   marked                : \~0.3.1
   'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
