@@ -1,7 +1,6 @@
 # rsync pattern files to copy to staging
 # http://www.linuxquestions.org/questions/linux-software-2/rsync-include-exclude-problems-636504/
 + /app/asset/
-+ /app/boot.css
 + /app/index.html
 + /app/lib-3p/
 + /app/lib-3p/bootstrap/
