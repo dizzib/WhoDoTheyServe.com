@@ -16,7 +16,6 @@ module.exports = me =
   init: ->
     id = localStorage?getItem LS-KEY
     id = \dark unless _.contains THEMES, id
-    log id
     me.switch-theme id
 
   switch-theme: ->
