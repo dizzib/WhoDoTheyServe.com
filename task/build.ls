@@ -3,10 +3,10 @@ Brsify  = require \browserify
 Brfs    = require \brfs
 Cron    = require \cron
 Emitter = require \events .EventEmitter
+Expsify = require \exposify
 Fs      = require \fs
 Gaze    = require \gaze
 Globule = require \globule
-Litify  = require \literalify
 _       = require \lodash
 Md      = require \marked
 Path    = require \path
@@ -108,11 +108,12 @@ const LIBS =
 function bundle-app
   pushd "#{Dir.site.DEV}/app"
   try
-    b = Brsify \./boot.js
-    for l in LIBS then b.external l
-    b.transform Litify.configure do
+    Expsify.config =
       backbone  : \window.Backbone
       underscore: \window._
+    b = Brsify \./boot.js
+    for l in LIBS then b.external l
+    b.transform Expsify
     b.transform Brfs
       ..require \./lib-3p/Autolinker  , expose:\Autolinker
       ..require \./lib-3p/transparency, expose:\transparency

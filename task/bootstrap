@@ -2,8 +2,8 @@
 
 DEV="_build/dev"
 
-lsc -o $DEV/task -cw task/*.ls
-lsc -o $DEV -cw *.json.ls
+lsc -o $DEV/task -cw task/*.ls &
+lsc -o $DEV -cw *.json.ls &
 
 #cd $DEV
 #npm install
