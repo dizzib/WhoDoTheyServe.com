@@ -1,3 +1,10 @@
+const RX =
+  day  : '(0[1-9]|[12]\\d|3[01])'
+  month: '(0[1-9]|1[012])'
+  year : '[12]\\d\\d\\d'
+
+const RX-DMY = "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
+
 const TEXT =
   info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
   regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{1,200}$/i
@@ -7,6 +14,9 @@ module.exports =
     how:
       info: 'a string of 2 to 50 alphanumerics e.g. chairman'
       regex: /^[a-z0-9 &,\/]{2,50}$/i
+    when:
+      info: 'a valid from/to time period'
+      regex: new RegExp "^#{RX-DMY}-$|^-#{RX-DMY}$|^#{RX-DMY}-#{RX-DMY}$"
     year:
       min: 1000
       max: 2020

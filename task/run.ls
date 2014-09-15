@@ -121,7 +121,7 @@ function start-site cwd, cfg, cb
       # data may be fragmented, so only growl relevant packet
       if RX-ERR.test s then G.alert "#desc\n#s", nolog:true
     ..stdout.on \data, ->
-      log-data it.toString!
+      #log-data it.toString!
       cb! if cb and /listening on port/.test it
 
   function log-data

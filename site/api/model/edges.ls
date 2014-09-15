@@ -11,6 +11,8 @@ spec =
   b_node_id : type:String, required:yes, index:yes
   a_is      : type:String, required:yes, enum:<[eq lt]>
   how       : type:String, required:no , match:Cons.edge.how.regex
+  when      : type:String, required:no , match:Cons.edge.when.regex
+  # TODO: deprecate year_* fields
   year_from : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
   year_to   : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
 
@@ -19,7 +21,7 @@ schema = new M.Schema spec
   ..plugin P-Id
   ..plugin P-Meta
   ..pre \validate, (next) ->
-    if @year_from and @year_to and @year_from > @year_to then
+    if @year_from and @year_to and @year_from > @year_to
       @invalidate \year_from, 'Invalid range'
     if @a_node_id is @b_node_id then
       @invalidate \a_node_id, 'Nodes A and B must differ'
