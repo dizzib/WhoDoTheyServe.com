@@ -1,5 +1,6 @@
 M      = require \mongoose
 _      = require \lodash
+Eh     = require \../../lib/edge-helper
 Cons   = require \../../lib/model-constraints
 Crud   = require \../crud
 H      = require \../helper
@@ -21,10 +22,8 @@ schema = new M.Schema spec
   ..plugin P-Id
   ..plugin P-Meta
   ..pre \validate, (next) ->
-    if @year_from and @year_to and @year_from > @year_to
-      @invalidate \year_from, 'Invalid range'
-    if @a_node_id is @b_node_id then
-      @invalidate \a_node_id, 'Nodes A and B must differ'
+    try Eh.parse-when @when catch e then @invalidate \when, e.message
+    if @a_node_id is @b_node_id then @invalidate \a_node_id, 'Nodes A and B must differ'
     next!
   ..pre \save, (next) ->
     err, edge <~ me.findById @_id

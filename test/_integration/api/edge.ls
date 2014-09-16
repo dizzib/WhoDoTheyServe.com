@@ -11,7 +11,6 @@ function create key, is-ok, fields then
     a_node_id: ST.nodes[key.0]._id
     b_node_id: ST.nodes[key.1]._id
     a_is     : \lt
-    year_from: 2000
   c.create key, is-ok, _.extend edge, fields
 
 function update key, is-ok, fields then

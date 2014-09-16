@@ -19,7 +19,7 @@ module.exports = me =
     w-from = get-datenum w.0, MIN
     w-to   = get-datenum w.1, MAX
 
-    Assert w-from <= w-to, "invalid range from #w-from to #w-to"
+    Assert w-from <= w-to, "Invalid range from #w-from to #w-to"
     return from:w-from, to:w-to
 
     function get-datenum str, defaults
@@ -29,5 +29,5 @@ module.exports = me =
       arr.unshift defaults.day   if l in [1, 2]
       [dd, mm, yyyy] = [arr.0, arr.1, arr.2]
       s = "#yyyy#mm#dd"
-      Assert s.length is 8, "invalid when.length = #{s.length}, should be 8"
+      Assert s.length is 8, "Invalid when.length = #{s.length}, should be 8"
       parseInt s

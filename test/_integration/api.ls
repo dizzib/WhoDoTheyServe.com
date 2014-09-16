@@ -215,14 +215,17 @@ test Edge.ab.how.caps.update.ok
 test Edge.ab.how.comma.update.ok
 test Edge.ab.how.number.update.ok
 test Edge.ab.how.slash.update.ok
-test Edge.ab.year.from.null.update.ok
-test Edge.ab.year.from.max.update.ok
-test Edge.ab.year.from.max-gt.update.bad
-test Edge.ab.year.from.min.update.ok
-test Edge.ab.year.from.min-lt.update.bad
-test Edge.ab.year.range.in.update.ok
-test Edge.ab.year.range.in.read.ok
-test Edge.ab.year.range.out.update.bad
+test Edge.ab.when.null.update.ok
+test Edge.ab.when.from.y.update.ok
+test Edge.ab.when.from.my.update.ok
+test Edge.ab.when.from.dmy.update.ok
+test Edge.ab.when.from.bad.d.update.bad
+test Edge.ab.when.from-to.ok.update.ok
+test Edge.ab.when.from-to.bad.update.bad
+test Edge.ab.when.to.y.update.ok
+test Edge.ab.when.to.my.update.ok
+test Edge.ab.when.to.dmy.update.ok
+test Edge.ab.when.to.bad.m.update.bad
 test Edge.ba.create.bad # reciprocal
 test Edge.list.is1
 it 'map'

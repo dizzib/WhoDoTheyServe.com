@@ -25,16 +25,23 @@ exports.get-spec = (...args) ->
       max-gt: get-spec-ab how:\x * 51
       min   : get-spec-ab how:\xx
       min-lt: get-spec-ab how:\x
-    year:
+    when:
+      null: get-spec-ab when:''
       from:
-        null  : get-spec-ab year_from:''
-        max   : get-spec-ab year_from:Cons.edge.year.max
-        max-gt: get-spec-ab year_from:Cons.edge.year.max + 1
-        min   : get-spec-ab year_from:Cons.edge.year.min
-        min-lt: get-spec-ab year_from:Cons.edge.year.min - 1
-      range:
-        in : get-spec-ab year_from:2013 year_to:2013
-        out: get-spec-ab year_from:2013 year_to:2012
+        dmy: get-spec-ab when:'01/12/1950-'
+        my : get-spec-ab when:'04/2007-'
+        y  : get-spec-ab when:'1997-'
+        bad:
+          d: get-spec-ab when:'32/10/2000'
+      from-to:
+        ok : get-spec-ab when:'31/12/1999-01/01/2000'
+        bad: get-spec-ab when:'01/01/2000-31/12/1999'
+      to:
+        dmy: get-spec-ab when:'-01/12/1945'
+        my : get-spec-ab when:'-04/2007'
+        y  : get-spec-ab when:'-1997'
+        bad:
+          m: get-spec-ab when:'-01/13/2000'
     to-ab: get-spec-ab key:\ab
     to-ba: get-spec-ab key:\ba
   aa: h.get-spec \aa
