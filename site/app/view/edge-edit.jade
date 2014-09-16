@@ -25,24 +25,30 @@ form.form-horizontal.well
         |of B, or influence unclear or unknown
         input(type='radio', name='a_is', id='a_is_eq', value='eq')
       .help-block.v-gap
-        | A good rule of thumb when determining influence is to look at where the money flows.
-        | If money flows from B to A then the 1st option is generally correct.
-      .help-block
-        | For family connections, the child A is generally subordinate to the parent B.
+        :markdown
+          A good rule of thumb when determining influence is to look at where the money flows.
+          If money flows from B to A then the 1st option is generally correct.
+
+          For family connections, the child A will generally be subordinate to the parent B.
     +field-text('how', 'How')
       .help-block
-        | Optional note of how A relates to B
-        | (e.g. owned by, department of, attends).
-      .help-block
-        | Please use present tense e.g. 'is' rather than 'was',
-        | even for past connections.
+        :markdown
+          Optional note of how A relates to B (e.g. owned by, department of, attends).
+          Please use present tense e.g. `is` rather than `was` even for past connections.
     span.input-xxlarge
       +field-select('b_node_id', 'Actor B')
-    +field-text('year_from', 'Year From')
-      span.help-block
-        | When this connection started (leave blank if you're not sure).
-    +field-text('year_to', 'Year To')
-      span.help-block
-        | The year this connection ended.
-        | Leave blank if the connection is still in force.
+    +field-text('when', 'When')
+      .help-block
+        :markdown
+          Specify a time period over which this connection applies, in the format
+          `dd/mm/yyyy-dd/mm/yyyy`, `dd/mm/yyyy-` or `-dd/mm/yyyy`.
+
+          The `dd/` and `mm/` are optional if you don't have that information.
+
+          Examples:
+          * From 1st Feb 2006 to 3rd Feb 2014 `01/02/2006-03/02/2014`
+          * From May 2010 to Sep 2010 `05/2010-09/2010`
+          * From 1970 to 2001 `1970-2001`
+          * From 1694 to now `1694-`
+          * From unknown to 1776 `-1776`
   +button-bar

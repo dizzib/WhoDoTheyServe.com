@@ -18,7 +18,7 @@ function fill o = {}, key
   is-new = _.isEmpty o
   select-node 'Actor A', ST.nodes[key.0] if is-new
   select-node 'Actor B', ST.nodes[key.1] if is-new
-  B.fill How:key, 'Year From':(o.year_from || 2000), 'Year To':o.year_to
+  B.fill How:key, When:o.when
   B.fill /subordinate/, (o.a_is is \lt or not o.a_is?)
   B.fill /peer/, o.a_is is \eq
 

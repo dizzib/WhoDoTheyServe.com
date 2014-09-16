@@ -35,8 +35,10 @@ module.exports =
         * required: no
         * pattern : Cons.edge.how.regex
           msg     : "How should be #{Cons.edge.how.info}"
-      'year_from': range:[Cons.edge.year.min, Cons.edge.year.max] required:no
-      'year_to'  : range:[Cons.edge.year.min, Cons.edge.year.max] required:no
+      'when'     :
+        * required: no
+        * pattern : Cons.edge.when.regex
+          msg     : "When should be #{Cons.edge.when.info}"
   Hive:
     Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
     Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
