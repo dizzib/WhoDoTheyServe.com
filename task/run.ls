@@ -24,8 +24,8 @@ module.exports =
 
 ## helpers
 
-const GREP_1 = 'app --invert'
-const GREP_2 = 'app'
+const GLOB_1 = 'test/_unit/**/*.js test/_integration/api.js'
+const GLOB_2 = 'test/_integration/app.js'
 const RX-ERR = /(expected|error|exception)/i
 
 function drop-db cfg, cb
@@ -35,9 +35,9 @@ function drop-db cfg, cb
   conn.close!
   cb!
 
-function get-mocha-cmd grep, opts
+function get-mocha-cmd glob, opts
   cmd = "#{Dir.DEV}/node_modules/mocha/bin/_mocha"
-  "#cmd --grep #grep --reporter spec --bail --recursive"
+  "#cmd --reporter spec --bail #glob"
 
 function get-site-desc cfg
   "#{cfg.NODE_ENV}@#{cfg.PORT}"
@@ -46,17 +46,17 @@ function get-start-site-args cfg
   "#{cfg.NODE_ARGS or ''} boot #{get-site-desc cfg}".trim!
 
 function kill-all-mocha cb
-  <- kill-mocha GREP_1
-  <- kill-mocha GREP_2
+  <- kill-mocha GLOB_1
+  <- kill-mocha GLOB_2
   cb!
 
-function kill-mocha grep, cb
-  <- kill-node (get-mocha-cmd grep)
+function kill-mocha glob, cb
+  <- kill-node (get-mocha-cmd glob)
   cb!
 
 function kill-node args, cb
   # can't use WaitFor as we need the return code
-  code, out <- exec cmd = "pkill -ef 'node #args'"
+  code, out <- exec cmd = "pkill -ef 'node #{args.replace /\*/g, '\\*'}'"
   # 0 One or more processes matched the criteria. 
   # 1 No processes matched. 
   # 2 Syntax error in the command line. 
@@ -78,29 +78,29 @@ function run-tests
   run-test_2 ...
 
 function run-test_1 cfg, desc = ''
-  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, GREP_1, "Unit & api tests#desc"
+  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, GLOB_1, "Unit & api tests#desc"
 
 function run-test_2 cfg, desc = '', cb
-  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GREP_2, "App tests#desc", cb
+  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GLOB_2, "App tests#desc", cb
 
-function recycle-tests test, tester, dirsite, grep, desc, cb
-  <- kill-mocha grep
+function recycle-tests test, tester, dirsite, glob, desc, cb
+  <- kill-mocha glob
   G.say "#desc started"
   start = Date.now!
   <- stop-site test
   <- drop-db test
   <- start-site dirsite, test
-  e <- start-mocha tester, grep
+  e <- start-mocha tester, glob
   return G.err e if e?
   G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb! if cb?
 
-function start-mocha cfg, grep, cb
-  if _.isFunction grep then [grep, cb] = [void, grep] # variadic
+function start-mocha cfg, glob, cb
+  if _.isFunction glob then [glob, cb] = [void, glob] # variadic
   v = exec 'node --version', silent:true .output.replace '\n', ''
-  log "start mocha in node #v: #grep"
+  log "start mocha in node #v: #glob"
   cfg <<< firefox-host:env.firefox-host or \localhost
-  cmd = get-mocha-cmd grep
+  cmd = get-mocha-cmd glob
   Cp.spawn \node, (cmd.split ' '), cwd:Dir.DEV, env:(env with cfg), stdio:[ 0, 1, void ]
     ..on \exit, ->
       cb if it then new Error "Exited with code #it" else void

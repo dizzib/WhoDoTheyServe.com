@@ -1,3 +1,5 @@
+global.log = console.log
+
 W        = require \wait.for
 R        = require \./helper .run
 B        = require \./app/_browser
