@@ -15,7 +15,7 @@ module.exports =
       info: 'a string of 2 to 50 alphanumerics e.g. chairman'
       regex: /^[a-z0-9 &,\/]{2,50}$/i
     when:
-      info: 'a valid from/to time period'
+      info: 'a hyphenated time period FROM-TO or FROM- or -TO'
       regex: new RegExp "^#{RX-DMY}-$|^-#{RX-DMY}$|^#{RX-DMY}-#{RX-DMY}$"
     year:
       min: 1000
