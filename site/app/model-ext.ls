@@ -22,8 +22,9 @@ M.Edge .= extend do
 
     a-node  = C.Nodes.get @get \a_node_id # undefined if new
     b-node  = C.Nodes.get @get \b_node_id # undefined if new
-    w-range = W.parse-range @get \when
     yyyy    = a-node?get-yyyy! or b-node?get-yyyy!
+    w-raw   = if yyyy then "#yyyy-#yyyy" else @get \when
+    w-range = W.parse-range w-raw
 
     _.extend (@toJSON opts),
       a_node_name: a-node?get \name
@@ -32,6 +33,7 @@ M.Edge .= extend do
       a_is_lt    : \lt is @get \a_is
       period     : get-period!
       tip        : get-tip!
+      when       : w-range
       yy         : yyyy?substring 2
       yyyy       : yyyy
       year       : parseInt yyyy

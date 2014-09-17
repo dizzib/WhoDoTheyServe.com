@@ -10,36 +10,21 @@ module.exports =
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
       target: _.find nodes, -> it._id is edge.b_node_id
-    return assign-classes d3-edges
 
-    function assign-classes d3-edges
-      for d3-edge in d3-edges
-        cls = []
-        if is-out-of-range d3-edge then cls.push \minor
-        if is-family       d3-edge then cls.push \family
-        d3-edge.class = cls * ' '
-      return d3-edges
+    function is-family
+      a = it.source.family-name and b = it.target.family-name and a is b
 
-      function is-family d3-edge
-        return false unless family-name-a = d3-edge.source.family-name
-        return false unless family-name-b = d3-edge.target.family-name
-        return family-name-a is family-name-b
+    function is-out-of-range
+      const MAP-WHEN = 20140901 # TODO: add this field to maps
+      not (it.when.int.from <= MAP-WHEN <= it.when.int.to)
 
-      function is-out-of-range d3-edge
-        const RANGE =
-          year_from: 2014
-          year_to  : 2014
-        yf = d3-edge.year_from or d3-edge.year or 0
-        yt = d3-edge.year_to   or d3-edge.year or 9999
-        result = yt < RANGE.year_from or RANGE.year_to < yf
-        return result or has-successor-governor d3-edge
+    for d3e in d3-edges
+      arr = []
+      arr.push \minor if is-out-of-range d3e
+      arr.push \family if is-family d3e
+      d3e.class = arr * ' '
 
-      # eg Mark Carney cannot govern both BoC and BoE simultaneously
-      function has-successor-governor d3-edge
-        successor = _.find edges, ->
-          /governor/.test it.how and it.how is d3-edge.how and
-          it.year_from is d3-edge.year_to and
-          (it.a_node_id is d3-edge.a_node_id or it.b_node_id is d3-edge.b_node_id)
+    d3-edges
 
   init: (svg, d3f) ~>
     svg.append \svg:defs .selectAll \marker

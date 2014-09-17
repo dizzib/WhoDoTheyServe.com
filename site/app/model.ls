@@ -25,8 +25,6 @@ module.exports =
     labels:
       'a_node_id': 'Actor A'
       'b_node_id': 'Actor B'
-      'year_from': 'Year From'
-      'year_to'  : 'Year To'
     validation:
       'a_node_id': required:yes
       'b_node_id': required:yes
