@@ -4,7 +4,7 @@ Subject = require "#{process.cwd!}/site/lib/when"
 (...) <- describe 'when ' # trailing space to workaround mocha bug #
 
 it \parse-range, (done) ->
-  c = Subject.constants.when
+  c = Subject.constants
 
   const TEST-CASES =
     ## boundaries

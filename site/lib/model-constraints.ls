@@ -3,7 +3,7 @@ When = require \./when
 const TEXT =
   info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
   regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{1,200}$/i
-const WHEN-RX = When.constants.when.RX
+const WHEN-RX = When.constants.RX
 
 module.exports =
   edge:

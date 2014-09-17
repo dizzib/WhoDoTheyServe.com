@@ -9,10 +9,9 @@ const RX =
 
 module.exports = me =
   constants:
-    when:
-      MIN: 10000101
-      MAX: 29991231
-      RX : "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
+    MIN: 10000101
+    MAX: 29991231
+    RX : "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
 
   parse: (str, defaults = MIN) ->
     arr = if str then str.split \/ else [defaults.year]
@@ -25,7 +24,7 @@ module.exports = me =
     parseInt s
 
   parse-range: ->
-    c = me.constants.when
+    c = me.constants
     return from:c.MIN, to:c.MAX unless it
     w = it.split \-
     Assert w.length is 2, "'#it' must contain a single dash"
