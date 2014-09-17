@@ -4,6 +4,7 @@ E  = require \./entities
 Hi = require \./history
 M  = require \./model
 S  = require \./session
+W  = require \../lib/when
 
 # extend models with custom methods
 
@@ -12,21 +13,18 @@ M.Edge .= extend do
     (_.contains node-ids, @get \a_node_id) and (_.contains node-ids, @get \b_node_id)
   toJSON-T: (opts) ->
     function get-period is-tip
-      return '' if node-yyyy and not is-tip
-      if yyyy then return "in #{yyyy}"
-      period = "from #{year-from or '?'}"
-      period + if year-to then " to #{year-to}" else ''
+      return '' if yyyy and not is-tip
+      return "in #yyyy" if yyyy
+      period = "from #{w-range.raw.from or '?'}"
+      period + if (w-to = w-range.raw.to) then " to #w-to" else ''
     ~function get-tip
-      how = "#{if how = @get \how then ' - ' + how else ''}"
-      "Evidence#{how} #{get-period true}"
+      "Evidence#{if how = @get \how then " - #how" else ''} #{get-period true}"
 
-    a-node    = C.Nodes.get @get \a_node_id # undefined if new
-    b-node    = C.Nodes.get @get \b_node_id # undefined if new
-    year-from = @get \year_from
-    year-to   = @get \year_to
-    node-yyyy = a-node?get-yyyy! or b-node?get-yyyy!
-    year      = if year-from is year-to then year-from
-    yyyy      = year?toString! or node-yyyy
+    a-node  = C.Nodes.get @get \a_node_id # undefined if new
+    b-node  = C.Nodes.get @get \b_node_id # undefined if new
+    w-range = W.parse-range @get \when
+    yyyy    = a-node?get-yyyy! or b-node?get-yyyy!
+
     _.extend (@toJSON opts),
       a_node_name: a-node?get \name
       b_node_name: b-node?get \name

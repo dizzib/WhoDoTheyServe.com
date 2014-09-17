@@ -24,11 +24,14 @@ module.exports = me =
     parseInt s
 
   parse-range: ->
-    c = me.constants
-    return from:c.MIN, to:c.MAX unless it
+    unless it then return
+      int: from:me.constants.MIN, to:me.constants.MAX
+      raw: from:null            , to:null
     w = it.split \-
     Assert w.length is 2, "'#it' must contain a single dash"
-    w-from = me.parse w.0, MIN
-    w-to   = me.parse w.1, MAX
-    Assert w-from <= w-to, "Invalid range from #w-from to #w-to"
-    from:w-from, to:w-to
+    i-from = me.parse w.0, MIN
+    i-to   = me.parse w.1, MAX
+    Assert i-from <= i-to, "Invalid range from #i-from to #i-to"
+    return
+      int: from:i-from, to:i-to
+      raw: from:w.0   , to:w.1

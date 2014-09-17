@@ -31,8 +31,8 @@ it \parse-range, (done) ->
 
   for t in TEST-CASES
     actual = Subject.parse-range t.0
-    Expect actual.from .to.equal t.1, t.0
-    Expect actual.to   .to.equal t.2, t.0
+    Expect actual.int.from .to.equal t.1, t.0
+    Expect actual.int.to   .to.equal t.2, t.0
   done!
 
 it \parse-range-exceptions, (done) ->
