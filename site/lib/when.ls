@@ -2,12 +2,17 @@ Assert = require \assert
 
 const MIN = day:\01 month:\01 year:\1000
 const MAX = day:\31 month:\12 year:\2999
+const RX =
+  day  : '(0[1-9]|[12]\\d|3[01])'
+  month: '(0[1-9]|1[012])'
+  year : '[12]\\d\\d\\d'
 
 module.exports = me =
   constants:
     when:
       MIN: 10000101
       MAX: 29991231
+      RX : "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
 
   parse: (str, defaults = MIN) ->
     arr = if str then str.split \/ else [defaults.year]
@@ -28,4 +33,3 @@ module.exports = me =
     w-to   = me.parse w.1, MAX
     Assert w-from <= w-to, "Invalid range from #w-from to #w-to"
     from:w-from, to:w-to
-

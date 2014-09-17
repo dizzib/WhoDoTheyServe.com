@@ -1,13 +1,9 @@
-const RX =
-  day  : '(0[1-9]|[12]\\d|3[01])'
-  month: '(0[1-9]|1[012])'
-  year : '[12]\\d\\d\\d'
-
-const RX-DMY = "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
+When = require \./when
 
 const TEXT =
   info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
   regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{1,200}$/i
+const WHEN-RX = When.constants.when.RX
 
 module.exports =
   edge:
@@ -16,7 +12,7 @@ module.exports =
       regex: /^[a-z0-9 &,\/]{2,50}$/i
     when:
       info: 'a valid From-To time period of format F-T or F- or -T, where F or T is dd/mm/yyyy or mm/yyyy or yyyy'
-      regex: new RegExp "^#{RX-DMY}-$|^-#{RX-DMY}$|^#{RX-DMY}-#{RX-DMY}$"
+      regex: new RegExp "^#{WHEN-RX}-$|^-#{WHEN-RX}$|^#{WHEN-RX}-#{WHEN-RX}$"
     year:
       min: 1000
       max: 2020

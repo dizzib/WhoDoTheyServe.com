@@ -1,7 +1,7 @@
 Expect  = require \chai .expect
 Subject = require "#{process.cwd!}/site/lib/when"
 
-(...) <- describe.only 'when ' # trailing space to workaround mocha bug #
+(...) <- describe 'when ' # trailing space to workaround mocha bug #
 
 it \parse-range, (done) ->
   c = Subject.constants.when
