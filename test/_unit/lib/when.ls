@@ -1,9 +1,9 @@
 Expect  = require \chai .expect
-Subject = require "#{process.cwd!}/site/lib/edge-helper"
+Subject = require "#{process.cwd!}/site/lib/when"
 
 (...) <- describe \edge-helper
 
-it \parse-when, (done) ->
+it \parse, (done) ->
   c = Subject.constants.when
 
   const TEST-CASES =
@@ -30,12 +30,12 @@ it \parse-when, (done) ->
     * '21/07/2014-21/07/2014'   20140721, 20140721
 
   for t in TEST-CASES
-    actual = Subject.parse-when t.0
+    actual = Subject.parse t.0
     Expect actual.from .to.equal t.1, t.0
     Expect actual.to   .to.equal t.2, t.0
   done!
 
-it \parse-when-exceptions, (done) ->
+it \parse-exceptions, (done) ->
   const TEST-CASES =
     # must have a single dash
     * '--'  , \dash
@@ -53,5 +53,5 @@ it \parse-when-exceptions, (done) ->
     * '22/07/2014-21/07/2014', \range
 
   for t in TEST-CASES
-    Expect(-> Subject.parse-when t.0).to.throw t.1
+    Expect(-> Subject.parse t.0).to.throw t.1
   done!

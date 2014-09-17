@@ -1,7 +1,7 @@
 M      = require \mongoose
 _      = require \lodash
-Eh     = require \../../lib/edge-helper
 Cons   = require \../../lib/model-constraints
+When   = require \../../lib/when
 Crud   = require \../crud
 H      = require \../helper
 P-Id   = require \./plugin-id
@@ -19,7 +19,7 @@ schema = new M.Schema spec
   ..plugin P-Id
   ..plugin P-Meta
   ..pre \validate, (next) ->
-    try Eh.parse-when @when catch e then @invalidate \when, e.message
+    try When.parse @when catch e then @invalidate \when, e.message
     if @a_node_id is @b_node_id then @invalidate \a_node_id, 'Nodes A and B must differ'
     next!
   ..pre \save, (next) ->

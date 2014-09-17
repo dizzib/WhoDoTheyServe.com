@@ -9,7 +9,7 @@ module.exports = me =
       MIN: 10000101
       MAX: 29991231
 
-  parse-when: ->
+  parse: ->
     c = me.constants.when
     return from:c.MIN, to:c.MAX unless it
 
