@@ -19,7 +19,7 @@ schema = new M.Schema spec
   ..plugin P-Id
   ..plugin P-Meta
   ..pre \validate, (next) ->
-    try When.parse @when catch e then @invalidate \when, e.message
+    try When.parse-range @when catch e then @invalidate \when, e.message
     if @a_node_id is @b_node_id then @invalidate \a_node_id, 'Nodes A and B must differ'
     next!
   ..pre \save, (next) ->
