@@ -17,6 +17,7 @@ dependencies:
   'passport-github'      : \0.1.5
   'passport-google-oauth': \0.1.5
   shortid                : \2.0.0
+  'wait.for'             : \0.6.3
 devDependencies:
   brfs                  : \~0.0.9
   browserify            : \~3.24.13
@@ -42,4 +43,3 @@ devDependencies:
   stylus                : \~0.31.0
   'uglify-js'           : \~2.4.12
   'variadic.js'         : \~0.0.1
-  'wait.for'            : \~0.6.3

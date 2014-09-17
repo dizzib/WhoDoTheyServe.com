@@ -1,5 +1,3 @@
-WFib    = require \wait.for .launchFiber
-W4      = require \wait.for .for
 W4m     = require \wait.for .forMethod
 M-Edges = require \../api/model/edges
 
