@@ -1,5 +1,3 @@
-global.log = console.log
-
 Express   = require \express
 Im        = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
 _         = require \lodash

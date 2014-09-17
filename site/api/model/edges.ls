@@ -13,9 +13,6 @@ spec =
   a_is      : type:String, required:yes, enum:<[eq lt]>
   how       : type:String, required:no , match:Cons.edge.how.regex
   when      : type:String, required:no , match:Cons.edge.when.regex
-  # TODO: deprecate year_* fields
-  year_from : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
-  year_to   : type:Number, required:no , min:Cons.edge.year.min, max:Cons.edge.year.max
 
 schema = new M.Schema spec
   ..index { a_node_id:1, b_node_id:1 }, {+unique}
