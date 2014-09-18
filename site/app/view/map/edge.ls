@@ -1,8 +1,11 @@
 F = require \fs
 _ = require \underscore
 H = require \../../helper
+W = require \../../../lib/when
 
 H.insert-css F.readFileSync __dirname + \/edge.css
+
+int-today = W.get-int-today!
 
 module.exports =
   data: (nodes, edges) ->
@@ -15,8 +18,7 @@ module.exports =
       a = it.source.family-name and b = it.target.family-name and a is b
 
     function is-out-of-range
-      const MAP-WHEN = 20140901 # TODO: add this field to maps
-      not (it.when.int.from <= MAP-WHEN <= it.when.int.to)
+      not (it.when.int.from <= int-today <= it.when.int.to)
 
     for d3e in d3-edges
       arr = []

@@ -13,6 +13,13 @@ module.exports = me =
     MAX: 29991231
     RX : "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
 
+  get-int-today: ->
+    today = new Date!
+    d = today.getDate!
+    m = today.getMonth! + 1
+    y = today.getFullYear!
+    d + 100*m + 10000*y
+
   parse: (str, defaults = MIN) ->
     arr = if str then str.split \/ else [defaults.year]
     l   = arr.length
