@@ -12,28 +12,29 @@ M.Edge .= extend do
   is-in-map: (node-ids) ->
     (_.contains node-ids, @get \a_node_id) and (_.contains node-ids, @get \b_node_id)
   toJSON-T: (opts) ->
-    function get-period is-tip
+    ~function get-tip
+      "Evidence#{if how = @get \how then " - #how" else ''} #{get-when-text true}"
+
+    function get-when-text is-tip
       return '' if yyyy and not is-tip
       return "in #yyyy" if yyyy
-      period = "from #{w-obj.raw.from or '?'}"
-      period + if (w-to = w-obj.raw.to) then " to #w-to" else ''
-    ~function get-tip
-      "Evidence#{if how = @get \how then " - #how" else ''} #{get-period true}"
+      s = "from #{when-obj.raw.from or '?'}"
+      s + if (when-to = when-obj.raw.to) then " to #when-to" else ''
 
-    a-node = C.Nodes.get @get \a_node_id # undefined if new
-    b-node = C.Nodes.get @get \b_node_id # undefined if new
-    yyyy   = a-node?get-yyyy! or b-node?get-yyyy!
-    w-raw  = if yyyy then "#yyyy-#yyyy" else @get \when
-    w-obj  = W.parse-range w-raw
+    a-node   = C.Nodes.get @get \a_node_id # undefined if new
+    b-node   = C.Nodes.get @get \b_node_id # undefined if new
+    yyyy     = a-node?get-yyyy! or b-node?get-yyyy!
+    when-raw = if yyyy then "#yyyy-#yyyy" else @get \when
+    when-obj = W.parse-range when-raw
 
     _.extend (@toJSON opts),
       a_node_name: a-node?get \name
       b_node_name: b-node?get \name
       a_is_eq    : \eq is @get \a_is
       a_is_lt    : \lt is @get \a_is
-      period     : get-period!
       tip        : get-tip!
-      when-obj   : w-obj
+      when-obj   : when-obj
+      when-text  : get-when-text!
       yy         : yyyy?substring 2
       yyyy       : yyyy
       year       : parseInt yyyy

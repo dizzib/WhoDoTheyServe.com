@@ -16,8 +16,8 @@ const EDGE =
   how:
     href: -> "#/edge/#{@_id}"
     text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
-  period:
-    text: -> @period
+  'when-text':
+    text: -> @when-text
 
 const EVI =
   glyph:
