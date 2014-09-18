@@ -46,6 +46,7 @@ module.exports =
         ..on \error    , -> Vus.toggle-please-wait false
         ..on \rendered ,    Vus.init
         ..on \saved    ,    Si.signin
+        ..on \validated, -> Vus.toggle-please-wait true
       ..user-signout
         ..on \rendered ,    Si.signout
       ..user-signup

@@ -22,6 +22,7 @@ module.exports =
       'click button.delete-no' : \delete-ask
       'click button.delete-yes': \delete-yes
       'submit form'            : \save
+      'validated'              : \validated
     initialize: ->
       @opts     = it.opts
       @template = it.template
@@ -33,6 +34,7 @@ module.exports =
       @delegateEvents!
       $ \.view .addClass CLASS-EDITING
       B.Validation.bind this
+      @model.bind \validated:valid, ~> @trigger \validated, @model
       ($tem = $ @template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no
       @model.fetch error:H.on-err, success: -> render it
@@ -46,11 +48,11 @@ module.exports =
       is-new = m.isNew!
       m.attributes = $ it.currentTarget .serializeObject!
       @trigger \serialized, m
-      @coll.create m, { +merge, +wait, error:on-err, success: ~> @trigger \saved, m, is-new }
-      return false
       ~function on-err
         @trigger \error, m
         H.on-err ...
+      @coll.create m, { +merge, +wait, error:on-err, success: ~> @trigger \saved, m, is-new }
+      false
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING
 
   InfoView: B.View.extend do

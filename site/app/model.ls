@@ -71,6 +71,8 @@ module.exports =
           msg     : "Note should be #{Cons.note.info}"
   Session: Model.extend do
     urlRoot: Api.sessions
+    labels:
+      'handle': 'Username'
     validation:
       'handle'  : required:yes
       'password': required:yes

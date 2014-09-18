@@ -1,6 +1,6 @@
 module.exports = me =
   init: ->
-    $ '.openauth a, .btn-primary' .click -> me.toggle-please-wait true
+    $ '.openauth a' .click -> me.toggle-please-wait true
     $ '.btn-primary span' .text \Login
     $ '.btn-primary i' .addClass \fa-sign-in
 
