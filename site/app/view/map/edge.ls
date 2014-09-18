@@ -13,7 +13,7 @@ module.exports =
       a = it.source.family-name and b = it.target.family-name and a is b
 
     function is-out-of-range
-      not (it.when.int.from <= map-when-int <= it.when.int.to)
+      not (it.when-obj.int.from <= map-when-int <= it.when-obj.int.to)
 
     d3-edges = _.map edges, (edge) -> _.extend do
       edge

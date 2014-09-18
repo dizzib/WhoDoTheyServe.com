@@ -15,16 +15,16 @@ M.Edge .= extend do
     function get-period is-tip
       return '' if yyyy and not is-tip
       return "in #yyyy" if yyyy
-      period = "from #{w-range.raw.from or '?'}"
-      period + if (w-to = w-range.raw.to) then " to #w-to" else ''
+      period = "from #{w-obj.raw.from or '?'}"
+      period + if (w-to = w-obj.raw.to) then " to #w-to" else ''
     ~function get-tip
       "Evidence#{if how = @get \how then " - #how" else ''} #{get-period true}"
 
-    a-node  = C.Nodes.get @get \a_node_id # undefined if new
-    b-node  = C.Nodes.get @get \b_node_id # undefined if new
-    yyyy    = a-node?get-yyyy! or b-node?get-yyyy!
-    w-raw   = if yyyy then "#yyyy-#yyyy" else @get \when
-    w-range = W.parse-range w-raw
+    a-node = C.Nodes.get @get \a_node_id # undefined if new
+    b-node = C.Nodes.get @get \b_node_id # undefined if new
+    yyyy   = a-node?get-yyyy! or b-node?get-yyyy!
+    w-raw  = if yyyy then "#yyyy-#yyyy" else @get \when
+    w-obj  = W.parse-range w-raw
 
     _.extend (@toJSON opts),
       a_node_name: a-node?get \name
@@ -33,7 +33,7 @@ M.Edge .= extend do
       a_is_lt    : \lt is @get \a_is
       period     : get-period!
       tip        : get-tip!
-      when       : w-range
+      when-obj   : w-obj
       yy         : yyyy?substring 2
       yyyy       : yyyy
       year       : parseInt yyyy

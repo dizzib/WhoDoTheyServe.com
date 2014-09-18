@@ -38,7 +38,7 @@ module.exports =
       ($tem = $ @template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no
       @model.fetch error:H.on-err, success: -> render it
-      ~function render model then
+      ~function render model
         @$el.html $tem.render model.toJSON-T! .set-access S .show!
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
         @trigger \rendered, model
