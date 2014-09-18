@@ -114,6 +114,8 @@ module.exports =
       text: -> @name or @get \name or 'New map'
     description:
       html: -> htmlify-text @description
+    when:
+      text: -> "Date: #{@when}" if @when
   maps:
     map:
       class: -> \active if @_id is V.map.map?id
