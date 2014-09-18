@@ -5,20 +5,20 @@ W = require \../../../lib/when
 
 H.insert-css F.readFileSync __dirname + \/edge.css
 
-int-today = W.get-int-today!
-
 module.exports =
-  data: (nodes, edges) ->
-    d3-edges = _.map edges, (edge) -> _.extend do
-      edge
-      source: _.find nodes, -> it._id is edge.a_node_id
-      target: _.find nodes, -> it._id is edge.b_node_id
+  data: (nodes, edges, map-when) ->
+    map-when-int = if map-when then W.parse map-when, \max else W.get-int-today!
 
     function is-family
       a = it.source.family-name and b = it.target.family-name and a is b
 
     function is-out-of-range
-      not (it.when.int.from <= int-today <= it.when.int.to)
+      not (it.when.int.from <= map-when-int <= it.when.int.to)
+
+    d3-edges = _.map edges, (edge) -> _.extend do
+      edge
+      source: _.find nodes, -> it._id is edge.a_node_id
+      target: _.find nodes, -> it._id is edge.b_node_id
 
     for d3e in d3-edges
       arr = []

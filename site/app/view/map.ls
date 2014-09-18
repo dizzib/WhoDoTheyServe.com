@@ -71,7 +71,7 @@ module.exports = B.View.extend do
     nodes = _.map entities.nodes, -> it.toJSON-T!
     edges = _.map entities.edges, -> it.toJSON-T!
 
-    edges = E.data nodes, edges
+    edges = E.data nodes, edges, @map.get \when
     edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
     nodes = Ob.filter-nodes nodes
 

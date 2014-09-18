@@ -3,28 +3,31 @@ Subject = require "#{process.cwd!}/site/lib/when"
 
 (...) <- describe 'when ' # trailing space to workaround mocha bug #
 
+const MIN = 10000101
+const MAX = 29991231
+
 it \parse-range, (done) ->
   c = Subject.constants
 
   const TEST-CASES =
     ## boundaries
-    * ''                        c.MIN, c.MAX
+    * ''                        MIN, MAX
     # from-
-    * '1000-'                   c.MIN, c.MAX
-    * '01/1000-'                c.MIN, c.MAX
-    * '01/01/1000-'             c.MIN, c.MAX
+    * '1000-'                   MIN, MAX
+    * '01/1000-'                MIN, MAX
+    * '01/01/1000-'             MIN, MAX
     # -to
-    * '-2999'                   c.MIN, c.MAX
-    * '-12/2999'                c.MIN, c.MAX
-    * '-31/12/2999'             c.MIN, c.MAX
+    * '-2999'                   MIN, MAX
+    * '-12/2999'                MIN, MAX
+    * '-31/12/2999'             MIN, MAX
     # from-to
-    * '1000-2999'               c.MIN, c.MAX
-    * '01/1000-31/12/2999'      c.MIN, c.MAX
-    * '01/01/1000-31/12/2999'   c.MIN, c.MAX
-    * '1000-31/12/2999'         c.MIN, c.MAX
+    * '1000-2999'               MIN, MAX
+    * '01/1000-31/12/2999'      MIN, MAX
+    * '01/01/1000-31/12/2999'   MIN, MAX
+    * '1000-31/12/2999'         MIN, MAX
     ## realistic
-    * '1996-'                   19960101, c.MAX
-    * '-1996'                   c.MIN   , 19961231
+    * '1996-'                   19960101, MAX
+    * '-1996'                   MIN     , 19961231
     * '2014-2014'               20140101, 20141231
     * '07/2014-07/2014'         20140701, 20140731
     * '21/07/2014-21/07/2014'   20140721, 20140721
@@ -46,6 +49,7 @@ it \parse-range-exceptions, (done) ->
     * '-100'      , \length
     * '7/2014-'   , \length
     * '4/12/2014-', \length
+    * '14/2/2014-', \length
     # bad range
     * 'xxxx-'                , \range
     * '2014-2013'            , \range

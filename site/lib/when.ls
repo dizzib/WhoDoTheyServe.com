@@ -1,7 +1,9 @@
 Assert = require \assert
 
-const MIN = day:\01 month:\01 year:\1000
-const MAX = day:\31 month:\12 year:\2999
+const RANGE =
+  min: day:\01 month:\01 year:\1000 int:10000101
+  max: day:\31 month:\12 year:\2999 int:29991231
+
 const RX =
   day  : '(0[1-9]|[12]\\d|3[01])'
   month: '(0[1-9]|1[012])'
@@ -9,9 +11,7 @@ const RX =
 
 module.exports = me =
   constants:
-    MIN: 10000101
-    MAX: 29991231
-    RX : "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
+    RX: "((#{RX.month}\\/)|(#{RX.day}\\/#{RX.month}\\/))?#{RX.year}"
 
   get-int-today: ->
     today = new Date!
@@ -20,7 +20,8 @@ module.exports = me =
     y = today.getFullYear!
     d + 100*m + 10000*y
 
-  parse: (str, defaults = MIN) ->
+  parse: (str, minmax) ->
+    defaults = RANGE[minmax]
     arr = if str then str.split \/ else [defaults.year]
     l   = arr.length
     arr.unshift defaults.month if l is 1
@@ -32,12 +33,12 @@ module.exports = me =
 
   parse-range: ->
     unless it then return
-      int: from:me.constants.MIN, to:me.constants.MAX
-      raw: from:null            , to:null
+      int: from:RANGE.min.int, to:RANGE.max.int
+      raw: from:null         , to:null
     w = it.split \-
     Assert w.length is 2, "'#it' must contain a single dash"
-    i-from = me.parse w.0, MIN
-    i-to   = me.parse w.1, MAX
+    i-from = me.parse w.0, \min
+    i-to   = me.parse w.1, \max
     Assert i-from <= i-to, "Invalid range from #i-from to #i-to"
     return
       int: from:i-from, to:i-to
