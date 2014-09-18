@@ -56,9 +56,7 @@ function handle-error err, req, res, next
   msg = switch
     | err instanceof H.ApiError    => err.message
     | err.name is \ValidationError => get-validation-msg err
-    | _ =>
-      if env in <[ development staging test ]> then err.stack
-      else 'Internal server error, sorry! :('
+    | _ => if env in <[ development test ]> then err.stack else 'Internal server error, sorry! :('
   res.send 500, msg
 
 function log-error opts
