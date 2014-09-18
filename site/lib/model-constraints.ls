@@ -24,6 +24,9 @@ module.exports =
     name:
       info: "a string of 4 to 50 letters, numbers or symbols !&,'() e.g. Mainstream Media"
       regex: /^(?!( ))([a-z0-9!&'\,\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
+    when:
+      info: 'a valid date, month or year of format dd/mm/yyyy or mm/yyyy or yyyy'
+      regex: new RegExp "^#{WHEN-RX}$"
   node:
     name:
       info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'

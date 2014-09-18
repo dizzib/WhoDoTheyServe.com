@@ -13,11 +13,17 @@ form.map.signed-in.form-horizontal.well.bg-transparent
         +field-text('name', 'Name', 'Enter a name for the map')
       +field-select('nodes', 'Actors')
         .help-block.v-gap Drag actors around the map to improve the layout.
-        .help-block.v-gap Click a pin
+        .help-block Click a pin
           i.glyph.fa.fa-thumb-tack
-          | to fix or free an actor's position.
+          to fix or free an actor's position.
       span.input-xlarge
         +field-textarea('description', 'Description')
+      +field-text('when', 'When')
+        .help-block.v-gap
+          :markdown
+            Optionally enter a date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
+            Active connections on this date will have a solid line, otherwise dotted.  
+            Leave blank to always use the current date.
       span.signed-in-admin
         +field-checkbox('is-default', 'Default')
     +button-bar

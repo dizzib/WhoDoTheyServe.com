@@ -33,7 +33,7 @@ module.exports =
         * required: no
         * pattern : Cons.edge.how.regex
           msg     : "How should be #{Cons.edge.how.info}"
-      'when'     :
+      'when':
         * required: no
         * pattern : Cons.edge.when.regex
           msg     : "When should be #{Cons.edge.when.info}"
@@ -51,6 +51,10 @@ module.exports =
         * required: yes
         * pattern : Cons.map.name.regex
           msg     : "Name should be #{Cons.map.name.info}"
+      'when':
+        * required: no
+        * pattern : Cons.map.when.regex
+          msg     : "When should be #{Cons.map.when.info}"
   Node: Model.extend do
     urlRoot: Api.nodes
     validation:

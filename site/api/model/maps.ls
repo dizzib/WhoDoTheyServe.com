@@ -10,19 +10,20 @@ P-Id        = require \./plugin-id
 P-Meta      = require \./plugin-meta
 
 s-node = new M.Schema do
-  _id: type:String, required:yes
-  x  : type:Number  # optional since node may be filtered out of d3
-  y  : type:Number  # optional since node may be filtered out of d3
-  pin: type:Boolean # optional since most nodes won't be pinned
+  _id: type:String , required:yes
+  x  : type:Number , required:no # optional since node may be filtered out of d3
+  y  : type:Number , required:no # optional since node may be filtered out of d3
+  pin: type:Boolean, required:no # optional since most nodes won't be pinned
 
 s-size =
   x: type:Number, required:yes
   y: type:Number, required:yes
 
 schema = new M.Schema do
-  edge_cutoff_date: type:Date, default:Date.now # exclude edges created after this cutoff
-  description     : type:String, match:Cons.map.description.regex
   name            : type:String, required:yes, match:Cons.map.name.regex
+  description     : type:String, required:no , match:Cons.map.description.regex
+  when            : type:String, required:no , match:Cons.map.when.regex
+  edge_cutoff_date: type:Date  , default:Date.now # exclude edges created after this cutoff
   nodes           : [s-node]
   size            : s-size
 
