@@ -21,15 +21,16 @@ const COMMANDS =
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Build.bundle
   * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
-  * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2
+  * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:-> Run.loop-dev-test_2 flags
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
   * cmd:'b.sl ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
   * cmd:'b.t  ' lev:0 desc:'build - toggle $all'        fn:-> toggle-build-tests \all
   * cmd:'b.t1 ' lev:0 desc:'build - toggle $api'        fn:-> toggle-build-tests \api
   * cmd:'b.t2 ' lev:0 desc:'build - toggle $app'        fn:-> toggle-build-tests \app
+  * cmd:'b.tc ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:Run.run-staging-tests
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Run.run-staging-tests flags
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
@@ -110,6 +111,7 @@ function show-help
     api: get-run-tests-desc \api
     app: get-run-tests-desc \app
     sl : get-flag-desc flags.site-logging
+    tc : get-flag-desc flags.test-coverage
   for c in COMMANDS when !c.disabled
     s = c.display
     for k, v of flag-vals then s = s.replace "$#k", v

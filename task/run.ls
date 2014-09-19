@@ -84,6 +84,7 @@ function run-test_2 cfg, flags, desc = '', cb
   recycle-tests cfg.test_2, cfg.tester_2, flags, cfg.dirsite, GLOB_2, "App tests#desc", cb
 
 function recycle-tests cfg-test, cfg-tester, flags, dirsite, glob, desc, cb
+  cfg-test.COVERAGE = flags.test-coverage if cfg-test.COVERAGE_FLAG
   <- kill-mocha glob
   G.say "#desc started"
   start = Date.now!

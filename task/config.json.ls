@@ -1,6 +1,5 @@
 dev:
   primary:
-    COVERAGE                        : false
     NODE_ARGS                       : '--debug=5000'
     NODE_ENV                        : \development
     PORT                            : 4000
@@ -8,7 +7,7 @@ dev:
     WDTS_DB_CACHE_ENABLE            : true
     WDTS_DB_CACHE_SWEEP_PERIOD_MINS : 10
   test_1:
-    COVERAGE                        : false
+    COVERAGE_FLAG                   : true
     NODE_ARGS                       : '--debug=5001'
     NODE_ENV                        : \test
     PORT                            : 4001
@@ -16,7 +15,7 @@ dev:
     WDTS_DB_CACHE_ENABLE            : true
     WDTS_USER_SIGNIN_BAD_FREEZE_SECS: 0
   test_2:
-    COVERAGE                        : false
+    COVERAGE_FLAG                   : true
     NODE_ARGS                       : '--debug=5002'
     NODE_ENV                        : \test
     PORT                            : 4002
