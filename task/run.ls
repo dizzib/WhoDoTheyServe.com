@@ -35,7 +35,7 @@ function drop-db cfg, cb
   conn.close!
   cb!
 
-function get-mocha-cmd glob, opts
+function get-mocha-cmd glob
   cmd = "#{Dir.DEV}/node_modules/mocha/bin/_mocha"
   "#cmd --reporter spec --bail #glob"
 
@@ -57,10 +57,10 @@ function kill-mocha glob, cb
 function kill-node args, cb
   # can't use WaitFor as we need the return code
   code, out <- exec cmd = "pkill -ef 'node #{args.replace /\*/g, '\\*'}'"
-  # 0 One or more processes matched the criteria. 
-  # 1 No processes matched. 
-  # 2 Syntax error in the command line. 
-  # 3 Fatal error: out of memory etc. 
+  # 0 One or more processes matched the criteria.
+  # 1 No processes matched.
+  # 2 Syntax error in the command line.
+  # 3 Fatal error: out of memory etc.
   throw new Error "#cmd returned #code" if code > 1
   cb!
 
@@ -83,14 +83,14 @@ function run-test_1 cfg, desc = ''
 function run-test_2 cfg, desc = '', cb
   recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GLOB_2, "App tests#desc", cb
 
-function recycle-tests test, tester, dirsite, glob, desc, cb
+function recycle-tests cfg-test, cfg-tester, dirsite, glob, desc, cb
   <- kill-mocha glob
   G.say "#desc started"
   start = Date.now!
-  <- stop-site test
-  <- drop-db test
-  <- start-site dirsite, test
-  e <- start-mocha tester, glob
+  <- stop-site cfg-test
+  <- drop-db cfg-test
+  <- start-site dirsite, cfg-test
+  e <- start-mocha cfg-tester, glob
   return G.err e if e?
   G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb! if cb?
