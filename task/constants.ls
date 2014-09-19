@@ -12,6 +12,7 @@ const TEST    = \test
 const DIR-ROOT         = pwd!
 const DIR-BUILD        = "#DIR-ROOT/#BUILD"
 const DIR-DEV          = "#DIR-BUILD/#DEV"
+const DIR-TASK         = "#DIR-DEV/#TASK"
 const DIR-SITE-DEV     = "#DIR-DEV/#SITE"
 const DIR-SITE-STAGING = "#DIR-BUILD/#STAGING"
 const DIR-SITE-SEO     = "#DIR-BUILD/#SEO"
@@ -29,6 +30,7 @@ module.exports =
     ROOT : DIR-ROOT
     BUILD: DIR-BUILD
     DEV  : DIR-DEV
+    TASK : DIR-TASK
     site :
       DEV    : DIR-SITE-DEV
       STAGING: DIR-SITE-STAGING

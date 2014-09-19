@@ -43,14 +43,13 @@ const COMMANDS =
   * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
   * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
 
-cd Dir.DEV # for safety, set working directory to dev build
-config.fatal = true # shelljs doesn't raise exceptions, so set this process to die on error
+const FLAGS-PATH = "#{Dir.TASK}/flags.json"
+const FLAGS-DEFAULT =
+  run-tests: all:true api:true app:true
 
-state =
-  tests-enabled:
-    all:true
-    api:true
-    app:true
+cd Dir.DEV          # for safety, set working directory to dev build
+config.fatal = true # shelljs doesn't raise exceptions, so set this process to die on error
+flags = load-flags!
 
 for c in COMMANDS
   c.disabled = (c.cmd.0 is \d and not Data.is-cfg!) or (c.cmd.0 is \p and not Prod.is-cfg!)
@@ -71,7 +70,6 @@ Build.on \built, Run.recycle-dev
 Build.on \built-api, -> run-tests \api, Run.run-dev-test_1
 Build.on \built-app, -> run-tests \app, Run.run-dev-test_2
 Build.start!
-
 Run.recycle-dev!
 Run.recycle-staging!
 
@@ -84,26 +82,37 @@ function generate-staging
   Run.recycle-staging!
   Run.run-staging-tests!
 
-function get-tests-enabled-desc
-  flag = if state.tests-enabled[it] then Chalk.bold.green \yes else Chalk.bold.cyan \no
+function load-flags
+  try
+    return JSON.parse(cat FLAGS-PATH) if test \-e, FLAGS-PATH
+    FLAGS-DEFAULT
+  catch
+    FLAGS-DEFAULT
+
+function get-run-tests-desc
+  flag = if flags.run-tests[it] then Chalk.bold.green \yes else Chalk.bold.cyan \no
   "#it tests (#flag)"
 
 function run-tests id, fn
-  if state.tests-enabled[id] then fn! else log Chalk.cyan "skip #id tests"
+  if flags.run-tests[id] then fn! else log Chalk.cyan "skip #id tests"
+
+function save-flags
+  (JSON.stringify flags).to FLAGS-PATH
 
 function show-help
-  all = get-tests-enabled-desc \all
-  api = get-tests-enabled-desc \api
-  app = get-tests-enabled-desc \app
+  all = get-run-tests-desc \all
+  api = get-run-tests-desc \api
+  app = get-run-tests-desc \app
   for c in COMMANDS when !c.disabled
     log c.display.replace(\$all, all).replace(\$api, api).replace(\$app, app)
   rl.prompt!
 
 function toggle-build-tests
-  (s = state.tests-enabled)[it] = not s[it]
+  (s = flags.run-tests)[it] = not s[it]
   if it is \all then [s.api, s.app] = [s.all, s.all]
   s.all = false unless s.api or s.app
   s.all = true if s.api and s.app
+  save-flags!
   show-help!
 
 function try-fn
