@@ -17,13 +17,14 @@ G       = require \./growl
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:Run.run-dev-tests
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:-> Run.run-dev-tests flags
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Build.bundle
   * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
   * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:Run.loop-dev-test_2
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
+  * cmd:'b.sl ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
   * cmd:'b.t  ' lev:0 desc:'build - toggle $all'        fn:-> toggle-build-tests \all
   * cmd:'b.t1 ' lev:0 desc:'build - toggle $api'        fn:-> toggle-build-tests \api
   * cmd:'b.t2 ' lev:0 desc:'build - toggle $app'        fn:-> toggle-build-tests \app
@@ -45,7 +46,9 @@ const COMMANDS =
 
 const FLAGS-PATH = "#{Dir.TASK}/flags.json"
 const FLAGS-DEFAULT =
-  run-tests: all:true api:true app:true
+  test-coverage: false
+  site-logging : false
+  run-tests    : all:true api:true app:true
 
 cd Dir.DEV          # for safety, set working directory to dev build
 config.fatal = true # shelljs doesn't raise exceptions, so set this process to die on error
@@ -66,12 +69,12 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
       for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
       rl.prompt!
 
-Build.on \built, Run.recycle-dev
+Build.on \built, -> Run.recycle-dev flags
 Build.on \built-api, -> run-tests \api, Run.run-dev-test_1
 Build.on \built-app, -> run-tests \app, Run.run-dev-test_2
 Build.start!
-Run.recycle-dev!
-Run.recycle-staging!
+Run.recycle-dev flags
+Run.recycle-staging flags
 
 setTimeout show-help, 1000ms
 
@@ -79,8 +82,8 @@ setTimeout show-help, 1000ms
 
 function generate-staging
   Staging.generate!
-  Run.recycle-staging!
-  Run.run-staging-tests!
+  Run.recycle-staging flags
+  Run.run-staging-tests flags
 
 function load-flags
   try
@@ -89,22 +92,28 @@ function load-flags
   catch
     FLAGS-DEFAULT
 
+function get-flag-desc
+  "(#{if it then Chalk.bold.green \yes else Chalk.bold.cyan \no})"
+
 function get-run-tests-desc
-  flag = if flags.run-tests[it] then Chalk.bold.green \yes else Chalk.bold.cyan \no
-  "#it tests (#flag)"
+  "#it tests #{get-flag-desc flags.run-tests[it]}"
 
 function run-tests id, fn
-  if flags.run-tests[id] then fn! else log Chalk.cyan "skip #id tests"
+  if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"
 
 function save-flags
   (JSON.stringify flags).to FLAGS-PATH
 
 function show-help
-  all = get-run-tests-desc \all
-  api = get-run-tests-desc \api
-  app = get-run-tests-desc \app
+  flag-vals =
+    all: get-run-tests-desc \all
+    api: get-run-tests-desc \api
+    app: get-run-tests-desc \app
+    sl : get-flag-desc flags.site-logging
   for c in COMMANDS when !c.disabled
-    log c.display.replace(\$all, all).replace(\$api, api).replace(\$app, app)
+    s = c.display
+    for k, v of flag-vals then s = s.replace "$#k", v
+    log s
   rl.prompt!
 
 function toggle-build-tests
@@ -112,6 +121,11 @@ function toggle-build-tests
   if it is \all then [s.api, s.app] = [s.all, s.all]
   s.all = false unless s.api or s.app
   s.all = true if s.api and s.app
+  save-flags!
+  show-help!
+
+function toggle-flag
+  flags[it] = not (flags[it] or false)
   save-flags!
   show-help!
 

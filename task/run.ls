@@ -14,13 +14,13 @@ Cfg.staging <<< dirsite:DirSite.STAGING
 
 module.exports =
   cancel           : -> kill-all-mocha ...
-  loop-dev-test_2  : -> loop-dev-test_2!
-  recycle-dev      : -> recycle-primary Cfg.dev
-  recycle-staging  : -> recycle-primary Cfg.staging
-  run-dev-test_1   : -> run-test_1 Cfg.dev
-  run-dev-test_2   : -> run-test_2 Cfg.dev
-  run-dev-tests    : -> run-tests Cfg.dev
-  run-staging-tests: -> run-tests Cfg.staging, ' for staging'
+  loop-dev-test_2  : (flags) -> loop-dev-test_2 flags
+  recycle-dev      : (flags) -> recycle-primary Cfg.dev, flags
+  recycle-staging  : (flags) -> recycle-primary Cfg.staging, flags
+  run-dev-test_1   : (flags) -> run-test_1 Cfg.dev, flags
+  run-dev-test_2   : (flags) -> run-test_2 Cfg.dev, flags
+  run-dev-tests    : (flags) -> run-tests Cfg.dev, flags
+  run-staging-tests: (flags) -> run-tests Cfg.staging, flags, ' for staging'
 
 ## helpers
 
@@ -64,38 +64,38 @@ function kill-node args, cb
   throw new Error "#cmd returned #code" if code > 1
   cb!
 
-function loop-dev-test_2
-  <- run-test_2 Cfg.dev, ''
-  loop-dev-test_2!
+function loop-dev-test_2 flags
+  <- run-test_2 Cfg.dev, flags, ''
+  loop-dev-test_2 flags
 
-function recycle-primary cfg, cb
+function recycle-primary cfg, flags, cb
   <- stop-site cfg.primary
-  <- start-site cfg.dirsite, cfg.primary
+  <- start-site cfg.dirsite, cfg.primary, flags
   cb! if cb?
 
 function run-tests
   run-test_1 ...
   run-test_2 ...
 
-function run-test_1 cfg, desc = ''
-  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, GLOB_1, "Unit & api tests#desc"
+function run-test_1 cfg, flags, desc = ''
+  recycle-tests cfg.test_1, cfg.tester_1, flags, cfg.dirsite, GLOB_1, "Unit & api tests#desc"
 
-function run-test_2 cfg, desc = '', cb
-  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GLOB_2, "App tests#desc", cb
+function run-test_2 cfg, flags, desc = '', cb
+  recycle-tests cfg.test_2, cfg.tester_2, flags, cfg.dirsite, GLOB_2, "App tests#desc", cb
 
-function recycle-tests cfg-test, cfg-tester, dirsite, glob, desc, cb
+function recycle-tests cfg-test, cfg-tester, flags, dirsite, glob, desc, cb
   <- kill-mocha glob
   G.say "#desc started"
   start = Date.now!
   <- stop-site cfg-test
   <- drop-db cfg-test
-  <- start-site dirsite, cfg-test
-  e <- start-mocha cfg-tester, glob
+  <- start-site dirsite, cfg-test, flags
+  e <- start-mocha cfg-tester, flags, glob
   return G.err e if e?
   G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb! if cb?
 
-function start-mocha cfg, glob, cb
+function start-mocha cfg, flags, glob, cb
   if _.isFunction glob then [glob, cb] = [void, glob] # variadic
   v = exec 'node --version', silent:true .output.replace '\n', ''
   log "start mocha in node #v: #glob"
@@ -109,7 +109,7 @@ function start-mocha cfg, glob, cb
       # data may be fragmented, so only growl relevant packet
       G.alert (Chalk.stripColor s), nolog:true if RX-ERR.test s
 
-function start-site cwd, cfg, cb
+function start-site cwd, cfg, flags, cb
   v = exec 'node --version', silent:true .output.replace '\n', ''
   desc = get-site-desc cfg
   args = get-start-site-args cfg
@@ -121,7 +121,7 @@ function start-site cwd, cfg, cb
       # data may be fragmented, so only growl relevant packet
       if RX-ERR.test s then G.alert "#desc\n#s", nolog:true
     ..stdout.on \data, ->
-      log-data it.toString!
+      log-data it.toString! if flags.site-logging
       cb! if cb and /listening on port/.test it
 
   function log-data
