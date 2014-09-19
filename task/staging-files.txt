@@ -5,9 +5,10 @@
 + /app/lib-3p/
 + /app/lib-3p/bootstrap/
 + /app/lib-3p/bootstrap/css/
++ /app/lib-3p/bootstrap/css-ext/
++ /app/lib-3p/bootstrap/img/
 + /app/lib-3p/multiple-select.css
 + /app/lib-3p/multiple-select.png
-+ /app/lib-3p/theme/
 + /app/lib-3p/yepnope.1.5.4-min.js
 + /app/theme/
 - /app/*

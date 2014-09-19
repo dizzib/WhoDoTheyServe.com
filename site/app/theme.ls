@@ -7,7 +7,7 @@ const LS-KEY = \theme
 const THEMES =
   dark:
     \/theme/dark.css
-    \/lib-3p/theme/darkstrap.css
+    \/lib-3p/bootstrap/css-ext/darkstrap.css
   light:
     \/theme/light.css
     ...
