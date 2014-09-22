@@ -6,12 +6,12 @@ V-Latest    = require \./view/latest
 V-Map       = require \./view/map
 V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
+V-Sys       = require \./view/sys
 
 H.insert-css-seo F.readFileSync __dirname + \/view.css
 
 # cannot refactor since Brfs requires this exact code format
 D-About         = F.readFileSync __dirname + \/doc/about.html
-T-Admin         = F.readFileSync __dirname + \/view/admin.html
 T-EdgeEdit      = F.readFileSync __dirname + \/view/edge-edit.html
 T-Edge          = F.readFileSync __dirname + \/view/edge.html
 T-Edges         = F.readFileSync __dirname + \/view/edges.html
@@ -43,7 +43,6 @@ T-Version       = F.readFileSync __dirname + \/view/version.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
   ## views
-  ..admin           = new V.InfoView template:T-Admin        , el:\.view>.main
   ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
   ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id
@@ -76,6 +75,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..note-edit       = new V.EditView template:T-NoteEdit     , el:\.view>.note-edit
   ..notes           = new V.ListView template:T-Notes        , el:\.view>.notes
   ..notes-head      = new V.InfoView template:T-NotesHead    , el:\.view>.notes-head
+  ..sys             = new V-Sys                                el:\.view>.main
   ..user            = new V.InfoView template:T-User         , el:\.view>.main
   ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
