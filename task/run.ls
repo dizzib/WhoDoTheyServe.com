@@ -9,8 +9,10 @@ Dir     = require \./constants .dir
 DirSite = require \./constants .dir.site
 G       = require \./growl
 
-Cfg.dev     <<< dirsite:DirSite.DEV
-Cfg.staging <<< dirsite:DirSite.STAGING
+Cfg.dev             <<< dirsite:DirSite.DEV
+Cfg.dev.primary     <<< JSON.parse env.dev
+Cfg.staging         <<< dirsite:DirSite.STAGING
+Cfg.staging.primary <<< JSON.parse env.staging
 
 module.exports =
   cancel           : -> kill-all-mocha ...
