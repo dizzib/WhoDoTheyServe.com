@@ -25,7 +25,7 @@ ul.nav.nav-tabs
   li(active='^$|^map').map
     a.link
       i.fa.fa-share-alt
-      span.name
+        span.name
   li(active='^user/signin').seo-remove.pull-right.signed-out
     a(href='#/user/signin')
       i.fa.fa-sign-in Login
@@ -37,9 +37,10 @@ ul.nav.nav-tabs
       i.fa.fa-wrench Admin
   li(active='^user(/edit|$)').seo-remove.pull-right.signed-in
     a(href='#/user')
-      i.fa.fa-user Account 
+      i.fa.fa-user Account
   li(active='^user/signup').seo-remove.pull-right.signed-in-admin
-    a(href='#/user/signup') Signup
+    a(href='#/user/signup')
+      i.fa.fa-user Signup
   li(active='^user(s|/[0-9a-f]+)$').seo-remove.pull-right
     a(href='#/users')
       i.fa.fa-pencil Contributors
