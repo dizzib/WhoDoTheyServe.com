@@ -5,7 +5,9 @@ A-Password  = require \./authenticate/password
 Express     = require \../server
 H           = require \./helper
 Hive        = require \./hive
-Integrity   = require \./integrity
+I-Edge      = require \./integrity/edge
+I-Entity    = require \./integrity/entity
+I-Node      = require \./integrity/node
 M-Edges     = require \./model/edges
 M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
@@ -109,12 +111,13 @@ function set-api-hive
 
 function set-api-integrity
   Express
-    ..post   "/api/edges"    , Integrity.edge-create
-    ..put    "/api/edges/:id", Integrity.edge-update
-    ..delete "/api/edges/:id", Integrity.edge-delete
-    ..post   "/api/nodes"    , Integrity.node-create
-    ..put    "/api/nodes/:id", Integrity.node-update
-    ..delete "/api/nodes/:id", Integrity.node-delete
+    ..post   "/api/edges"    , I-Edge.create
+    ..post   "/api/edges"    , I-Entity.create M-Edges
+    ..put    "/api/edges/:id", I-Edge.update
+    ..delete "/api/edges/:id", I-Edge.delete
+    ..post   "/api/nodes"    , I-Entity.create M-Nodes
+    ..put    "/api/nodes/:id", I-Node.update
+    ..delete "/api/nodes/:id", I-Node.delete
 
 function set-api-sec route, Model
   Express
