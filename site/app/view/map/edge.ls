@@ -12,9 +12,6 @@ module.exports =
     function is-family
       a = it.source.family-name and b = it.target.family-name and a is b
 
-    function is-out-of-range
-      not (it.when-obj.int.from <= map-when-int <= it.when-obj.int.to)
-
     d3-edges = _.map edges, (edge) -> _.extend do
       edge
       source: _.find nodes, -> it._id is edge.a_node_id
@@ -22,7 +19,7 @@ module.exports =
 
     for d3e in d3-edges
       arr = []
-      arr.push \minor if is-out-of-range d3e
+      arr.push \minor if not W.is-in-range map-when-int, d3e.when-obj.int
       arr.push \family if is-family d3e
       d3e.class = arr * ' '
 

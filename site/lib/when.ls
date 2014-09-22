@@ -20,6 +20,13 @@ module.exports = me =
     y = today.getFullYear!
     d + 100*m + 10000*y
 
+  is-in-range: (int, range-int) ->
+    range-int.from <= int <= range-int.to
+
+  is-overlap-ranges: (range-int-a, range-int-b) ->
+    [a-from, a-to, b-from, b-to] = [range-int-a.from, range-int-a.to, range-int-b.from, range-int-b.to]
+    (a-from <= b-from <= a-to) or (a-from <= b-to <= a-to) or (b-from <= a-from <= b-to)
+
   parse: (str, minmax) ->
     defaults = RANGE[minmax]
     arr = if str then str.split \/ else [defaults.year]
