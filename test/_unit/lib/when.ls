@@ -1,7 +1,7 @@
 Expect  = require \chai .expect
 Subject = require "#{process.cwd!}/site/lib/when"
 
-(...) <- describe.only 'when ' # trailing space to workaround mocha bug #
+(...) <- describe 'when ' # trailing space to workaround mocha bug #
 
 const MIN = 10000101
 const MAX = 29991231
