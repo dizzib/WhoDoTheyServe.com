@@ -10,9 +10,12 @@ Db        = require \./api/db
 Hive      = require \./api/hive
 Router    = require \./api/router
 DeployMap = require \./deploy/hive/map
+MigrateDb = require \./deploy/migrate-db
 
 Db.connect!
 Hive.init DeployMap.set-icons
+
+<- MigrateDb.Issue6
 
 <- Http.createServer(Express).listen port = Express.settings.port
 console.log "Express server http listening on port #{port}"

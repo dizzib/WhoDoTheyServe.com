@@ -201,6 +201,7 @@ test Node.b.create.bad # dup
 test Edge.list.is0
 test Edge.ab.create.ok
 test Edge.ab.create.bad # dup
+test Edge.ab.to-aa.update.bad
 test Edge.ab.to-ab.update.ok
 test Edge.ab.is.eq.update.ok
 test Edge.ab.is.eq.read.ok
@@ -219,15 +220,19 @@ test Edge.ab.when.null.update.ok
 test Edge.ab.when.from.y.update.ok
 test Edge.ab.when.from.my.update.ok
 test Edge.ab.when.from.dmy.update.ok
-test Edge.ab.when.from.bad.d.update.bad
-test Edge.ab.when.from-to.ok.update.ok
-test Edge.ab.when.from-to.bad.update.bad
+test Edge.ab.when.from.bad.update.bad
 test Edge.ab.when.to.y.update.ok
 test Edge.ab.when.to.my.update.ok
 test Edge.ab.when.to.dmy.update.ok
-test Edge.ab.when.to.bad.m.update.bad
-test Edge.ba.create.bad # reciprocal
+test Edge.ab.when.to.bad.update.bad
+test Edge.ab.when.DMY1-DMY2.update.ok
+test Edge.ab.when.DMY2-DMY1.update.bad
+test Evidence.ab0.create.ok
 test Edge.list.is1
+it 'edge ab chronological'
+test Edge.ba.create.bad # reciprocal
+test Edge.ab2.DMY2-DMY4.create.bad
+test Edge.ab2.DMY3-DMY4.create.ok
 it 'map'
 test Map.b.read.ok
 test Map.b.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
@@ -241,15 +246,18 @@ test Session.signout.ok
 test Session.c.password.a.signin.ok
 it 'graph'
 test Node.c.create.ok
-test Edge.ab.create.bad # already exists
-test Edge.ba.create.bad # already exists
+test Edge.ab.create.bad       # overlapping when
+test Edge.ba.create.bad       # overlapping when
+test Edge.ba.DMY4_.create.bad # overlapping when
+test Edge.ba.DMY5_.create.ok
+test Evidence.ba0.create.ok
 test Edge.ca.create.bad # a_node missing evidence
 test Edge.ac.create.bad # b_node missing evidence
 test Evidence.c0.create.ok
 test Edge.ac.create.ok
 test Evidence.ac0.create.ok
 test Edge.bc.create.ok
-test Edge.list.is3
+test Edge.list.is5
 test Edge.ac.to-bc.update.bad
 test Node.d.create.ok
 test Evidence.d0.create.ok
@@ -259,15 +267,15 @@ test Node.c.remove.bad # has edge
 test Edge.ac.remove.bad # has evidence
 test Evidence.ac0.remove.ok
 test Edge.ac.remove.ok
-test Edge.list.is2
+test Edge.list.is4
 it 'map'
 test Map.c.create.ok
 test Map.list.is3
 test Map.c.read.ok
-test Map.c.entities.edges.is2
+test Map.c.entities.edges.is4
 test Edge.ac.create.ok
 test Map.c.read.ok
-test Map.c.entities.edges.is3 # c's latest edge ac should be included on c's map
+test Map.c.entities.edges.is5 # c's latest edge ac should be included on c's map
 test Edge.ac.remove.ok
 test Evidence.bc0.remove.ok
 test Edge.bc.remove.bad # on map c

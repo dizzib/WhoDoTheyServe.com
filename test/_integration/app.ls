@@ -89,7 +89,7 @@ test Edge.ab.create.ok
 test Edge.list.is1
 test Edge.ab.create.bad # dup
 test Edge.ab.is.eq.update.ok
-test Edge.ab.when.from-to.ok.update.ok
+test Edge.ab.when.DMY1-DMY2.update.ok
 test Evidence.ab0.create.ok
 it 'note'
 test Note.a.list.is0

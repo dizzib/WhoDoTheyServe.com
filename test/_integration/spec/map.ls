@@ -30,3 +30,5 @@ function get-entities key
       is1: get-spec-edges key, 1
       is2: get-spec-edges key, 2
       is3: get-spec-edges key, 3
+      is4: get-spec-edges key, 4
+      is5: get-spec-edges key, 5

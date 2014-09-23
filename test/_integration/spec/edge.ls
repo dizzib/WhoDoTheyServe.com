@@ -3,10 +3,19 @@ Cons = require "#{process.cwd!}/site/lib/model-constraints"
 H    = require \./helper
 
 exports.get-spec = (...args) ->
+  const DMY1 = '20/10/1980'
+  const  MY1 =    '10/1980'
+  const   Y1 =       '1980'
+  const DMY2 = '31/10/1990'
+  const DMY3 = '01/11/1990'
+  const DMY4 = '30/06/2014'
+  const DMY5 = '01/07/2014'
+
   h = H \edge, ...args
 
   function get-spec-ab fields then h.get-spec \ab, fields
   function get-spec-ac fields then h.get-spec \ac, fields
+  function get-spec-ba fields then h.get-spec \ba, fields
   function get-spec-bc fields then h.get-spec \bc, fields
 
   ab: _.extend do
@@ -28,28 +37,32 @@ exports.get-spec = (...args) ->
     when:
       null: get-spec-ab when:''
       from:
-        dmy: get-spec-ab when:'01/12/1950-'
-        my : get-spec-ab when:'04/2007-'
-        y  : get-spec-ab when:'1997-'
-        bad:
-          d: get-spec-ab when:'32/10/2000'
-      from-to:
-        ok : get-spec-ab when:'31/12/1999-01/01/2000'
-        bad: get-spec-ab when:'01/01/2000-31/12/1999'
+        dmy: get-spec-ab when:"#DMY1-"
+        my : get-spec-ab when:"#MY1-"
+        y  : get-spec-ab when:"#Y1-"
+        bad: get-spec-ab when:'32/10/2000-'
       to:
-        dmy: get-spec-ab when:'-01/12/1945'
-        my : get-spec-ab when:'-04/2007'
-        y  : get-spec-ab when:'-1997'
-        bad:
-          m: get-spec-ab when:'-01/13/2000'
+        dmy: get-spec-ab when:"-#DMY1"
+        my : get-spec-ab when:"-#MY1"
+        y  : get-spec-ab when:"-#Y1"
+        bad: get-spec-ab when:'-01/13/2000'
+      DMY1-DMY2: get-spec-ab when:"#DMY1-#DMY2"
+      DMY2-DMY1: get-spec-ab when:"#DMY2-#DMY1"
+    to-aa: get-spec-ab key:\aa
     to-ab: get-spec-ab key:\ab
     to-ba: get-spec-ab key:\ba
+  ab2: _.extend do
+    DMY2-DMY4: get-spec-ab when:"#DMY2-#DMY4"
+    DMY3-DMY4: get-spec-ab when:"#DMY3-#DMY4"
   aa: h.get-spec \aa
   ac: _.extend do
     get-spec-ac!
     to-bc: get-spec-ac key:\bc # update a_node
     to-ad: get-spec-ac key:\ad # update b_node
-  ba: h.get-spec \ba
+  ba: _.extend do
+    get-spec-ba!
+    DMY4_: get-spec-ba when:"#DMY4-"
+    DMY5_: get-spec-ba when:"#DMY5-"
   bc: h.get-spec \bc
   ca: h.get-spec \ca
   list:
@@ -57,3 +70,5 @@ exports.get-spec = (...args) ->
     is1: h.get-spec-list 1
     is2: h.get-spec-list 2
     is3: h.get-spec-list 3
+    is4: h.get-spec-list 4
+    is5: h.get-spec-list 5

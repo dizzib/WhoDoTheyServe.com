@@ -31,6 +31,7 @@ exports.get-spec = (...args) ->
   add-evidences spec, \ab
   add-evidences spec, \ac
   add-evidences spec, \b
+  add-evidences spec, \ba
   add-evidences spec, \bc
   add-evidences spec, \c
   add-evidences spec, \d

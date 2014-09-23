@@ -111,9 +111,11 @@ function set-api-hive
 
 function set-api-integrity
   Express
-    ..post   "/api/edges"    , I-Edge.create
+    ..post   "/api/edges"    , I-Edge.create.node
+    ..post   "/api/edges"    , I-Edge.create.when
     ..post   "/api/edges"    , I-Entity.create M-Edges
-    ..put    "/api/edges/:id", I-Edge.update
+    ..put    "/api/edges/:id", I-Edge.update.node
+    ..put    "/api/edges/:id", I-Edge.update.when
     ..delete "/api/edges/:id", I-Edge.delete
     ..post   "/api/nodes"    , I-Entity.create M-Nodes
     ..put    "/api/nodes/:id", I-Node.update
