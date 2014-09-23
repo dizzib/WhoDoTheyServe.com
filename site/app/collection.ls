@@ -20,8 +20,14 @@ Collection = B.Collection.extend do
 # init() needed because model-ext requires this module so we can't simply require \./model-ext
 module.exports.init = ->
   edges =
-    url  : Api.edges
-    model: M.Edge
+    url       : Api.edges
+    model     : M.Edge
+    comparator: (edge) ->
+      function get-node-name
+        id = edge.get "#{it}_node_id"
+        node = me.Nodes.get id
+        node.get \name
+      "#{get-node-name \a}#{edge.get \how}#{get-node-name \b}"
   evidences =
     url  : Api.evidences
     model: M.Evidence
@@ -44,7 +50,7 @@ module.exports.init = ->
     model     : M.User
     find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 
-  module.exports
+  me = module.exports
     ..Edges     = new (Collection.extend edges)!
     ..Evidences = new (Collection.extend evidences)!
     ..Maps      = new (Collection.extend maps)!
