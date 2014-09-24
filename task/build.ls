@@ -106,9 +106,11 @@ const LIBS =
   \./lib-3p-ext/jquery
 
 function bundle b, path, cb
+  t0 = process.hrtime!
   out = Fs.createWriteStream path
     ..on \finish, ->
-      G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k)"
+      log t = process.hrtime t0
+      G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k) in #{t.0}.#{t.1}s"
       cb!
     ..on \error, ->
       G.alert "Bundle error #it"
