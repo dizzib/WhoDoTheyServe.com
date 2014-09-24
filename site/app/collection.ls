@@ -24,8 +24,8 @@ module.exports.init = ->
     model     : M.Edge
     comparator: (edge) ->
       function get-node-name
-        id = edge.get "#{it}_node_id"
-        node = me.Nodes.get id
+        return '' unless id = edge.get "#{it}_node_id"
+        return id unless node = me.Nodes.get id
         node.get \name
       "#{get-node-name \a}#{edge.get \how}#{get-node-name \b}"
   evidences =

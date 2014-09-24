@@ -1,18 +1,19 @@
-B  = require \backbone
-Fs = require \fs
-_  = require \underscore
-C  = require \../collection
+B   = require \backbone
+Fs  = require \fs
+_   = require \underscore
+C   = require \../collection
 #Cu = require \./map/cursor
-E  = require \./map/edge
-Eg = require \./map/edge-glyph
-N  = require \./map/node
-O  = require \./map/overlay
-Ob = require \./map/overlay/bil
-Os = require \./map/overlay/slit
-P  = require \./map/pin
-H  = require \../helper
-S  = require \../session
-V  = require \../view
+E   = require \./map/edge
+Eg  = require \./map/edge-glyph
+N   = require \./map/node
+O   = require \./map/overlay
+Ob  = require \./map/overlay/bil
+Os  = require \./map/overlay/slit
+P   = require \./map/pin
+H   = require \../helper
+S   = require \../session
+Sys = require \../sys
+V   = require \../view
 
 H.insert-css Fs.readFileSync __dirname + \/map.css
 
@@ -110,8 +111,9 @@ module.exports = B.View.extend do
     Os.align @svg, @d3f
 
     # determine whether to freeze immediately
-    return if @map.isNew!
-    return if opts?is-slow-to-cool
+    unless Sys.env is \test # no need to wait for cooldown when testing
+      return if @map.isNew!
+      return if opts?is-slow-to-cool
 
     @d3f.alpha 0 # freeze map -- must be called after start
     on-tick!   # single tick required to render frozen map
