@@ -105,6 +105,16 @@ const LIBS =
   \./lib-3p/jquery.timeago
   \./lib-3p-ext/jquery
 
+function bundle b, path, cb
+  out = Fs.createWriteStream path
+    ..on \finish, ->
+      G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k)"
+      cb!
+    ..on \error, ->
+      G.alert "Bundle error #it"
+      cb it
+  b.bundle detectGlobals:false, insertGlobals:false .pipe out
+
 function bundle-app
   pushd "#{Dir.site.DEV}/app"
   try
@@ -112,14 +122,12 @@ function bundle-app
       backbone  : \window.Backbone
       underscore: \window._
     b = Brsify \./boot.js
+      ..transform Expsify
+      ..transform Brfs
+        ..require \./lib-3p/Autolinker  , expose:\Autolinker
+        ..require \./lib-3p/transparency, expose:\transparency
     for l in LIBS then b.external l
-    b.transform Expsify
-    b.transform Brfs
-      ..require \./lib-3p/Autolinker  , expose:\Autolinker
-      ..require \./lib-3p/transparency, expose:\transparency
-      ..bundle detectGlobals:false, insertGlobals:false
-        ..on \end, -> G.say 'Bundled app.js'
-        ..pipe Fs.createWriteStream \app.js
+    W4 bundle, b, \app.js
   finally
     popd!
 
@@ -128,9 +136,7 @@ function bundle-lib
   try
     b = Brsify LIBS
     for l in LIBS then b.require l
-    b.bundle detectGlobals:false, insertGlobals:false
-      ..on \end, -> G.say 'Bundled lib.js'
-      ..pipe Fs.createWriteStream \lib.js
+    W4 bundle, b, \lib.js
   finally
     popd!
 
@@ -173,14 +179,18 @@ function markdown ipath, opath, cb
   cb e
 
 function finalise ipath
-  function contains then _.contains ipath, "/#it"
+  const API = <[ /api/ /api.ls ]>
+  const APP = <[ /app/ /app.ls ]>
+  function contains then _.any it, -> _.contains ipath, it
+  function contains-base then contains ["#{Dir.ROOT}/#it/"]
   if ipath # partial build
     log ipath
-    return if contains \task/
-    me.emit \built-api unless contains \app/ or contains 'app.ls'
-    bundle-app! if contains "#{Dirname.SITE}/lib/"
-    if contains \app/ then if contains \lib-3p/ or contains \lib-3p-ext/jquery then bundle-lib! else bundle-app!
-    me.emit \built-app unless contains \api/ or contains 'api.ls'
+    return if contains-base \task
+    me.emit \built-api unless contains APP
+    ipath-rel = ipath.replace "#{Dir.SITE}/app", '.'
+    if (_.any LIBS, -> _.contains ipath-rel, it) then bundle-lib! else
+      bundle-app! unless contains-base \test or contains API
+    me.emit \built-app unless contains API
   else # full build
     me.emit \built-api
     bundle-lib!

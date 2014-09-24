@@ -17,7 +17,7 @@ const DIR-SITE-DEV     = "#DIR-DEV/#SITE"
 const DIR-SITE-STAGING = "#DIR-BUILD/#STAGING"
 const DIR-SITE-SEO     = "#DIR-BUILD/#SEO"
 
-module.exports =
+module.exports = me =
   dirname:
     BUILD  : BUILD
     DEV    : DEV
@@ -30,6 +30,7 @@ module.exports =
     ROOT : DIR-ROOT
     BUILD: DIR-BUILD
     DEV  : DIR-DEV
+    SITE : "#DIR-ROOT/#SITE"
     TASK : DIR-TASK
     site :
       DEV    : DIR-SITE-DEV
