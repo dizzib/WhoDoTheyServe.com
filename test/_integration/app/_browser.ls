@@ -140,19 +140,21 @@ function init-sandbox
       return el.click! unless tag is \A
       # for some reason anchor clicks occasionally fail (bug in firefox?)
       # so we must verify it worked
-      old-url = window.location.href
-      new-path = el.getAttribute \href
-      return log 'NO HREF' unless new-path?
-      el.click!
-      return if (new RegExp new-path).test old-url
+      href-from = window.location.href
+      href-to   = el.getAttribute \href
+      return log 'NO HREF' unless href-to?
+      rx = new RegExp "#{href-to}$"
+      return if rx.test href-from # bail if href is unchanged
       function verify
-        return if old-url isnt window.location.href
-        log 'CLICK FAIL', old-url, new-path
-        window.location.href = new-path # retry by direct navigation
+        #log \verify, href-to, window.location.href
+        return if rx.test window.location.href
+        log 'CLICK FAIL', href-from, href-to
+        window.location.href = href-to # retry by direct navigation
       # This delay determines how long
       # to wait before verify. It must be long enough to allow the click
       # to take effect, but no longer (otherwise later operations may
       # change the window.location)
+      el.click!
       setTimeout verify, 10ms
 
     window.fetch = (cond-fn = (-> true), filter, scope, include-hidden) ->
