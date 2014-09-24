@@ -86,7 +86,6 @@ add-factory-method M.Node
 add-factory-method M.Note
 add-factory-method M.Session
 add-factory-method M.Signup
-add-factory-method M.Sys
 add-factory-method M.User
 
 # helpers

@@ -19,6 +19,7 @@ M   = require \./model
 Mx  = require \./model-ext
 S   = require \./session
 Si  = require \./signin
+Sys = require \./sys
 V   = require \./view
 Val = require \./validator
 Vh  = require \./view-handler
@@ -46,7 +47,7 @@ function init
   Val.init!
   Vh.init!
   V.footer.render!
-  M.Sys.fetch error:fail, success: -> V.version.render M.Sys
+  Sys.fetch error:fail, success: -> V.version.render Sys
 
 function fail-si coll, xhr then alert \signed-in, xhr
 function fail    coll, xhr then alert \core, xhr

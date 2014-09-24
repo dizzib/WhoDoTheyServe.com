@@ -77,7 +77,7 @@ module.exports =
       'handle'  : required:yes
       'password': required:yes
   Signup: Model.extend user-spec pwd-required:yes
-  Sys   : new (Model.extend urlRoot: Api.sys)!
+  Sys   : Model.extend urlRoot:Api.sys
   User  : Model.extend user-spec pwd-required:no
 
 function user-spec opts
