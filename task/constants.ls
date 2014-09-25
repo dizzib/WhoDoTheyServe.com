@@ -21,14 +21,10 @@ dir =
     STAGING: "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
   ROOT : dir-root
   SITE : "#dir-root/#{DIRNAME.SITE}"
-  site : # deprecate
-    DEV    : "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
-    SEO    : "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.SEO}"
-    STAGING: "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
   TASK : "#dir-root/#{DIRNAME.TASK}"
   TEST : "#dir-root/#{DIRNAME.TEST}"
 
-log module.exports =
+module.exports =
   dirname: DIRNAME
   dir    : dir
 

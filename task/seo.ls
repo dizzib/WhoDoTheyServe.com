@@ -6,8 +6,8 @@ Os      = require \os
 Path    = require \path
 Shell   = require \shelljs/global
 W4m     = require \wait.for .forMethod
+Build   = require \./constants .dir.build
 Cfg     = require \./config
-DirSite = require \./constants .dir.site
 G       = require \./growl
 
 module.exports =
@@ -28,8 +28,8 @@ module.exports =
       W4m mc, \startSession
       W4m mc, \setSearchTimeout 15000
 
-      rm \-rf, DirSite.SEO if test '-e', DirSite.SEO
-      mkdir DirSite.SEO
+      rm \-rf, Build.SEO if test '-e', Build.SEO
+      mkdir Build.SEO
 
       done    = [ ]
       pending = [ ROUTE-HOME ]
@@ -83,7 +83,7 @@ module.exports =
           pending.push l
 
     function save-html-to-file html, route
-      path = "#{DirSite.SEO}/#{route.replace('#/', '')}.html"
+      path = "#{Build.SEO}/#{route.replace('#/', '')}.html"
       dir = Path.dirname path
       mkdir \-p, dir unless test \-e, dir
       #log "write #{html.length} bytes to #path"

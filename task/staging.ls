@@ -5,15 +5,14 @@ Shell  = require \shelljs/global
 Ug     = require \uglify-js
 W4     = require \wait.for .for
 W4m    = require \wait.for .forMethod
-Dir    = require \./constants .dir
-Site   = require \./constants .dir.site
+Build  = require \./constants .dir.build
 G      = require \./growl
 
 module.exports =
   generate: ->
     try
-      mkdir Site.STAGING unless test '-e', Site.STAGING
-      pushd Site.STAGING
+      mkdir Build.STAGING unless test '-e', Build.STAGING
+      pushd Build.STAGING
       delete-files!
       generate-package-json!
       copy-files!
@@ -29,7 +28,7 @@ module.exports =
 
 function copy-minified dir, files
   for f in files
-    (Ug.minify "#{Site.DEV}/#dir/#f.js").code.to "#{Site.STAGING}/#dir/#f.js"
+    (Ug.minify "#{Build.dev.SITE}/#dir/#f.js").code.to "#{Build.STAGING}/#dir/#f.js"
 
 function copy-minified-files
   log "copy minified files"
@@ -37,30 +36,30 @@ function copy-minified-files
   copy-minified \app/lib-3p, <[ backbone d3 jquery underscore ]> # CDN fallbacks
 
 function copy-files
-  log "copy files to #{Site.STAGING}"
-  const FILTER = "'. #{Dir.build.DEV}/task/staging-files.txt'"
-  W4 exec, "rsync -r --filter=#FILTER #{Site.DEV}/ #{Site.STAGING}/"
+  log "copy files to #{Build.STAGING}"
+  const FILTER = "'. #{Build.DEV}/task/staging-files.txt'"
+  W4 exec, "rsync -r --filter=#FILTER #{Build.dev.SITE}/ #{Build.STAGING}/"
 
 function copy-seo-files
   const N-MIN = 300
   try
-    pushd Site.SEO
+    pushd Build.SEO
     n = (W4 exec, "ls -1R | grep .*.html | wc -l").split('\n').0
     log "copy #n seo files"
     G.alert "too few seo files: actual=#n, expecting >= #N-MIN" if n < N-MIN
-    cp \-r, "#{Site.SEO}/*", "#{Site.STAGING}/app"
+    cp \-r, "#{Build.SEO}/*", "#{Build.STAGING}/app"
   finally then popd!
 
 function delete-files
   log "delete files from #{pwd!}"
-  Assert.equal pwd!, Site.STAGING
+  Assert.equal pwd!, Build.STAGING
   W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules)'"
 
 function generate-package-json
   log "generating package.json"
-  json = require "#{Site.DEV}/package.json"
+  json = require "#{Build.dev.SITE}/package.json"
   delete json.devDependencies
-  (JSON.stringify json, void, 2).to "#{Site.STAGING}/package.json"
+  (JSON.stringify json, void, 2).to "#{Build.STAGING}/package.json"
 
 function set-load-from-cdn
   log "set-load-from-cdn"
