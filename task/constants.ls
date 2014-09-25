@@ -10,19 +10,20 @@ const DIRNAME =
   TASK   : \task
   TEST   : \test
 
-dir-root = pwd!
+root = pwd!
+
 dir =
-  BUILD: "#dir-root/#{DIRNAME.BUILD}"
+  BUILD: "#root/#{DIRNAME.BUILD}"
   build:
-    DEV: "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}"
+    DEV: "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}"
     dev:
-      SITE : "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
-    SEO    : "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.SEO}"
-    STAGING: "#dir-root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
-  ROOT : dir-root
-  SITE : "#dir-root/#{DIRNAME.SITE}"
-  TASK : "#dir-root/#{DIRNAME.TASK}"
-  TEST : "#dir-root/#{DIRNAME.TEST}"
+      SITE : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
+    SEO    : "#root/#{DIRNAME.BUILD}/#{DIRNAME.SEO}"
+    STAGING: "#root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
+  ROOT : root
+  SITE : "#root/#{DIRNAME.SITE}"
+  TASK : "#root/#{DIRNAME.TASK}"
+  TEST : "#root/#{DIRNAME.TEST}"
 
 module.exports =
   dirname: DIRNAME
