@@ -5,7 +5,7 @@ Rl      = require \readline
 Shell   = require \shelljs/global
 WFib    = require \wait.for .launchFiber
 Build   = require \./build
-Dir     = require \./constants .dir
+DirBld  = require \./constants .dir.build
 Data    = require \./data
 MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
@@ -45,13 +45,13 @@ const COMMANDS =
   * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
   * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
 
-const FLAGS-PATH = "#{Dir.TASK}/flags.json"
+const FLAGS-PATH = "#{DirBld.dev.TASK}/flags.json"
 const FLAGS-DEFAULT =
   test-coverage: false
   site-logging : false
   run-tests    : all:true api:true app:true
 
-cd Dir.build.DEV    # for safety, set working directory to dev build
+cd DirBld.DEV    # for safety, set working directory to dev build
 config.fatal = true # shelljs doesn't raise exceptions, so set this process to die on error
 flags = load-flags!
 

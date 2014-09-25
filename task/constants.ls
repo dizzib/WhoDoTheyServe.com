@@ -18,6 +18,7 @@ dir =
     DEV: "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}"
     dev:
       SITE : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
+      TASK : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.TASK}"
     SEO    : "#root/#{DIRNAME.BUILD}/#{DIRNAME.SEO}"
     STAGING: "#root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
   ROOT : root
