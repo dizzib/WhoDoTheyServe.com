@@ -108,9 +108,9 @@ const LIBS =
 function bundle path, fn-setup
   pushd "#{Dir.build.dev.SITE}/app"
   try
-    b = fn-setup!
     W4 (cb) ->
       t0 = process.hrtime!
+      b = fn-setup!
       out = Fs.createWriteStream path
         ..on \finish, ->
           t = process.hrtime t0
