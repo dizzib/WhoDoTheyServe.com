@@ -20,7 +20,7 @@ const LIBS =
     loc: \jquery.js
     ok : -> $?
   underscore:
-    cdn: '//cdn.jsdelivr.net/underscorejs/1.4.4/underscore-min.js'
+    cdn: '//cdn.jsdelivr.net/underscorejs/1.7.0/underscore-min.js'
     loc: \underscore.js
     ok : -> _?
 
