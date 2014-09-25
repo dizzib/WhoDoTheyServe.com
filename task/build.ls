@@ -105,42 +105,42 @@ const LIBS =
   \./lib-3p/jquery.timeago
   \./lib-3p-ext/jquery
 
-function bundle b, path, cb
-  t0 = process.hrtime!
-  out = Fs.createWriteStream path
-    ..on \finish, ->
-      log t = process.hrtime t0
-      G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k) in #{t.0}.#{t.1}s"
-      cb!
-    ..on \error, ->
-      G.alert "Bundle error #it"
-      cb it
-  b.bundle detectGlobals:false, insertGlobals:false .pipe out
-
-function bundle-app
+function bundle path, fn-setup
   pushd "#{Dir.build.dev.SITE}/app"
   try
+    b = fn-setup!
+    W4 (cb) ->
+      t0 = process.hrtime!
+      out = Fs.createWriteStream path
+        ..on \finish, ->
+          t = process.hrtime t0
+          G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k) in #{t.0}.#{t.1}s"
+          cb!
+        ..on \error, ->
+          G.alert "Bundle error #it"
+          cb it
+      b.bundle detectGlobals:false, insertGlobals:false .pipe out
+  finally
+    popd!
+
+function bundle-app
+  bundle \app.js, ->
     Expsify.config =
       backbone  : \window.Backbone
       underscore: \window._
     b = Brsify \./boot.js
+      ..require \./lib-3p/Autolinker  , expose:\Autolinker
+      ..require \./lib-3p/transparency, expose:\transparency
       ..transform Expsify
       ..transform Brfs
-        ..require \./lib-3p/Autolinker  , expose:\Autolinker
-        ..require \./lib-3p/transparency, expose:\transparency
     for l in LIBS then b.external l
-    W4 bundle, b, \app.js
-  finally
-    popd!
+    b
 
 function bundle-lib
-  pushd "#{Dir.build.dev.SITE}/app"
-  try
+  bundle \lib.js, ->
     b = Brsify LIBS
     for l in LIBS then b.require l
-    W4 bundle, b, \lib.js
-  finally
-    popd!
+    b
 
 function compile t, ipath, cb
   odir = Path.dirname opath = get-opath t, ipath
