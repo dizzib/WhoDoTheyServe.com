@@ -38,7 +38,7 @@ function copy-minified-files
 
 function copy-files
   log "copy files to #{Site.STAGING}"
-  const FILTER = "'. #{Dir.DEV}/task/staging-files.txt'"
+  const FILTER = "'. #{Dir.build.DEV}/task/staging-files.txt'"
   W4 exec, "rsync -r --filter=#FILTER #{Site.DEV}/ #{Site.STAGING}/"
 
 function copy-seo-files

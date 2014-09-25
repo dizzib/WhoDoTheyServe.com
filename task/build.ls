@@ -58,16 +58,16 @@ module.exports = me = (new Emitter!) with
 
   delete-files: ->
     log "delete-files #{pwd!}"
-    Assert.equal pwd!, Dir.DEV
+    Assert.equal pwd!, Dir.build.DEV
     W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
 
   delete-modules: ->
     log "delete-modules #{pwd!}"
-    Assert.equal pwd!, Dir.DEV
+    Assert.equal pwd!, Dir.build.DEV
     rm '-rf' "./node_modules"
 
   refresh-modules: ->
-    Assert.equal pwd!, Dir.DEV
+    Assert.equal pwd!, Dir.build.DEV
     W4 exec, 'npm -v'
     W4 exec, 'npm prune'
     W4 exec, 'npm install'
@@ -118,7 +118,7 @@ function bundle b, path, cb
   b.bundle detectGlobals:false, insertGlobals:false .pipe out
 
 function bundle-app
-  pushd "#{Dir.site.DEV}/app"
+  pushd "#{Dir.build.dev.SITE}/app"
   try
     Expsify.config =
       backbone  : \window.Backbone
@@ -134,7 +134,7 @@ function bundle-app
     popd!
 
 function bundle-lib
-  pushd "#{Dir.site.DEV}/app"
+  pushd "#{Dir.build.dev.SITE}/app"
   try
     b = Brsify LIBS
     for l in LIBS then b.require l
@@ -202,8 +202,7 @@ function finalise ipath
   me.emit \built
 
 function prune-empty-dirs
-  unless pwd! is Dir.DEV then return log 'bypass prune-empty-dirs'
-  Assert.equal pwd!, Dir.DEV
+  unless pwd! is Dir.build.DEV then return log 'bypass prune-empty-dirs'
   code, out <- exec "find . -type d -empty -delete"
   G.err "prune failed: #code #out" if code
 
