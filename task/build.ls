@@ -1,6 +1,7 @@
 Assert  = require \assert
 Brsify  = require \browserify
 Brfs    = require \brfs
+Cachify = require \cacheify # really speeds up bundling app.js!
 Cron    = require \cron
 Emitter = require \events .EventEmitter
 Expsify = require \exposify
@@ -8,7 +9,9 @@ Fs      = require \fs
 Gaze    = require \gaze
 Globule = require \globule
 _       = require \lodash
+Lup     = require \levelup
 Md      = require \marked
+Memdown = require \memdown
 Path    = require \path
 Shell   = require \shelljs/global
 WFib    = require \wait.for .launchFiber
@@ -123,16 +126,21 @@ function bundle path, fn-setup
   finally
     popd!
 
-function bundle-app
+cache = brfs:(Lup Memdown), exposify:Lup Memdown
+Expsify.config = backbone:\window.Backbone underscore:\window._
+function bundle-app opath
   bundle \app.js, ->
-    Expsify.config =
-      backbone  : \window.Backbone
-      underscore: \window._
+    # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
+    # file invalidates its parent js. Quick and dirty method is to clear the whole cache!
+    if /\.(html|css)$/.test opath # file types which can be brfs'd
+      log "cache invalidated by #opath"
+      cache.brfs = Lup Memdown
+      cache.exposify = Lup Memdown
     b = Brsify \./boot.js
       ..require \./lib-3p/Autolinker  , expose:\Autolinker
       ..require \./lib-3p/transparency, expose:\transparency
-      ..transform Expsify
-      ..transform Brfs
+      ..transform Cachify Expsify, cache.exposify
+      ..transform Cachify Brfs, cache.brfs
     for l in LIBS then b.external l
     b
 
@@ -180,7 +188,7 @@ function markdown ipath, opath, cb
   html.to opath unless e?
   cb e
 
-function finalise ipath
+function finalise ipath, opath
   const API = <[ /api/ /api.ls ]>
   const APP = <[ /app/ /app.ls ]>
   function contains then _.any it, -> _.contains ipath, it
@@ -191,7 +199,7 @@ function finalise ipath
     me.emit \built-api unless contains APP
     ipath-rel = ipath.replace "#{Dir.SITE}/app", '.'
     if (_.any LIBS, -> _.contains ipath-rel, it) then bundle-lib! else
-      bundle-app! unless contains-base \test or contains API
+      bundle-app opath unless contains-base \test or contains API
     me.emit \built-app unless contains API
   else # full build
     me.emit \built-api
@@ -229,9 +237,9 @@ function start-watching tid
           try opath = W4 compile, t, ipath
           catch e then return G.err e
           G.ok opath
-          finalise ipath
+          finalise ipath, opath
         | \deleted
           try W4m Fs, \unlink, opath = get-opath t, ipath
           catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
           G.ok "Delete #opath"
-          finalise ipath
+          finalise ipath, opath

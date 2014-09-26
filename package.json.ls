@@ -20,6 +20,7 @@ dependencies:
 devDependencies:
   brfs                  : \~0.0.9
   browserify            : \~3.24.13
+  cacheify              : \~0.4.0
   chai                  : \~1.8.1
   chalk                 : \~0.4.0
   cheerio               : \~0.14.0
@@ -30,10 +31,12 @@ devDependencies:
   gntp                  : \~0.1.1
   'istanbul-middleware' : \~0.1.1
   jade                  : \~1.6.0
+  levelup               : \~0.19.0 # cacheify
   LiveScript            : \~1.2.0
   marked                : \~0.3.1
   'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
   'marionette-js-logger': \~0.1.2
+  memdown               : \~0.10.2 # cacheify
   mocha                 : \~1.15.1
   mongodb               : \~1.2.14
   nib                   : \~0.9.0
