@@ -51,7 +51,7 @@ const FLAGS-DEFAULT =
   site-logging : false
   run-tests    : all:true api:true app:true
 
-cd DirBld.DEV    # for safety, set working directory to dev build
+cd DirBld.DEV # for safety, set working directory to dev build
 config.fatal  = true # shelljs doesn't raise exceptions, so set this process to die on error
 config.silent = true # otherwise too much noise
 flags = load-flags!
