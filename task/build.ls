@@ -1,7 +1,7 @@
 Assert   = require \assert
 Browsify = require \browserify
 Brfs     = require \brfs
-Cacheify = require \cacheify # really speeds up bundling app.js!
+Cacheify = require \cacheify # reduces bundle time from 1.5 to 0.3 secs!
 Cron     = require \cron
 Emitter  = require \events .EventEmitter
 Exposify = require \exposify
