@@ -1,25 +1,25 @@
-Assert  = require \assert
-Brsify  = require \browserify
-Brfs    = require \brfs
-Cachify = require \cacheify # really speeds up bundling app.js!
-Cron    = require \cron
-Emitter = require \events .EventEmitter
-Expsify = require \exposify
-Fs      = require \fs
-Gaze    = require \gaze
-Globule = require \globule
-_       = require \lodash
-Lup     = require \levelup
-Md      = require \marked
-Memdown = require \memdown
-Path    = require \path
-Shell   = require \shelljs/global
-WFib    = require \wait.for .launchFiber
-W4      = require \wait.for .for
-W4m     = require \wait.for .forMethod
-Dir     = require \./constants .dir
-Dirname = require \./constants .dirname
-G       = require \./growl
+Assert   = require \assert
+Browsify = require \browserify
+Brfs     = require \brfs
+Cacheify = require \cacheify # really speeds up bundling app.js!
+Cron     = require \cron
+Emitter  = require \events .EventEmitter
+Exposify = require \exposify
+Fs       = require \fs
+Gaze     = require \gaze
+Globule  = require \globule
+_        = require \lodash
+LevelUp  = require \levelup
+Md       = require \marked
+Memdown  = require \memdown
+Path     = require \path
+Shell    = require \shelljs/global
+WFib     = require \wait.for .launchFiber
+W4       = require \wait.for .for
+W4m      = require \wait.for .forMethod
+Dir      = require \./constants .dir
+Dirname  = require \./constants .dirname
+G        = require \./growl
 
 const NMODULES = './node_modules'
 
@@ -126,27 +126,27 @@ function bundle path, fn-setup
   finally
     popd!
 
-cache = brfs:(Lup Memdown), exposify:Lup Memdown
-Expsify.config = backbone:\window.Backbone underscore:\window._
+cache = brfs:(LevelUp Memdown), exposify:LevelUp Memdown
+Exposify.config = backbone:\window.Backbone underscore:\window._
 function bundle-app opath
   bundle \app.js, ->
     # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
     # file invalidates its parent js. Quick and dirty method is to clear the whole cache!
     if /\.(html|css)$/.test opath # file types which can be brfs'd
       log "cache invalidated by #opath"
-      cache.brfs = Lup Memdown
-      cache.exposify = Lup Memdown
-    b = Brsify \./boot.js
+      cache.brfs = LevelUp Memdown
+      cache.exposify = LevelUp Memdown
+    b = Browsify \./boot.js
       ..require \./lib-3p/Autolinker  , expose:\Autolinker
       ..require \./lib-3p/transparency, expose:\transparency
-      ..transform Cachify Expsify, cache.exposify
-      ..transform Cachify Brfs, cache.brfs
+      ..transform Cacheify Exposify, cache.exposify
+      ..transform Cacheify Brfs, cache.brfs
     for l in LIBS then b.external l
     b
 
 function bundle-lib
   bundle \lib.js, ->
-    b = Brsify LIBS
+    b = Browsify LIBS
     for l in LIBS then b.require l
     b
 
