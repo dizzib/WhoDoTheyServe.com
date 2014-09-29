@@ -15,7 +15,5 @@ MigrateDb = require \./deploy/migrate-db
 Db.connect!
 Hive.init DeployMap.set-icons
 
-<- MigrateDb.Issue6
-
 <- Http.createServer(Express).listen port = Express.settings.port
 console.log "Express server http listening on port #{port}"
