@@ -14,9 +14,9 @@ module.exports = me =
       callbackURL : "http://#{H.get-host-api!}/api/auth/#auth-type/callback"
       # In production, the callback must happen on the api-domain and not whodotheyserve.com.
       # This is because the session cookie (for signin) is on the api-domain.
-    log \oauth-cburl, cfg.callbackURL
+    #log \oauth-cburl, cfg.callbackURL
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
-      log \cb1, auth-type, profile
+      #log \cb1, auth-type, profile
       # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
       return done new H.AuthenticateError 'id is empty' unless id = (p = profile).id
       return done new H.AuthenticateError 'name is empty' unless name = p.displayName
@@ -34,7 +34,7 @@ module.exports = me =
         doc.save done
 
   callback: (req, res) ->
-    log \cb2, req.user, req.session
+    #log \cb2, req.user, req.session
     M-Sessions.signin req
     # In production, the browser is currently pointing at the api-domain (for signin).
     # The final redirect must take the browser back to whodotheyserve.com.
