@@ -153,7 +153,7 @@ module.exports =
     'btn-edit':
       class: -> \hide unless S.is-signed-in @_id or S.is-signed-in-admin!
       href : -> "#/user/edit/#{@_id}"
-    url:
+    info:
       href: -> @info
       text: -> @info
   user-evidences: _.extend do
