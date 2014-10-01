@@ -15,7 +15,7 @@ module.exports =
 
   send-request: (command, cb) ->
     return cb! unless url = localStorage?getItem STORE-KEY
-    $.ajax "#{url}/exec/#{command}",
+    $.ajax "#{url}/#{command}",
       error: ->
         console.error ...
         cb!
