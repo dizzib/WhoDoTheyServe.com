@@ -1,49 +1,42 @@
 Source code for [WhoDoTheyServe.com][wdts]
 
-# To build and run locally
+# Build and run locally
 
 ## Install global dependencies
 
-* [node.js][nodejs]
+* [node.js][nodejs] v0.10
 
 * [bcrypt dependencies][bcrypt-deps]
 
 * [mongodb][mongodb] (run with [`mongod`][mongod])
 
-* [LiveScript][LiveScript]
+* [livescript][livescript] for building the task runner
 
-* [Firefox][Firefox] (a running local instance is required for the app integration tests to run)
+* [firefox][firefox] running locally for the app integration tests.
+Must be a recent version with [marionette][marionette-js].
 
 ## Clone and build
 
-* clone the [repository][wdts-repo] from GitHub
+    $ git clone git@github.com:dizzib/WhoDoTheyServe.com.git
 
-The build tasks are written in LiveScript so issue the following command to make them runnable:
+    $ ./task/bootstrap          # compile task runner and install dependencies
+    $ node _build/dev/task/repl # launch the task runner
+    wdts > b.fc                 # compile all files
 
-* `task/bootstrap`
+The dev site should now be running at `http://localhost:4000`
 
-Now launch the task runner:
-
-* `node _build/dev/task/repl`
-
-After a few seconds a helpful list of commands should appear. Enter the following command to build all files and run the tests:
-
-* `b.fc`
-
-If all goes well you'll find the dev site running at `http://localhost:4000`.
-
-Navigate to `http://localhost:4000/#/user/signup` to create an admin user who should then be able to signup further users.
+Navigate to `http://localhost:4000/#/user/signup` to create an admin user who
+should then be able to signup further users.
 
 # Notes
 
 The build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
 [bcrypt-deps]: https://github.com/ncb000gt/node.bcrypt.js#dependencies
-[Firefox]: https://www.mozilla.org/en-US/firefox/new/
-[LiveScript]: http://livescript.net/#installation
-[marionette-js]: https://github.com/mozilla-b2g/marionette-js-client
+[firefox]: https://www.mozilla.org/en-US/firefox/new/
+[livescript]: http://livescript.net/#installation
+[marionette-js]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette
 [mongod]: http://docs.mongodb.org/manual/reference/program/mongod/
 [mongodb]: http://docs.mongodb.org/manual/installation/
 [nodejs]: http://nodejs.org/download/
 [wdts]: http://www.whodotheyserve.com
-[wdts-repo]: https://github.com/dizzib/WhoDoTheyServe.com
