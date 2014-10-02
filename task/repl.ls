@@ -1,6 +1,7 @@
 global.log = console.log
 
 Chalk   = require \chalk
+_       = require \lodash
 Rl      = require \readline
 Shell   = require \shelljs/global
 WFib    = require \wait.for .launchFiber
@@ -79,7 +80,8 @@ Build.start!
 Run.recycle-dev flags
 Run.recycle-staging flags
 
-setTimeout show-help, 1000ms
+_.delay show-help, 1500ms
+_.delay (-> rl.prompt!), 1750ms
 
 # helpers
 
@@ -118,7 +120,6 @@ function show-help
     s = c.display
     for k, v of flag-vals then s = s.replace "$#k", v
     log s
-  rl.prompt!
 
 function toggle-build-tests
   (s = flags.run-tests)[it] = not s[it]
