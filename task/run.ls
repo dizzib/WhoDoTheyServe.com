@@ -10,9 +10,9 @@ Cfg    = require \./config
 G      = require \./growl
 
 Cfg.dev             <<< dirsite:Build.dev.SITE
-Cfg.dev.primary     <<< JSON.parse env.dev
+Cfg.dev.primary     <<< JSON.parse env.dev if env.dev
 Cfg.staging         <<< dirsite:Build.STAGING
-Cfg.staging.primary <<< JSON.parse env.staging
+Cfg.staging.primary <<< JSON.parse env.staging if env.staging
 
 module.exports =
   cancel           : kill-all-mocha
