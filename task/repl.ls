@@ -17,6 +17,7 @@ G       = require \./growl
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
+  * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Run.cancel
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:-> Run.run-dev-tests flags
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Build.bundle
   * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
@@ -62,14 +63,10 @@ for c in COMMANDS
 
 rl = Rl.createInterface input:process.stdin, output:process.stdout
   ..setPrompt "wdts >"
-  ..on \line, (cmd) -> WFib ->
-    switch cmd
-    | '' =>
-      <- Run.cancel
-      rl.prompt!
-    | _  =>
-      for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
-      rl.prompt!
+  ..on \line, (cmd) ->
+    <- WFib
+    for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
+    rl.prompt!
 
 Build.on \built, -> Run.recycle-dev flags
 Build.on \built-api, -> run-tests \api, Run.run-dev-test_1

@@ -3,6 +3,7 @@ Assert = require \assert
 Chalk  = require \chalk
 Cp     = require \child_process
 Mg     = require \mongoose
+W4     = require \wait.for .for
 Shell  = require \shelljs/global
 Build  = require \./constants .dir.build
 Cfg    = require \./config
@@ -14,7 +15,7 @@ Cfg.staging         <<< dirsite:Build.STAGING
 Cfg.staging.primary <<< JSON.parse env.staging
 
 module.exports =
-  cancel           : -> kill-all-mocha ...
+  cancel           : kill-all-mocha
   loop-dev-test_2  : (flags) -> loop-dev-test_2 flags
   recycle-dev      : (flags) -> recycle-primary Cfg.dev, flags
   recycle-staging  : (flags) -> recycle-primary Cfg.staging, flags
@@ -46,10 +47,9 @@ function get-site-desc cfg
 function get-start-site-args cfg
   "#{cfg.NODE_ARGS or ''} boot #{get-site-desc cfg}".trim!
 
-function kill-all-mocha cb
-  <- kill-mocha GLOB_1
-  <- kill-mocha GLOB_2
-  cb!
+function kill-all-mocha
+  W4 kill-mocha, GLOB_1
+  W4 kill-mocha, GLOB_2
 
 function kill-mocha glob, cb
   <- kill-node (get-mocha-cmd glob)
