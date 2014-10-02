@@ -2,14 +2,10 @@
 
 DEV="_build/dev"
 
-lsc -o $DEV/task -cw task/*.ls &
-lsc -o $DEV -cw *.json.ls &
+lsc -o $DEV/task -c task/*.ls
+lsc -o $DEV/task/maint -c task/maint/*.ls
+lsc -o $DEV -c package.json.ls
 
-#cd $DEV
-#npm install
-#npm prune
-
-while read
-do
-  :
-done
+cd $DEV
+npm install
+npm prune

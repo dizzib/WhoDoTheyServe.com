@@ -1,8 +1,8 @@
 # maintenance task to check all evidence urls and save a list of dead ones
 # to the hive, to be highlighted in the app for manual resolution
 
-_     = require \lodash
 Chalk = require \chalk
+_     = require \lodash
 M     = require \mongoose
 Mc    = require \mongodb .MongoClient
 Req   = require \request
@@ -14,29 +14,35 @@ Cfg   = require \../config
 Hive  = require \../../site/api/hive
 
 module.exports =
-  dev    : -> run Cfg.dev.primary.WDTS_DB_URI
-  staging: -> run Cfg.staging.primary.WDTS_DB_URI
-  prod   : -> run (JSON.parse env.prod).mongolab.uri
+  # readline is DI'd because multiple instances causes odd behaviour
+  dev    : (rl) -> W4 run, rl, Cfg.dev.primary.WDTS_DB_URI
+  staging: (rl) -> W4 run, rl, Cfg.staging.primary.WDTS_DB_URI
+  prod   : (rl) -> W4 run, rl, (JSON.parse env.prod).mongolab.uri
 
-function run db-uri
+function run rl, db-uri, cb
   dead      = []    # dead evidences
   n-max     = 99999 # reduce limit to test
   n-pending = 0     # current number of http requests curling
 
-  log "db-uri=#{db-uri}"
-  <- W.launchFiber
-  db = W4m Mc, \connect, db-uri
+  log "db-uri=#db-uri"
+  err, db <- Mc.connect db-uri
+  return cb err if err
   coll = db.collection \evidences
-  curs = W4m coll, \find
-  while n-max-- > 0 and ev = W4m curs, \nextObject
-    W4 pause, 50ms # avoid running too many requests in parallel
+  err, cursor <- coll.find
+  add-next!
+
+  function add-next
+    return unless n-max-- > 0
+    err, ev <- cursor.nextObject
+    return cb err if err
+    return unless ev
     check ev
-  db.close!
+    _.delay add-next, 50ms # avoid running too many requests in parallel
 
   # helpers
 
   function add-dead ev, err
-    print Chalk.red "#{ev.url} #{err}"
+    print Chalk.red "#{ev.url} #err"
     dead.push ev
     save-if-done!
 
@@ -64,12 +70,16 @@ function run db-uri
     log "#n-pending #msg"
 
   function save-if-done
-    if --n-pending is 0
-      dead-ids = _.pluck dead, \_id
-      value = 'dead-ids':dead-ids
-      log "found #{Chalk.yellow dead-ids.length} dead-ids: #dead-ids"
-      M.connect db-uri
-      err <- Hive.set \evidences, JSON.stringify value
-      log err if err
-      M.disconnect!
-      log 'DONE!'
+    return unless --n-pending is 0
+    db.close!
+    dead-ids = _.pluck dead, \_id
+    value = 'dead-ids':dead-ids
+    log "found #{Chalk.yellow dead-ids.length} dead-ids: #dead-ids"
+    ans <- rl.question "Update database #db-uri (y/N) ?"
+    return cb! unless ans is \y
+    M.connect db-uri
+    err <- Hive.set \evidences, JSON.stringify value
+    return cb err if err
+    M.disconnect!
+    log 'Database updated!'
+    cb!

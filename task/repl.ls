@@ -65,7 +65,11 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
   ..setPrompt "wdts >"
   ..on \line, (cmd) ->
     <- WFib
-    for c in COMMANDS when cmd is c.cmd.trim! then try-fn c.fn
+    rl.pause!
+    for c in COMMANDS when cmd is c.cmd.trim!
+      try c.fn rl # readline is DI'd because multiple instances causes odd behaviour
+      catch e then log e
+    rl.resume!
     rl.prompt!
 
 Build.on \built, -> Run.recycle-dev flags
@@ -128,7 +132,3 @@ function toggle-flag
   flags[it] = not (flags[it] or false)
   save-flags!
   show-help!
-
-function try-fn
-  try it!
-  catch e then log e
