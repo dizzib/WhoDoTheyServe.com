@@ -1,34 +1,36 @@
 Source code for [WhoDoTheyServe.com][wdts]
 
-# Build and run locally
+# build and run locally
 
-## Install global dependencies
+## install global dependencies
 
 * [node.js][nodejs] v0.10
 
-* [bcrypt dependencies][bcrypt-deps]
+* [bcrypt dependencies][bcrypt-deps] (just the dependencies!)
 
 * [mongodb][mongodb] (run with [`mongod`][mongod])
 
-* [livescript][livescript] for building the task runner
+* [livescript][livescript] to build the task runner during bootstrap
 
 * [firefox][firefox] running locally for the app integration tests.
 Must be a recent version with [marionette][marionette-js].
 
-## Clone and build
+## clone and bootstrap project
 
     $ git clone git@github.com:dizzib/WhoDoTheyServe.com.git
+    $ ./task/bootstrap          # compile task runner and install npm dependencies
 
-    $ ./task/bootstrap          # compile task runner and install dependencies
+## build and run site
+
     $ node _build/dev/task/repl # launch the task runner
-    wdts > b.fc                 # compile all files
+    wdts > b.fc                 # compile everything and launch site
 
 The dev site should now be running at `http://localhost:4000`
 
 Navigate to `http://localhost:4000/#/user/signup` to create an admin user who
 should then be able to signup further users.
 
-# Notes
+## notes
 
 The build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
