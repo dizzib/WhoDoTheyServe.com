@@ -53,9 +53,8 @@ const FLAGS-DEFAULT =
   site-logging : false
   run-tests    : all:true api:true app:true
 
+init-shelljs!
 cd DirBld.DEV # for safety, set working directory to dev build
-config.fatal  = true # shelljs doesn't raise exceptions, so set this process to die on error
-config.silent = true # otherwise too much noise
 flags = load-flags!
 
 for c in COMMANDS
@@ -102,6 +101,14 @@ function get-flag-desc
 
 function get-run-tests-desc
   "#it tests #{get-flag-desc flags.run-tests[it]}"
+
+function init-shelljs
+  config.fatal  = true # shelljs doesn't raise exceptions, so set this process to die on error
+  config.silent = true # otherwise too much noise
+  exec-orig = global.exec
+  global.exec = (cmd, opts, cb) -> # make exec noisy unless explicitly silenced
+    [cb = opts, opts = silent:false] if _.isFunction opts
+    exec-orig cmd, opts, cb
 
 function run-tests id, fn
   if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"

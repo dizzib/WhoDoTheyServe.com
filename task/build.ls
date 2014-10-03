@@ -71,9 +71,9 @@ module.exports = me = (new Emitter!) with
 
   refresh-modules: ->
     Assert.equal pwd!, Dir.build.DEV
-    W4 exec, 'npm -v', silent:false
-    W4 exec, 'npm prune', silent:false
-    W4 exec, 'npm install', silent:false
+    W4 exec, 'npm -v'
+    W4 exec, 'npm prune'
+    W4 exec, 'npm install'
 
   start: ->
     G.say 'build started'
