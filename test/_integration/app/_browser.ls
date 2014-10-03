@@ -73,6 +73,7 @@ module.exports = B =
     mc.logger.handleMessage = handle-remote-log
     w4mc \setSearchTimeout 500
     w4mc \goUrl SITE-URL
+    w4mc \refresh # clear cache
     init-sandbox!
 
   refresh: ->
