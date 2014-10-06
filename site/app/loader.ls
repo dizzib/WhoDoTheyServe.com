@@ -1,6 +1,6 @@
 const LIBS =
   backbone:
-    cdn: '//cdn.jsdelivr.net/backbonejs/1.0.0/backbone-min.js'
+    cdn: '//cdn.jsdelivr.net/backbonejs/1.1.2/backbone-min.js'
     loc: \backbone.js
     ok : -> Backbone?
   bootstrap_css:

@@ -19,15 +19,16 @@ module.exports =
   map: ->
     is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show! if not is-sel-changed
-    (m = V.map.map = M.Map.create it).fetch error:H.on-err, success: ->
-      unless m.isNew!
-        es = m.get \entities
-        E.merge models =
-          edges    : _.map es.edges, -> new M.Edge it
-          evidences: _.map es.evidences, -> new M.Evidence it
-          nodes    : _.map es.nodes, -> new M.Node it
-          notes    : _.map es.notes, -> new M.Note it
-        m.set \entities, models
+    m = V.map.map = M.Map.create it
+    return show! if m.isNew!
+    m.fetch error:H.on-err, success: ->
+      es = m.get \entities
+      E.merge models =
+        edges    : _.map es.edges, -> new M.Edge it
+        evidences: _.map es.evidences, -> new M.Evidence it
+        nodes    : _.map es.nodes, -> new M.Node it
+        notes    : _.map es.notes, -> new M.Note it
+      m.set \entities, models
       show!
     function show
       if is-sel-changed

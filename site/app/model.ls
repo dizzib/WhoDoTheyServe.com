@@ -5,6 +5,7 @@ Cons = require \../lib/model-constraints
 B.Validation.configure labelFormatter:\label
 
 Model = B.DeepModel.extend do
+  idAttribute: \_id # mongodb
   toJSON-T: (opts) -> @toJSON opts
 
 Model-hive = Model.extend do

@@ -12,7 +12,7 @@ $.fn.set-access = (session) ->
 
 # http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
 $.fn.serializeObject = ->
-  const IGNORE-NAME = /^selectItem/ # jquery.multi.select
+  const IGNORE-NAME = /^select(Item|Allnodes)/ # jquery.multi.select
   a = @serializeArray!
   o = {}
   $.each a, ->

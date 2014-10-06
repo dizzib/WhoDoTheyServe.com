@@ -28,8 +28,6 @@ H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
 H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
-B.Model.prototype.idAttribute = \_id # mongodb
-
 Api.init!
 C.init!
 C.Sessions.fetch error:fail, success:init

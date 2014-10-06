@@ -22,5 +22,8 @@ module.exports =
     return next new Error 'signin required' unless si = req.session.signin
     return next! if si.role is \admin
     return next new Error 'signin mismatch' unless req.id is si.id
-    return next new Error 'only admin can amend quota_daily' if req.body.quota_daily
-    next!
+    return next! unless q = req.body.quota_daily
+    err, user <- Users.findById req.id .lean!exec
+    return next err if err
+    return next! if user.quota_daily is q
+    next new Error 'only admin can amend quota_daily'

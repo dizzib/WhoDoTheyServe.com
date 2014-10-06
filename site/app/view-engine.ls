@@ -46,7 +46,7 @@ module.exports =
       it.preventDefault!
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = m.isNew!
-      m.attributes = $ it.currentTarget .serializeObject!
+      m.set ($ it.currentTarget .serializeObject!)
       @trigger \serialized, m
       ~function on-err
         @trigger \error, m
