@@ -127,7 +127,7 @@ function bundle path, fn-setup
     popd!
 
 cache = brfs:(LevelUp Memdown), exposify:LevelUp Memdown
-Exposify.config = backbone:\window.Backbone underscore:\window._
+Exposify.config = backbone:\Backbone underscore:\_
 function bundle-app opath
   bundle \app.js, ->
     # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
