@@ -1,5 +1,6 @@
 # fireprox helps automate input of evidence urls
 # https://github.com/dizzib/fireprox
+H = require \./helper
 
 const STORE-KEY = \fireprox-url
 
@@ -17,7 +18,7 @@ module.exports =
     return cb! unless url = localStorage?getItem STORE-KEY
     $.ajax "#{url}/#{command}",
       error: ->
-        console.error ...
+        H.on-err ...
         cb!
       success: ->
         cb /^\"?(.*)\"$/.exec(it)?1
