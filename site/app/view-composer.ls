@@ -1,10 +1,11 @@
-C = require \./collection
-E = require \./entities
-H = require \./helper
-M = require \./model
-S = require \./session
-V = require \./view
-D = require \./view-directive
+C  = require \./collection
+E  = require \./entities
+H  = require \./helper
+Ma = require \./map
+M  = require \./model
+S  = require \./session
+V  = require \./view
+D  = require \./view-directive
 
 module.exports =
   edge: (id, act, child-id) ->
@@ -14,23 +15,11 @@ module.exports =
     render-notes id, act
     edge
   edges: ->
+    <- Ma.fetch-default # try to show at least edges of default map
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
   map: ->
-    is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
-    return show! if not is-sel-changed
-    m = V.map.map = M.Map.create it
-    return show! if m.isNew!
-    m.fetch error:H.on-err, success: ->
-      es = m.get \entities
-      E.merge models =
-        edges    : _.map es.edges, -> new M.Edge it
-        evidences: _.map es.evidences, -> new M.Evidence it
-        nodes    : _.map es.nodes, -> new M.Node it
-        notes    : _.map es.notes, -> new M.Note it
-      m.set \entities, models
-      show!
-    function show
+    function show m
       if is-sel-changed
         V.map.render!
         V.map-toolbar.reset!
@@ -41,8 +30,13 @@ module.exports =
       V.map-meta.render m, D.meta
       V.map-meta.$el.find \.timeago .timeago! # async .view.finalize timeago runs too soon!
       return unless m.get-is-editable!
-      return V.map-edit.render m, C.Maps, fetch:no if is-sel-changed
+      return V.map-edit.render m, C.Maps, fetch:no
       V.map-edit.show!
+    is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
+    return show m if not is-sel-changed
+    err, m <- Ma.fetch it
+    return H.show-error err if err
+    show V.map.map = m
   node: (id, act, child-id) ->
     V.node.render (node = C.Nodes.get id), D.node
     V.node-edges-head.render!
@@ -53,6 +47,7 @@ module.exports =
     render-notes id, act
     id
   nodes: ->
+    <- Ma.fetch-default # try to show at least nodes of default map
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes
   user: ->

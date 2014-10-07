@@ -6,6 +6,7 @@ Hi = require \./history
 Hv = require \./hive
 C  = require \./collection
 F  = require \./fireprox
+Ma = require \./map
 M  = require \./model
 Mx = require \./model-ext
 V  = require \./view
@@ -55,7 +56,7 @@ Router = B.Router.extend do
   fireprox       : F.setup-url
   latest         : -> V.latest.render!
   map            : Vc.map
-  map_default    : -> Vc.map (JSON.parse Hv.Map.get \value).default?id
+  map_default    : -> Vc.map Ma.get-default-id!
   node           : -> Hi.set-node-id Vc.node ...
   node_edit      : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes          : Vc.nodes

@@ -54,7 +54,8 @@ M.Evidence .= extend do
       video: _.find [ VID-VIMEO, VID-YOUTUBE ], ~> it.rx.test @get \url
 
 M.Map .= extend do
-  get-is-editable: -> @isNew! or S.get-id! is (@get \meta .create_user_id)
+  get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
+  has-been-fetched: -> @has \nodes
 
 M.Node .= extend do
   get-yyyy: ->
