@@ -28,9 +28,3 @@ module.exports =
       Hi.Evidences.fetch! # dead evidences
       Hi.Map.fetch!
     ).then success, fail
-
-  merge: (o) ->
-    C.Nodes.set o.nodes, remove:false # merge nodes first so edge comparator can read node names
-    C.Edges.set o.edges, remove:false
-    C.Evidences.set o.evidences, remove:false
-    C.Notes.set o.notes, remove:false
