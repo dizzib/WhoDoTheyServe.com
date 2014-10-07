@@ -12,11 +12,11 @@ V  = require \./view
 Vc = require \./view-composer
 
 Router = B.Router.extend do
-  after: ->
-    V.finalise!
-  before: ->
+  execute: (cb, args, name) ->
     B.trigger \route-before
     V.reset!
+    cb?apply this, args
+    V.finalise!
   routes:
     \__coverage          : coverage
     ''                   : \map_default

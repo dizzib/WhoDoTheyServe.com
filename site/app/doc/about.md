@@ -41,7 +41,6 @@ Many thanks to the authors of the opensource software used to make this site:
 arch-linux
 backbone
 backbone-deep-model
-backbone-routefilter
 backbone-validation
 bcrypt
 bootstrap
