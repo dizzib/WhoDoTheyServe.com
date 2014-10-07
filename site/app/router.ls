@@ -43,7 +43,6 @@ Router = B.Router.extend do
     \user/edit/:id       : \user_edit
     \user/signin         : \user_signin
     \user/signin/error   : \user_signin_err
-    \user/signin/error:q : \user_signin_err
     \user/signout        : \user_signout
     \user/signup         : \user_signup
     \user/:id            : \user

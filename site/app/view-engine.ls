@@ -56,12 +56,12 @@ module.exports =
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING
 
   InfoView: B.View.extend do
-    initialize: -> @template = it.template
-    render: (model-or-querystring, directive) ->
-      if _.isString (o = model-or-querystring)
-        data = Q.parse if o.0 is \? then o.substring 1 else o
-      else
-        data = if o then o.toJSON-T! else {} # transparency won't process void data, hence {}
+    initialize: ->
+      @opts     = it.opts or {}
+      @template = it.template
+    render: (o, directive) ->
+      # transparency won't process void data, hence {}
+      data = if @opts.query-string then Q.parse o else (o?toJSON-T! or {})
       ($tem = $ @template).render data, directive
       @$el.html $tem .set-access S .show!
       @trigger \rendered, o
