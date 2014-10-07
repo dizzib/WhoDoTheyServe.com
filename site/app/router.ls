@@ -19,35 +19,35 @@ Router = B.Router.extend do
     cb?apply this, args
     V.finalise!
   routes:
-    \__coverage          : coverage
-    ''                   : \map_default
-    \doc/about           : \doc_about
-    \edge/edit/:id       : \edge_edit
-    \edge/new            : \edge_edit
-    \edge/:id            : \edge
-    \edge/:id/:act       : \edge
-    \edge/:id/:act/:id   : \edge
-    \edges               : \edges
-    \fireprox            : \fireprox
-    \latest              : \latest
-    \map/new             : \map
-    \map/:id             : \map
-    \node/edit/:id       : \node_edit
-    \node/new            : \node_edit
-    \node/:id            : \node
-    \node/:id/:act       : \node
-    \node/:id/:act/:id   : \node
-    \nodes               : \nodes
-    \sys                 : \sys
-    \user                : \user
-    \user/edit/:id       : \user_edit
-    \user/signin         : \user_signin
-    \user/signin/error   : \user_signin_err
-    \user/signout        : \user_signout
-    \user/signup         : \user_signup
-    \user/:id            : \user
-    \users               : \users
-    \*nomatch            : \map_default
+    \__coverage        : coverage
+    ''                 : \map_default
+    \doc/about         : \doc_about
+    \edge/edit/:id     : \edge_edit
+    \edge/new          : \edge_edit
+    \edge/:id          : \edge
+    \edge/:id/:act     : \edge
+    \edge/:id/:act/:id : \edge
+    \edges             : \edges
+    \fireprox          : \fireprox
+    \latest            : \latest
+    \map/new           : \map
+    \map/:id           : \map
+    \node/edit/:id     : \node_edit
+    \node/new          : \node_edit
+    \node/:id          : \node
+    \node/:id/:act     : \node
+    \node/:id/:act/:id : \node
+    \nodes             : \nodes
+    \sys               : \sys
+    \user              : \user
+    \user/edit/:id     : \user_edit
+    \user/signin       : \user_signin
+    \user/signin/error : \user_signin_err
+    \user/signout      : \user_signout
+    \user/signup       : \user_signup
+    \user/:id          : \user
+    \users             : \users
+    \*nomatch          : \map_default
   doc_about      : -> V.doc-about.render!
   edge           : -> Hi.set-edge Vc.edge ...
   edge_edit      : -> V.edge-edit.render (M.Edge.create it), C.Edges
