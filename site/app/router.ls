@@ -10,6 +10,7 @@ M  = require \./model
 Mx = require \./model-ext
 V  = require \./view
 Vc = require \./view-composer
+Vd = require \./view-directive
 
 Router = B.Router.extend do
   execute: (cb, args, name) ->
@@ -65,7 +66,7 @@ Router = B.Router.extend do
   user_signin_err: -> V.user-signin-err.render it
   user_signout   : -> V.user-signout.render!
   user_signup    : -> V.user-signup.render M.Signup.create!, C.Users
-  users          : Vc.users
+  users          : -> V.users.render C.Users, Vd.users
 
 module.exports = new Router!
 

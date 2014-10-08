@@ -62,9 +62,6 @@ module.exports =
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
     render-user-entities id, V.nodes, C.Nodes, D.nodes
     render-user-entities id, V.notes, C.Notes, D.user-notes
-  users: ->
-    V.users-head.render!
-    V.users.render C.Users, D.users
 
 ## helpers
 
@@ -92,5 +89,5 @@ function render-notes entity-id, act
   V.note-edit.render note-by-signin, C.Notes, fetch:no if act in <[ note-edit note-new ]>
   V.notes.render notes, D.notes
 
-function render-user-entities user-id, view, coll, directive then
+function render-user-entities user-id, view, coll, directive
   view.render (coll.find -> user-id is it.get \meta.create_user_id), directive

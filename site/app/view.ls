@@ -37,7 +37,6 @@ T-UserEdit      = F.readFileSync __dirname + \/view/user/edit.html
 T-UserSignin    = F.readFileSync __dirname + \/view/user/signin.html
 T-UserSigninErr = F.readFileSync __dirname + \/view/user/signin-error.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
-T-UsersHead     = F.readFileSync __dirname + \/view/users-head.html
 T-Version       = F.readFileSync __dirname + \/view/version.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
@@ -81,7 +80,6 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..user-signout    = new V.InfoView template:''             , el:\.view>.main
   ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new V.ListView template:T-Users        , el:\.view>.users
-  ..users-head      = new V.InfoView template:T-UsersHead    , el:\.view>.main
   ..version         = new V.InfoView template:T-Version      , el:\.view-version
 
   ## helper functions
