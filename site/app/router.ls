@@ -2,7 +2,7 @@ B  = require \backbone
 Qs = require \querystring
 _  = require \underscore
 H  = require \./helper
-Hi = require \./history
+Hs = require \./history
 Hv = require \./hive
 C  = require \./collection
 F  = require \./fireprox
@@ -49,14 +49,14 @@ Router = B.Router.extend do
     \users             : \users
     \*nomatch          : \map_default
   doc_about      : -> V.doc-about.render!
-  edge           : -> Hi.set-edge Vc.edge ...
+  edge           : -> Hs.set-edge Vc.edge ...
   edge_edit      : -> V.edge-edit.render (M.Edge.create it), C.Edges
   edges          : Vc.edges
   fireprox       : F.setup-url
   latest         : -> V.latest.render!
   map            : Vc.map
   map_default    : -> Vc.map Ma.get-default-id!
-  node           : -> Hi.set-node-id Vc.node ...
+  node           : -> Hs.set-node-id Vc.node ...
   node_edit      : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes          : Vc.nodes
   sys            : -> V.sys.render!

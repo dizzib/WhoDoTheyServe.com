@@ -1,10 +1,12 @@
+# For auto-populating new entities with previous entities e.g. a new edge
+# might be auto-populated with the 2 last-edited nodes.
+
 node-ids = [ void, void ]
 
 module.exports =
   get-edge: ~> @edge
 
-  get-node-id: ->
-    node-ids[it]
+  get-node-id: -> node-ids[it]
 
   set-edge: (@edge) ~>
 
