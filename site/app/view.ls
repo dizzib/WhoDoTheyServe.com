@@ -12,7 +12,7 @@ H.insert-css-seo F.readFileSync __dirname + \/view.css
 
 # cannot refactor since Brfs requires this exact code format
 D-About         = F.readFileSync __dirname + \/doc/about.html
-T-EdgeEdit      = F.readFileSync __dirname + \/view/edge-edit.html
+T-EdgeEdit      = F.readFileSync __dirname + \/view/edge/edit.html
 T-Edge          = F.readFileSync __dirname + \/view/edge.html
 T-Edges         = F.readFileSync __dirname + \/view/edges.html
 T-EdgesHead     = F.readFileSync __dirname + \/view/edges-head.html
