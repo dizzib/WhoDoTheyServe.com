@@ -11,10 +11,12 @@ you can add to [github issues][issues].
 
 ### Contribute
 
-If you feel like contributing then please [login] using your Facebook, Google or Github
-account (you can delete your user account at any time).
+If you feel like contributing then simply [login using your Facebook, Google or Github
+account][login] or to remain more anonymous email me at <mailto:dizzib0@gmail.com> and I'll set you up with
+a standard user-id/password account. Don't worry, you can delete your WhoDoTheyServe.com
+account at any time.
 
-Any actors and connections you add are shared and usable by other contributors, and your
+Any actors and connections you add are shared and usable by other contributors and your
 maps are viewable by anyone.
 
 This feature is currently in beta test so please log any issues to [github issues][issues].
@@ -39,6 +41,7 @@ The only information captured is [visitor count per 10-days][hit-count].
 Many thanks to the authors of the opensource software used to make this site:
 
 arch-linux
+autolinker
 backbone
 backbone-deep-model
 backbone-validation
@@ -83,7 +86,7 @@ variadic
 wait.for
 yepnope
 
-Also thanks to [GitHub], [MongoLab] and [AppFog] for their free hosting.
+Also thanks to [GitHub], [MongoLab] and [AppFog] for the free hosting.
 
 This site's name is inspired from [WhatDoTheyKnow.com][wdtk], a database of freedom of
 information requests to UK public authorities.
@@ -93,7 +96,7 @@ information requests to UK public authorities.
 [api]:        http://en.wikipedia.org/wiki/Application_programming_interface
 [beta]:       https://en.wikipedia.org/wiki/Software_release_life_cycle
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
-[db-dump]:    https://github.com/dizzib/prod-db-dump 
+[db-dump]:    https://github.com/dizzib/prod-db-dump
 [hit-count]:  http://wdts10.eu01.aws.af.cm/api/hive/n-hits-2014
 [github]:     https://github.com
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
