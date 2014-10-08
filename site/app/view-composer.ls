@@ -10,7 +10,8 @@ D  = require \./view-directive
 
 module.exports =
   edge: (id, act, child-id) ->
-    V.edge.render (edge = C.Edges.get id), D.edge
+    edge <- fetch-entity C.Edges, id, \connection
+    V.edge.render edge, D.edge
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes id, act
@@ -39,7 +40,7 @@ module.exports =
     return H.show-error err if err
     show V.map.map = m
   node: (id, act, child-id) ->
-    node = C.Nodes.get id
+    node <- fetch-entity C.Nodes, id, \actor
     V.node.render node, D.node
     V.node-edges-head.render!
     V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
@@ -66,6 +67,13 @@ module.exports =
     V.users.render C.Users, D.users
 
 ## helpers
+
+function fetch-entity coll, id, name, cb
+  return cb ent if ent = coll.get id
+  <- E.fetch-all # entity isn't in global cache so refresh gc and try again
+  return H.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
+  cb ent
+  V.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id

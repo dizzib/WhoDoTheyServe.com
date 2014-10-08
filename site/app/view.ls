@@ -89,7 +89,6 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ## helper functions
 
   ..finalise = ->
-    $ \.timeago .timeago!
     # use a delgated event since view may still be rendering asyncly
     $ \.view .on \focus, 'input[type=text]', ->
       # defer, to workaround Chrome mouseup bug
@@ -98,6 +97,7 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
     <- _.defer
     $ \.btn-new:visible:first .focus!
     $ \.view .addClass \ready
+    $ \.timeago .timeago!
 
   ..reset = ->
     $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
