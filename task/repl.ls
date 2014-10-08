@@ -19,7 +19,7 @@ const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
   * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Run.cancel
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:-> Run.run-dev-tests flags
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:run-dev-tests
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Build.bundle
   * cmd:'b.fc ' lev:0 desc:'build - files compile'      fn:Build.compile-files
   * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
@@ -27,9 +27,9 @@ const COMMANDS =
   * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
   * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
   * cmd:'b.sl ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
-  * cmd:'b.t  ' lev:0 desc:'build - toggle $all'        fn:-> toggle-build-tests \all
-  * cmd:'b.t1 ' lev:0 desc:'build - toggle $api'        fn:-> toggle-build-tests \api
-  * cmd:'b.t2 ' lev:0 desc:'build - toggle $app'        fn:-> toggle-build-tests \app
+  * cmd:'b.t  ' lev:0 desc:'build - autorun tests $ta'  fn:-> toggle-flag \autorunTests
+  * cmd:'b.t1 ' lev:0 desc:'build - toggle $api'        fn:-> toggle-run-tests \api
+  * cmd:'b.t2 ' lev:0 desc:'build - toggle $app'        fn:-> toggle-run-tests \app
   * cmd:'b.tc ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Run.run-staging-tests flags
@@ -49,6 +49,7 @@ const COMMANDS =
 
 const FLAGS-PATH = "#{DirBld.dev.TASK}/flags.json"
 const FLAGS-DEFAULT =
+  autorun-tests: true
   test-coverage: false
   site-logging : false
   run-tests    : all:true api:true app:true
@@ -73,8 +74,8 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
     rl.prompt!
 
 Build.on \built, -> Run.recycle-dev flags
-Build.on \built-api, -> run-tests \api, Run.run-dev-test_1
-Build.on \built-app, -> run-tests \app, Run.run-dev-test_2
+Build.on \built-api, -> run-tests \api, Run.run-dev-test_1 if flags.autorun-tests
+Build.on \built-app, -> run-tests \app, Run.run-dev-test_2 if flags.autorun-tests
 Build.start!
 Run.recycle-dev flags
 Run.recycle-staging flags
@@ -110,6 +111,10 @@ function init-shelljs
     [cb = opts, opts = silent:false] if _.isFunction opts
     exec-orig cmd, opts, cb
 
+function run-dev-tests
+  run-tests \api, Run.run-dev-test_1
+  run-tests \app, Run.run-dev-test_2
+
 function run-tests id, fn
   if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"
 
@@ -122,17 +127,15 @@ function show-help
     api: get-run-tests-desc \api
     app: get-run-tests-desc \app
     sl : get-flag-desc flags.site-logging
+    ta : get-flag-desc flags.autorun-tests
     tc : get-flag-desc flags.test-coverage
   for c in COMMANDS when !c.disabled
     s = c.display
     for k, v of flag-vals then s = s.replace "$#k", v
     log s
 
-function toggle-build-tests
+function toggle-run-tests
   (s = flags.run-tests)[it] = not s[it]
-  if it is \all then [s.api, s.app] = [s.all, s.all]
-  s.all = false unless s.api or s.app
-  s.all = true if s.api and s.app
   save-flags!
   show-help!
 
