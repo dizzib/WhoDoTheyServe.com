@@ -81,7 +81,7 @@ function render-evidences entity-id, act, id
   ev = M.Evidence.create!set \entity_id, entity-id if act is \evi-new
   V.evidences-head.render void, D.evidences-head
   V.evidence-edit.render ev, C.Evidences, fetch:no if ev
-  V.evidences.render evs, D.evidences, void-view:V.evidences-void unless act is \evi-new
+  V.evidences.render evs, D.evidences unless act is \evi-new
 
 function render-notes entity-id, act
   notes = C.Notes.find -> entity-id is it.get \entity_id

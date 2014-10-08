@@ -82,8 +82,8 @@ module.exports =
       ~function render c, pass then
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
-        return v.render! if c.length is 0 and v = opts?void-view
         ($tem = $ @template).render (items:c.toJSON-T!), items:directive
+        $tem.find \.no-items .toggle (c.length is 0)
         @$el.html $tem
         @$el.set-access S .show! if pass is 0
 
