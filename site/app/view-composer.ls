@@ -1,6 +1,7 @@
 C  = require \./collection
 E  = require \./entities
 H  = require \./helper
+Hs = require \./history
 Ma = require \./map
 M  = require \./model
 S  = require \./session
@@ -13,7 +14,7 @@ module.exports =
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    edge
+    Hs.set-edge edge
   edges: ->
     <- Ma.fetch-default # try to show at least edges of default map
     V.edges-head.render!
@@ -38,14 +39,15 @@ module.exports =
     return H.show-error err if err
     show V.map.map = m
   node: (id, act, child-id) ->
-    V.node.render (node = C.Nodes.get id), D.node
+    node = C.Nodes.get id
+    V.node.render node, D.node
     V.node-edges-head.render!
     V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
     V.node-edges-b.render (C.Edges.find -> id is it.get \b_node_id), D.edges
     V.meta.render node, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    id
+    Hs.set-node-id id
   nodes: ->
     <- Ma.fetch-default # try to show at least nodes of default map
     V.nodes-head.render!
