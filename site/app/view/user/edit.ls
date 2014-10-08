@@ -1,5 +1,5 @@
-R = require \../router
-S = require \../session
+R = require \../../router
+S = require \../../session
 
 module.exports =
   init: ->

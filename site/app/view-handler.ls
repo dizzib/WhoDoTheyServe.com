@@ -8,8 +8,8 @@ Ve  = require \./view-engine
 Vee = require \./view/edge-edit
 Vev = require \./view/evidence
 Vme = require \./view/map/edit
-Vue = require \./view/user-edit
-Vus = require \./view/user-signin
+Vue = require \./view/user/edit
+Vus = require \./view/user/signin
 
 const KEYCODE-ESC = 27
 
