@@ -1,7 +1,6 @@
 B   = require \backbone
 _   = require \underscore
 Api = require \./api
-M   = require \./model
 
 Collection = B.Collection.extend do
   destroy: (id-or-model, opts) ->   # complement of @create convenience
@@ -16,11 +15,11 @@ Collection = B.Collection.extend do
   toJSON-T: (opts) ->
     @map (m) -> if m.toJSON-T then m.toJSON-T opts else m.toJSON opts
 
-# init() must run after models have initialised to avoid circular references
-module.exports.init = ->
+# models are dependency injected to avoid circular references
+module.exports.init = (models) ->
   edges =
     url       : Api.edges
-    model     : M.Edge
+    model     : models.Edge
     comparator: (edge) ->
       function get-node-name
         return '' unless id = edge.get "#{it}_node_id"
@@ -29,24 +28,24 @@ module.exports.init = ->
       "#{get-node-name \a}#{edge.get \how}#{get-node-name \b}"
   evidences =
     url  : Api.evidences
-    model: M.Evidence
+    model: models.Evidence
   maps =
     url       : Api.maps
-    model     : M.Map
+    model     : models.Map
     comparator: name-comparator
   nodes =
     url       : Api.nodes
-    model     : M.Node
+    model     : models.Node
     comparator: name-comparator
   notes =
     url  : Api.notes
-    model: M.Note
+    model: models.Note
   sessions =
     url  : Api.sessions
-    model: M.Session
+    model: models.Session
   users =
     url       : Api.users
-    model     : M.User
+    model     : models.User
     find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 
   me = module.exports

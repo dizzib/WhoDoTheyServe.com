@@ -14,11 +14,19 @@ Api = require \./api
 C   = require \./collection
 E   = require \./entities
 H   = require \./helper
-Sys = require \./model/sys .instance
 S   = require \./session
 Si  = require \./signin
 V   = require \./view
 Vh  = require \./view-handler
+
+M-Edge = require \./model/edge
+M-Evi  = require \./model/evidence
+M-Map  = require \./model/map
+M-Node = require \./model/node
+M-Note = require \./model/note
+M-User = require \./model/user
+M-Sess = require \./model/session
+M-Sys  = require \./model/sys
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
@@ -26,7 +34,14 @@ H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 init-backbone!
 Api.init!
-C.init!
+C.init do
+  Evidence: M-Evi
+  Edge    : M-Edge
+  Map     : M-Map
+  Node    : M-Node
+  Note    : M-Note
+  User    : M-User
+  Session : M-Sess
 C.Sessions.fetch error:fail, success:init
 
 # helpers
@@ -47,7 +62,7 @@ function init
   E.fetch-core start, fail unless S.is-signed-in!
   Vh.init!
   V.footer.render!
-  Sys.fetch error:fail, success: -> V.version.render Sys
+  (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
 
 function init-backbone
   B.Model.prototype.idAttribute = \_id # mongodb
