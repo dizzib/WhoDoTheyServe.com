@@ -2,8 +2,6 @@ B    = require \backbone
 Api  = require \./api
 Cons = require \../lib/model-constraints
 
-B.Model.prototype.idAttribute = \_id # mongodb
-
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
 

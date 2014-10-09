@@ -27,6 +27,7 @@ H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
 H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
+init-backbone!
 Api.init!
 C.init!
 C.Sessions.fetch error:fail, success:init
@@ -47,12 +48,12 @@ function fail-si coll, xhr
 function init
   E.fetch-core (-> E.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   E.fetch-core start, fail unless S.is-signed-in!
-  init-validation!
   Vh.init!
   V.footer.render!
   Sys.fetch error:fail, success: -> V.version.render Sys
 
-function init-validation
+function init-backbone
+  B.Model.prototype.idAttribute = \_id # mongodb
   _invalid = B.Validation.callbacks.invalid
   B.Validation
     ..configure labelFormatter:\label
