@@ -1,6 +1,5 @@
 C  = require \./collection
-M  = require \./model
-Hi = require \./hive
+Hv = require \./hive
 
 is-loaded = false
 
@@ -25,6 +24,6 @@ module.exports =
     $.when(
       C.Maps.fetch!
       C.Users.fetch!
-      Hi.Evidences.fetch! # dead evidences
-      Hi.Map.fetch!
+      Hv.Evidences.fetch! # dead evidences
+      Hv.Map.fetch!
     ).then success, fail

@@ -1,4 +1,3 @@
-M = require \../../model
 E = require \../evidence
 
 const ICON-GAP    = 1

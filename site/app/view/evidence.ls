@@ -3,8 +3,8 @@ _  = require \underscore
 C  = require \../collection
 F  = require \../fireprox
 H  = require \../helper
-Hi = require \../hive
-M  = require \../model
+Hv = require \../hive
+Mv = require \../model/evidence
 
 H.insert-css F.readFileSync __dirname + \/evidence.css
 
@@ -16,7 +16,7 @@ module.exports =
   create: (entity-id, cb) ->
     url <- F.send-request COMMAND-GET-URL
     return cb! unless url
-    ev = new M.Evidence entity_id:entity-id, url:url
+    ev = Mv.create entity_id:entity-id, url:url
     C.Evidences.create ev, { +merge, +wait, error:H.on-err, success:-> cb ok:true }
 
   init: ->
@@ -25,5 +25,5 @@ module.exports =
     $ \#url .attr \value, it
 
   is-dead: (id) ->
-    ev-dead-ids := Hi.Evidences.get-prop \dead-ids or [] unless ev-dead-ids # lazy init
+    ev-dead-ids := Hv.Evidences.get-prop \dead-ids or [] unless ev-dead-ids # lazy init
     _.contains ev-dead-ids, id
