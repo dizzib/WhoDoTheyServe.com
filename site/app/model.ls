@@ -2,10 +2,9 @@ B    = require \backbone
 Api  = require \./api
 Cons = require \../lib/model-constraints
 
-B.Validation.configure labelFormatter:\label
+B.Model.prototype.idAttribute = \_id # mongodb
 
 Model = B.DeepModel.extend do
-  idAttribute: \_id # mongodb
   toJSON-T: (opts) -> @toJSON opts
 
 Model-hive = Model.extend do

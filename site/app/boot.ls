@@ -21,7 +21,6 @@ S   = require \./session
 Si  = require \./signin
 Sys = require \./sys
 V   = require \./view
-Val = require \./validator
 Vh  = require \./view-handler
 
 H.insert-css F.readFileSync __dirname + \/lib/form.css
@@ -39,16 +38,27 @@ function alert type, xhr
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#info\n\n#prompt" then window.location.reload!
 
+function fail coll, xhr
+  alert \core, xhr
+
+function fail-si coll, xhr
+  alert \signed-in, xhr
+
 function init
   E.fetch-core (-> E.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   E.fetch-core start, fail unless S.is-signed-in!
-  Val.init!
+  init-validation!
   Vh.init!
   V.footer.render!
   Sys.fetch error:fail, success: -> V.version.render Sys
 
-function fail-si coll, xhr then alert \signed-in, xhr
-function fail    coll, xhr then alert \core, xhr
+function init-validation
+  _invalid = B.Validation.callbacks.invalid
+  B.Validation
+    ..configure labelFormatter:\label
+    ..callbacks.invalid = ->
+      _invalid ...
+      H.show-error "One or more fields have errors. Please correct them before retrying."
 
 function start
   B.history.start!
