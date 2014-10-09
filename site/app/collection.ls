@@ -16,7 +16,7 @@ Collection = B.Collection.extend do
   toJSON-T: (opts) ->
     @map (m) -> if m.toJSON-T then m.toJSON-T opts else m.toJSON opts
 
-# this must run after models have initialised. init() needed to avoid circular references
+# init() must run after models have initialised to avoid circular references
 module.exports.init = ->
   edges =
     url       : Api.edges
