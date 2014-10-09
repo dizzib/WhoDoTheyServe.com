@@ -8,37 +8,6 @@ W  = require \../lib/when
 
 # extend models with custom methods
 
-M.Edge .= extend do
-  is-in-map: (node-ids) ->
-    (_.contains node-ids, @get \a_node_id) and (_.contains node-ids, @get \b_node_id)
-  toJSON-T: (opts) ->
-    ~function get-tip
-      "Evidence#{if how = @get \how then " - #how" else ''} #{get-when-text true}"
-
-    function get-when-text is-tip
-      return '' if yyyy and not is-tip
-      return "in #yyyy" if yyyy
-      s = "from #{when-obj.raw.from or '?'}"
-      s + if (when-to = when-obj.raw.to) then " to #when-to" else ''
-
-    a-node   = C.Nodes.get @get \a_node_id # undefined if new
-    b-node   = C.Nodes.get @get \b_node_id # undefined if new
-    yyyy     = a-node?get-yyyy! or b-node?get-yyyy!
-    when-raw = if yyyy then "#yyyy-#yyyy" else @get \when
-    when-obj = W.parse-range when-raw
-
-    _.extend (@toJSON opts),
-      a_node_name: a-node?get \name
-      b_node_name: b-node?get \name
-      a_is_eq    : \eq is @get \a_is
-      a_is_lt    : \lt is @get \a_is
-      tip        : get-tip!
-      when-obj   : when-obj
-      when-text  : get-when-text!
-      yy         : yyyy?substring 2
-      yyyy       : yyyy
-      year       : parseInt yyyy
-
 const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
 const VID-YOUTUBE = service:\youtube rx:/youtube\.com|youtu\.be/i
 M.Evidence .= extend do
@@ -83,16 +52,6 @@ M.Node .= extend do
 
 M.User .= extend do
   get-is-admin: -> \admin is @get \role
-
-## add factory methods
-
-M.Edge.create = ->
-  m = create M.Edge, it
-  unless it # auto-populate new edge with 2 last nodes
-    m.set \a_node_id, Hi.get-node-id 0
-    m.set \b_node_id, Hi.get-node-id 1
-    if (edge = Hi.get-edge!) then m.set \how, edge.get \how
-  m
 
 add-factory-method M.Evidence
 add-factory-method M.Map

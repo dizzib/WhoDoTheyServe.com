@@ -1,6 +1,7 @@
-B    = require \backbone
-Api  = require \./api
-Cons = require \../lib/model-constraints
+B      = require \backbone
+Api    = require \./api
+Cons   = require \../lib/model-constraints
+M-Edge = require \./model/edge
 
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
@@ -18,23 +19,7 @@ module.exports =
     urlRoot   : Api.evidences
     labels    : 'url': 'Url'
     validation: 'url': required:yes pattern:\url
-  Edge: Model.extend do
-    urlRoot: Api.edges
-    labels:
-      'a_node_id': 'Actor A'
-      'b_node_id': 'Actor B'
-    validation:
-      'a_node_id': required:yes
-      'b_node_id': required:yes
-      'a_is'     : required:yes
-      'how'      :
-        * required: no
-        * pattern : Cons.edge.how.regex
-          msg     : "How should be #{Cons.edge.how.info}"
-      'when':
-        * required: no
-        * pattern : Cons.edge.when.regex
-          msg     : "When should be #{Cons.edge.when.info}"
+  Edge: M-Edge
   Hive:
     Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
     Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
