@@ -8,20 +8,6 @@ W  = require \../lib/when
 
 # extend models with custom methods
 
-const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
-const VID-YOUTUBE = service:\youtube rx:/youtube\.com|youtu\.be/i
-M.Evidence .= extend do
-  get-glyph: ->
-    const GLYPHS =
-      * name:\fa-file-pdf-o   unicode:\\uf1c1 rxs:[ /\.pdf$/i ]
-      * name:\fa-video-camera unicode:\\uf03d rxs:[ VID-VIMEO.rx, VID-YOUTUBE.rx ]
-    for g in GLYPHS then return g if _.find g.rxs, ~> it.test @get \url
-    name:\fa-file-text-o unicode:\\uf0f6
-  toJSON-T: (opts) ->
-    _.extend (@toJSON opts),
-      glyph: @get-glyph!
-      video: _.find [ VID-VIMEO, VID-YOUTUBE ], ~> it.rx.test @get \url
-
 M.Map .= extend do
   get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
   has-been-fetched: -> @has \entities
@@ -53,7 +39,6 @@ M.Node .= extend do
 M.User .= extend do
   get-is-admin: -> \admin is @get \role
 
-add-factory-method M.Evidence
 add-factory-method M.Map
 add-factory-method M.Node
 add-factory-method M.Note

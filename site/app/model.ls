@@ -2,6 +2,7 @@ B      = require \backbone
 Api    = require \./api
 Cons   = require \../lib/model-constraints
 M-Edge = require \./model/edge
+M-Evi  = require \./model/evidence
 
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
@@ -15,11 +16,9 @@ Model-hive = Model.extend do
     @set \value, JSON.stringify o
 
 module.exports =
-  Evidence: Model.extend do
-    urlRoot   : Api.evidences
-    labels    : 'url': 'Url'
-    validation: 'url': required:yes pattern:\url
-  Edge: M-Edge
+  Evidence: M-Evi
+  Edge    : M-Edge
+
   Hive:
     Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
     Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
