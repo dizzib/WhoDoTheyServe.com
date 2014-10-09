@@ -6,7 +6,6 @@ Hm = require \./hive .Map
 C  = require \./collection
 F  = require \./fireprox
 M  = require \./model
-Mx = require \./model-ext
 V  = require \./view
 Vc = require \./view-composer
 Vd = require \./view-directive
