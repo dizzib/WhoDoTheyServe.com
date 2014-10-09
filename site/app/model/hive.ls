@@ -17,6 +17,9 @@ m-evis = m.extend urlRoot:"#{Api.hive}/evidences"
 m-map  = m.extend urlRoot:"#{Api.hive}/map"
 
 evis = new m-evis!
+  ..on \sync, -> # set convenience properties
+    @dead-ids = @get-prop \dead-ids or []
+
 map  = new m-map!
   ..on \sync, -> # set convenience properties
     v = JSON.parse @get \value

@@ -1,5 +1,3 @@
-E = require \../evidence
-
 const ICON-GAP    = 1
 const ICON-SIZE   = 16
 const ICON-SPACE  = ICON-SIZE + ICON-GAP
@@ -16,7 +14,7 @@ module.exports = me =
           .attr \xlink:href , -> ev.get \url
           .attr \xlink:title, -> edge.tip
           .append \text
-            .attr \class, -> if E.is-dead ev.id then \dead else \live
+            .attr \class, -> if ev.is-dead! then \dead else \live
             .attr \font-family, \FontAwesome
             .attr \x, dx + i * ICON-SPACE
             .attr \y, dy

@@ -23,7 +23,3 @@ module.exports =
     return if $ \#url .attr \value
     <- F.send-request COMMAND-GET-URL
     $ \#url .attr \value, it
-
-  is-dead: (id) ->
-    ev-dead-ids := Hv.Evidences.get-prop \dead-ids or [] unless ev-dead-ids # lazy init
-    _.contains ev-dead-ids, id

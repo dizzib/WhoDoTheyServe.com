@@ -1,6 +1,5 @@
 A = require \Autolinker
 B = require \backbone
-E = require \./view/evidence
 C = require \./collection
 H = require \./helper
 S = require \./session
@@ -22,7 +21,7 @@ const EDGE =
 const EVI =
   glyph:
     class: ->
-      "glyph fa #{@glyph.name} #{get-evi-status @_id}"
+      "glyph fa #{@glyph.name} #{get-evi-class @is-dead}"
   'url-outer':
     href: -> @url
   'url-inner':
@@ -52,7 +51,7 @@ const GLYPHS =
       else for ev in evs.models
         $el.append "
           <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='glyph fa #{ev.get-glyph!name} #{get-evi-status ev.id}'/>
+            <i class='glyph fa #{ev.get-glyph!name} #{get-evi-class ev.is-dead!}'/>
           </a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
@@ -171,7 +170,7 @@ module.exports =
 
 ## helpers
 
-function get-evi-status then if E.is-dead it then \dead else \live
+function get-evi-class is-dead then if is-dead then \dead else \live
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
 function get-user-text then if (u = C.Users.find-by-id it) then "#{u.get \name} " else '(deleted user) '
