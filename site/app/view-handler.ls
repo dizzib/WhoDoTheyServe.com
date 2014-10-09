@@ -1,13 +1,10 @@
 Bh  = require \backbone .history
 C   = require \./collection
 R   = require \./router
-S   = require \./session
 Si  = require \./signin
 V   = require \./view
-Ve  = require \./view-engine
 Vee = require \./view/edge/edit
 Vev = require \./view/evidence
-Vme = require \./view/map/edit
 Vue = require \./view/user/edit
 Vus = require \./view/user/signin
 
