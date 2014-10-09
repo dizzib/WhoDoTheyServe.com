@@ -4,7 +4,7 @@ C  = require \./collection
 F  = require \./fireprox
 Hm = require \./model/hive .instance.Map
 V  = require \./view
-Vc = require \./view-composer
+Vc = require \./view-core/composer
 Vd = require \./view-directive
 
 M-Edge = require \./model/edge

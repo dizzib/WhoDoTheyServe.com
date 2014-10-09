@@ -1,15 +1,15 @@
-C  = require \./collection
-E  = require \./entities
-H  = require \./helper
-Hv = require \./model/hive .instance
-Hs = require \./history
-S  = require \./session
-V  = require \./view
-D  = require \./view-directive
+C  = require \../collection
+E  = require \../entities
+H  = require \../helper
+Hv = require \../model/hive .instance
+Hs = require \../history
+S  = require \../session
+V  = require \../view
+D  = require \../view-directive
 
-M-Evi  = require \./model/evidence
-M-Map  = require \./model/map
-M-Note = require \./model/note
+M-Evi  = require \../model/evidence
+M-Map  = require \../model/map
+M-Note = require \../model/note
 
 module.exports =
   edge: (id, act, child-id) ->
