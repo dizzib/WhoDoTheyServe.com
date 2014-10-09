@@ -16,7 +16,6 @@ module.exports = S.get-spec create, void, c.update, c.remove, c.list
 function create handle, is-ok, fields = {}
   fields
     ..handle      ||= handle
-    ..password    ||= \Pass1!
     ..email       ||= "#{handle}@domain.com"
     ..info        ||= ''
     ..quota_daily ||= \5

@@ -77,30 +77,28 @@ module.exports =
     validation:
       'handle'  : required:yes
       'password': required:yes
-  Signup: Model.extend user-spec pwd-required:yes
-  Sys   : Model.extend urlRoot:Api.sys
-  User  : Model.extend user-spec pwd-required:no
-
-function user-spec opts
-  urlRoot: Api.users
-  labels:
-    'info'    : 'Homepage'
-    'passconf': 'Confirm Password'
-  validation:
-    'handle':
-      * required: yes
-      * pattern : Cons.handle.regex
-        msg     : "Username should be #{Cons.handle.info}"
-    'password':
-      * required: opts.pwd-required
-      * pattern : Cons.password.regex
-        msg     : "Password should be #{Cons.password.info}"
-    'passconf':
-      equalTo: \password
-    'email':
-      * required: no
-      * pattern : Cons.email.regex
-        msg     : "Email should be #{Cons.email.info}"
-    'info':
-      pattern : \url
-      required: no
+  Sys: Model.extend do
+    urlRoot:Api.sys
+  User: Model.extend do
+    urlRoot: Api.users
+    labels:
+      'info'    : 'Homepage'
+      'passconf': 'Confirm Password'
+    validation:
+      'handle':
+        * required: yes
+        * pattern : Cons.handle.regex
+          msg     : "Username should be #{Cons.handle.info}"
+      'password':
+        * required: -> @isNew!
+        * pattern : Cons.password.regex
+          msg     : "Password should be #{Cons.password.info}"
+      'passconf':
+        equalTo: \password
+      'email':
+        * required: no
+        * pattern : Cons.email.regex
+          msg     : "Email should be #{Cons.email.info}"
+      'info':
+        pattern : \url
+        required: no

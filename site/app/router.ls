@@ -64,7 +64,7 @@ Router = B.Router.extend do
   user_signin    : -> V.user-signin.render M.Session.create!, C.Sessions
   user_signin_err: -> V.user-signin-err.render it
   user_signout   : -> V.user-signout.render!
-  user_signup    : -> V.user-signup.render M.Signup.create!, C.Users
+  user_signup    : -> V.user-signup.render M.User.create!, C.Users
   users          : -> V.users.render C.Users, Vd.users
 
 module.exports = new Router!

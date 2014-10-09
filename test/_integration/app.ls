@@ -42,6 +42,7 @@ test User.list.is1
 test User.admin.create.bad
 test User.handle.min.create.bad
 test Session.admin.password.a.signin.ok
+test User.a.password.null.create.bad
 test User.a.create.ok
 test User.a.email.new.update.ok
 test User.a.create.bad

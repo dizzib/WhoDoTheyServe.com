@@ -8,11 +8,11 @@ exports.get-spec = (...args) ->
   function get-spec-usera fields then h.get-spec \usera, fields
 
   admin: _.extend do
-    get-spec-admin!
+    get-spec-admin password:\Pass1!
     token:
       fake      : get-spec-admin token:\ThisIsAFakeToken
   a: _.extend do
-    get-spec-usera!
+    get-spec-usera password:\Pass1!
     quota-daily:
       six       : get-spec-usera quota_daily:6
     email:
@@ -29,6 +29,7 @@ exports.get-spec = (...args) ->
       path      : get-spec-usera info:\http://foo.com
       path-qs   : get-spec-usera info:\http://foo.com?bar=boo
     password:
+      null      : get-spec-usera password:''
       b         : get-spec-usera password:\Pass2!
       c         : get-spec-usera password:\Pass3!
       min-lt    : get-spec-usera password:\aaA1!
@@ -36,10 +37,10 @@ exports.get-spec = (...args) ->
       weak-num  : get-spec-usera password:\aaaaA!
       weak-sym  : get-spec-usera password:\aaaaA1
       weak-ucase: get-spec-usera password:\aaaa!1
-  b: h.get-spec \userb email:\b@domain.com
-  c: h.get-spec \userc quota_daily:3
-  d: h.get-spec \userd quota_daily:0
-  e: h.get-spec \usere
+  b: h.get-spec \userb password:\Pass1! email:\b@domain.com
+  c: h.get-spec \userc password:\Pass1! quota_daily:3
+  d: h.get-spec \userd password:\Pass1! quota_daily:0
+  e: h.get-spec \usere password:\Pass1!
   handle:
     num1      : h.get-spec \1xxx      , password:\aaaA1!
     num2      : h.get-spec \x2xx      , password:\aaaA1!

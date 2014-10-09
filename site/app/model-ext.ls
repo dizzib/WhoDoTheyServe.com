@@ -81,8 +81,8 @@ M.Node .= extend do
       family-name: get-family-name this
       tip        : 'Evidence'
 
-extend-user \Signup
-extend-user \User
+M.User .= extend do
+  get-is-admin: -> \admin is @get \role
 
 ## add factory methods
 
@@ -99,7 +99,6 @@ add-factory-method M.Map
 add-factory-method M.Node
 add-factory-method M.Note
 add-factory-method M.Session
-add-factory-method M.Signup
 add-factory-method M.User
 
 # helpers
@@ -113,6 +112,3 @@ function create model, id
   # causes mongo to create a document with _id as an ObjectId.
   m.set \_id, id if id?
   m
-
-function extend-user
-  M[it] .= extend get-is-admin: -> \admin is @get \role
