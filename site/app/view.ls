@@ -1,6 +1,8 @@
 F           = require \fs # browserified
 H           = require \./helper
-V           = require \./view-engine
+Ve          = require \./view-activity/edit
+Vr          = require \./view-activity/read
+Vs          = require \./view-activity/select
 V-Footer    = require \./view/footer
 V-Latest    = require \./view/latest
 V-Map       = require \./view/map
@@ -41,46 +43,46 @@ T-Version       = F.readFileSync __dirname + \/view/version.html
 
 me = exports # not clear why refactoring to 'module.exports' breaks things
   ## views
-  ..doc-about       = new V.DocuView document:D-About        , el:\.view>.main
-  ..edge            = new V.InfoView template:T-Edge         , el:\.view>.main
-  ..edge-a-node-sel = new V.SelectView                         sel:\#a_node_id
-  ..edge-b-node-sel = new V.SelectView                         sel:\#b_node_id
-  ..edge-edit       = new V.EditView template:T-EdgeEdit     , el:\.view>.main
-  ..edges           = new V.ListView template:T-Edges        , el:\.view>.edges, opts:{ fetch:false }
-  ..edges-head      = new V.InfoView template:T-EdgesHead    , el:\.view>.main
-  ..evidence-edit   = new V.EditView template:T-EvidenceEdit , el:\.view>.evidence-edit
-  ..evidences       = new V.ListView template:T-Evidences    , el:\.view>.evidences
-  ..evidences-head  = new V.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
-  ..footer          = new V-Footer                             el:\.footer
-  ..latest          = new V-Latest                             el:\.view>.main
-  ..map             = new V-Map                                el:\.view>.map
-  ..map-edit        = new V.EditView template:T-MapEdit      , el:\.view>.map-edit
-  ..map-info        = new V.InfoView template:T-MapInfo      , el:\.view>.map-info
-  ..map-meta        = new V.InfoView template:T-Meta         , el:\.view>.map-meta
-  ..map-nodes-sel   = new V.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
-  ..map-toolbar     = new V-MapTBar                            el:\.view>.map-toolbar
-  ..maps            = new V.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
-  ..meta            = new V.InfoView template:T-Meta         , el:\.view>.meta
-  ..navbar          = new V-NavBar                             el:\.navigator
-  ..node            = new V.InfoView template:T-Node         , el:\.view>.main
-  ..node-edit       = new V.EditView template:T-NodeEdit     , el:\.view>.main
-  ..node-edges-a    = new V.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
-  ..node-edges-b    = new V.ListView template:T-NodeEdgesB   , el:\.view>.node-edges-b
-  ..node-edges-head = new V.InfoView template:T-EdgesHead    , el:\.view>.node-edges-head
-  ..nodes           = new V.ListView template:T-Nodes        , el:\.view>.nodes, opts:{ fetch:false }
-  ..nodes-head      = new V.InfoView template:T-NodesHead    , el:\.view>.main
-  ..note-edit       = new V.EditView template:T-NoteEdit     , el:\.view>.note-edit
-  ..notes           = new V.ListView template:T-Notes        , el:\.view>.notes
-  ..notes-head      = new V.InfoView template:T-NotesHead    , el:\.view>.notes-head
-  ..sys             = new V-Sys                                el:\.view>.main
-  ..user            = new V.InfoView template:T-User         , el:\.view>.main
-  ..user-edit       = new V.EditView template:T-UserEdit     , el:\.view>.main
-  ..user-signin     = new V.EditView template:T-UserSignin   , el:\.view>.main
-  ..user-signin-err = new V.InfoView template:T-UserSigninErr, el:\.view>.main, opts:{ query-string:true }
-  ..user-signout    = new V.InfoView template:''             , el:\.view>.main
-  ..user-signup     = new V.EditView template:T-UserEdit     , el:\.view>.main
-  ..users           = new V.ListView template:T-Users        , el:\.view>.users
-  ..version         = new V.InfoView template:T-Version      , el:\.view-version
+  ..doc-about       = new Vr.DocuView document:D-About        , el:\.view>.main
+  ..edge            = new Vr.InfoView template:T-Edge         , el:\.view>.main
+  ..edge-a-node-sel = new Vs.SelectView                         sel:\#a_node_id
+  ..edge-b-node-sel = new Vs.SelectView                         sel:\#b_node_id
+  ..edge-edit       = new Ve.EditView template:T-EdgeEdit     , el:\.view>.main
+  ..edges           = new Vr.ListView template:T-Edges        , el:\.view>.edges, opts:{ fetch:false }
+  ..edges-head      = new Vr.InfoView template:T-EdgesHead    , el:\.view>.main
+  ..evidence-edit   = new Ve.EditView template:T-EvidenceEdit , el:\.view>.evidence-edit
+  ..evidences       = new Vr.ListView template:T-Evidences    , el:\.view>.evidences
+  ..evidences-head  = new Vr.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
+  ..footer          = new V-Footer                              el:\.footer
+  ..latest          = new V-Latest                              el:\.view>.main
+  ..map             = new V-Map                                 el:\.view>.map
+  ..map-edit        = new Ve.EditView template:T-MapEdit      , el:\.view>.map-edit
+  ..map-info        = new Vr.InfoView template:T-MapInfo      , el:\.view>.map-info
+  ..map-meta        = new Vr.InfoView template:T-Meta         , el:\.view>.map-meta
+  ..map-nodes-sel   = new Vs.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
+  ..map-toolbar     = new V-MapTBar                             el:\.view>.map-toolbar
+  ..maps            = new Vr.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
+  ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
+  ..navbar          = new V-NavBar                              el:\.navigator
+  ..node            = new Vr.InfoView template:T-Node         , el:\.view>.main
+  ..node-edit       = new Ve.EditView template:T-NodeEdit     , el:\.view>.main
+  ..node-edges-a    = new Vr.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
+  ..node-edges-b    = new Vr.ListView template:T-NodeEdgesB   , el:\.view>.node-edges-b
+  ..node-edges-head = new Vr.InfoView template:T-EdgesHead    , el:\.view>.node-edges-head
+  ..nodes           = new Vr.ListView template:T-Nodes        , el:\.view>.nodes, opts:{ fetch:false }
+  ..nodes-head      = new Vr.InfoView template:T-NodesHead    , el:\.view>.main
+  ..note-edit       = new Ve.EditView template:T-NoteEdit     , el:\.view>.note-edit
+  ..notes           = new Vr.ListView template:T-Notes        , el:\.view>.notes
+  ..notes-head      = new Vr.InfoView template:T-NotesHead    , el:\.view>.notes-head
+  ..sys             = new V-Sys                                 el:\.view>.main
+  ..user            = new Vr.InfoView template:T-User         , el:\.view>.main
+  ..user-edit       = new Ve.EditView template:T-UserEdit     , el:\.view>.main
+  ..user-signin     = new Ve.EditView template:T-UserSignin   , el:\.view>.main
+  ..user-signin-err = new Vr.InfoView template:T-UserSigninErr, el:\.view>.main, opts:{ query-string:true }
+  ..user-signout    = new Vr.InfoView template:''             , el:\.view>.main
+  ..user-signup     = new Ve.EditView template:T-UserEdit     , el:\.view>.main
+  ..users           = new Vr.ListView template:T-Users        , el:\.view>.users
+  ..version         = new Vr.InfoView template:T-Version      , el:\.view-version
 
   ## helper functions
 
@@ -109,4 +111,4 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
     $ '.view>.alert-error' .addClass \active # reset back to default
 
     me.navbar.render!
-    V.ResetEditView!
+    Ve.ResetEditView!
