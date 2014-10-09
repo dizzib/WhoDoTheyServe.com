@@ -1,11 +1,11 @@
-B    = require \backbone
-_    = require \underscore
-Fac  = require \./_factory
-Api  = require \../api
-C    = require \../collection
-Hs   = require \../history
-Cons = require \../../lib/model-constraints
-W    = require \../../lib/when
+B   = require \backbone
+_   = require \underscore
+Fac = require \./_factory
+Api = require \../api
+C   = require \../collection
+Hs  = require \../history
+Con = require \../../lib/model-constraints
+W   = require \../../lib/when
 
 m = B.DeepModel.extend do
   urlRoot: Api.edges
@@ -53,12 +53,12 @@ m = B.DeepModel.extend do
     'a_is'     : required:yes
     'how'      :
       * required: no
-      * pattern : Cons.edge.how.regex
-        msg     : "How should be #{Cons.edge.how.info}"
+      * pattern : Con.edge.how.regex
+        msg     : "How should be #{Con.edge.how.info}"
     'when':
       * required: no
-      * pattern : Cons.edge.when.regex
-        msg     : "When should be #{Cons.edge.when.info}"
+      * pattern : Con.edge.when.regex
+        msg     : "When should be #{Con.edge.when.info}"
 
 _create = Fac.get-factory-method m
 m.create = ->

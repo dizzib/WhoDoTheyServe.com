@@ -3,6 +3,9 @@ Api    = require \./api
 Cons   = require \../lib/model-constraints
 M-Edge = require \./model/edge
 M-Evi  = require \./model/evidence
+M-Map  = require \./model/map
+M-Node = require \./model/node
+M-Note = require \./model/note
 
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
@@ -18,39 +21,13 @@ Model-hive = Model.extend do
 module.exports =
   Evidence: M-Evi
   Edge    : M-Edge
+  Map     : M-Map
+  Node    : M-Node
+  Note    : M-Note
 
   Hive:
     Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
     Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
-  Map: Model.extend do
-    urlRoot: Api.maps
-    validation:
-      'description':
-        * required: no
-        * pattern : Cons.map.description.regex
-          msg     : "Description should be #{Cons.map.description.info}"
-      'name':
-        * required: yes
-        * pattern : Cons.map.name.regex
-          msg     : "Name should be #{Cons.map.name.info}"
-      'when':
-        * required: no
-        * pattern : Cons.map.when.regex
-          msg     : "When should be #{Cons.map.when.info}"
-  Node: Model.extend do
-    urlRoot: Api.nodes
-    validation:
-      'name':
-        * required: yes
-        * pattern : Cons.node.name.regex
-          msg     : "Name should be #{Cons.node.name.info}"
-  Note: Model.extend do
-    urlRoot: Api.notes
-    validation:
-      'text':
-        * required: yes
-        * pattern : Cons.note.regex
-          msg     : "Note should be #{Cons.note.info}"
   Session: Model.extend do
     urlRoot: Api.sessions
     labels:
