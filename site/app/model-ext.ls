@@ -55,7 +55,20 @@ M.Evidence .= extend do
 
 M.Map .= extend do
   get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
-  has-been-fetched: -> @has \nodes
+  has-been-fetched: -> @has \entities
+  parse: ->
+    return it unless es = it.entities
+    it.entities = ents = # convert json to model instances for view/map
+      edges    : _.map es.edges    , -> new M.Edge it
+      evidences: _.map es.evidences, -> new M.Evidence it
+      nodes    : _.map es.nodes    , -> new M.Node it
+      notes    : _.map es.notes    , -> new M.Note it
+    # add entities to global collections
+    C.Nodes.set ents.nodes, remove:false # add nodes first so edge comparator can read node names
+    C.Edges.set ents.edges, remove:false
+    C.Evidences.set ents.evidences, remove:false
+    C.Notes.set ents.notes, remove:false
+    it
 
 M.Node .= extend do
   get-yyyy: ->

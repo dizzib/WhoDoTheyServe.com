@@ -2,7 +2,7 @@ C  = require \./collection
 E  = require \./entities
 H  = require \./helper
 Hs = require \./history
-Ma = require \./map
+Hm = require \./hive .Map
 M  = require \./model
 S  = require \./session
 V  = require \./view
@@ -17,11 +17,12 @@ module.exports =
     render-notes id, act
     Hs.set-edge edge
   edges: ->
-    <- Ma.fetch-default # try to show at least edges of default map
+    <- fetch-default-map # try to show at least nodes of default map
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
   map: ->
     function show m
+      V.map.map = m
       if is-sel-changed
         V.map.render!
         V.map-toolbar.reset!
@@ -36,9 +37,10 @@ module.exports =
       V.map-edit.show!
     is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show m if not is-sel-changed
-    err, m <- Ma.fetch it
-    return H.show-error err if err
-    show V.map.map = m
+    return show M.Map.create! unless it?
+    return H.show-error "Unable to get map #it" unless m = C.Maps.get it
+    return show m if m.has-been-fetched! # for speed, assume map unlikely to have changed in the db
+    m.fetch error:H.on-err, success:show
   node: (id, act, child-id) ->
     node <- fetch-entity C.Nodes, id, \actor
     V.node.render node, D.node
@@ -50,7 +52,7 @@ module.exports =
     render-notes id, act
     Hs.set-node-id id
   nodes: ->
-    <- Ma.fetch-default # try to show at least nodes of default map
+    <- fetch-default-map # try to show at least nodes of default map
     V.nodes-head.render!
     V.nodes.render C.Nodes, D.nodes
   user: ->
@@ -64,6 +66,10 @@ module.exports =
     render-user-entities id, V.notes, C.Notes, D.user-notes
 
 ## helpers
+
+function fetch-default-map cb
+  return cb! unless m = C.Maps.get Hm.default-id
+  m.fetch error:H.on-err, success:cb
 
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id

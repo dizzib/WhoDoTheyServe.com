@@ -1,5 +1,11 @@
+H = require \./helper
 M = require \./model
 
-module.exports =
+map = new (M.Hive.Map)!
+  ..on \sync, -> # set convenience properties
+    v = JSON.parse @get \value
+    @default-id = v.default?id
+
+module.exports = me =
   Evidences: new (M.Hive.Evidences)!
-  Map      : new (M.Hive.Map)!
+  Map      : map

@@ -2,10 +2,9 @@ B  = require \backbone
 Qs = require \querystring
 _  = require \underscore
 H  = require \./helper
-Hv = require \./hive
+Hm = require \./hive .Map
 C  = require \./collection
 F  = require \./fireprox
-Ma = require \./map
 M  = require \./model
 Mx = require \./model-ext
 V  = require \./view
@@ -55,7 +54,7 @@ Router = B.Router.extend do
   fireprox       : F.setup-url
   latest         : -> V.latest.render!
   map            : Vc.map
-  map_default    : -> Vc.map Ma.get-default-id!
+  map_default    : -> if id = Hm.default-id then Vc.map id else H.show-error 'Please set default map'
   node           : -> Vc.node ...
   node_edit      : -> V.node-edit.render (M.Node.create it), C.Nodes
   nodes          : Vc.nodes
