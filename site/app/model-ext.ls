@@ -8,12 +8,7 @@ W  = require \../lib/when
 
 # extend models with custom methods
 
-M.User .= extend do
-  get-is-admin: -> \admin is @get \role
-
-add-factory-method M.Note
 add-factory-method M.Session
-add-factory-method M.User
 
 # helpers
 
