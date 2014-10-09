@@ -1,8 +1,11 @@
+Ch = require \chai
 _  = require \lodash
 U  = require \util
 W  = require \wait.for
 H  = require \./_http
 ST = require \../state
+
+expect = Ch.expect
 
 module.exports = (entity-name) ->
 
@@ -20,7 +23,9 @@ module.exports = (entity-name) ->
       H.assert (res = H.get get-route key), is-ok
       return res unless is-ok
       throw new Error 'need > 0 fields to assert' unless fields
-      for k, v of fields then res.object[k].should.deep.equal v
+      for k, v of fields
+        o = res.object[k]
+        if k is \password then expect(o).to.not.exist else o.should.deep.equal v
       res
 
     update: function update key, is-ok, fields

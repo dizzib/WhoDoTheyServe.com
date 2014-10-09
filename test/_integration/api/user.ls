@@ -13,7 +13,6 @@ module.exports = U.get-spec create, read, c.update, c.remove, list
 function create handle, is-ok, fields then
   user =
     handle  : handle
-    password: \Pass1!
     email   : "#{handle}@domain.com"
   H.assert (res = H.post get-route!, _.extend user, fields), is-ok
   if H.is-ok res then
