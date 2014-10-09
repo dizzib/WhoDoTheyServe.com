@@ -1,12 +1,12 @@
 Bh  = require \backbone .history
-C   = require \./collection
-R   = require \./router
-Si  = require \./signin
-V   = require \./view
-Vee = require \./view/edge/edit
-Vev = require \./view/evidence
-Vue = require \./view/user/edit
-Vus = require \./view/user/signin
+C   = require \../collection
+R   = require \../router
+Si  = require \../signin
+V   = require \../view
+Vee = require \../view/edge/edit
+Vev = require \../view/evidence
+Vue = require \../view/user/edit
+Vus = require \../view/user/signin
 
 const KEYCODE-ESC = 27
 

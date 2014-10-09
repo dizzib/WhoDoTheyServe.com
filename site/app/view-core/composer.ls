@@ -5,7 +5,7 @@ Hv = require \../model/hive .instance
 Hs = require \../history
 S  = require \../session
 V  = require \../view
-D  = require \../view-directive
+D  = require \./directive
 
 M-Evi  = require \../model/evidence
 M-Map  = require \../model/map
