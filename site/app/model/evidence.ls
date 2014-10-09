@@ -1,7 +1,6 @@
 B   = require \backbone
 _   = require \underscore
 Api = require \../api
-C   = require \../collection
 Fac = require \./_factory
 
 const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
