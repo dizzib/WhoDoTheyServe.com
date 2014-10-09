@@ -16,9 +16,9 @@ E   = require \./entities
 H   = require \./helper
 Hi  = require \./hive
 M   = require \./model
+Sys = require \./model/sys .instance
 S   = require \./session
 Si  = require \./signin
-Sys = require \./sys
 V   = require \./view
 Vh  = require \./view-handler
 

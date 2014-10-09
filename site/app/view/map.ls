@@ -11,8 +11,8 @@ Ob  = require \./map/overlay/bil
 Os  = require \./map/overlay/slit
 P   = require \./map/pin
 H   = require \../helper
+Sys = require \../model/sys .instance
 S   = require \../session
-Sys = require \../sys
 V   = require \../view
 
 H.insert-css Fs.readFileSync __dirname + \/map.css

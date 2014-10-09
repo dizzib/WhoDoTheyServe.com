@@ -7,4 +7,8 @@ m = B.DeepModel.extend do
   ## core
   toJSON-T: -> @toJSON it
 
+m.instance = new m!
+  ..on \sync, -> # set convenience properties
+    @env = @get \env
+
 module.exports = m

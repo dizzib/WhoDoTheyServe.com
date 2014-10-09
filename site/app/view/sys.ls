@@ -2,7 +2,7 @@ B = require \backbone
 F = require \fs # inlined by brfs
 A = require \../api
 H = require \../helper
-S = require \../sys
+S = require \../model/sys .instance
 
 module.exports = B.View.extend do
   initialize: ->
