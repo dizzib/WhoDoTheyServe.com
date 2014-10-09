@@ -10,8 +10,6 @@ H.insert-css F.readFileSync __dirname + \/evidence.css
 
 const COMMAND-GET-URL = \content.location.href
 
-var ev-dead-ids
-
 module.exports =
   create: (entity-id, cb) ->
     url <- F.send-request COMMAND-GET-URL

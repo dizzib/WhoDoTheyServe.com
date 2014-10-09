@@ -20,10 +20,9 @@ evis = new m-evis!
   ..on \sync, -> # set convenience properties
     @dead-ids = @get-prop \dead-ids or []
 
-map  = new m-map!
+map = new m-map!
   ..on \sync, -> # set convenience properties
-    v = JSON.parse @get \value
-    @default-id = v.default?id
+    @default-id = (@get-prop \default)?id
 
 module.exports =
   Evidences: m-evis

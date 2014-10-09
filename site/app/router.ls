@@ -1,6 +1,4 @@
 B  = require \backbone
-Qs = require \querystring
-_  = require \underscore
 H  = require \./helper
 C  = require \./collection
 F  = require \./fireprox
@@ -21,7 +19,7 @@ Router = B.Router.extend do
     cb?apply this, args
     V.finalise!
   routes:
-    \__coverage        : coverage
+    \__coverage        : -> H.post-json '/coverage/client', window.__coverage__ # https://github.com/gotwarlost/istanbul-middleware
     ''                 : \map_default
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
@@ -71,8 +69,3 @@ Router = B.Router.extend do
   users          : -> V.users.render C.Users, Vd.users
 
 module.exports = new Router!
-
-## helpers
-
-function coverage # https://github.com/gotwarlost/istanbul-middleware
-  H.post-json '/coverage/client', window.__coverage__
