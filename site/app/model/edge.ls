@@ -1,11 +1,11 @@
 B   = require \backbone
 _   = require \underscore
-Fac = require \./_factory
+Con = require \../../lib/model-constraints
+W   = require \../../lib/when
 Api = require \../api
 C   = require \../collection
 Hs  = require \../history
-Con = require \../../lib/model-constraints
-W   = require \../../lib/when
+Fac = require \./_factory
 
 m = B.DeepModel.extend do
   urlRoot: Api.edges

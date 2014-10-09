@@ -3,6 +3,7 @@ Api    = require \./api
 Cons   = require \../lib/model-constraints
 M-Edge = require \./model/edge
 M-Evi  = require \./model/evidence
+M-Hive = require \./model/hive
 M-Map  = require \./model/map
 M-Node = require \./model/node
 M-Note = require \./model/note
@@ -10,24 +11,14 @@ M-Note = require \./model/note
 Model = B.DeepModel.extend do
   toJSON-T: (opts) -> @toJSON opts
 
-Model-hive = Model.extend do
-  get-prop: (name) ->
-    if json = @get \value then (JSON.parse json)[name] else void
-  set-prop: (name, value) ->
-    o = if json = @get \value then (JSON.parse json) else {}
-    if value? then o[name] = value else delete o[name]
-    @set \value, JSON.stringify o
-
 module.exports =
   Evidence: M-Evi
   Edge    : M-Edge
   Map     : M-Map
   Node    : M-Node
   Note    : M-Note
+  Hive    : M-Hive
 
-  Hive:
-    Evidences: Model-hive.extend urlRoot:"#{Api.hive}/evidences"
-    Map      : Model-hive.extend urlRoot:"#{Api.hive}/map"
   Session: Model.extend do
     urlRoot: Api.sessions
     labels:
