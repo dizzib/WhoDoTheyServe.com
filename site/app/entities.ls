@@ -1,5 +1,5 @@
 C  = require \./collection
-Hv = require \./hive
+Hv = require \./model/hive .instance
 
 is-loaded = false
 

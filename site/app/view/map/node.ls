@@ -1,7 +1,7 @@
 F  = require \fs
 _  = require \underscore
 H  = require \../../helper
-Hi = require \../../hive
+Hv = require \../../model/hive .instance
 
 const ICON-SIZE = 20
 
@@ -25,7 +25,7 @@ module.exports = me =
         .attr \text-anchor, \middle
         .text -> it.name
 
-    if icons = (JSON.parse Hi.Map.get \value).icons
+    if icons = (JSON.parse Hv.Map.get \value).icons
       for icon in icons
         g = svg.select "g.id_#{icon.id}"
         if icon.glyph

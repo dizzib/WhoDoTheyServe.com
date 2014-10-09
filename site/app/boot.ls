@@ -14,7 +14,6 @@ Api = require \./api
 C   = require \./collection
 E   = require \./entities
 H   = require \./helper
-Hi  = require \./hive
 Sys = require \./model/sys .instance
 S   = require \./session
 Si  = require \./signin

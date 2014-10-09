@@ -1,7 +1,7 @@
 F  = require \fs
 C  = require \../../collection
 H  = require \../../helper
-Hi = require \../../hive
+Hv = require \../../model/hive .instance
 R  = require \../../router
 V  = require \../../view
 
@@ -76,7 +76,7 @@ function init-error-alert
   V.map-edit.$el.find \.alert-error .addClass \active .hide!
 
 function load-is-default id
-  V.map-edit.$el.find \#is-default .prop \checked, id is (Hi.Map.get-prop \default)?id
+  V.map-edit.$el.find \#is-default .prop \checked, id is (Hv.Map.get-prop \default)?id
 
 function navigate
   R.navigate it, trigger:true
@@ -86,6 +86,6 @@ function render-dropdown
   V.map-nodes-sel.render C.Nodes, \name, _.pluck (map.get \nodes), \_id
 
 function save-is-default id
-  Hi.Map
+  Hv.Map
     ..set-prop \default, id:id
     ..save { error:H.on-err, success: -> log 'saved default map-id' }

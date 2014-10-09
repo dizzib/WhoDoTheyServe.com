@@ -3,8 +3,8 @@ _  = require \underscore
 C  = require \../collection
 F  = require \../fireprox
 H  = require \../helper
-Hv = require \../hive
-Mv = require \../model/evidence
+Me = require \../model/evidence
+Hv = require \../model/hive .instance
 
 H.insert-css F.readFileSync __dirname + \/evidence.css
 
@@ -16,7 +16,7 @@ module.exports =
   create: (entity-id, cb) ->
     url <- F.send-request COMMAND-GET-URL
     return cb! unless url
-    ev = Mv.create entity_id:entity-id, url:url
+    ev = Me.create entity_id:entity-id, url:url
     C.Evidences.create ev, { +merge, +wait, error:H.on-err, success:-> cb ok:true }
 
   init: ->

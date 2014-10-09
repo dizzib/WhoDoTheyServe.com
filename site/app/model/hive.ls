@@ -13,6 +13,19 @@ m = B.DeepModel.extend do
     if value? then o[name] = value else delete o[name]
     @set \value, JSON.stringify o
 
+m-evis = m.extend urlRoot:"#{Api.hive}/evidences"
+m-map  = m.extend urlRoot:"#{Api.hive}/map"
+
+evis = new m-evis!
+map  = new m-map!
+  ..on \sync, -> # set convenience properties
+    v = JSON.parse @get \value
+    @default-id = v.default?id
+
 module.exports =
-  Evidences: m.extend urlRoot:"#{Api.hive}/evidences"
-  Map      : m.extend urlRoot:"#{Api.hive}/map"
+  Evidences: m-evis
+  Map      : m-map
+
+  instance:
+    Evidences: evis
+    Map      : map

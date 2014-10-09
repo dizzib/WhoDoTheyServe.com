@@ -1,8 +1,8 @@
 C  = require \./collection
 E  = require \./entities
 H  = require \./helper
+Hv = require \./model/hive .instance
 Hs = require \./history
-Hm = require \./hive .Map
 S  = require \./session
 V  = require \./view
 D  = require \./view-directive
@@ -71,7 +71,7 @@ module.exports =
 ## helpers
 
 function fetch-default-map cb
-  return cb! unless m = C.Maps.get Hm.default-id
+  return cb! unless m = C.Maps.get Hv.Map.default-id
   m.fetch error:H.on-err, success:cb
 
 function fetch-entity coll, id, name, cb
