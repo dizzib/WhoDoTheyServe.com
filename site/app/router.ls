@@ -5,10 +5,14 @@ H  = require \./helper
 Hm = require \./hive .Map
 C  = require \./collection
 F  = require \./fireprox
-M  = require \./model
 V  = require \./view
 Vc = require \./view-composer
 Vd = require \./view-directive
+
+M-Edge = require \./model/edge
+M-Node = require \./model/node
+M-User = require \./model/user
+M-Sess = require \./model/session
 
 Router = B.Router.extend do
   execute: (cb, args, name) ->
@@ -48,22 +52,22 @@ Router = B.Router.extend do
     \*nomatch          : \map_default
   doc_about      : -> V.doc-about.render!
   edge           : -> Vc.edge ...
-  edge_edit      : -> V.edge-edit.render (M.Edge.create it), C.Edges
+  edge_edit      : -> V.edge-edit.render (M-Edge.create it), C.Edges
   edges          : Vc.edges
   fireprox       : F.setup-url
   latest         : -> V.latest.render!
   map            : Vc.map
   map_default    : -> if id = Hm.default-id then Vc.map id else H.show-error 'Please set default map'
   node           : -> Vc.node ...
-  node_edit      : -> V.node-edit.render (M.Node.create it), C.Nodes
+  node_edit      : -> V.node-edit.render (M-Node.create it), C.Nodes
   nodes          : Vc.nodes
   sys            : -> V.sys.render!
   user           : Vc.user
-  user_edit      : -> V.user-edit.render (M.User.create it), C.Users
-  user_signin    : -> V.user-signin.render M.Session.create!, C.Sessions
+  user_edit      : -> V.user-edit.render (M-User.create it), C.Users
+  user_signin    : -> V.user-signin.render M-Sess.create!, C.Sessions
   user_signin_err: -> V.user-signin-err.render it
   user_signout   : -> V.user-signout.render!
-  user_signup    : -> V.user-signup.render M.User.create!, C.Users
+  user_signup    : -> V.user-signup.render M-User.create!, C.Users
   users          : -> V.users.render C.Users, Vd.users
 
 module.exports = new Router!

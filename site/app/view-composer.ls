@@ -3,10 +3,13 @@ E  = require \./entities
 H  = require \./helper
 Hs = require \./history
 Hm = require \./hive .Map
-M  = require \./model
 S  = require \./session
 V  = require \./view
 D  = require \./view-directive
+
+M-Evi  = require \./model/evidence
+M-Map  = require \./model/map
+M-Note = require \./model/note
 
 module.exports =
   edge: (id, act, child-id) ->
@@ -37,7 +40,7 @@ module.exports =
       V.map-edit.show!
     is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show m if not is-sel-changed
-    return show M.Map.create! unless it?
+    return show M-Map.create! unless it?
     return H.show-error "Unable to get map #it" unless m = C.Maps.get it
     return show m if m.has-been-fetched! # for speed, assume map unlikely to have changed in the db
     m.fetch error:H.on-err, success:show
@@ -81,7 +84,7 @@ function fetch-entity coll, id, name, cb
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
   ev = C.Evidences.get id if act is \evi-edit
-  ev = M.Evidence.create!set \entity_id, entity-id if act is \evi-new
+  ev = M-Evi.create!set \entity_id, entity-id if act is \evi-new
   V.evidences-head.render void, D.evidences-head
   V.evidence-edit.render ev, C.Evidences, fetch:no if ev
   V.evidences.render evs, D.evidences unless act is \evi-new
@@ -89,7 +92,7 @@ function render-evidences entity-id, act, id
 function render-notes entity-id, act
   notes = C.Notes.find -> entity-id is it.get \entity_id
   note-by-signin =
-    if act is \note-new then M.Note.create!set \entity_id, entity-id
+    if act is \note-new then M-Note.create!set \entity_id, entity-id
     else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
   V.notes-head.render note-by-signin, D.notes-head
   V.note-edit.render note-by-signin, C.Notes, fetch:no if act in <[ note-edit note-new ]>
