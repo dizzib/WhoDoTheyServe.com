@@ -41,8 +41,7 @@ T-UserSigninErr = F.readFileSync __dirname + \/view/user/signin-error.html
 T-Users         = F.readFileSync __dirname + \/view/users.html
 T-Version       = F.readFileSync __dirname + \/view/version.html
 
-me = exports # not clear why refactoring to 'module.exports' breaks things
-  ## views
+module.exports
   ..doc-about       = new Vr.DocuView document:D-About        , el:\.view>.main
   ..edge            = new Vr.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new Vs.SelectView                         sel:\#a_node_id
@@ -83,32 +82,3 @@ me = exports # not clear why refactoring to 'module.exports' breaks things
   ..user-signup     = new Ve.EditView template:T-UserEdit     , el:\.view>.main
   ..users           = new Vr.ListView template:T-Users        , el:\.view>.users
   ..version         = new Vr.InfoView template:T-Version      , el:\.view-version
-
-  ## helper functions
-
-  ..finalise = ->
-    # use a delgated event since view may still be rendering asyncly
-    $ \.view .on \focus, 'input[type=text]', ->
-      # defer, to workaround Chrome mouseup bug
-      # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
-      _.defer ~> @select!
-    <- _.defer
-    $ \.btn-new:visible:first .focus!
-    $ \.view .addClass \ready
-    $ \.timeago .timeago!
-
-  ..reset = ->
-    $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
-
-    # handle view persistance -- some views (e.g. map) should not be cleared down, for performance
-    $ '.view>:not(.persist-once)' .hide!
-    $ '.view>:not(.persist-once,.persist)' .off! # so different views can use same element
-    $ '.view>:not(.persist-once,.persist)' .empty! # leave persistent views e.g. map
-    $ '.view>.persist-once' .removeClass \persist-once
-
-    # handle errors
-    $ '.alert-error' .removeClass \active    # clear any error alert location overrides
-    $ '.view>.alert-error' .addClass \active # reset back to default
-
-    me.navbar.render!
-    Ve.ResetEditView!

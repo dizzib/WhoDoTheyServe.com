@@ -6,6 +6,7 @@ Hs = require \../history
 S  = require \../session
 V  = require \../view
 D  = require \./directive
+Ui = require \./ui
 
 M-Evi  = require \../model/evidence
 M-Map  = require \../model/map
@@ -79,7 +80,7 @@ function fetch-entity coll, id, name, cb
   <- E.fetch-all # entity isn't in global cache so refresh gc and try again
   return H.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
-  V.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
+  Ui.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
