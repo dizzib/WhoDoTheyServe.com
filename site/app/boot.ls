@@ -14,6 +14,7 @@ Api = require \./api
 C   = require \./collection
 Cs  = require \./collections
 H   = require \./helper
+R   = require \./router
 S   = require \./session
 V   = require \./view
 Ve  = require \./view-handler/event
@@ -43,18 +44,15 @@ C.init do
   Session : M-Sess
 C.Sessions.fetch error:fail, success:init
 
-# helpers
+## helpers
 
 function alert type, xhr
   info   = "Unable to load #type entities.\n\n#{xhr.responseText}"
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#info\n\n#prompt" then window.location.reload!
 
-function fail coll, xhr
-  alert \core, xhr
-
-function fail-si coll, xhr
-  alert \signin, xhr
+function fail coll, xhr then alert \core, xhr
+function fail-si coll, xhr then alert \signin, xhr
 
 function init
   Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
@@ -64,13 +62,17 @@ function init
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
 
 function init-backbone
-  B.Model.prototype.idAttribute = \_id # mongodb
   _invalid = B.Validation.callbacks.invalid
+  B.Model.prototype.idAttribute = \_id # mongodb
   B.Validation
     ..configure labelFormatter:\label
     ..callbacks.invalid = ->
       _invalid ...
       H.show-error "One or more fields have errors. Please correct them before retrying."
+  B.on \signin, -> H.show-alert-once 'Welcome! You are now logged in'
+  B.on \signout, -> H.show-alert-once 'Goodbye! You are now logged out'
+  B.on \after-signin, -> R.navigate \user
+  B.on \after-signout, -> R.navigate \users
 
 function start
   B.history.start!

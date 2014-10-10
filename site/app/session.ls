@@ -1,12 +1,7 @@
-B = require \backbone
-C = require \./collection
-H = require \./helper
-
-B.on \signin, -> # can be triggered from boot
-  H.show-alert-once 'Welcome! You are now logged in'
-
-B.on \signout, ->
-  H.show-alert-once 'Goodbye! You are now logged out'
+B  = require \backbone
+C  = require \./collection
+Cs = require \./collections
+H  = require \./helper
 
 module.exports = me =
   auto-sync-el: ($el) ->
@@ -28,3 +23,23 @@ module.exports = me =
 
   refresh: (cb) ->
     C.Sessions.fetch error:H.on-err, success:cb
+
+  signin: ->
+    <- me.refresh
+    Cs.fetch-all ok, fail
+
+    function ok
+      B.trigger \signin
+      B.trigger \after-signin
+
+    function fail coll, xhr
+      alert "Unable to load entities.\n\n#{xhr.responseText}"
+      B.history.history.back!
+
+  signout: ->
+    return signout! unless m = C.Sessions.models.0
+    m.destroy error:H.on-err, success:signout
+
+    function signout
+      B.trigger \signout
+      B.trigger \after-signout

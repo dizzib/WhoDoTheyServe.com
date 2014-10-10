@@ -1,7 +1,7 @@
 Bh  = require \backbone .history
 C   = require \../collection
 R   = require \../router
-Si  = require \../signin
+S   = require \../session
 V   = require \../view
 Vee = require \../view/edge/edit
 Vev = require \../view/evidence
@@ -29,10 +29,10 @@ module.exports =
         ..on \cancelled, -> Bh.history.back!
         ..on \error    , -> Vus.toggle-please-wait false
         ..on \rendered , Vus.init
-        ..on \saved    , Si.signin
+        ..on \saved    , S.signin
         ..on \validated, -> Vus.toggle-please-wait true
       ..user-signout
-        ..on \rendered, Si.signout
+        ..on \rendered, S.signout
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> R.navigate "user/#{it.id}"
@@ -40,7 +40,7 @@ module.exports =
     add-entity-handlers V.edge-edit, \edge
     add-entity-handlers V.node-edit, \node
     add-sub-entity-handlers V.evidence-edit, \evi
-    add-sub-entity-handlers V.note-edit    , \note
+    add-sub-entity-handlers V.note-edit, \note
 
     ## helpers
 
