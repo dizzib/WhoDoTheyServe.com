@@ -14,8 +14,7 @@ module.exports =
       ..edge-edit
         ..on \rendered, Vee.init
       ..evidence-edit
-        ..on \rendered, ->
-          Fpx.get-browser-url (-> $ \#url .attr \value, it) unless $ \#url .attr \value
+        ..on \rendered, -> Fpx.get-browser-url (-> $ \#url .attr \value, it) if it.isNew!
       ..map-edit
         ..on \destroyed, -> R.navigate \user
         ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
