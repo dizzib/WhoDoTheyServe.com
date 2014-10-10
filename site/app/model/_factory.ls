@@ -1,4 +1,4 @@
-_ = require \lodash
+_ = require \underscore
 
 module.exports =
   get-factory-method: (model) ->
