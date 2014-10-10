@@ -6,6 +6,7 @@ Vs          = require \./view-activity/select
 V-Footer    = require \./view/footer
 V-Latest    = require \./view/latest
 V-Map       = require \./view/map
+V-MapEdit   = require \./view/map/edit # required for event initialise
 V-MapTBar   = require \./view/map/toolbar
 V-NavBar    = require \./view/navbar
 V-Sys       = require \./view/sys

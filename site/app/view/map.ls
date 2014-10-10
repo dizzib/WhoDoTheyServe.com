@@ -15,10 +15,12 @@ Sys = require \../model/sys .instance
 S   = require \../session
 V   = require \../view
 
-H.insert-css Fs.readFileSync __dirname + \/map.css
-
 const SIZE-NEW = 500px
 const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
+
+H.insert-css Fs.readFileSync __dirname + \/map.css
+
+B.on 'after-signin after-signout', -> delete V.map.map
 
 module.exports = B.View.extend do
   get-nodes-xy: ->
@@ -129,7 +131,7 @@ module.exports = B.View.extend do
     justify @
     _.defer ~> $window .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
 
-# helpers
+## helpers
 
 function on-tick
   N .on-tick!

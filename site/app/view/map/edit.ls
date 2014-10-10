@@ -1,15 +1,11 @@
+B  = require \backbone
 F  = require \fs
 C  = require \../../collection
 H  = require \../../helper
 Hv = require \../../model/hive .instance
-R  = require \../../router
 V  = require \../../view
 
-has-run = false
-
-module.exports.init = -> # should only run once on first signin
-  return if has-run
-
+B.once \after-signin, -> # should only run once on first signin
   H.insert-css F.readFileSync __dirname + \/edit.css
   # multi-select can't be browserified 'cos it references an adjacent png
   yepnope.injectCss \/lib-3p/multiple-select.css
@@ -18,7 +14,6 @@ module.exports.init = -> # should only run once on first signin
     ..on \destroyed, ->
       delete V.map.map
       V.navbar.render!
-      navigate \user
 
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
@@ -31,7 +26,6 @@ module.exports.init = -> # should only run once on first signin
       save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked
       V.navbar.render!
       init-error-alert!
-      navigate "map/#{map.id}" if is-new
 
     ..on \serialized, ->
       # save all selected nodes -- some may have been filtered out of the map in
@@ -60,32 +54,27 @@ module.exports.init = -> # should only run once on first signin
 
   C.Nodes.on 'add remove', render-dropdown
 
-  has-run := true
+  ## helpers
 
-# helpers
+  function disable-buttons
+    V.map-edit.$el.find \.btn .prop \disabled, true .addClass \disabled
 
-function disable-buttons
-  V.map-edit.$el.find \.btn .prop \disabled, true .addClass \disabled
+  function enable-buttons
+    V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
 
-function enable-buttons
-  V.map-edit.$el.find \.btn .prop \disabled, false .removeClass \disabled
+  function init-error-alert
+    # show errors on this form rather than in base view
+    $ \.alert-error .removeClass \active
+    V.map-edit.$el.find \.alert-error .addClass \active .hide!
 
-function init-error-alert
-  # show errors on this form rather than in base view
-  $ \.alert-error .removeClass \active
-  V.map-edit.$el.find \.alert-error .addClass \active .hide!
+  function load-is-default id
+    V.map-edit.$el.find \#is-default .prop \checked, id is (Hv.Map.get-prop \default)?id
 
-function load-is-default id
-  V.map-edit.$el.find \#is-default .prop \checked, id is (Hv.Map.get-prop \default)?id
+  function render-dropdown
+    return unless map = V.map.map # might not be initialised e.g. add node before edit map
+    V.map-nodes-sel.render C.Nodes, \name, _.pluck (map.get \nodes), \_id
 
-function navigate
-  R.navigate it, trigger:true
-
-function render-dropdown
-  return unless map = V.map.map # might not be initialised e.g. add node before edit map
-  V.map-nodes-sel.render C.Nodes, \name, _.pluck (map.get \nodes), \_id
-
-function save-is-default id
-  Hv.Map
-    ..set-prop \default, id:id
-    ..save { error:H.on-err, success: -> log 'saved default map-id' }
+  function save-is-default id
+    Hv.Map
+      ..set-prop \default, id:id
+      ..save { error:H.on-err, success: -> log 'saved default map-id' }

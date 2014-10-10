@@ -78,5 +78,5 @@ function start
   $ \.hide-during-boot .removeClass \hide-during-boot
 
 function start-signed-in
-  Si.after-signin!
+  B.trigger \after-signin
   start!

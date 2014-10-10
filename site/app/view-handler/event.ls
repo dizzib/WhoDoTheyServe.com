@@ -24,6 +24,9 @@ module.exports =
         ..on \destroyed, -> nav-extra-done \evi
         ..on \rendered ,    Vev.init
         ..on \saved    , -> nav-extra-done \evi
+      ..map-edit
+        ..on \destroyed, -> navigate \user
+        ..on \saved    , (map, is-new) -> navigate "map/#{map.id}" if is-new
       ..node-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed, -> navigate \nodes

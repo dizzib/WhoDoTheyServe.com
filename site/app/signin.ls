@@ -1,24 +1,17 @@
-Bh  = require \backbone .history
-C   = require \./collection
-E   = require \./entities
-H   = require \./helper
-R   = require \./router
-S   = require \./session
-V   = require \./view
-Vme = require \./view/map/edit
+B = require \backbone
+C = require \./collection
+E = require \./entities
+H = require \./helper
+R = require \./router
+S = require \./session
 
-module.exports = me =
-  after-signin: ->
-    H.show-alert-once 'Welcome! You are now logged in'
-    Vme.init!
-
+module.exports =
   signin: ->
     <- S.refresh
     E.fetch-all ok, fail
 
     function ok
-      clear-active-map!
-      me.after-signin!
+      B.trigger \after-signin
       R.navigate \user, trigger:true
 
     function fail coll, xhr
@@ -30,11 +23,5 @@ module.exports = me =
     m.destroy error:H.on-err, success:signout
 
     function signout
-      H.show-alert-once 'Goodbye! You are now logged out'
-      clear-active-map!
+      B.trigger \after-signout
       R.navigate \users, trigger:true
-
-## helpers
-
-function clear-active-map
-  delete V.map.map

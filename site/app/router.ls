@@ -13,7 +13,7 @@ M-Node = require \./model/node
 M-User = require \./model/user
 M-Sess = require \./model/session
 
-Router = B.Router.extend do
+r = B.Router.extend do
   execute: (cb, args, name) ->
     B.trigger \route-before
     Ui.reset!
@@ -69,4 +69,4 @@ Router = B.Router.extend do
   user_signup    : -> V.user-signup.render M-User.create!, C.Users
   users          : -> V.users.render C.Users, Vd.users
 
-module.exports = new Router!
+module.exports = new r!
