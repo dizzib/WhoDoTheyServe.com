@@ -116,7 +116,9 @@ function bundle path, fn-setup
       out = Fs.createWriteStream path
         ..on \finish, ->
           t = process.hrtime t0
-          G.say "Bundled #path (#{Math.floor out.bytesWritten/1024}k) in #{t.0}.#{t.1}s"
+          size = Math.floor out.bytesWritten/1024
+          G.say "Bundled #path (#{size}k) in #{t.0}.#{t.1}s"
+          G.alert "#path is too large!" if size > 200k
           cb!
         ..on \error, ->
           G.alert "Bundle error #it"
