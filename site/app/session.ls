@@ -2,10 +2,10 @@ B = require \backbone
 C = require \./collection
 H = require \./helper
 
-B.on \after-signin, -> # can be triggered from boot
+B.on \signin, -> # can be triggered from boot
   H.show-alert-once 'Welcome! You are now logged in'
 
-B.on \after-signout, ->
+B.on \signout, ->
   H.show-alert-once 'Goodbye! You are now logged out'
 
 module.exports = me =

@@ -1,5 +1,3 @@
-B = require \backbone
-
 const PROD-URL = \http://wdts10.eu01.aws.af.cm/api
 
 module.exports =

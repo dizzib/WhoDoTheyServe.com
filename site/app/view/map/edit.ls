@@ -5,7 +5,7 @@ H  = require \../../helper
 Hv = require \../../model/hive .instance
 V  = require \../../view
 
-B.once \after-signin, -> # should only run once on first signin
+B.once \signin, -> # should only run once on first signin
   H.insert-css F.readFileSync __dirname + \/edit.css
   # multi-select can't be browserified 'cos it references an adjacent png
   yepnope.injectCss \/lib-3p/multiple-select.css

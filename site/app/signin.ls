@@ -11,7 +11,7 @@ module.exports =
     Cs.fetch-all ok, fail
 
     function ok
-      B.trigger \after-signin
+      B.trigger \signin
       R.navigate \user
 
     function fail coll, xhr
@@ -23,5 +23,5 @@ module.exports =
     m.destroy error:H.on-err, success:signout
 
     function signout
-      B.trigger \after-signout
+      B.trigger \signout
       R.navigate \users

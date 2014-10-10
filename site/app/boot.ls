@@ -54,7 +54,7 @@ function fail coll, xhr
   alert \core, xhr
 
 function fail-si coll, xhr
-  alert \signed-in, xhr
+  alert \signin, xhr
 
 function init
   Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
@@ -77,5 +77,5 @@ function start
   $ \.hide-during-boot .removeClass \hide-during-boot
 
 function start-signed-in
-  B.trigger \after-signin
+  B.trigger \signin
   start!

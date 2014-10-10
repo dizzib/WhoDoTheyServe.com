@@ -20,7 +20,7 @@ const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 
 H.insert-css Fs.readFileSync __dirname + \/map.css
 
-B.on 'after-signin after-signout', -> delete V.map.map
+B.on 'signin signout', -> delete V.map.map
 
 module.exports = B.View.extend do
   get-nodes-xy: ->
