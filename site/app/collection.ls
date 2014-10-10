@@ -17,9 +17,8 @@ c = B.Collection.extend do
   toJSON-T: (opts) ->
     @map (m) -> if m.toJSON-T then m.toJSON-T opts else m.toJSON opts
 
-# For performance and flexibility, models can require collections which means we
-# cannot require the models here or we'd get circular refs.
-# Therefore models are dependency injected here.
+# For performance and flexibility, models can require collections which means we can't
+# require models here or we'd get circular refs. Therefore models are dependency injected.
 module.exports.init = (models) ->
   edges = c.extend do
     url       : Api.edges
