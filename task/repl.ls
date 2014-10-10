@@ -52,7 +52,7 @@ const FLAGS-DEFAULT =
   autorun-tests: true
   test-coverage: false
   site-logging : false
-  run-tests    : all:true api:true app:true
+  run-tests    : api:true app:true
 
 init-shelljs!
 cd DirBld.DEV # for safety, set working directory to dev build
@@ -123,7 +123,6 @@ function save-flags
 
 function show-help
   flag-vals =
-    all: get-run-tests-desc \all
     api: get-run-tests-desc \api
     app: get-run-tests-desc \app
     sl : get-flag-desc flags.site-logging
