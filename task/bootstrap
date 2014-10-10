@@ -6,6 +6,13 @@ lsc -o $DEV/task -c task/*.ls
 lsc -o $DEV/task/maint -c task/maint/*.ls
 lsc -o $DEV -c package.json.ls
 
+# for some task dependencies
+lsc -o $DEV/site/api -c site/api/*.ls
+lsc -o $DEV/site/api/model -c site/api/model/*.ls
+
+# npm dependencies
 cd $DEV
 npm install
 npm prune
+
+echo "Done!"
