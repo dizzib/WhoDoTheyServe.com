@@ -12,7 +12,7 @@ module.exports =
 
     function ok
       B.trigger \after-signin
-      R.navigate \user, trigger:true
+      R.navigate \user
 
     function fail coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
@@ -24,4 +24,4 @@ module.exports =
 
     function signout
       B.trigger \after-signout
-      R.navigate \users, trigger:true
+      R.navigate \users

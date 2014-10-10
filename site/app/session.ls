@@ -2,7 +2,7 @@ B = require \backbone
 C = require \./collection
 H = require \./helper
 
-B.on \after-signin, ->
+B.on \after-signin, -> # can be triggered from boot
   H.show-alert-once 'Welcome! You are now logged in'
 
 B.on \after-signout, ->

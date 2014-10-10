@@ -16,7 +16,7 @@ module.exports =
     V
       ..edge-edit
         ..on \cancelled, -> Bh.history.back!
-        ..on \destroyed, -> navigate \edges
+        ..on \destroyed, -> R.navigate \edges
         ..on \rendered ,    Vee.init
         ..on \saved    , -> nav-entity-saved \edge, &0, &1
       ..evidence-edit
@@ -25,11 +25,11 @@ module.exports =
         ..on \rendered ,    Vev.init
         ..on \saved    , -> nav-extra-done \evi
       ..map-edit
-        ..on \destroyed, -> navigate \user
-        ..on \saved    , (map, is-new) -> navigate "map/#{map.id}" if is-new
+        ..on \destroyed, -> R.navigate \user
+        ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
       ..node-edit
         ..on \cancelled, -> Bh.history.back!
-        ..on \destroyed, -> navigate \nodes
+        ..on \destroyed, -> R.navigate \nodes
         ..on \rendered , -> $ \#name .typeahead source:C.Nodes.pluck \name
         ..on \saved    , -> nav-entity-saved \node, &0, &1
       ..note-edit
@@ -40,7 +40,7 @@ module.exports =
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed,    Vue.after-delete
         ..on \rendered ,    Vue.init
-        ..on \saved    , -> navigate "user/#{it.id}"
+        ..on \saved    , -> R.navigate "user/#{it.id}"
       ..user-signin
         ..on \cancelled, -> Bh.history.back!
         ..on \error    , -> Vus.toggle-please-wait false
@@ -51,17 +51,15 @@ module.exports =
         ..on \rendered ,    Si.signout
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
-        ..on \saved    , -> navigate "user/#{it.id}"
+        ..on \saved    , -> R.navigate "user/#{it.id}"
 
     # helpers
 
-    function navigate then R.navigate it, trigger:true
-
     function nav-entity-saved name, entity, is-new
       return nav! unless is-new
-      function nav path = '' then navigate "#name/#{entity.id}#path"
+      function nav path = '' then R.navigate "#name/#{entity.id}#path"
       <- Vev.create entity.id
       return nav if it?ok then '' else '/evi-new'
 
     function nav-extra-done name
-      navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
+      R.navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''

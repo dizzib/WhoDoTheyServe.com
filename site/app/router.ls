@@ -13,6 +13,9 @@ M-Node = require \./model/node
 M-User = require \./model/user
 M-Sess = require \./model/session
 
+_navigate = B.Router.prototype.navigate
+B.Router.prototype.navigate = -> _navigate it, trigger:true
+
 r = B.Router.extend do
   execute: (cb, args, name) ->
     B.trigger \route-before

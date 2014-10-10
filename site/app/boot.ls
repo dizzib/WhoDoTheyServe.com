@@ -15,7 +15,6 @@ C   = require \./collection
 E   = require \./entities
 H   = require \./helper
 S   = require \./session
-Si  = require \./signin
 V   = require \./view
 Ve  = require \./view-handler/event
 
