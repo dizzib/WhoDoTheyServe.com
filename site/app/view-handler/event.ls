@@ -1,10 +1,10 @@
 Bh  = require \backbone .history
 C   = require \../collection
+Fpx = require \../fireprox
 R   = require \../router
 S   = require \../session
 V   = require \../view
 Vee = require \../view/edge/edit
-Vev = require \../view/evidence
 Vue = require \../view/user/edit
 Vus = require \../view/user/signin
 
@@ -14,7 +14,8 @@ module.exports =
       ..edge-edit
         ..on \rendered, Vee.init
       ..evidence-edit
-        ..on \rendered, Vev.init
+        ..on \rendered, ->
+          Fpx.get-browser-url (-> $ \#url .attr \value, it) unless $ \#url .attr \value
       ..map-edit
         ..on \destroyed, -> R.navigate \user
         ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
@@ -51,7 +52,7 @@ module.exports =
         ..on \saved, (o, is-new) ->
           function nav path = '' then R.navigate "#name/#{o.id}#path"
           return nav! unless is-new
-          <- Vev.create o.id
+          <- C.Evidences.auto-create o.id
           return nav if it?ok then '' else '/evi-new'
 
     function add-sub-entity-handlers view, name

@@ -1,11 +1,10 @@
-# fireprox helps automate input of evidence urls
-# https://github.com/dizzib/fireprox
+# https://github.com/dizzib/fireprox helps automate input of evidence urls
 H = require \./helper
 
 const STORE-KEY = \fireprox-url
 
 module.exports =
-  setup-url: ->
+  configure: ->
     return console.error 'localStorage not supported' unless localStorage
     url = prompt 'Fireprox url', localStorage.getItem STORE-KEY
     return if url is null
@@ -14,11 +13,16 @@ module.exports =
     else
       localStorage.removeItem STORE-KEY
 
-  send-request: (command, cb) ->
-    return cb! unless url = localStorage?getItem STORE-KEY
-    $.ajax "#{url}/#{command}",
-      error: ->
-        H.on-err ...
-        cb!
-      success: ->
-        cb /^\"?(.*)\"$/.exec(it)?1
+  get-browser-url: (cb) ->
+    send-request \content.location.href, cb
+
+## helpers
+
+function send-request command, cb
+  return cb! unless url = localStorage?getItem STORE-KEY
+  $.ajax "#{url}/#{command}",
+    error: ->
+      H.on-err ...
+      cb!
+    success: ->
+      cb /^\"?(.*)\"$/.exec(it)?1
