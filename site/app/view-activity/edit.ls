@@ -1,8 +1,8 @@
 B = require \backbone
 T = require \transparency
 _ = require \underscore
-H = require \../../helper
-S = require \../../session
+H = require \../helper
+S = require \../session
 
 const CLASS-EDITING = \editing
 

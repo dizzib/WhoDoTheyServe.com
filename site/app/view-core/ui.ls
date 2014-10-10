@@ -1,6 +1,6 @@
 _  = require \underscore
 V  = require \../view
-Ve = require \./activity/edit
+Ve = require \../view-activity/edit
 
 module.exports =
   finalise: ->
