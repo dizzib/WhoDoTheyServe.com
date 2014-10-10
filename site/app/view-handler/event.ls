@@ -8,11 +8,8 @@ Vev = require \../view/evidence
 Vue = require \../view/user/edit
 Vus = require \../view/user/signin
 
-const KEYCODE-ESC = 27
-
 module.exports =
   init: ->
-    $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
     V
       ..edge-edit
         ..on \rendered, Vee.init
@@ -22,7 +19,7 @@ module.exports =
         ..on \destroyed, -> R.navigate \user
         ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
       ..node-edit
-        ..on \rendered , -> $ \#name .typeahead source:C.Nodes.pluck \name
+        ..on \rendered, -> $ \#name .typeahead source:C.Nodes.pluck \name
       ..user-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed, Vue.after-delete
@@ -35,7 +32,7 @@ module.exports =
         ..on \saved    , Si.signin
         ..on \validated, -> Vus.toggle-please-wait true
       ..user-signout
-        ..on \rendered , Si.signout
+        ..on \rendered, Si.signout
       ..user-signup
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> R.navigate "user/#{it.id}"

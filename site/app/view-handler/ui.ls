@@ -2,6 +2,10 @@ _  = require \underscore
 V  = require \../view
 Ve = require \../view-activity/edit
 
+const KEYCODE-ESC = 27
+
+$ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
+
 module.exports =
   finalise: ->
     # use a delgated event since view may still be rendering asyncly
