@@ -1,8 +1,8 @@
 B = require \backbone
 Q = require \querystring # browserified
 T = require \transparency
-H = require \../helper
-S = require \../session
+H = require \../../helper
+S = require \../../session
 
 module.exports =
   DocuView: B.View.extend do

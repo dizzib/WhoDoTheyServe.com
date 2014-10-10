@@ -1,8 +1,8 @@
 F           = require \fs # browserified
 H           = require \./helper
-Ve          = require \./view-activity/edit
-Vr          = require \./view-activity/read
-Vs          = require \./view-activity/select
+Ve          = require \./view-core/activity/edit
+Vr          = require \./view-core/activity/read
+Vs          = require \./view-core/activity/select
 V-Footer    = require \./view/footer
 V-Latest    = require \./view/latest
 V-Map       = require \./view/map
