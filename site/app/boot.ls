@@ -12,7 +12,7 @@ B   = require \backbone
 F   = require \fs # inlined by brfs
 Api = require \./api
 C   = require \./collection
-E   = require \./entities
+Cs  = require \./collections
 H   = require \./helper
 S   = require \./session
 V   = require \./view
@@ -57,8 +57,8 @@ function fail-si coll, xhr
   alert \signed-in, xhr
 
 function init
-  E.fetch-core (-> E.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
-  E.fetch-core start, fail unless S.is-signed-in!
+  Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
+  Cs.fetch-core start, fail unless S.is-signed-in!
   Ve.init!
   V.footer.render!
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys

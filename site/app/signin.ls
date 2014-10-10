@@ -1,14 +1,14 @@
-B = require \backbone
-C = require \./collection
-E = require \./entities
-H = require \./helper
-R = require \./router
-S = require \./session
+B  = require \backbone
+C  = require \./collection
+Cs = require \./collections
+H  = require \./helper
+R  = require \./router
+S  = require \./session
 
 module.exports =
   signin: ->
     <- S.refresh
-    E.fetch-all ok, fail
+    Cs.fetch-all ok, fail
 
     function ok
       B.trigger \after-signin

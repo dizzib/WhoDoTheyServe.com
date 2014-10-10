@@ -1,17 +1,17 @@
-B = require \backbone
-_ = require \underscore
-F = require \fs # browserified
-C = require \../collection
-E = require \../entities
-H = require \../helper
-S = require \../session
-D = require \../view-handler/directive
+B  = require \backbone
+_  = require \underscore
+F  = require \fs # browserified
+C  = require \../collection
+Cs = require \../collections
+H  = require \../helper
+S  = require \../session
+D  = require \../view-handler/directive
 
 T-Latest = F.readFileSync __dirname + \/latest.html
 
 module.exports = B.View.extend do
   render: ->
-    <~ E.fetch-all # ensure all entities are loaded
+    <~ Cs.fetch-all # ensure all entities are loaded
     @$el.html render-latest! .show!
 
     function render-latest
@@ -34,6 +34,6 @@ module.exports = B.View.extend do
       ($t = $ T-Latest).render items:latest, directive
       $t
 
-# helpers
+## helpers
 
 function get-json coll, type then _.map coll.models, (x) -> _.extend x.toJSON-T!, type:type

@@ -1,5 +1,5 @@
 C  = require \../collection
-E  = require \../entities
+Cs = require \../collections
 H  = require \../helper
 Hv = require \../model/hive .instance
 Hs = require \../history
@@ -62,7 +62,7 @@ module.exports =
   user: ->
     V.user.render user = C.Users.get(id = it or C.Sessions.models.0?id), D.user
     V.meta.render user, D.meta
-    <- E.fetch-all # all entities must be loaded for subsequent filtering
+    <- Cs.fetch-all # all entities must be loaded for subsequent filtering
     render-user-entities id, V.maps, C.Maps, D.map
     render-user-entities id, V.edges, C.Edges, D.edges
     render-user-entities id, V.evidences, C.Evidences, D.user-evidences
@@ -77,7 +77,7 @@ function fetch-default-map cb
 
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
-  <- E.fetch-all # entity isn't in global cache so refresh gc and try again
+  <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
   return H.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
   Ui.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
