@@ -20,10 +20,7 @@ module.exports =
         ..on \rendered ,    Vee.init
         ..on \saved    , -> nav-entity-saved \edge, &0, &1
       ..evidence-edit
-        ..on \cancelled, -> nav-extra-done \evi
-        ..on \destroyed, -> nav-extra-done \evi
         ..on \rendered ,    Vev.init
-        ..on \saved    , -> nav-extra-done \evi
       ..map-edit
         ..on \destroyed, -> R.navigate \user
         ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
@@ -32,10 +29,6 @@ module.exports =
         ..on \destroyed, -> R.navigate \nodes
         ..on \rendered , -> $ \#name .typeahead source:C.Nodes.pluck \name
         ..on \saved    , -> nav-entity-saved \node, &0, &1
-      ..note-edit
-        ..on \cancelled, -> nav-extra-done \note
-        ..on \destroyed, -> nav-extra-done \note
-        ..on \saved    , -> nav-extra-done \note
       ..user-edit
         ..on \cancelled, -> Bh.history.back!
         ..on \destroyed,    Vue.after-delete
@@ -53,13 +46,17 @@ module.exports =
         ..on \cancelled, -> Bh.history.back!
         ..on \saved    , -> R.navigate "user/#{it.id}"
 
-    # helpers
+    add-sub-entity-handlers V.evidence-edit, \evi
+    add-sub-entity-handlers V.note-edit    , \note
+
+    ## helpers
+
+    function add-sub-entity-handlers view, name
+      view.on 'cancelled destroyed saved', ->
+        R.navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
 
     function nav-entity-saved name, entity, is-new
-      return nav! unless is-new
       function nav path = '' then R.navigate "#name/#{entity.id}#path"
+      return nav! unless is-new
       <- Vev.create entity.id
       return nav if it?ok then '' else '/evi-new'
-
-    function nav-extra-done name
-      R.navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
