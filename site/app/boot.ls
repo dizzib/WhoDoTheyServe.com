@@ -17,7 +17,7 @@ H   = require \./helper
 S   = require \./session
 Si  = require \./signin
 V   = require \./view
-Veh = require \./view-core/event-handler
+Ve  = require \./view-handler/event
 
 M-Edge = require \./model/edge
 M-Evi  = require \./model/evidence
@@ -60,7 +60,7 @@ function fail-si coll, xhr
 function init
   E.fetch-core (-> E.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   E.fetch-core start, fail unless S.is-signed-in!
-  Veh.init!
+  Ve.init!
   V.footer.render!
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
 

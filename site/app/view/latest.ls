@@ -5,7 +5,7 @@ C = require \../collection
 E = require \../entities
 H = require \../helper
 S = require \../session
-D = require \../view-core/directive
+D = require \../view-handler/directive
 
 T-Latest = F.readFileSync __dirname + \/latest.html
 
