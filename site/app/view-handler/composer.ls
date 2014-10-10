@@ -1,8 +1,8 @@
+B  = require \backbone
 C  = require \../collection
 Cs = require \../collections
 H  = require \../helper
 Hv = require \../model/hive .instance
-Hs = require \../history
 S  = require \../session
 V  = require \../view
 D  = require \./directive
@@ -19,7 +19,7 @@ module.exports =
     V.meta.render edge, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    Hs.set-edge edge
+    B.tracker.edge = edge
   edges: ->
     <- fetch-default-map # try to show at least nodes of default map
     V.edges-head.render!
@@ -54,7 +54,7 @@ module.exports =
     V.meta.render node, D.meta
     render-evidences id, act, child-id
     render-notes id, act
-    Hs.set-node-id id
+    B.tracker.node-ids.push id
   nodes: ->
     <- fetch-default-map # try to show at least nodes of default map
     V.nodes-head.render!

@@ -4,7 +4,6 @@ Con = require \../../lib/model-constraints
 W   = require \../../lib/when
 Api = require \../api
 C   = require \../collection
-Hs  = require \../history
 Fac = require \./_factory
 
 m = B.DeepModel.extend do
@@ -63,10 +62,10 @@ m = B.DeepModel.extend do
 _create = Fac.get-factory-method m
 m.create = ->
   o = _create it
-  unless it # auto-populate new edge with 2 last nodes
-    o.set \a_node_id, Hs.get-node-id 0
-    o.set \b_node_id, Hs.get-node-id 1
-    if (edge = Hs.get-edge!) then o.set \how, edge.get \how
+  if o.isNew! # auto-populate new edge
+    o.set \a_node_id, B.tracker.node-ids[*-1]
+    o.set \b_node_id, B.tracker.node-ids[*-2]
+    o.set \how, B.tracker.edge?get \how
   o
 
 module.exports = m

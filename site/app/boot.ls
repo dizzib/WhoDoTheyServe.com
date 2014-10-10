@@ -73,6 +73,7 @@ function init-backbone
   B.on \signout, -> H.show-alert-once 'Goodbye! You are now logged out'
   B.on \after-signin, -> R.navigate \user
   B.on \after-signout, -> R.navigate \users
+  B.tracker = edge:void, node-ids:[] # keep track of last edited entities
 
 function start
   B.history.start!
