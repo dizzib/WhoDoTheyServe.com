@@ -120,10 +120,11 @@ function bundle path, fn-setup
           G.say "Bundled #path (#{size}k) in #{t.0}.#{t.1}s"
           G.alert "#path is too large!" if size > 200k
           cb!
+      b.bundle detectGlobals:false, insertGlobals:false
         ..on \error, ->
-          G.alert "Bundle error #it"
-          cb it
-      b.bundle detectGlobals:false, insertGlobals:false .pipe out
+          G.alert "Bundle error: #{it.message}"
+          cb!
+        ..pipe out
   finally
     popd!
 
