@@ -6,5 +6,3 @@ module.exports =
   Authenticate: class AuthenticateError extends ApiError
 
   AuthenticateRequired: class AuthenticateRequiredError extends ApiError
-    ->
-      @message ||= 'signin required'

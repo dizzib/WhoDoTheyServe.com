@@ -19,7 +19,9 @@ module.exports = me =
 
   on-err: (coll, xhr) ->
     const MSG = 'An error occurred (check the debug console for more details)'
-    me.show-error xhr.responseText || MSG
+    return me.show-error MSG unless xhr.status
+    return me.show-error 'Please login' if xhr.status is 401
+    me.show-error xhr.responseText
 
   show-error: ->
     # The .active class can be used to override the default error alert location

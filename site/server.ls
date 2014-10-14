@@ -53,7 +53,7 @@ function get-validation-msg err
   function iterator memo, err then memo + "#{err.message}\n"
 
 function handle-error err, req, res, next
-  if err instanceof Err.AuthenticateRequired then return res.send HttpCode.UNAUTHORIZED
+  if err instanceof Err.AuthenticateRequired then return res.send HttpCode.UNAUTHORIZED, err.message
   if err instanceof Err.Authenticate
     return res.redirect "http://#{H.get-host-site!}/#/user/signin/error?error_description=#{err.message}"
   msg = switch
