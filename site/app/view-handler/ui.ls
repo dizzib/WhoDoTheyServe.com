@@ -33,3 +33,6 @@ module.exports =
 
     V.navbar.render!
     Ve.ResetEditView!
+
+  show-alert-once: (msg) ->
+    $ '.view>.alert-info' .addClass \persist-once .text msg .show!
