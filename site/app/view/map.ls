@@ -12,8 +12,6 @@ Os  = require \./map/overlay/slit
 P   = require \./map/pin
 H   = require \../helper
 Sys = require \../model/sys .instance
-S   = require \../session
-V   = require \../view
 
 const SIZE-NEW = 500px
 const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
