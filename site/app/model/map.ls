@@ -18,7 +18,6 @@ m = B.DeepModel.extend do
 
   ## extensions
   get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
-  has-been-fetched: -> @has \entities
   parse: ->
     return it unless es = it.entities
     it.entities = ents = # convert json to model instances for view/map

@@ -43,7 +43,6 @@ module.exports =
     return show m if not is-sel-changed
     return show M-Map.create! unless it?
     return H.show-error "Unable to get map #it" unless m = C.Maps.get it
-    return show m if m.has-been-fetched! # for speed, assume map unlikely to have changed in the db
     m.fetch error:H.on-err, success:show
   node: (id, act, child-id) ->
     node <- fetch-entity C.Nodes, id, \actor
