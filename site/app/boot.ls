@@ -70,10 +70,12 @@ function init-backbone
     ..callbacks.invalid = ->
       _invalid ...
       H.show-error "One or more fields have errors. Please correct them before retrying."
-  B.on \signin, -> Vui.show-alert-once 'Welcome! You are now logged in'
-  B.on \signout, -> Vui.show-alert-once 'Goodbye! You are now logged out'
-  B.on \after-signin, -> R.navigate \user
-  B.on \after-signout, -> R.navigate \users
+  B.on \after-signin, ->
+    Vui.show-alert-once 'Welcome! You are now logged in'
+    R.navigate \user
+  B.on \after-signout, ->
+    Vui.show-alert-once 'Goodbye! You are now logged out'
+    R.navigate \users
   B.tracker = edge:void, node-ids:[] # keep track of last edited entities
 
 function start

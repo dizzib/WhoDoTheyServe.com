@@ -1,6 +1,4 @@
 _  = require \underscore
-V  = require \../view
-Ve = require \../view-activity/edit
 
 const KEYCODE-ESC = 27
 
@@ -30,9 +28,6 @@ module.exports =
     # handle errors
     $ '.alert-error' .removeClass \active    # clear any error alert location overrides
     $ '.view>.alert-error' .addClass \active # reset back to default
-
-    V.navbar.render!
-    Ve.ResetEditView!
 
   show-alert-once: (msg) ->
     $ '.view>.alert-info' .addClass \persist-once .text msg .show!

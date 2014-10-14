@@ -20,8 +20,6 @@ const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 
 H.insert-css Fs.readFileSync __dirname + \/map.css
 
-B.on 'signin signout', -> delete V.map.map
-
 module.exports = B.View.extend do
   get-nodes-xy: ->
     _.map @d3f.nodes!, ->

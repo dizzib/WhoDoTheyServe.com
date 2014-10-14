@@ -20,9 +20,8 @@ B.Router.prototype.navigate = -> _navigate it, trigger:true
 r = B.Router.extend do
   execute: (cb, args, name) ->
     B.trigger \route-before
-    Ui.reset!
     cb?apply this, args
-    Ui.finalise!
+    B.trigger \route-after
   routes:
     \__coverage        : A.post-coverage
     ''                 : \map_default

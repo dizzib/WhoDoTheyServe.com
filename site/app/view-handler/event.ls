@@ -1,15 +1,28 @@
+B   = require \backbone
 Bh  = require \backbone .history
 C   = require \../collection
 Fpx = require \../fireprox
 R   = require \../router
 S   = require \../session
 V   = require \../view
+Vae = require \../view-activity/edit
 Vee = require \../view/edge/edit
 Vue = require \../view/user/edit
 Vus = require \../view/user/signin
+Vui = require \./ui
 
 module.exports =
   init: ->
+    B
+      ..on 'route-before', ->
+        Vui.reset!
+      ..on 'route-after', ->
+        Vae.ResetEditView!
+        Vui.finalise!
+        V.navbar.render!
+      ..on 'signin signout', ->
+        delete V.map.map
+        V.navbar.render!
     V
       ..edge-edit
         ..on \rendered, Vee.init
