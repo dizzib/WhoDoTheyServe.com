@@ -16,6 +16,6 @@ module.exports =
     next!
 
   delete: (req, res, next) ->
-    return next new Error 'signin required' unless si = req.session.signin
+    return next new Err.AuthenticateRequired unless si = req.session.signin
     return next new Error 'signin mismatch' unless req.id is si.id
     next!

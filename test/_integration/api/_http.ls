@@ -1,4 +1,5 @@
 Should = require \chai .should!
+Expect = require \chai .expect
 R      = require \request
 W      = require \wait.for
 ST     = require \../state
@@ -31,7 +32,7 @@ module.exports = me =
 
   list: (route, n) ->
     me.assert res = W.for me.get, route
-    Should.exist list = res.object
+    Expect(list = res.object).to.exist
     list.length.should.equal n
     list
 
@@ -44,15 +45,15 @@ module.exports = me =
     loc = res.headers.location.split \? .0
     loc.should.equal path
 
-  is-err: -> it.statusCode is 500
+  is-err: -> it.statusCode in [401, 500]
 
   is-ok: -> it.statusCode is 200
 
   is-redirect: -> it.statusCode is 302
 
-  ok: -> assert-result it, 200
+  ok: -> assert-result it, [200]
 
-  err: -> assert-result it, 500
+  err: -> assert-result it, [401, 500]
 
 ## helpers
 
@@ -61,7 +62,7 @@ function standardise cb then (err, resp, body) ->
 
 function url path then "http://localhost:#{process.env.SITE_PORT}/api/#{path}"
 
-function assert-result res, status-code-expect
+function assert-result res, status-codes-expect
   # log failure to console.error so test runner can respond accordingly
-  console.error res.body unless res.statusCode is status-code-expect
-  res.statusCode.should.equal status-code-expect
+  console.error res.body unless res.statusCode in status-codes-expect
+  Expect(status-codes-expect).to.include res.statusCode

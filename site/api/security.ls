@@ -4,13 +4,13 @@ M-Users = require \./model/users
 
 module.exports =
   admin: (req, res, next) ->
-    return next new Error 'signin required' unless si = req.session.signin
+    return next new Err.AuthenticateRequired unless si = req.session.signin
     return next! if si.role is \admin
-    return next new Error 'admin signin required'
+    return next new Err.AuthenticateRequired 'admin signin required'
 
   create: (Model) ->
     (req, res, next) ->
-      return next new Error 'signin required' unless si = req.session.signin
+      return next new Err.AuthenticateRequired unless si = req.session.signin
 
       ## check user isn't too prolific (sign of malicious hack perhaps?)
       err, user <- M-Users.findById si.id
@@ -35,6 +35,6 @@ module.exports =
       err, doc <- Model.findOne _id:req.id
       return next err if err
       return next new Error "entity #{req.id} not found for update/delete" unless doc
-      return next new Error 'signin required' unless si = req.session.signin
+      return next new Err.AuthenticateRequired unless si = req.session.signin
       return next! if doc.meta.create_user_id is si.id or si.role is \admin
       next new Error 'signin must be the creator or admin'
