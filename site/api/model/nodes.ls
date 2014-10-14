@@ -1,7 +1,7 @@
 M         = require \mongoose
 Cons      = require \../../lib/model-constraints
 Crud      = require \../crud
-H         = require \../helper
+Err       = require \../error
 P-Id      = require \./plugin-id
 P-Meta    = require \./plugin-meta
 
@@ -17,7 +17,7 @@ schema
     err, node <~ me.findOne name:get-regexp @name
     return next err if err
     return next! unless node
-    return next new H.ApiError "Duplicate detected: #{node.name}"
+    return next new Err.Api "Duplicate detected: #{node.name}"
     next!
 
 module.exports = me = Crud.set-fns (M.model \nodes, schema)

@@ -1,7 +1,9 @@
 Express   = require \express
+HttpCode  = require \http-status
 Im        = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
 _         = require \lodash
 Passport  = require \passport
+Err       = require \./api/error
 H         = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms
@@ -51,13 +53,13 @@ function get-validation-msg err
   function iterator memo, err then memo + "#{err.message}\n"
 
 function handle-error err, req, res, next
-  if err instanceof H.AuthenticateError
+  if err instanceof Err.Authenticate
     return res.redirect "http://#{H.get-host-site!}/#/user/signin/error?error_description=#{err.message}"
   msg = switch
-    | err instanceof H.ApiError    => err.message
+    | err instanceof Err.Api       => err.message
     | err.name is \ValidationError => get-validation-msg err
     | _ => if env in <[ development test ]> then err.stack else 'Internal server error, sorry! :('
-  res.send 500, msg
+  res.send HttpCode.INTERNAL_SERVER_ERROR, msg
 
 function log-error opts
   (err, req, res, next) ->

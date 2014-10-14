@@ -1,3 +1,4 @@
+Err   = require \../error
 H     = require \../helper
 Users = require \../model/users
 
@@ -9,7 +10,7 @@ module.exports =
     return next err if err
     return next! if n is 0
     err, n <- Users.count 'meta.create_date': $gte:H.get-date-yesterday!
-    if n >= DAILY_SIGNUP_MAX then return next new H.ApiError "
+    if n >= DAILY_SIGNUP_MAX then return next new Err.Api "
       Maximum number of signups exceeded for today. 
       Please try again in 24 hours or contact admin.
     "

@@ -2,6 +2,7 @@ Passport   = require \passport
 P-Facebook = require \passport-facebook .Strategy
 P-Github   = require \passport-github .Strategy
 P-Google   = require \passport-google-oauth .OAuth2Strategy
+Err        = require \../error
 H          = require \../helper
 M-Sessions = require \../model/sessions
 M-Users    = require \../model/users
@@ -18,8 +19,8 @@ module.exports = me =
     Passport.use new strategy cfg <<< cfg-extra, (, , profile, done) ->
       #log \cb1, auth-type, profile
       # Other profile fields: facebook:link; github:url,avatar_url; google:link,picture
-      return done new H.AuthenticateError 'id is empty' unless id = (p = profile).id
-      return done new H.AuthenticateError 'name is empty' unless name = p.displayName
+      return done new Err.Authenticate 'id is empty' unless id = (p = profile).id
+      return done new Err.Authenticate 'name is empty' unless name = p.displayName
       login-id = id.toString! # id might be a number
       err, user <- M-Users.findOne login_id:login-id .lean!exec
       return done err if err

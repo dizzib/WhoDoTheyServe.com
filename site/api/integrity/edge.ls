@@ -1,5 +1,5 @@
 _           = require \lodash
-H           = require \../helper
+Err         = require \../error
 M-Edges     = require \../model/edges
 M-Maps      = require \../model/maps
 M-Evidences = require \../model/evidences
@@ -11,7 +11,7 @@ module.exports =
       function check-node-has-evidence id, cb
         err, evi <- M-Evidences.findOne entity_id:id
         return cb err if err
-        return cb new H.ApiError 'Cannot create an edge to a node lacking evidence' unless evi
+        return cb new Err.Api 'Cannot create an edge to a node lacking evidence' unless evi
         cb!
       err <- check-node-has-evidence req.body.a_node_id
       return next err if err
@@ -26,8 +26,8 @@ module.exports =
       err, edge <- M-Edges.findById req.id
       return next err if err
       const MSG = 'Only admin can update'
-      return next new H.ApiError "#MSG a_node_id" if b.a_node_id and edge.a_node_id isnt b.a_node_id
-      return next new H.ApiError "#MSG b_node_id" if b.b_node_id and edge.b_node_id isnt b.b_node_id
+      return next new Err.Api "#MSG a_node_id" if b.a_node_id and edge.a_node_id isnt b.a_node_id
+      return next new Err.Api "#MSG b_node_id" if b.b_node_id and edge.b_node_id isnt b.b_node_id
       next!
     when: (req, res, next) ->
       # always check: treat null-when as full range
@@ -38,13 +38,13 @@ module.exports =
   delete: (req, res, next) ->
     err, obj <- M-Evidences.findOne entity_id:req.id
     return next err if err
-    return next new H.ApiError 'Cannot delete an evidenced edge' if obj
+    return next new Err.Api 'Cannot delete an evidenced edge' if obj
     err, maps-having-edge <- get-maps-having-edge req.id
     return next err if err
     if maps-having-edge.length > 0
       map-names = (_.map maps-having-edge, -> it.name).join ', '
       msg = "Cannot delete edge because it appears on the following maps: #map-names"
-      return next new H.ApiError msg
+      return next new Err.Api msg
     next!
 
 function check-chronology edge, next
@@ -59,7 +59,7 @@ function check-chronology edge, next
   catch e then return next e
   for e in edges
     if When.is-overlap-ranges range1.int, (When.parse-range e.when).int
-      return next new H.ApiError "Edge.when #{edge.when} overlaps with existing edge.when #{e.when}"
+      return next new Err.Api "Edge.when #{edge.when} overlaps with existing edge.when #{e.when}"
   next!
 
 function get-maps-having-edge id, cb

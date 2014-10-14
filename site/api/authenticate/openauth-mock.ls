@@ -5,9 +5,9 @@
 
 Passport = require \passport
 Express  = require \../../server
-H        = require \../helper
-OpenAuth = require \./openauth
+Err      = require \../error
 Router   = require \../router
+OpenAuth = require \./openauth
 
 function set-route name, opts
   l1-opts = successRedirect:"/api/auth/mock/#name/callback"
@@ -26,6 +26,6 @@ class StrategyMock extends Passport.Strategy
       oa-user = id:opts.id, displayName:opts.name
       @verify void, void, oa-user, (err, user) ~> if err then throw err else @success user
     else
-      throw new H.AuthenticateError \FAIL
+      throw new Err.Authenticate \FAIL
 
 OpenAuth.set-config \mock, StrategyMock

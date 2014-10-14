@@ -1,3 +1,4 @@
+Err     = require \./error
 H       = require \./helper
 M-Users = require \./model/users
 
@@ -24,7 +25,7 @@ module.exports =
           edges    : 1
           evidences: 2
         if n >= (limit = multipliers[Model.modelName] * user.quota_daily)
-          return next new H.ApiError "
+          return next new Err.Api "
           Your 24-hour contribution limit of #{limit} #{Model.modelName} has been reached! 
           Contact admin to have your limit increased or wait 24 hours before retrying."
       next!

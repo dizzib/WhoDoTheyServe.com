@@ -1,5 +1,5 @@
 _           = require \lodash
-H           = require \../helper
+Err         = require \../error
 M-Evidences = require \../model/evidences
 
 module.exports =
@@ -11,5 +11,5 @@ module.exports =
       return next err if err
       entity-ids = _.unique _.map evs, -> it.entity_id.toString!
       if (n-no-evidence = ids.length - entity-ids.length) > 0
-        return next new H.ApiError "Cannot create while #{n-no-evidence} of your other #{Model.modelName} are missing evidence"
+        return next new Err.Api "Cannot create while #{n-no-evidence} of your other #{Model.modelName} are missing evidence"
       next!
