@@ -21,16 +21,20 @@ module.exports =
         Vui.finalise!
         V.navbar.render!
       ..on 'signin signout', ->
-        delete V.map.map
-        V.navbar.render!
+        V.map.delete!
     V
       ..edge-edit
         ..on \rendered, Vee.init
       ..evidence-edit
         ..on \rendered, -> Fpx.get-browser-url (-> $ \#url .attr \value, it) if it.isNew!
+      ..map
+        ..on \deleted, ->
+          V.navbar.render!
       ..map-edit
         ..on \destroyed, -> R.navigate \user
-        ..on \saved    , (map, is-new) -> R.navigate "map/#{map.id}" if is-new
+        ..on \saved, (map, is-new) ->
+          V.navbar.render!
+          R.navigate "map/#{map.id}" if is-new
       ..node-edit
         ..on \rendered, -> $ \#name .typeahead source:C.Nodes.pluck \name
       ..user-edit

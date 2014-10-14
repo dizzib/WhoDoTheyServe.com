@@ -12,8 +12,7 @@ B.once \signin, -> # should only run once on first signin
 
   V.map-edit
     ..on \destroyed, ->
-      delete V.map.map
-      V.navbar.render!
+      V.map.delete!
 
     ..on \rendered, ->
       disable-buttons! # enabled when d3 has cooled
@@ -24,7 +23,6 @@ B.once \signin, -> # should only run once on first signin
 
     ..on \saved, (map, is-new) ->
       save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked
-      V.navbar.render!
       init-error-alert!
 
     ..on \serialized, ->

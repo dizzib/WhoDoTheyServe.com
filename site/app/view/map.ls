@@ -19,6 +19,10 @@ const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 H.insert-css Fs.readFileSync __dirname + \/map.css
 
 module.exports = B.View.extend do
+  delete: ->
+    delete @map
+    @trigger \deleted
+
   get-nodes-xy: ->
     _.map @d3f.nodes!, ->
       _id: it._id
