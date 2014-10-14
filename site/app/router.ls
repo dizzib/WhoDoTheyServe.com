@@ -1,4 +1,5 @@
 B  = require \backbone
+A  = require \./api
 H  = require \./helper
 C  = require \./collection
 F  = require \./fireprox
@@ -23,7 +24,7 @@ r = B.Router.extend do
     cb?apply this, args
     Ui.finalise!
   routes:
-    \__coverage        : -> H.post-json '/coverage/client', window.__coverage__ # https://github.com/gotwarlost/istanbul-middleware
+    \__coverage        : A.post-coverage
     ''                 : \map_default
     \doc/about         : \doc_about
     \edge/edit/:id     : \edge_edit
