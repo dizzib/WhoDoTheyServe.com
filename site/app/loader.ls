@@ -8,7 +8,7 @@ const LIBS =
     loc: \bootstrap/css/bootstrap.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   d3:
-    cdn: '//cdn.jsdelivr.net/d3js/3.1.6/d3.min.js'
+    cdn: '//cdn.jsdelivr.net/d3js/3.4.12/d3.min.js'
     loc: \d3.js
     ok : -> d3?
   font_awesome_css:
