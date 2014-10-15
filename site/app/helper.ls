@@ -1,6 +1,3 @@
-S   = require \./session
-Vui = require \./view-handler/ui
-
 inserted-css = []
 
 module.exports = me =
@@ -19,7 +16,3 @@ module.exports = me =
   insert-css-seo: ->
     el = me.insert-css it
     el.setAttribute 'data-seo-emit', ''
-
-  on-err: (coll, xhr) ->
-    return S.expire! if xhr?status is 401
-    Vui.show-error xhr?responseText || 'An error occurred (check the debug console for more details)'

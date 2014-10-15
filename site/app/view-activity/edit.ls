@@ -1,7 +1,6 @@
 B = require \backbone
 T = require \transparency
 _ = require \underscore
-H = require \../helper
 S = require \../session
 
 const CLASS-EDITING = \editing
@@ -21,7 +20,7 @@ module.exports =
       _.extend this, B.Events
     cancel: -> @trigger \cancelled
     'delete-ask': -> $ \.button-bar .toggleClass \mode-delete-ask .toggleClass \mode-edit
-    'delete-yes': -> @coll.destroy @model, error:H.on-err, success: ~> @trigger \destroyed, @model
+    'delete-yes': -> @coll.destroy @model, success: ~> @trigger \destroyed, @model
     render: (@model, @coll, opts) ->
       @delegateEvents!
       $ \.view .addClass CLASS-EDITING
@@ -29,7 +28,7 @@ module.exports =
       @model.bind \validated:valid, ~> @trigger \validated, @model
       ($tem = $ @template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no
-      @model.fetch error:H.on-err, success: -> render it
+      @model.fetch success: -> render it
       ~function render model
         @$el.html $tem.render model.toJSON-T! .set-access S .show!
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
@@ -39,11 +38,9 @@ module.exports =
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = m.isNew!
       m.set ($ it.currentTarget .serializeObject!)
+      m.on \error, ~> @trigger \error, m
       @trigger \serialized, m
-      ~function on-err
-        @trigger \error, m
-        H.on-err ...
-      @coll.create m, { +merge, +wait, error:on-err, success: ~> @trigger \saved, m, is-new }
+      @coll.create m, { +merge, +wait, success: ~> @trigger \saved, m, is-new }
       false
 
   ResetEditView: -> $ \.view .removeClass CLASS-EDITING

@@ -1,7 +1,6 @@
 B  = require \backbone
 C  = require \./collection
 Cs = require \./collections
-H  = require \./helper
 
 module.exports = me =
   auto-sync-el: ($el) ->
@@ -27,7 +26,7 @@ module.exports = me =
     C.Sessions.length is 0
 
   refresh: (cb) ->
-    C.Sessions.fetch error:H.on-err, success:cb
+    C.Sessions.fetch success:cb
 
   signin: ->
     <- me.refresh
@@ -43,7 +42,7 @@ module.exports = me =
 
   signout: ->
     return signout! unless m = C.Sessions.models.0
-    m.destroy error:H.on-err, success:signout
+    m.destroy success:signout
 
     function signout
       B.trigger \signout

@@ -75,4 +75,4 @@ B.once \signin, -> # should only run once on first signin
   function save-is-default id
     Hv.Map
       ..set-prop \default, id:id
-      ..save { error:H.on-err, success: -> log 'saved default map-id' }
+      ..save success: -> log 'saved default map-id'

@@ -2,7 +2,6 @@ B   = require \backbone
 _   = require \underscore
 Api = require \./api
 Fpx = require \./fireprox
-H   = require \./helper
 
 c = B.Collection.extend do
   destroy: (id-or-model, opts) ->   # complement of @create convenience
@@ -37,7 +36,7 @@ module.exports.init = (models) ->
       url <- Fpx.get-browser-url
       return cb! unless url
       ev = models.Evidence.create entity_id:entity-id, url:url
-      me.Evidences.create ev, { +merge, +wait, error:H.on-err, success:-> cb ok:true }
+      me.Evidences.create ev, { +merge, +wait, success:-> cb ok:true }
 
   maps = c.extend do
     url       : Api.maps

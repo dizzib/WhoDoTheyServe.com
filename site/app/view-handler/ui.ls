@@ -31,7 +31,8 @@ module.exports =
 
   show-error: ->
     # The .active class can be used to override the default error alert location
-    $ \.alert-error.active:last .text it .show!
+    msg = it or 'An error occurred (check the debug console for more details)'
+    $ \.alert-error.active:last .text msg .show!
 
   show-alert-once: (msg) ->
     $ '.view>.alert-info' .addClass \persist-once .text msg .show!

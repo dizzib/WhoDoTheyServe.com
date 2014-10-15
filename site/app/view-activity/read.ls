@@ -1,7 +1,6 @@
 B = require \backbone
 Q = require \querystring # browserified
 T = require \transparency
-H = require \../helper
 S = require \../session
 
 module.exports =
@@ -32,7 +31,7 @@ module.exports =
       render coll, 0
       return unless @opts.fetch
       return unless coll.url # filtered collection won't have url
-      coll.fetch error:H.on-err, success: -> render it, 1
+      coll.fetch success: -> render it, 1
       ~function render c, pass then
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter

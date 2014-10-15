@@ -1,7 +1,6 @@
 B  = require \backbone
 C  = require \../collection
 Cs = require \../collections
-H  = require \../helper
 Hv = require \../model/hive .instance
 S  = require \../session
 V  = require \../view
@@ -43,7 +42,7 @@ module.exports =
     return show m if not is-sel-changed
     return show M-Map.create! unless it?
     return Ui.show-error "Unable to get map #it" unless m = C.Maps.get it
-    m.fetch error:H.on-err, success:show
+    m.fetch success:show
   node: (id, act, child-id) ->
     node <- fetch-entity C.Nodes, id, \actor
     V.node.render node, D.node
@@ -72,7 +71,7 @@ module.exports =
 
 function fetch-default-map cb
   return cb! unless m = C.Maps.get Hv.Map.default-id
-  m.fetch error:H.on-err, success:cb
+  m.fetch success:cb
 
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
