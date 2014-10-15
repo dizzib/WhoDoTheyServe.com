@@ -11,14 +11,13 @@ window.onerror = (msg, url, line) ->
 B   = require \backbone
 F   = require \fs # inlined by brfs
 Api = require \./api
+Bb  = require \./backbone
 C   = require \./collection
 Cs  = require \./collections
 H   = require \./helper
-R   = require \./router
 S   = require \./session
 V   = require \./view
 Vev = require \./view-handler/event
-Vui = require \./view-handler/ui
 
 M-Edge = require \./model/edge
 M-Evi  = require \./model/evidence
@@ -33,7 +32,7 @@ H.insert-css F.readFileSync __dirname + \/lib/form.css
 H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
 H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
-init-backbone!
+Bb.init!
 Api.init!
 C.init do
   Evidence: M-Evi
@@ -61,24 +60,6 @@ function init
   Vev.init!
   V.footer.render!
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
-
-function init-backbone
-  _invalid = B.Validation.callbacks.invalid
-  B.Model.prototype.idAttribute = \_id # mongodb
-  B.Validation
-    ..configure labelFormatter:\label
-    ..callbacks.invalid = ->
-      _invalid ...
-      Vui.show-error "One or more fields have errors. Please correct them before retrying."
-  B.on \after-signin-by-user, ->
-    Vui.show-alert-once 'Welcome! You are now logged in'
-    R.navigate \user
-  B.on \after-signout-by-session-expired, ->
-    Vui.show-error 'Your session has expired. Please login again to continue.'
-  B.on \after-signout-by-user, ->
-    Vui.show-alert-once 'Goodbye! You are now logged out'
-    R.navigate \users
-  B.tracker = edge:void, node-ids:[] # keep track of last edited entities
 
 function start
   B.history.start!
