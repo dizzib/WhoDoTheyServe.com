@@ -47,8 +47,8 @@ B.once \signin, -> # should only run once on first signin
     V.map-toolbar.reset!
 
   V.map
-    ..on \render  , disable-buttons
-    ..on \rendered, enable-buttons
+    ..on \pre-cool, disable-buttons
+    ..on \cooled  , enable-buttons
 
   C.Nodes.on 'add remove', render-dropdown
 

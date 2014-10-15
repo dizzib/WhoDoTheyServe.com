@@ -38,7 +38,8 @@ module.exports = B.View.extend do
     is-resized = false
     @d3f = d3.layout.force!
       ..on \start, ~>
-        render-start @
+        _.each OVERLAYS, -> it.render-clear!
+        @trigger \pre-cool
         is-resized := false
       ..on \tick , ~>
         return unless n-tick++ % 4 is 0
@@ -46,7 +47,9 @@ module.exports = B.View.extend do
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           set-map-size @
           is-resized := true # resize only once during cool-down
-      ..on \end  , ~> render-stop @
+      ..on \end  , ~>
+        _.each OVERLAYS, -> it.render!
+        @trigger \cooled
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
@@ -112,6 +115,8 @@ module.exports = B.View.extend do
     _.each OVERLAYS, ~> it.init @svg, @d3f
     P .init @svg, @d3f if is-editable
 
+    @trigger \render
+
     @svg.selectAll \g.node .call @d3f.drag if is-editable
     Os.align @svg, @d3f
 
@@ -153,14 +158,6 @@ function justify v
     $vm.css \display, \block
     $vm.css \justify-content, \flex-start
   #Cu.init v
-
-function render-start v
-  v.trigger \render
-  _.each OVERLAYS, -> it.render-clear!
-
-function render-stop v
-  _.each OVERLAYS, -> it.render!
-  v.trigger \rendered
 
 function set-canvas-size svg, w, h
   svg.attr \width, w .attr \height, h
