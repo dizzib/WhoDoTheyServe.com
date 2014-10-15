@@ -48,7 +48,7 @@ module.exports = B.View.extend do
           is-resized := true # resize only once during cool-down
       ..on \end  , ~> render-stop @
 
-  refresh-entities: (node-ids) -> # client-side version of server-side model/maps.ls
+  refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
     @map.set \nodes, _.map node-ids, (nid) ~>
       node = _.findWhere @d3f.nodes!, _id:nid
@@ -61,7 +61,10 @@ module.exports = B.View.extend do
       edges: C.Edges.filter ~>
         return false unless it.is-in-map node-ids
         return true unless edge-cutoff-date = @map.get \edge_cutoff_date
-        edge-cutoff-date > it.get \meta .create_date
+        map-create-uid   = @map.get \meta .create_user_id
+        edge-create-date = it.get \meta .create_date
+        edge-create-uid  = it.get \meta .create_user_id
+        edge-create-date < edge-cutoff-date or edge-create-uid is map-create-uid
     true
 
   render: (opts) ->
