@@ -1,3 +1,4 @@
+S   = require \./session
 Vui = require \./view-handler/ui
 
 inserted-css = []
@@ -20,5 +21,5 @@ module.exports = me =
     el.setAttribute 'data-seo-emit', ''
 
   on-err: (coll, xhr) ->
-    return Vui.show-error 'Please login' if xhr?status is 401
+    return S.expire! if xhr?status is 401
     Vui.show-error xhr?responseText || 'An error occurred (check the debug console for more details)'

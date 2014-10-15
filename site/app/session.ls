@@ -11,6 +11,11 @@ module.exports = me =
   get-id: ->
     C.Sessions.models.0?id
 
+  expire: ->
+    C.Sessions.reset!
+    B.trigger \signout
+    B.trigger \after-signout-by-session-expired
+
   is-signed-in: ->
     return C.Sessions.length > 0 unless it
     return me.get-id! is it
@@ -30,7 +35,7 @@ module.exports = me =
 
     function ok
       B.trigger \signin
-      B.trigger \after-signin
+      B.trigger \after-signin-by-user
 
     function fail coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
@@ -42,4 +47,4 @@ module.exports = me =
 
     function signout
       B.trigger \signout
-      B.trigger \after-signout
+      B.trigger \after-signout-by-user
