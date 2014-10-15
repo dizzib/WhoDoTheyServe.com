@@ -127,7 +127,7 @@ module.exports = B.View.extend do
     return unless @el # might be undefined for seo
     @scroll = @scroll or x:0, y:0
     $window = $ window
-    B.once \route-before, ~>
+    B.once \pre-route, ~>
       @scroll.x = $window.scrollLeft!
       @scroll.y = $window.scrollTop!
     @$el.show!
