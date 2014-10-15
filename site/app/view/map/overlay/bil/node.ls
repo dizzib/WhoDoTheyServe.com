@@ -4,10 +4,6 @@ H = require \../../../../helper
 
 H.insert-css F.readFileSync __dirname + \/node.css
 
-const BADGE-SIZE-Y  = 16
-const BADGE-SIZE-X  = 20
-const BADGE-SPACE-X = 24
-
 module.exports = me =
   filter: (nodes) ->
     _.filter nodes, -> not me.is-conference-yyyy it
@@ -22,6 +18,10 @@ module.exports = me =
     'Bilderberg Steering Committee' is it.name
 
   render: (svg, edges-attend) ->
+    const BADGE-SIZE-Y  = 16
+    const BADGE-SIZE-X  = 20
+    const BADGE-SPACE-X = 24
+
     svg.selectAll \g.node .each (node) ->
       edges = _.filter edges-attend, -> node._id is it.a_node_id or node._id is it.b_node_id
       edges = _.sortBy edges, -> it.yyyy
