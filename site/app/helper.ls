@@ -1,3 +1,5 @@
+Vui = require \./view-handler/ui
+
 inserted-css = []
 
 module.exports = me =
@@ -18,9 +20,5 @@ module.exports = me =
     el.setAttribute 'data-seo-emit', ''
 
   on-err: (coll, xhr) ->
-    return me.show-error 'Please login' if xhr?status is 401
-    me.show-error xhr?responseText || 'An error occurred (check the debug console for more details)'
-
-  show-error: ->
-    # The .active class can be used to override the default error alert location
-    $ \.alert-error.active:last .text it .show!
+    return Vui.show-error 'Please login' if xhr?status is 401
+    Vui.show-error xhr?responseText || 'An error occurred (check the debug console for more details)'

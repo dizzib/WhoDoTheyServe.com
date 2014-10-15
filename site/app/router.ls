@@ -1,13 +1,12 @@
-B  = require \backbone
-A  = require \./api
-H  = require \./helper
-C  = require \./collection
-F  = require \./fireprox
-Hm = require \./model/hive .instance.Map
-V  = require \./view
-Vc = require \./view-handler/composer
-Vd = require \./view-handler/directive
-Ui = require \./view-handler/ui
+B   = require \backbone
+A   = require \./api
+C   = require \./collection
+F   = require \./fireprox
+Hm  = require \./model/hive .instance.Map
+V   = require \./view
+Vc  = require \./view-handler/composer
+Vd  = require \./view-handler/directive
+Vui = require \./view-handler/ui
 
 M-Edge = require \./model/edge
 M-Node = require \./model/node
@@ -59,7 +58,7 @@ r = B.Router.extend do
   fireprox       : F.configure
   latest         : -> V.latest.render!
   map            : Vc.map
-  map_default    : -> if id = Hm.default-id then Vc.map id else H.show-error 'Please set default map'
+  map_default    : -> if id = Hm.default-id then Vc.map id else Vui.show-error 'Please set default map'
   node           : -> Vc.node ...
   node_edit      : -> V.node-edit.render (M-Node.create it), C.Nodes
   nodes          : Vc.nodes

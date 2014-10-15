@@ -69,7 +69,7 @@ function init-backbone
     ..configure labelFormatter:\label
     ..callbacks.invalid = ->
       _invalid ...
-      H.show-error "One or more fields have errors. Please correct them before retrying."
+      Vui.show-error "One or more fields have errors. Please correct them before retrying."
   B.on \after-signin, ->
     Vui.show-alert-once 'Welcome! You are now logged in'
     R.navigate \user

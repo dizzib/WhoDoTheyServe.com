@@ -42,7 +42,7 @@ module.exports =
     is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
     return show m if not is-sel-changed
     return show M-Map.create! unless it?
-    return H.show-error "Unable to get map #it" unless m = C.Maps.get it
+    return Ui.show-error "Unable to get map #it" unless m = C.Maps.get it
     m.fetch error:H.on-err, success:show
   node: (id, act, child-id) ->
     node <- fetch-entity C.Nodes, id, \actor
@@ -77,7 +77,7 @@ function fetch-default-map cb
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
   <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
-  return H.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
+  return Ui.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
   Ui.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
 

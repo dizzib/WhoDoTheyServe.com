@@ -29,5 +29,9 @@ module.exports =
     $ '.alert-error' .removeClass \active    # clear any error alert location overrides
     $ '.view>.alert-error' .addClass \active # reset back to default
 
+  show-error: ->
+    # The .active class can be used to override the default error alert location
+    $ \.alert-error.active:last .text it .show!
+
   show-alert-once: (msg) ->
     $ '.view>.alert-info' .addClass \persist-once .text msg .show!
