@@ -17,6 +17,7 @@ Cs  = require \./collections
 H   = require \./helper
 S   = require \./session
 V   = require \./view
+Vmb = require \./view/map/boot
 Vev = require \./view-handler/event
 
 M-Edge = require \./model/edge
@@ -58,6 +59,7 @@ function init
   Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   Cs.fetch-core start, fail unless S.is-signed-in!
   Vev.init!
+  Vmb.init!
   V.footer.render!
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
 

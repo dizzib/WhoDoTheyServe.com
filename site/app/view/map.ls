@@ -2,19 +2,12 @@ B   = require \backbone
 Fs  = require \fs
 _   = require \underscore
 C   = require \../collection
-#Cu = require \./map/cursor
-E   = require \./map/edge
-Eg  = require \./map/edge-glyph
-N   = require \./map/node
-O   = require \./map/overlay
-Ob  = require \./map/overlay/bil
-Os  = require \./map/overlay/slit
-P   = require \./map/pin
 H   = require \../helper
 Sys = require \../model/sys .instance
+E   = require \./map/edge
+N   = require \./map/node
 
 const SIZE-NEW = 500px
-const OVERLAYS = [ Ob, O.Ac, O.Bis, O.Cfr ]
 
 H.insert-css Fs.readFileSync __dirname + \/map.css
 
@@ -38,17 +31,16 @@ module.exports = B.View.extend do
     is-resized = false
     @d3f = d3.layout.force!
       ..on \start, ~>
-        _.each OVERLAYS, -> it.render-clear!
         @trigger \pre-cool
         is-resized := false
       ..on \tick , ~>
         return unless n-tick++ % 4 is 0
-        on-tick!
+        tick!
+        @trigger \tick
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           set-map-size @
           is-resized := true # resize only once during cool-down
       ..on \end  , ~>
-        _.each OVERLAYS, -> it.render!
         @trigger \cooled
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
@@ -74,15 +66,13 @@ module.exports = B.View.extend do
     return unless @el # might be undefined for seo
     @$el.empty!
     # clone entities so the originals don't get filtered out, as they may be used elsewhere
-    return unless entities = _.deepClone @map.get \entities
-    return unless entities.nodes?length
+    return unless ents = _.deepClone @map.get \entities
+    return unless ents.nodes?length
 
-    nodes = _.map entities.nodes, -> it.toJSON-T!
-    edges = _.map entities.edges, -> it.toJSON-T!
-
-    edges = E.data nodes, edges, @map.get \when
-    edges = (Ob.filter-edges >> O.Ac.filter-edges >> O.Bis.filter-edges >> O.Cfr.filter-edges) edges
-    nodes = Ob.filter-nodes nodes
+    ents.nodes = _.map ents.nodes, -> it.toJSON-T!
+    ents.edges = _.map ents.edges, -> it.toJSON-T!
+    ents.edges = E.filter ents.nodes, ents.edges, @map.get \when
+    @trigger \pre-render, ents # ents can be modified by handlers
 
     size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
     size-y = @map.get \size.y or @get-size-y! or SIZE-NEW
@@ -90,12 +80,12 @@ module.exports = B.View.extend do
     is-editable = @map.get-is-editable!
     unless @map.isNew!
       for n in @map.get \nodes when n.x?
-        node = _.findWhere nodes, _id:n._id
+        node = _.findWhere ents.nodes, _id:n._id
         node <<< { x:n.x, y:n.y, fixed:(not is-editable) or n.pin } if node?
 
     @d3f.stop!
-    @d3f.nodes nodes
-     .links (edges or [])
+    @d3f.nodes ents.nodes
+     .links (ents.edges or [])
      .charge -2000
      .friction 0.85
      .linkDistance 100
@@ -108,17 +98,11 @@ module.exports = B.View.extend do
     justify @
 
     # order matters: svg uses painter's algo
-    E .init @svg, @d3f
-    N .init @svg, @d3f
-    Os.init @svg, @d3f
-    Eg.init @svg, @d3f, entities.evidences
-    _.each OVERLAYS, ~> it.init @svg, @d3f
-    P .init @svg, @d3f if is-editable
-
-    @trigger \render
-
+    E.render @svg, @d3f
+    N.init @svg, @d3f
+    @trigger \render, ents
     @svg.selectAll \g.node .call @d3f.drag if is-editable
-    Os.align @svg, @d3f
+    @trigger \rendered
 
     # determine whether to freeze immediately
     unless Sys.env is \test # no need to wait for cooldown when testing
@@ -126,7 +110,8 @@ module.exports = B.View.extend do
       return if opts?is-slow-to-cool
 
     @d3f.alpha 0 # freeze map -- must be called after start
-    on-tick!   # single tick required to render frozen map
+    tick!        # single tick required to render frozen map
+    @trigger \tick
 
   show: ->
     return unless @el # might be undefined for seo
@@ -141,10 +126,9 @@ module.exports = B.View.extend do
 
 ## helpers
 
-function on-tick
-  N .on-tick!
-  E .on-tick!
-  Eg.on-tick!
+function tick
+  N.on-tick!
+  E.on-tick!
 
 function justify v
   return unless ($vm = $ '.view>.map').is \:visible # prevent show if it's hidden
@@ -157,7 +141,6 @@ function justify v
   else
     $vm.css \display, \block
     $vm.css \justify-content, \flex-start
-  #Cu.init v
 
 function set-canvas-size svg, w, h
   svg.attr \width, w .attr \height, h

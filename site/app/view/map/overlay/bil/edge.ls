@@ -40,6 +40,8 @@ module.exports =
     @g-attend?remove!
     @g-steer?remove!
 
+## helpers
+
 function render g, d3f, edges, fn-get-hub, fn-is-hub, css-class
   return unless hub = _.find d3f.nodes!, fn-get-hub
   g-child = g.append \svg:g
@@ -51,4 +53,4 @@ function render g, d3f, edges, fn-get-hub, fn-is-hub, css-class
       .attr \x2, if fn-is-hub tar then hub.x else tar.x
       .attr \y2, if fn-is-hub tar then hub.y else tar.y
       .attr \class, "edge #{css-class}"
-  return g-child
+  g-child

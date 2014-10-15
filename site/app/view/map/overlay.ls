@@ -7,54 +7,55 @@ H.insert-css F.readFileSync __dirname + \/overlay.css
 
 class Overlay
   (@tag, @fn-edge-is-match, @fn-node-is-match) ->
+    o = this
 
-  init: (svg, @f) ~>
-    @g-root = svg.append \svg:g .attr \class, @tag
-    append-badges!
-    V.map-toolbar.on "toggle-#{@tag}", ~>
-      @g-root.attr \display, if it then '' else \none
+    V.map.on \render, ->
+      o.d3f = @d3f
+      o.g-root = @svg.append \svg:g .attr \class, o.tag
+      append-badges!
+      V.map-toolbar.on "toggle-#{o.tag}", ~>
+        o.g-root.attr \display, if it then '' else \none
 
-    ~function append-badges then
-      for edge in @edges
-        evs  = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
-        url  = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
-        tip  = if evs.length is 1 then edge.tip else ''
-        node = if @fn-node-is-match edge.source then edge.target else edge.source
-        slit = d3.select ".id_#{node._id} .slit"
-        slit.append \svg:a
-          .attr \class      , "badge-#{@tag}"
-          .attr \target     , \_blank
-          .attr \xlink:href , -> url
-          .attr \xlink:title, -> tip
-          .append \svg:text
-            .attr \font-size  , 10
-            .attr \text-anchor, \middle
-            .text @tag.toUpperCase!
+      function append-badges
+        for edge in o.edges
+          evs  = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
+          url  = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
+          tip  = if evs.length is 1 then edge.tip else ''
+          node = if o.fn-node-is-match edge.source then edge.target else edge.source
+          slit = d3.select ".id_#{node._id} .slit"
+          slit.append \svg:a
+            .attr \class      , "badge-#{o.tag}"
+            .attr \target     , \_blank
+            .attr \xlink:href , -> url
+            .attr \xlink:title, -> tip
+            .append \svg:text
+              .attr \font-size  , 10
+              .attr \text-anchor, \middle
+              .text o.tag.toUpperCase!
 
-  filter-edges: (edges) ~> # must be called before init
-    groups = _.groupBy edges, ~>
-      if @fn-edge-is-match it and node-is-match it then \yes else \no
-    @edges = groups.yes or []
-    return groups.no
+    V.map.on \pre-render, (entities) ->
+      function node-is-match then o.fn-node-is-match it.source or o.fn-node-is-match it.target
 
-    ~function node-is-match
-      @fn-node-is-match it.source or @fn-node-is-match it.target
+      groups = _.groupBy entities.edges, ->
+        if o.fn-edge-is-match it and node-is-match it then \yes else \no
+      o.edges = groups.yes or []
+      entities.edges = groups.no
 
-  render: ~>
-    return unless @edges.length
-    node = _.find @f.nodes!, @fn-node-is-match
-    @g = @g-root.append \svg:g
-    for edge in @edges
-      [src, tar] = [edge.source, edge.target]
-      @g.append \svg:line
-        .attr \x1, if @fn-node-is-match src then node.x else src.x
-        .attr \y1, if @fn-node-is-match src then node.y else src.y
-        .attr \x2, if @fn-node-is-match tar then node.x else tar.x
-        .attr \y2, if @fn-node-is-match tar then node.y else tar.y
-        .attr \class, "edge #{@tag}"
+    V.map.on \cooled, ->
+      return unless o.edges.length
+      node = _.find o.d3f.nodes!, o.fn-node-is-match
+      o.g = o.g-root.append \svg:g
+      for edge in o.edges
+        [src, tar] = [edge.source, edge.target]
+        o.g.append \svg:line
+          .attr \x1, if o.fn-node-is-match src then node.x else src.x
+          .attr \y1, if o.fn-node-is-match src then node.y else src.y
+          .attr \x2, if o.fn-node-is-match tar then node.x else tar.x
+          .attr \y2, if o.fn-node-is-match tar then node.y else tar.y
+          .attr \class, "edge #{o.tag}"
 
-  render-clear: ~>
-    @g?remove!
+    V.map.on \pre-cool, ->
+      o.g?remove!
 
 module.exports =
   Ac : new Overlay \ac , (-> true)               , (-> /^Atlantic Council$/.test it.name)

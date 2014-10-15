@@ -1,6 +1,19 @@
-const ICON-GAP    = 1
-const ICON-SIZE   = 16
-const ICON-SPACE  = ICON-SIZE + ICON-GAP
+Map = require \../../view .map
+
+const ICON-GAP   = 1
+const ICON-SIZE  = 16
+const ICON-SPACE = ICON-SIZE + ICON-GAP
+
+Map
+  ..on \render, (entities) ->
+    me.evs = entities.evidences
+    me.g = @svg.selectAll \g.edge-glyphs
+      .data @d3f.links!
+      .enter!append \svg:g
+        .attr \class, \edge-glyphs
+    me.g.each me.append
+  ..on \tick, ->
+    me.g.attr \transform me.get-transform
 
 module.exports = me =
   append: (edge) -> # called externally
@@ -25,13 +38,3 @@ module.exports = me =
     y = it.source.y + (it.target.y - it.source.y - ICON-SIZE) / 2
     "translate(#x,#y)"
 
-  init: (svg, d3f, evs) ->
-    me.evs = evs
-    me.g = svg.selectAll \g.edge-glyphs
-      .data d3f.links!
-      .enter!append \svg:g
-        .attr \class, \edge-glyphs
-    me.g.each me.append
-
-  on-tick: ->
-    me.g.attr \transform me.get-transform

@@ -6,7 +6,7 @@ W = require \../../../lib/when
 H.insert-css F.readFileSync __dirname + \/edge.css
 
 module.exports =
-  data: (nodes, edges, map-when) ->
+  filter: (nodes, edges, map-when) ->
     map-when-int = if map-when then W.parse map-when, \max else W.get-int-today!
     function is-in-range then W.is-in-range map-when-int, it.int
 
@@ -35,7 +35,19 @@ module.exports =
       d3e.class = arr * ' '
     d3es
 
-  init: (svg, d3f) ~>
+  get-strength: ->
+    x = if it.class is \minor then 1 else 20
+    w = it.source.weight + it.target.weight
+    x / w
+
+  on-tick: ~>
+    @lines
+      .attr \x1, -> it.source.x
+      .attr \y1, -> it.source.y
+      .attr \x2, -> it.target.x
+      .attr \y2, -> it.target.y
+
+  render: (svg, d3f) ~>
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
       .enter!append \svg:marker
@@ -52,15 +64,3 @@ module.exports =
       .enter!append \svg:line
         .attr \class     , -> "edge #{it.class}".trim!
         .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''
-
-  get-strength: ->
-    x = if it.class is \minor then 1 else 20
-    w = it.source.weight + it.target.weight
-    x / w
-
-  on-tick: ~>
-    @lines
-      .attr \x1, -> it.source.x
-      .attr \y1, -> it.source.y
-      .attr \x2, -> it.target.x
-      .attr \y2, -> it.target.y
