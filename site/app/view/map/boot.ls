@@ -7,5 +7,6 @@ module.exports =
     require \./edge-glyph
     require \./overlay
     require \./overlay/bil
+    require \./cluster
     require \./pin
     #require \./cursor
