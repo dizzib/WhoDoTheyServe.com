@@ -26,11 +26,11 @@ Map
     # loose filter includes subordinates and peers
     function filter-loose node-id, edge
       (filter-tight node-id, edge) or
-      (edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id) and edge.class isnt \minor)
+      (edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id))
 
     # tight filter only includes subordinates
     function filter-tight node-id, edge
-      edge.a_is_lt and edge.b_node_id is node-id and edge.class isnt \minor
+      edge.a_is_lt and edge.b_node_id is node-id
 
     function get-cluster seed-id, filter
       function get-servant-ids
@@ -38,7 +38,7 @@ Map
         pending  = [seed-id]
         while pending.length
           id = pending.shift!
-          servant-edges = _.filter ents.edges, -> filter id, it
+          servant-edges = _.filter ents.edges, -> it.class isnt \minor and filter id, it
           servant-ids = (_.pluck servant-edges, \a_node_id) ++ _.pluck servant-edges, \b_node_id
           servant-ids = _.difference servant-ids, servants # cycle prevention
           pending ++= servant-ids
