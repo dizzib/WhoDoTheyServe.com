@@ -8,3 +8,4 @@ module.exports =
     require \./overlay
     require \./overlay/bil
     require \./pin
+    #require \./cursor

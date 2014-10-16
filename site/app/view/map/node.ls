@@ -7,18 +7,29 @@ const ICON-SIZE = 20
 
 H.insert-css F.readFileSync __dirname + \/node.css
 
+var nodes
+
 module.exports = me =
-  init: (svg, d3f) ~>
-    @nodes = svg.selectAll \g.node
+  is-bis: ->
+    /^BIS /.test it.name
+
+  is-you: ->
+    /^YOU/.test it.name
+
+  refresh-position: ->
+    nodes.attr \transform, -> "translate(#{it.x},#{it.y})"
+
+  render: (svg, d3f) ->
+    nodes := svg.selectAll \g.node
       .data d3f.nodes!
       .enter!append \svg:g
         .attr \class, ->
           "node id_#{it._id} #{if me.is-you it then \you else ''}".trim!
 
-    @nodes.append \svg:circle
+    nodes.append \svg:circle
       .attr \r, -> 5 + it.weight + if me.is-you it then 10 else 0
 
-    @nodes.append \svg:a
+    nodes.append \svg:a
       .attr \xlink:href, -> "#/node/#{it._id}"
       .append \svg:text
         .attr \dy, 4
@@ -50,12 +61,3 @@ module.exports = me =
               .attr \y     , y - 1
               .attr \width , 2 + parseInt size.0
               .attr \height, 2 + parseInt size.1
-
-  is-bis: ->
-    /^BIS /.test it.name
-
-  is-you: ->
-    /^YOU/.test it.name
-
-  on-tick: ~>
-    @nodes.attr \transform, ~> "translate(#{it.x},#{it.y})"

@@ -20,13 +20,13 @@ Map.on \render ->
   # include this path to show bounding box for debugging pin rotation
   #pin.append \svg:path .attr \d, "M -#{l = SIZE / 2} -#l L #l -#l L #l #l L -#l #l L -#l -#l"
 
-  svg = @svg; d3f = @d3f
+  map = this
   $ \.map .off \click, \.pin # otherwise handler runs against old svg in closure
   $ \.map .on  \click, \.pin ->
     c = $ this .parent!attr \class
     id = (c.match /id_([-\|\w]+)/).1 # some ids include a pipe | but short-id shouldn't do this !?
-    pin = svg.select "g.node.id_#id .pin g"
+    pin = map.svg.select "g.node.id_#id .pin g"
     t = pin.attr \transform
     pin.attr \transform, if t is PIN-IN then p = PIN-OUT else p = PIN-IN
-    d3n = _.findWhere d3f.nodes!, _id:id
+    d3n = _.findWhere map.d3f.nodes!, _id:id
     d3n.fixed = p is PIN-IN

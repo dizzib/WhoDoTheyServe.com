@@ -99,7 +99,7 @@ module.exports = B.View.extend do
 
     # order matters: svg uses painter's algo
     E.render @svg, @d3f
-    N.init @svg, @d3f
+    N.render @svg, @d3f
     @trigger \render, ents
     @svg.selectAll \g.node .call @d3f.drag if is-editable
     @trigger \rendered
@@ -127,8 +127,8 @@ module.exports = B.View.extend do
 ## helpers
 
 function tick
-  N.on-tick!
-  E.on-tick!
+  N.refresh-position!
+  E.refresh-position!
 
 function justify v
   return unless ($vm = $ '.view>.map').is \:visible # prevent show if it's hidden

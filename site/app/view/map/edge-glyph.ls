@@ -4,20 +4,22 @@ const ICON-GAP   = 1
 const ICON-SIZE  = 16
 const ICON-SPACE = ICON-SIZE + ICON-GAP
 
+var evis, g
+
 Map
-  ..on \render, (entities) ->
-    me.evs = entities.evidences
-    me.g = @svg.selectAll \g.edge-glyphs
+  ..on \render, (ents) ->
+    evis := ents.evidences
+    g := @svg.selectAll \g.edge-glyphs
       .data @d3f.links!
       .enter!append \svg:g
         .attr \class, \edge-glyphs
-    me.g.each me.append
+    g.each me.append
   ..on \tick, ->
-    me.g.attr \transform me.get-transform
+    g.attr \transform me.get-transform
 
 module.exports = me =
-  append: (edge) -> # called externally
-    evs = _.filter me.evs, -> edge._id is it.get \entity_id
+  append: (edge) ->
+    evs = _.filter evis, -> edge._id is it.get \entity_id
     dx  = - (ICON-SPACE * (evs.length - 1)) / 2
     dy  = ICON-SIZE / 2
     for ev, i in evs
@@ -33,7 +35,7 @@ module.exports = me =
             .attr \y, dy
             .text -> ev.get-glyph!unicode
 
-  get-transform: -> # called externally
+  get-transform: ->
     x = it.source.x + (it.target.x - it.source.x - ICON-SIZE) / 2
     y = it.source.y + (it.target.y - it.source.y - ICON-SIZE) / 2
     "translate(#x,#y)"

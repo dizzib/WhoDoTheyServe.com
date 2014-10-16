@@ -40,7 +40,7 @@ module.exports =
     w = it.source.weight + it.target.weight
     x / w
 
-  on-tick: ~>
+  refresh-position: ~>
     @lines
       .attr \x1, -> it.source.x
       .attr \y1, -> it.source.y
