@@ -12,7 +12,7 @@ G       = require \./growl
 
 module.exports =
   # Due to the dynamic nature of the site, we'll render each page in
-  # Firefox then manipulate it using jsdom
+  # Firefox then manipulate it using cheerio
   generate: ->
     try
       const BROWSER-HOST     = process.env.firefox-host or \localhost
