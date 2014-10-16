@@ -2,6 +2,8 @@ _   = require \underscore
 Map = require \../../view .map
 
 Map.on \render ->
+  return unless @map.get-is-editable!
+
   const PIN-IN  = 'translate(-7,7)'
   const PIN-OUT = 'translate(-7,-7) rotate(90)'
   const SIZE    = 20
