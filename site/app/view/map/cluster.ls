@@ -13,7 +13,7 @@ Map
   ..on \cooled ->
     for c in clusters
       continue unless (hull = d3.geom.hull _.map c, -> [it.x, it.y]).length
-      @svg.insert \svg:g, \.edge .attr \class, \hull
+      @svg.insert \svg:g, \.edge .attr \class, \hull # prepend as the lowest layer
         .append \path
           .style \stroke-linejoin, \round
           .style \stroke-width, 80
