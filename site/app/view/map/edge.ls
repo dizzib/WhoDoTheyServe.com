@@ -5,6 +5,8 @@ W = require \../../../lib/when
 
 H.insert-css F.readFileSync __dirname + \/edge.css
 
+var lines
+
 module.exports =
   filter: (nodes, edges, map-when) ->
     map-when-int = if map-when then W.parse map-when, \max else W.get-int-today!
@@ -40,14 +42,14 @@ module.exports =
     w = it.source.weight + it.target.weight
     x / w
 
-  refresh-position: ~>
-    @lines
+  refresh-position: ->
+    lines
       .attr \x1, -> it.source.x
       .attr \y1, -> it.source.y
       .attr \x2, -> it.target.x
       .attr \y2, -> it.target.y
 
-  render: (svg, d3f) ~>
+  render: (svg, d3f) ->
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
       .enter!append \svg:marker
@@ -59,7 +61,7 @@ module.exports =
         .attr \orient      , \auto
       .append \svg:path
         .attr \d, 'M0,-5L10,0L0,5'
-    @lines = svg.selectAll \line
+    lines := svg.selectAll \line
       .data d3f.links!
       .enter!append \svg:line
         .attr \class     , -> "edge #{it.class}".trim!
