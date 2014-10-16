@@ -23,20 +23,33 @@ Map
     d3.selectAll \.hull .remove!
 
   ..on \render (ents) ->
-    function get-servant-ids
-      servants = []
-      pending  = [it]
-      while pending.length
-        id = pending.shift!
-        servant-edges = _.filter ents.edges, -> it.a_is_lt and it.b_node_id is id and it.class isnt \minor
-        servant-ids = _.pluck servant-edges, \a_node_id
-        servant-ids = _.difference servant-ids, servants # cycle prevention
-        pending ++= servant-ids
-        servants ++= servant-ids
-      servants
+    # loose filter includes subordinates and peers
+    function filter-loose node-id, edge
+      (filter-tight node-id, edge) or
+      (edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id) and edge.class isnt \minor)
+
+    # tight filter only includes subordinates
+    function filter-tight node-id, edge
+      edge.a_is_lt and edge.b_node_id is node-id and edge.class isnt \minor
+
+    function get-cluster seed-id, filter
+      function get-servant-ids
+        servants = []
+        pending  = [seed-id]
+        while pending.length
+          id = pending.shift!
+          servant-edges = _.filter ents.edges, -> filter id, it
+          servant-ids = (_.pluck servant-edges, \a_node_id) ++ _.pluck servant-edges, \b_node_id
+          servant-ids = _.difference servant-ids, servants # cycle prevention
+          pending ++= servant-ids
+          servants ++= servant-ids
+        servants
+
+      ids = [seed._id] ++ get-servant-ids!
+      _.filter ents.nodes, -> it._id in ids
 
     clusters := []
     for seed in (_.filter ents.nodes, -> /Government/.test it.name)
-      ids = [seed._id] ++ get-servant-ids seed._id
-      cluster = _.filter ents.nodes, -> it._id in ids
-      clusters.push cluster
+      # both hulls are stacked, the loose one extending further out
+      clusters.push get-cluster seed._id, filter-loose
+      clusters.push get-cluster seed._id, filter-tight
