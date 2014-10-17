@@ -29,11 +29,8 @@ module.exports =
         Vui.show-error "One or more fields have errors. Please correct them before retrying."
 
     B # event handlers
-      ..on \pre-route, ->
-        Vui.reset!
       ..on \routed, ->
         Vae.ResetEditView!
-        Vui.finalise!
         V.navbar.render!
       ..on 'signin signout', ->
         V.map.delete!
