@@ -33,8 +33,9 @@ Exposify.config = backbone:\Backbone underscore:\_
 
 module.exports = me =
   all: ->
-    me.lib!
     me.app!
+    me.css!
+    me.lib!
   app: (opath) ->
     bundle \app.js, ->
       # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
@@ -50,6 +51,24 @@ module.exports = me =
         ..transform Cacheify Brfs, cache.brfs
       for l in LIBS then b.external l
       b
+  css: ->
+    pushd "#{Dir.build.dev.SITE}/app"
+    try
+      const DEST = \app.css
+      const EXCLUDES =
+        /^lib-3p\/bootstrap\//
+        /^lib-3p\/font-awesome/
+        /^lib-3p\/multiple-select/
+        /^theme/
+      rm DEST if test \-e, DEST
+      files = (find \.).filter -> it.match /\.css$/
+      for rx in EXCLUDES then files .= filter -> not it.match rx
+      css = cat files
+      css.to DEST
+      size = Math.floor css.length / 1024
+      G.say "Bundled #DEST (#{size}k) from #{files.length} files"
+    finally
+      popd!
   is-lib: (ipath) ->
     ipath-rel = ipath.replace "#{Dir.SITE}/app", '.'
     _.any LIBS, -> _.contains ipath-rel, it
@@ -70,7 +89,7 @@ function bundle path, fn-setup
       out = Fs.createWriteStream path
         ..on \finish, ->
           t = process.hrtime t0
-          size = Math.floor out.bytesWritten/1024
+          size = Math.floor out.bytesWritten / 1024
           G.say "Bundled #path (#{size}k) in #{t.0}.#{t.1}s"
           G.alert "#path is too large!" if size > 200k
           cb!

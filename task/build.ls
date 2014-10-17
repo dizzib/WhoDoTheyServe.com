@@ -125,12 +125,14 @@ function finalise ipath, opath
   const APP = <[ /app/ /app.ls ]>
   function contains then _.any it, -> _.contains ipath, it
   function contains-base then contains ["#{Dir.ROOT}/#it/"]
-  if ipath # partial build
+  if ipath # partial build. Remember site/lib is common to site/api and site/app
     log ipath
     return if contains-base \task
     me.emit \built-api unless contains APP
-    if Bundle.is-lib ipath then Bundle.lib! else
-      Bundle.app opath unless contains-base \test or contains API
+    switch
+      | /\.css$/.test opath => Bundle.css!
+      | Bundle.is-lib ipath => Bundle.lib!
+      | not (contains-base \test or contains API) => Bundle.app opath
     me.emit \built-app unless contains API
   else # full build
     me.emit \built-api

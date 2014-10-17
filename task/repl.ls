@@ -133,6 +133,7 @@ function show-help
     s = c.display
     for k, v of flag-vals then s = s.replace "$#k", v
     log s
+  Bundle.css!
 
 function toggle-run-tests
   (s = flags.run-tests)[it] = not s[it]
