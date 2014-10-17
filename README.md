@@ -23,7 +23,7 @@ Must be a recent version with [marionette][marionette-js].
 ## build and run site
 
     $ node _build/dev/task/repl # launch the task runner (ignore any dev/staging site errors)
-    wdts > b.fc                 # compile everything, run tests, and launch site
+    wdts > b.all                # compile everything, run tests, and launch site
 
 The dev site should now be running at `http://localhost:4000`
 

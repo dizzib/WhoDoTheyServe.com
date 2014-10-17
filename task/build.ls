@@ -1,22 +1,17 @@
 Assert   = require \assert
-Browsify = require \browserify
-Brfs     = require \brfs
-Cacheify = require \cacheify # reduces bundle time from 1.5 to 0.3 secs!
 Cron     = require \cron
 Emitter  = require \events .EventEmitter
-Exposify = require \exposify
 Fs       = require \fs
 Gaze     = require \gaze
 Globule  = require \globule
 _        = require \lodash
-LevelUp  = require \levelup
 Md       = require \marked
-Memdown  = require \memdown
 Path     = require \path
 Shell    = require \shelljs/global
 WFib     = require \wait.for .launchFiber
 W4       = require \wait.for .for
 W4m      = require \wait.for .forMethod
+Bundle   = require \./bundle
 Dir      = require \./constants .dir
 Dirname  = require \./constants .dirname
 G        = require \./growl
@@ -49,11 +44,7 @@ tasks  =
     mixn: \_
 
 module.exports = me = (new Emitter!) with
-  bundle: ->
-    bundle-lib!
-    bundle-app!
-
-  compile-files: ->
+  all: ->
     try
       for tid of tasks then compile-batch tid
       finalise!
@@ -90,67 +81,6 @@ module.exports = me = (new Emitter!) with
     G.say 'build stopped'
 
 ## helpers
-
-const LIBS =
-  # bundle order is random: https://github.com/substack/node-browserify/issues/355
-  # UPDATE: this now appears to be fixed in browserify, so files get bundled in the correct order.
-  \./lib-3p/underscore.mixin.deepExtend
-  \./lib-3p/Autolinker
-  \./lib-3p/backbone-deep-model
-  \./lib-3p/backbone-validation
-  \./lib-3p/backbone-validation-bootstrap
-  \./lib-3p/bootstrap/js/bootstrap-dropdown
-  \./lib-3p/bootstrap/js/bootstrap-typeahead
-  \./lib-3p/bootstrap-combobox
-  \./lib-3p/transparency
-  \./lib-3p/jquery.multiple.select
-  \./lib-3p/jquery.timeago
-  \./lib-3p-ext/jquery
-
-function bundle path, fn-setup
-  pushd "#{Dir.build.dev.SITE}/app"
-  try
-    W4 (cb) ->
-      t0 = process.hrtime!
-      b = fn-setup!
-      out = Fs.createWriteStream path
-        ..on \finish, ->
-          t = process.hrtime t0
-          size = Math.floor out.bytesWritten/1024
-          G.say "Bundled #path (#{size}k) in #{t.0}.#{t.1}s"
-          G.alert "#path is too large!" if size > 200k
-          cb!
-      b.bundle detectGlobals:false, insertGlobals:false
-        ..on \error, ->
-          G.alert "Bundle error: #{it.message}"
-          cb!
-        ..pipe out
-  finally
-    popd!
-
-cache = brfs:(LevelUp Memdown), exposify:LevelUp Memdown
-Exposify.config = backbone:\Backbone underscore:\_
-function bundle-app opath
-  bundle \app.js, ->
-    # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
-    # file invalidates its parent js. Quick and dirty method is to clear the whole cache!
-    if /\.(html|css)$/.test opath # file types which can be brfs'd
-      log "cache invalidated by #opath"
-      cache.brfs = LevelUp Memdown
-      cache.exposify = LevelUp Memdown
-    b = Browsify \./boot.js
-      ..require \./lib-3p/Autolinker  , expose:\Autolinker
-      ..require \./lib-3p/transparency, expose:\transparency
-      ..transform Cacheify Exposify, cache.exposify
-      ..transform Cacheify Brfs, cache.brfs
-    for l in LIBS then b.external l
-    b
-
-function bundle-lib
-  bundle \lib.js, ->
-    b = Browsify LIBS
-    for l in LIBS then b.require l
-    b
 
 function compile t, ipath, cb
   odir = Path.dirname opath = get-opath t, ipath
@@ -199,14 +129,12 @@ function finalise ipath, opath
     log ipath
     return if contains-base \task
     me.emit \built-api unless contains APP
-    ipath-rel = ipath.replace "#{Dir.SITE}/app", '.'
-    if (_.any LIBS, -> _.contains ipath-rel, it) then bundle-lib! else
-      bundle-app opath unless contains-base \test or contains API
+    if Bundle.is-lib ipath then Bundle.lib! else
+      Bundle.app opath unless contains-base \test or contains API
     me.emit \built-app unless contains API
   else # full build
     me.emit \built-api
-    bundle-lib!
-    bundle-app!
+    Bundle.all!
     me.emit \built-app
   copy-package-json!
   me.emit \built
