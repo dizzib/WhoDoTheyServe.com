@@ -17,7 +17,7 @@ module.exports =
     try
       const BROWSER-HOST     = process.env.firefox-host or \localhost
       const EXCLUDE-ROUTES   = /map/
-      const ROUTE-HOME       = '#/latest'
+      const ROUTE-HOME       = '#/nodes'
       const STAGING-SITE-URL = "http://#{Os.hostname!}:#{Cfg.staging.primary.PORT}"
 
       log "generate seo from #STAGING-SITE-URL via firefox at #BROWSER-HOST"
@@ -56,9 +56,11 @@ module.exports =
     ## helpers
 
     function amend-css $
+      function insert-link href then $ \body .before "<link type='text/css' rel='stylesheet' href='#href'>"
       $ "link[rel='stylesheet']" .remove!
-      $ \body .before "<link type='text/css' rel='stylesheet' href='/lib-3p/bootstrap/css/bootstrap.css'>"
-      $ 'style:not([data-seo-emit])' .remove!
+      $ \style .remove!
+      insert-link \/lib-3p/bootstrap/css/bootstrap.css
+      insert-link \/app.css
 
     function amend-scripts $
       $ \script .remove!
@@ -73,6 +75,7 @@ module.exports =
         <script type='text/javascript'>
           window.location.href = '/#' + window.location.pathname.replace('.html', '');
         </script>"
+
 
     function queue-links pending, done, $
       links = _.map ($ \a), -> $ it .attr \href
