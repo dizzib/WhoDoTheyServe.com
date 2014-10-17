@@ -1,6 +1,5 @@
 B = require \backbone
 F = require \fs
-H = require \../../helper
 S = require \../../session
 
 const OVERLAYS =
@@ -13,7 +12,6 @@ const OVERLAYS =
 module.exports = B.View.extend do
 
   initialize: ->
-    H.insert-css F.readFileSync __dirname + \/toolbar.css
     @$el.html F.readFileSync __dirname + \/toolbar.html
 
     for let k, v of OVERLAYS

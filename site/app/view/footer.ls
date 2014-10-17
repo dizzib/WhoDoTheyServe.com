@@ -1,11 +1,9 @@
 B  = require \backbone
 F  = require \fs # inlined by brfs
-H  = require \../helper
 Th = require \../theme
 
 module.exports = B.View.extend do
   initialize: ->
-    H.insert-css F.readFileSync __dirname + \/footer.css
     @T = F.readFileSync __dirname + \/footer.html
     Th.init!
 

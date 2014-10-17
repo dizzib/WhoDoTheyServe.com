@@ -1,11 +1,7 @@
-F = require \fs
 _ = require \underscore
 C = require \../../../../collection
-H = require \../../../../helper
 E = require \../../edge-glyph
 N = require \./node
-
-H.insert-css F.readFileSync __dirname + \/edge.css
 
 module.exports =
   filter: (edges) ->

@@ -1,7 +1,6 @@
 A = require \Autolinker
 B = require \backbone
 C = require \../collection
-H = require \../helper
 S = require \../session
 V = require \../view
 

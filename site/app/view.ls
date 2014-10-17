@@ -1,5 +1,4 @@
 F  = require \fs # browserified
-H  = require \./helper
 Ve = require \./view-activity/edit
 Vr = require \./view-activity/read
 Vs = require \./view-activity/select
@@ -11,9 +10,6 @@ V-MapEdit = require \./view/map/edit # required for event initialise
 V-MapTBar = require \./view/map/toolbar
 V-NavBar  = require \./view/navbar
 V-Sys     = require \./view/sys
-
-H.insert-css     F.readFileSync __dirname + \/view/evidence.css
-H.insert-css-seo F.readFileSync __dirname + \/view.css
 
 # cannot refactor since Brfs requires this exact code format
 D-About         = F.readFileSync __dirname + \/doc/about.html

@@ -9,12 +9,10 @@ window.onerror = (msg, url, line) ->
   false # propogate
 
 B   = require \backbone
-F   = require \fs # inlined by brfs
 Api = require \./api
 Bb  = require \./backbone
 C   = require \./collection
 Cs  = require \./collections
-H   = require \./helper
 S   = require \./session
 V   = require \./view
 Vmb = require \./view/map/boot
@@ -28,10 +26,6 @@ M-Note = require \./model/note
 M-User = require \./model/user
 M-Sess = require \./model/session
 M-Sys  = require \./model/sys
-
-H.insert-css F.readFileSync __dirname + \/lib/form.css
-H.insert-css F.readFileSync __dirname + \/lib-3p/bootstrap-combobox.css
-H.insert-css-seo F.readFileSync __dirname + \/lib-3p-ext/bootstrap.css
 
 Bb.init!
 Api.init!

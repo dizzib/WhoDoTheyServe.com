@@ -1,11 +1,6 @@
 # draw convex hulls around certain clusters of nodes e.g. government departments
-
-F   = require \fs
 _   = require \underscore
-H   = require \../../helper
 Map = require \../../view .map
-
-H.insert-css F.readFileSync __dirname + \/cluster.css
 
 var clusters
 

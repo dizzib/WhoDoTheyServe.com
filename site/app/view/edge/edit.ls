@@ -1,6 +1,5 @@
 _ = require \underscore
 C = require \../../collection
-H = require \../../helper
 V = require \../../view
 
 module.exports =

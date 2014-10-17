@@ -1,15 +1,11 @@
 B   = require \backbone
-Fs  = require \fs
 _   = require \underscore
 C   = require \../collection
-H   = require \../helper
 Sys = require \../model/sys .instance
 E   = require \./map/edge
 N   = require \./map/node
 
 const SIZE-NEW = 500px
-
-H.insert-css Fs.readFileSync __dirname + \/map.css
 
 module.exports = B.View.extend do
   delete: ->

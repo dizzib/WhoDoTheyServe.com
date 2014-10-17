@@ -1,9 +1,5 @@
-F  = require \fs
 _  = require \underscore
-H  = require \../../helper
 Hv = require \../../model/hive .instance
-
-H.insert-css F.readFileSync __dirname + \/node.css
 
 var nodes
 

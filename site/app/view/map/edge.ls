@@ -1,9 +1,5 @@
-F = require \fs
 _ = require \underscore
-H = require \../../helper
 W = require \../../../lib/when
-
-H.insert-css F.readFileSync __dirname + \/edge.css
 
 var lines
 

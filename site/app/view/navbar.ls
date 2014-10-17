@@ -3,14 +3,12 @@ F = require \fs
 _ = require \underscore
 C = require \../collection
 D = require \../view-handler/directive
-H = require \../helper
 S = require \../session
 V = require \../view
 
 module.exports = B.View.extend do
   initialize: ->
     @T = F.readFileSync __dirname + \/navbar.html
-    H.insert-css F.readFileSync __dirname + \/navbar.css
 
   render: ->
     set-active-tab $t = $ @T

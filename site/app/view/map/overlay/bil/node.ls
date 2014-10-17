@@ -1,8 +1,4 @@
-F = require \fs
 C = require \../../../../collection
-H = require \../../../../helper
-
-H.insert-css F.readFileSync __dirname + \/node.css
 
 module.exports = me =
   filter: (nodes) ->

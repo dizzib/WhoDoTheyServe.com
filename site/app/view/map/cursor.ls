@@ -1,9 +1,5 @@
-F   = require \fs
 _   = require \underscore
-H   = require \../../helper
 Map = require \../../view .map
-
-#H.insert-css F.readFileSync __dirname + \/cursor.css
 
 Map.on \render ->
   $svg = @$el.find \svg

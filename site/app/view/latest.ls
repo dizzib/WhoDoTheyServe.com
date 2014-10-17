@@ -3,7 +3,6 @@ _  = require \underscore
 F  = require \fs # browserified
 C  = require \../collection
 Cs = require \../collections
-H  = require \../helper
 S  = require \../session
 D  = require \../view-handler/directive
 
