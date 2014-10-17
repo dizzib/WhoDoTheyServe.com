@@ -41,9 +41,8 @@ module.exports =
       V.map-toolbar.show!
       V.map-info.render m, D.map
       V.map-meta.render m, D.meta
-      V.map-meta.$el.find \.timeago .timeago! # async .view.finalize timeago runs too soon!
-      return unless m.get-is-editable!
-      return V.map-edit.render m, C.Maps, fetch:no
+      return done! unless m.get-is-editable!
+      return done! V.map-edit.render m, C.Maps, fetch:no
       V.map-edit.show!
       done!
     is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
