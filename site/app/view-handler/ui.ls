@@ -13,7 +13,7 @@ module.exports =
       _.defer ~> @select!
     <- _.defer
     $ \.btn-new:visible:first .focus!
-    $ \.view .addClass \ready
+    $ \.view .addClass \ready # signal for seo crawler
     $ \.timeago .timeago!
 
   reset: ->

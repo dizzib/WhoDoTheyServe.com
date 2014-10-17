@@ -13,17 +13,24 @@ M-Note = require \../model/note
 
 module.exports =
   edge: (id, act, child-id) ->
-    edge <- fetch-entity C.Edges, id, \connection
-    V.edge.render edge, D.edge
-    V.meta.render edge, D.meta
-    render-evidences id, act, child-id
-    render-notes id, act
-    B.tracker.edge = edge
-  edges: ->
-    <- fetch-default-map # try to show at least nodes of default map
-    V.edges-head.render!
-    V.edges.render C.Edges, D.edges
-  map: ->
+    done = arguments[*-1]
+    fetch-entity C.Edges, id, \connection, (edge) ->
+      V.edge.render edge, D.edge
+      V.meta.render edge, D.meta
+      render-evidences id, act, child-id
+      render-notes id, act
+      B.tracker.edge = edge
+      done!
+    false # async done
+  edges: (id) ->
+    done = arguments[*-1]
+    fetch-default-map -> # try to show at least nodes of default map
+      V.edges-head.render!
+      V.edges.render C.Edges, D.edges
+      done!
+    false # async done
+  map: (id) ->
+    done = arguments[*-1]
     function show m
       V.map.map = m
       if is-sel-changed
@@ -38,34 +45,45 @@ module.exports =
       return unless m.get-is-editable!
       return V.map-edit.render m, C.Maps, fetch:no
       V.map-edit.show!
-    is-sel-changed = (not (m = V.map.map)? and not it?) or it isnt m?id
+      done!
+    is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
     return show m if not is-sel-changed
-    return show M-Map.create! unless it?
-    return Ui.show-error "Unable to get map #it" unless m = C.Maps.get it
+    return show M-Map.create! unless id?
+    return Ui.show-error "Unable to get map #id" unless m = C.Maps.get id
     m.fetch success:show
+    false # async done
   node: (id, act, child-id) ->
-    node <- fetch-entity C.Nodes, id, \actor
-    V.node.render node, D.node
-    V.node-edges-head.render!
-    V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
-    V.node-edges-b.render (C.Edges.find -> id is it.get \b_node_id), D.edges
-    V.meta.render node, D.meta
-    render-evidences id, act, child-id
-    render-notes id, act
-    B.tracker.node-ids.push id
-  nodes: ->
-    <- fetch-default-map # try to show at least nodes of default map
-    V.nodes-head.render!
-    V.nodes.render C.Nodes, D.nodes
-  user: ->
-    V.user.render user = C.Users.get(id = it or C.Sessions.models.0?id), D.user
+    done = arguments[*-1]
+    fetch-entity C.Nodes, id, \actor, (node) ->
+      V.node.render node, D.node
+      V.node-edges-head.render!
+      V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
+      V.node-edges-b.render (C.Edges.find -> id is it.get \b_node_id), D.edges
+      V.meta.render node, D.meta
+      render-evidences id, act, child-id
+      render-notes id, act
+      B.tracker.node-ids.push id
+      done!
+    false # async done
+  nodes: (id) ->
+    done = arguments[*-1]
+    fetch-default-map -> # try to show at least nodes of default map
+      V.nodes-head.render!
+      V.nodes.render C.Nodes, D.nodes
+      done!
+    false # async done
+  user: (id) ->
+    done = arguments[*-1]
+    V.user.render user = C.Users.get(id or C.Sessions.models.0?id), D.user
     V.meta.render user, D.meta
-    <- Cs.fetch-all # all entities must be loaded for subsequent filtering
-    render-user-entities id, V.maps, C.Maps, D.map
-    render-user-entities id, V.edges, C.Edges, D.edges
-    render-user-entities id, V.evidences, C.Evidences, D.user-evidences
-    render-user-entities id, V.nodes, C.Nodes, D.nodes
-    render-user-entities id, V.notes, C.Notes, D.user-notes
+    Cs.fetch-all -> # all entities must be loaded for subsequent filtering
+      render-user-entities id, V.maps, C.Maps, D.map
+      render-user-entities id, V.edges, C.Edges, D.edges
+      render-user-entities id, V.evidences, C.Evidences, D.user-evidences
+      render-user-entities id, V.nodes, C.Nodes, D.nodes
+      render-user-entities id, V.notes, C.Notes, D.user-notes
+      done!
+    false # async done
 
 ## helpers
 
@@ -78,7 +96,6 @@ function fetch-entity coll, id, name, cb
   <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
   return Ui.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
-  Ui.finalise! # post-route invocation may have run before fetch-all, so invoke again to be sure
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
