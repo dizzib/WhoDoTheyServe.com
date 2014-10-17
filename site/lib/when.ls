@@ -1,5 +1,3 @@
-Assert = require \assert
-
 const RANGE =
   min: day:\01 month:\01 year:\1000 int:10000101
   max: day:\31 month:\12 year:\2999 int:29991231
@@ -35,7 +33,7 @@ module.exports = me =
     arr.unshift defaults.day   if l in [1, 2]
     [dd, mm, yyyy] = [arr.0, arr.1, arr.2]
     s = "#yyyy#mm#dd"
-    Assert s.length is 8, "Invalid when.length = #{s.length}, should be 8"
+    throw new Error "Invalid when.length = #{s.length}, should be 8" unless s.length is 8
     parseInt s
 
   parse-range: ->
@@ -43,10 +41,10 @@ module.exports = me =
       int: from:RANGE.min.int, to:RANGE.max.int
       raw: from:null         , to:null
     w = it.split \-
-    Assert w.length is 2, "'#it' must contain a single dash"
+    throw new Error "'#it' must contain a single dash" unless w.length is 2
     i-from = me.parse w.0, \min
     i-to   = me.parse w.1, \max
-    Assert i-from <= i-to, "Invalid range from #i-from to #i-to"
+    throw new Error "Invalid range from #i-from to #i-to" unless i-from <= i-to
     return
       int: from:i-from, to:i-to
       raw: from:w.0   , to:w.1
