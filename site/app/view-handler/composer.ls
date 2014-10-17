@@ -42,7 +42,7 @@ module.exports =
       V.map-info.render m, D.map
       V.map-meta.render m, D.meta
       return done! unless m.get-is-editable!
-      return done! V.map-edit.render m, C.Maps, fetch:no
+      V.map-edit.render m, C.Maps, fetch:no
       V.map-edit.show!
       done!
     is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
@@ -73,7 +73,9 @@ module.exports =
     false # async done
   user: (id) ->
     done = arguments[*-1]
-    V.user.render user = C.Users.get(id or C.Sessions.models.0?id), D.user
+    log id
+    log S.get-id!
+    V.user.render user = C.Users.get(id ||= S.get-id!), D.user
     V.meta.render user, D.meta
     Cs.fetch-all -> # all entities must be loaded for subsequent filtering
       render-user-entities id, V.maps, C.Maps, D.map
