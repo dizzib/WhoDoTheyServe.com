@@ -13,10 +13,10 @@ m = B.DeepModel.extend do
     if value? then o[name] = value else delete o[name]
     @set \value, JSON.stringify o
 
-m-evis = m.extend urlRoot:"#{Api.hive}/evidences"
-m-map  = m.extend urlRoot:"#{Api.hive}/map"
+m-evs = m.extend urlRoot:"#{Api.hive}/evidences"
+m-map = m.extend urlRoot:"#{Api.hive}/map"
 
-evis = new m-evis!
+evs = new m-evs!
   ..on \sync, -> # set convenience properties
     @dead-ids = @get-prop \dead-ids or []
 
@@ -25,9 +25,9 @@ map = new m-map!
     @default-id = (@get-prop \default)?id
 
 module.exports =
-  Evidences: m-evis
+  Evidences: m-evs
   Map      : m-map
 
   instance:
-    Evidences: evis
+    Evidences: evs
     Map      : map

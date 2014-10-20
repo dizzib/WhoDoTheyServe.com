@@ -29,7 +29,7 @@ module.exports = me =
           .attr \text-anchor, \middle
           .text -> it.name
 
-    return unless icons = (JSON.parse Hv.Map.get \value).icons
+    return unless icons = Hv.Map.get-prop \icons
 
     const ICON-SIZE = 20
     for icon in icons
