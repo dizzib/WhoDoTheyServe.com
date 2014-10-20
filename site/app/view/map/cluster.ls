@@ -1,13 +1,14 @@
 # draw convex hulls around certain clusters of nodes e.g. government departments
 _   = require \underscore
+H   = require \../../model/hive .instance
 Map = require \../../view .map
 
 var clusters
 
 Map.on \cooled ->
   for c in clusters
-    continue unless (hull = d3.geom.hull _.map c, -> [it.x, it.y]).length
-    @svg.insert \svg:g, \.edge .attr \class, \hull # prepend as the lowest layer
+    continue unless (hull = d3.geom.hull _.map c.nodes, -> [it.x, it.y]).length
+    @svg.insert \svg:g, \.edge .attr \class, "hull #{c.class}" # prepend as the lowest layer
       .append \path
         .style \stroke-linejoin, \round
         .style \stroke-width, 80
@@ -26,10 +27,10 @@ Map.on \render (ents) ->
   function filter-tight node-id, edge
     edge.a_is_lt and edge.b_node_id is node-id
 
-  function get-cluster seed-id, filter
+  function get-cluster seed-node, filter
     function get-servant-ids
       servants = []
-      pending  = [seed-id]
+      pending  = [seed-node.id]
       while pending.length
         id = pending.shift!
         servant-edges = _.filter ents.edges, -> it.class isnt \minor and filter id, it
@@ -39,11 +40,11 @@ Map.on \render (ents) ->
         servants ++= servant-ids
       servants
 
-    ids = [seed._id] ++ get-servant-ids!
-    _.filter ents.nodes, -> it._id in ids
+    ids = [seed-node.id] ++ get-servant-ids!
+    class:seed-node.class, nodes:_.filter ents.nodes, -> it._id in ids
 
   clusters := []
-  for seed in (_.filter ents.nodes, -> /Government/.test it.name)
+  for seed-node in H.Map.get-prop \clusters
     # both hulls are stacked, the loose one extending further out
-    clusters.push get-cluster seed._id, filter-loose
-    clusters.push get-cluster seed._id, filter-tight
+    clusters.push get-cluster seed-node, filter-loose
+    clusters.push get-cluster seed-node, filter-tight

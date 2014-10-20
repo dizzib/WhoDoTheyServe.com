@@ -1,3 +1,12 @@
+clusters:
+  * name : "Government"
+    class: \gov
+  * name : "European Union"
+    class: \eu
+  * name : "United Nations"
+    class: \un
+  * name : "^Trilateral Commission$"
+    class: \trilat
 icons:
   * name : "Bank|Barclays|Chase|Goldman Sachs|HSBC|^NM Rothschild"
     glyph: \\uf19c
