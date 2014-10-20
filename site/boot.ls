@@ -11,8 +11,8 @@ HiveMap   = require \./boot/hive/map
 MigrateDb = require \./boot/migrate-db
 
 Db.connect!
+<- Hive.init
 err <- HiveMap.boot
 console.error err if err
-<- Hive.init
 <- Http.createServer(Express).listen port = Express.settings.port
 console.log "Express server http listening on port #{port}"
