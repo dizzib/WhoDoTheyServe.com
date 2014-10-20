@@ -18,23 +18,16 @@ V   = require \./view
 Vmb = require \./view/map/boot
 Vev = require \./view-handler/event
 
-M-Edge = require \./model/edge
-M-Evi  = require \./model/evidence
-M-Map  = require \./model/map
-M-Node = require \./model/node
-M-Note = require \./model/note
-M-User = require \./model/user
-M-Sess = require \./model/session
 M-Sys  = require \./model/sys
 
 C.init do
-  Evidence: M-Evi
-  Edge    : M-Edge
-  Map     : M-Map
-  Node    : M-Node
-  Note    : M-Note
-  User    : M-User
-  Session : M-Sess
+  Evidence: require \./model/evidence
+  Edge    : require \./model/edge
+  Map     : require \./model/map
+  Node    : require \./model/node
+  Note    : require \./model/note
+  User    : require \./model/user
+  Session : require \./model/session
 C.Sessions.fetch error:fail, success:boot
 
 ## helpers

@@ -10,37 +10,36 @@ Vue = require \../view/user/edit
 Vus = require \../view/user/signin
 
 B.on \boot ->
-  V
-    ..edge-edit
-      ..on \rendered, Vee.init
-    ..evidence-edit
-      ..on \rendered, -> Fpx.get-browser-url (-> $ \#url .attr \value, it) if it.isNew!
-    ..map
-      ..on \deleted, ->
-        V.navbar.render!
-    ..map-edit
-      ..on \destroyed, -> R.navigate \user
-      ..on \saved, (map, is-new) ->
-        V.navbar.render!
-        R.navigate "map/#{map.id}" if is-new
-    ..node-edit
-      ..on \rendered, -> $ \#name .typeahead source:C.Nodes.pluck \name
-    ..user-edit
-      ..on \cancelled, -> Bh.history.back!
-      ..on \destroyed, Vue.after-delete
-      ..on \rendered , Vue.init
-      ..on \saved    , -> R.navigate "user/#{it.id}"
-    ..user-signin
-      ..on \cancelled, -> Bh.history.back!
-      ..on \error    , -> Vus.toggle-please-wait false
-      ..on \rendered , Vus.init
-      ..on \saved    , S.signin
-      ..on \validated, -> Vus.toggle-please-wait true
-    ..user-signout
-      ..on \rendered, S.signout
-    ..user-signup
-      ..on \cancelled, -> Bh.history.back!
-      ..on \saved    , -> R.navigate "user/#{it.id}"
+  V.edge-edit
+    ..on \rendered, Vee.init
+  V.evidence-edit
+    ..on \rendered, -> Fpx.get-browser-url (-> $ \#url .attr \value, it) if it.isNew!
+  V.map
+    ..on \deleted, ->
+      V.navbar.render!
+  V.map-edit
+    ..on \destroyed, -> R.navigate \user
+    ..on \saved, (map, is-new) ->
+      V.navbar.render!
+      R.navigate "map/#{map.id}" if is-new
+  V.node-edit
+    ..on \rendered, -> $ \#name .typeahead source:C.Nodes.pluck \name
+  V.user-edit
+    ..on \cancelled, -> Bh.history.back!
+    ..on \destroyed, Vue.after-delete
+    ..on \rendered , Vue.init
+    ..on \saved    , -> R.navigate "user/#{it.id}"
+  V.user-signin
+    ..on \cancelled, -> Bh.history.back!
+    ..on \error    , -> Vus.toggle-please-wait false
+    ..on \rendered , Vus.init
+    ..on \saved    , S.signin
+    ..on \validated, -> Vus.toggle-please-wait true
+  V.user-signout
+    ..on \rendered, S.signout
+  V.user-signup
+    ..on \cancelled, -> Bh.history.back!
+    ..on \saved    , -> R.navigate "user/#{it.id}"
 
   add-entity-handlers V.edge-edit, \edge
   add-entity-handlers V.node-edit, \node
