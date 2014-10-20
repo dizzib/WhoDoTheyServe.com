@@ -18,8 +18,6 @@ V   = require \./view
 Vmb = require \./view/map/boot
 Vev = require \./view-handler/event
 
-M-Sys  = require \./model/sys
-
 C.init do
   Evidence: require \./model/evidence
   Edge    : require \./model/edge
@@ -41,7 +39,6 @@ function boot
   Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   Cs.fetch-core start, fail unless S.is-signed-in!
   B.trigger \boot
-  (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
 
 function fail coll, xhr then alert \core, xhr
 function fail-si coll, xhr then alert \signin, xhr

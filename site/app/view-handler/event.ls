@@ -4,6 +4,7 @@ C   = require \../collection
 Fpx = require \../fireprox
 R   = require \../router
 S   = require \../session
+Sys = require \../model/sys .instance
 V   = require \../view
 Vee = require \../view/edge/edit
 Vue = require \../view/user/edit
@@ -61,3 +62,5 @@ B.on \boot ->
   function add-sub-entity-handlers view, name
     view.on 'cancelled destroyed saved', ->
       R.navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
+
+Sys.on \sync -> V.version.render this
