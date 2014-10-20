@@ -1,12 +1,6 @@
 const PROD-URL = \http://wdts10.eu01.aws.af.cm/api
 
 module.exports =
-  init: ->
-    return unless is-prod!
-    # http://backbonetutorials.com/cross-domain-sessions/
-    $.ajaxPrefilter (opts) ->
-      opts.xhrFields = withCredentials:true
-
   post-coverage: -> # https://github.com/gotwarlost/istanbul-middleware
     new XMLHttpRequest!
       ..open \POST, \/coverage/client
@@ -23,6 +17,9 @@ module.exports =
   sessions : get-url \sessions
   sys      : get-url \sys
   users    : get-url \users
+
+if is-prod! # http://backbonetutorials.com/cross-domain-sessions/
+  $.ajaxPrefilter (opts) -> opts.xhrFields = withCredentials:true
 
 ## helpers
 

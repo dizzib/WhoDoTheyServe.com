@@ -34,6 +34,9 @@ B.on \signed-out-by-user, ->
 B.on \signed-out-by-session-expired, ->
   me.show-error 'Your session has expired. Please login again to continue.'
 
+B.on \validation-error, ->
+  me.show-error "One or more fields have errors. Please correct them before retrying."
+
 module.exports = me =
   show-error: ->
     # The .active class can be used to override the default error alert location

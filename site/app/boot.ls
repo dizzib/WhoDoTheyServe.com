@@ -27,8 +27,6 @@ M-User = require \./model/user
 M-Sess = require \./model/session
 M-Sys  = require \./model/sys
 
-Bb.init!
-Api.init!
 C.init do
   Evidence: M-Evi
   Edge    : M-Edge
