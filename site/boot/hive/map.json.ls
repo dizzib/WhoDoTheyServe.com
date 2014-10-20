@@ -34,6 +34,9 @@ icons:
   * name : "Government of Russia"
     image: \http://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/23px-Flag_of_Russia.svg.png
     size : \23x15
+  * name : "United Nations"
+    image: \https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/23px-Flag_of_the_United_Nations.svg.png
+    size : \23x15
   * name : "US Government"
     image: \http://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
     size : \23x12
