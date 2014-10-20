@@ -8,15 +8,14 @@ window.onerror = (msg, url, line) ->
   log "#msg (#url line #line)"
   false # propogate
 
-B   = require \backbone
-Api = require \./api
-Bb  = require \./backbone
-C   = require \./collection
-Cs  = require \./collections
-S   = require \./session
-V   = require \./view
-Vmb = require \./view/map/boot
-Vev = require \./view-handler/event
+B  = require \backbone
+Bb = require \./backbone
+C  = require \./collection
+Cs = require \./collections
+S  = require \./session
+
+require \./view/map/boot
+require \./view-handler/event
 
 C.init do
   Evidence: require \./model/evidence
