@@ -73,8 +73,6 @@ module.exports =
     false # async done
   user: (id) ->
     done = arguments[*-1]
-    log id
-    log S.get-id!
     V.user.render user = C.Users.get(id ||= S.get-id!), D.user
     V.meta.render user, D.meta
     Cs.fetch-all -> # all entities must be loaded for subsequent filtering

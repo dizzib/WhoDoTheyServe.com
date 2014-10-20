@@ -6,6 +6,7 @@ module.exports = B.View.extend do
   initialize: ->
     @T = F.readFileSync __dirname + \/footer.html
     Th.init!
+    B.on \boot ~> @render!
 
   render: ->
     @$el.html @T .show!

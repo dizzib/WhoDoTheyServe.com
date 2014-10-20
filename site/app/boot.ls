@@ -35,7 +35,7 @@ C.init do
   Note    : M-Note
   User    : M-User
   Session : M-Sess
-C.Sessions.fetch error:fail, success:init
+C.Sessions.fetch error:fail, success:boot
 
 ## helpers
 
@@ -44,16 +44,14 @@ function alert type, xhr
   prompt = "Press 'OK' to reload or 'cancel' to close this dialog"
   if confirm "#info\n\n#prompt" then window.location.reload!
 
-function fail coll, xhr then alert \core, xhr
-function fail-si coll, xhr then alert \signin, xhr
-
-function init
+function boot
   Cs.fetch-core (-> Cs.fetch-all start-signed-in, fail-si), fail if S.is-signed-in!
   Cs.fetch-core start, fail unless S.is-signed-in!
-  Vev.init!
-  Vmb.init!
-  V.footer.render!
+  B.trigger \boot
   (sys = M-Sys.instance).fetch error:fail, success: -> V.version.render sys
+
+function fail coll, xhr then alert \core, xhr
+function fail-si coll, xhr then alert \signin, xhr
 
 function start
   B.history.start!
