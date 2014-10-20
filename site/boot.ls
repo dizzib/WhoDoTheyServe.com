@@ -9,11 +9,11 @@ OpenAuthM = require \./api/authenticate/openauth-mock if process.env.NODE_ENV is
 Db        = require \./api/db
 Hive      = require \./api/hive
 Router    = require \./api/router
-DeployMap = require \./deploy/hive/map
-MigrateDb = require \./deploy/migrate-db
+BootMap   = require \./boot/hive/map
+MigrateDb = require \./boot/migrate-db
 
 Db.connect!
-Hive.init DeployMap.set-icons
+Hive.init BootMap.set-icons
 
 <- Http.createServer(Express).listen port = Express.settings.port
 console.log "Express server http listening on port #{port}"
