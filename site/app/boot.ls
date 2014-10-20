@@ -16,6 +16,7 @@ S  = require \./session
 
 require \./view/map/boot
 require \./view-handler/event
+require \./view-handler/ui
 
 C.init do
   Evidence: require \./model/evidence

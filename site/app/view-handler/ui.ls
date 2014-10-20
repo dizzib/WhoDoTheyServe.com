@@ -5,6 +5,7 @@ const KEYCODE-ESC = 27
 
 $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
 
+## initialisation
 B.on \pre-route, ->
   $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
   # handle view persistance -- some views (e.g. map) should not be cleared down, for performance
@@ -27,23 +28,21 @@ B.on \routed, ->
   $ \.view .addClass \ready # signal for seo crawler
   $ \.timeago .timeago!
 
-B.on \signed-in-by-user, ->
-  show-alert-once 'Welcome! You are now logged in'
-B.on \signed-out-by-user, ->
-  show-alert-once 'Goodbye! You are now logged out'
-B.on \signed-out-by-session-expired, ->
-  me.show-error 'Your session has expired. Please login again to continue.'
+## session
+B.on \signed-in-by-user , -> show-alert-once 'Welcome! You are now logged in'
+B.on \signed-out-by-user, -> show-alert-once 'Goodbye! You are now logged out'
+B.on \signed-out-by-session-expired, -> me.show-error 'Your session has expired. Please login again to continue.'
 
-B.on \validation-error, ->
-  me.show-error "One or more fields have errors. Please correct them before retrying."
-
-module.exports = me =
-  show-error: ->
-    # The .active class can be used to override the default error alert location
-    msg = it or 'An error occurred (check the debug console for more details)'
-    $ \.alert-error.active:last .text msg .show!
+## error handling
+B.on \error, -> show-error it
+B.on \validation-error, -> show-error "One or more fields have errors. Please correct them before retrying."
 
 ## helpers
+
+function show-error
+  # The .active class can be used to override the default error alert location
+  msg = it or 'An error occurred (check the debug console for more details)'
+  $ \.alert-error.active:last .text msg .show!
 
 function show-alert-once msg
   $ '.view>.alert-info' .addClass \persist-once .text msg .show!

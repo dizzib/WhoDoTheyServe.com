@@ -1,8 +1,7 @@
-B   = require \backbone
-F   = require \fs # inlined by brfs
-A   = require \../api
-S   = require \../model/sys .instance
-Vui = require \../view-handler/ui
+B = require \backbone
+F = require \fs # inlined by brfs
+A = require \../api
+S = require \../model/sys .instance
 
 module.exports = B.View.extend do
   initialize: ->
@@ -14,6 +13,6 @@ module.exports = B.View.extend do
     $ \.toggle-mode .on \click, ->
       $.ajax "#{A.sys}/mode/toggle",
         error: (coll, xhr) ->
-          Vui.show-error xhr?responseText
+          B.trigger \error, xhr?responseText
         success: ->
           $ \.mode .text it.mode

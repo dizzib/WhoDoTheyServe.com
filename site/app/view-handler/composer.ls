@@ -5,7 +5,6 @@ Hv = require \../model/hive .instance
 S  = require \../session
 V  = require \../view
 D  = require \./directive
-Ui = require \./ui
 
 M-Evi  = require \../model/evidence
 M-Map  = require \../model/map
@@ -48,7 +47,7 @@ module.exports =
     is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
     return show m if not is-sel-changed
     return show M-Map.create! unless id?
-    return Ui.show-error "Unable to get map #id" unless m = C.Maps.get id
+    return B.trigger \error, "Unable to get map #id" unless m = C.Maps.get id
     m.fetch success:show
     false # async done
   node: (id, act, child-id) ->
@@ -93,7 +92,7 @@ function fetch-default-map cb
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
   <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
-  return Ui.show-error "Unable to render non-existant #name (#id)" unless ent = coll.get id
+  return B.trigger \error, "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
 
 function render-evidences entity-id, act, id

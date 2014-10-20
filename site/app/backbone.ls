@@ -1,6 +1,5 @@
-B   = require \backbone
-R   = require \./router
-Vui = require \./view-handler/ui
+B = require \backbone
+R = require \./router
 
 B.Model.prototype.idAttribute = \_id # mongodb
 B.tracker = edge:void, node-ids:[] # keep track of last edited entities
@@ -12,7 +11,7 @@ B.sync = (method, model, options) ->
   options.error = (coll, xhr) ->
     (error ...) if error
     return S.expire! if xhr?status is 401
-    Vui.show-error xhr?responseText
+    B.trigger \error, xhr?responseText
   _sync method, model, options
 
 # validation

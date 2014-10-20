@@ -1,5 +1,5 @@
 # https://github.com/dizzib/fireprox helps automate input of evidence urls
-Vui = require \./view-handler/ui
+B = require \backbone
 
 const STORE-KEY = \fireprox-url
 
@@ -22,7 +22,7 @@ function send-request command, cb
   return cb! unless url = localStorage?getItem STORE-KEY
   $.ajax "#{url}/#{command}",
     error: (coll, xhr) ->
-      Vui.show-error xhr?responseText
+      B.trigger \error, xhr?responseText
       cb!
     success: ->
       cb /^\"?(.*)\"$/.exec(it)?1
