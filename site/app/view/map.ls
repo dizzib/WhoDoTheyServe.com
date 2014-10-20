@@ -38,6 +38,7 @@ module.exports = B.View.extend do
           is-resized := true # resize only once during cool-down
       ..on \end  , ~>
         @trigger \cooled
+    B.on 'signin signout', ~> @delete!
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length

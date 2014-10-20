@@ -5,6 +5,9 @@ S = require \../session
 
 const CLASS-EDITING = \editing
 
+B.on \routed, ->
+  $ \.view .removeClass CLASS-EDITING
+
 module.exports =
   EditView: B.View.extend do
     events:
@@ -43,4 +46,3 @@ module.exports =
       @coll.create m, { +merge, +wait, success: ~> @trigger \saved, m, is-new }
       false
 
-  ResetEditView: -> $ \.view .removeClass CLASS-EDITING

@@ -9,6 +9,7 @@ V = require \../view
 module.exports = B.View.extend do
   initialize: ->
     @T = F.readFileSync __dirname + \/navbar.html
+    B.on \routed, ~> @render!
 
   render: ->
     set-active-tab $t = $ @T

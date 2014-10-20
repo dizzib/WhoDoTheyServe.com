@@ -27,11 +27,20 @@ B.on \routed, ->
   $ \.view .addClass \ready # signal for seo crawler
   $ \.timeago .timeago!
 
-module.exports =
-  show-alert-once: (msg) ->
-    $ '.view>.alert-info' .addClass \persist-once .text msg .show!
+B.on \signed-in-by-user, ->
+  show-alert-once 'Welcome! You are now logged in'
+B.on \signed-out-by-user, ->
+  show-alert-once 'Goodbye! You are now logged out'
+B.on \signed-out-by-session-expired, ->
+  me.show-error 'Your session has expired. Please login again to continue.'
 
+module.exports = me =
   show-error: ->
     # The .active class can be used to override the default error alert location
     msg = it or 'An error occurred (check the debug console for more details)'
     $ \.alert-error.active:last .text msg .show!
+
+## helpers
+
+function show-alert-once msg
+  $ '.view>.alert-info' .addClass \persist-once .text msg .show!
