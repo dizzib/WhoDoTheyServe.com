@@ -32,6 +32,9 @@ module.exports = B.View.extend do
             fn: ->
               $ it.element .find ".entity>:not(.#{@type})" .remove!
               void
+            class: ->
+              return unless @type is \sel-map
+              "#{it.element.className} seo-remove"
         ($t = $ T-Latest).render items:latest, directive
         $t
 
