@@ -18,33 +18,37 @@ Map.on \pre-cool ->
   d3.selectAll \.hull .remove!
 
 Map.on \render (ents) ->
-  # loose filter includes subordinates and peers
-  function filter-loose node-id, edge
-    (filter-tight node-id, edge) or
-    (edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id))
+  function get-cluster cls, node-ids
+    class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
-  # tight filter only includes subordinates
-  function filter-tight node-id, edge
-    edge.a_is_lt and edge.b_node_id is node-id
+  function get-node-ids id, filter
+    edges = _.filter ents.edges, -> it.class isnt \minor and filter id, it
+    (_.pluck edges, \a_node_id) ++ _.pluck edges, \b_node_id
 
-  function get-cluster seed-node, filter
-    function get-servant-ids
-      servants = []
-      pending  = [seed-node.id]
-      while pending.length
-        id = pending.shift!
-        servant-edges = _.filter ents.edges, -> it.class isnt \minor and filter id, it
-        servant-ids = (_.pluck servant-edges, \a_node_id) ++ _.pluck servant-edges, \b_node_id
-        servant-ids = _.difference servant-ids, servants # cycle prevention
-        pending ++= servant-ids
-        servants ++= servant-ids
-      servants
+  function get-peer-node-ids subord-node-ids
+    function filter node-id, edge
+      edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id)
+    ids = []
+    for id in subord-node-ids
+      peer-node-ids = get-node-ids id, filter
+      ids ++= _.without peer-node-ids, id
+    _.uniq ids
 
-    ids = [seed-node.id] ++ get-servant-ids!
-    class:seed-node.class, nodes:_.filter ents.nodes, -> it._id in ids
+  function get-subord-node-ids node-id
+    function filter node-id, edge then edge.a_is_lt and edge.b_node_id is node-id
+    subords = []
+    pending = [node-id]
+    while pending.length
+      id = pending.shift!
+      ids = get-node-ids id, filter
+      ids = _.difference ids, subords # cycle prevention
+      pending ++= ids
+      subords ++= ids
+    [node-id] ++ subords
 
   clusters := []
   for seed-node in H.Map.get-prop \clusters
-    # both hulls are stacked, the loose one extending further out
-    clusters.push get-cluster seed-node, filter-loose
-    clusters.push get-cluster seed-node, filter-tight
+    subord-node-ids = get-subord-node-ids seed-node.id
+    peer-node-ids = get-peer-node-ids subord-node-ids
+    clusters.push get-cluster seed-node.class, subord-node-ids
+    clusters.push get-cluster seed-node.class, subord-node-ids ++ peer-node-ids
