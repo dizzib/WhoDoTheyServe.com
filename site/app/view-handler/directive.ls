@@ -61,27 +61,31 @@ const REMOVE =
   text: -> it.element.remove!
 
 const META =
+  'create-by':
+    class: -> \hide if get-is-admin @meta?create_user_id
+  'create-date':
+    title: -> @meta?create_date # title for timeago
   'create-user':
     href: -> get-user-href @meta?create_user_id
     text: -> get-user-text @meta?create_user_id
-  'create-date':
-    title: -> @meta?create_date # title for timeago
-  update:
-    class: -> \hide unless @meta?update_date
+  'update-by':
+    class: -> \hide if get-is-admin @meta?update_user_id
+  'update-date':
+    title: -> @meta?update_date # title for timeago
   'update-user':
     href: -> get-user-href @meta?update_user_id
     text: -> get-user-text @meta?update_user_id
-  'update-date':
-    title: -> @meta?update_date # title for timeago
 
 const META-COMPACT = # show only the last action
   act:
-    text: -> if @meta?.update_user_id then \edited else \added
+    text: -> if @meta?update_user_id then \edited else \added
+  by:
+    class: -> \hide if get-is-admin (@meta?update_user_id or @meta?create_user_id)
+  date:
+    title: -> @meta?update_date or @meta?create_date # title for timeago
   user:
     href: -> get-user-href (@meta?update_user_id or @meta?create_user_id)
     text: -> get-user-text (@meta?update_user_id or @meta?create_user_id)
-  date:
-    title: -> @meta?update_date or @meta?create_date # title for timeago
 
 const SHOW-IF-CREATOR-OR-ADMIN = ->
   \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
@@ -170,9 +174,10 @@ module.exports =
 ## helpers
 
 function get-evi-class is-dead then if is-dead then \dead else \live
+function get-is-admin then (C.Users.get it)?get-is-admin!
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
-function get-user-text then if (u = C.Users.find-by-id it) then "#{u.get \name} " else '(deleted user) '
+function get-user-text then if (u = C.Users.get it) then "#{u.get \name}" else '(deleted user)'
 
 function get-youtube-embed url
   # http://stackoverflow.com/questions/21607808/convert-a-youtube-video-url-to-embed-code

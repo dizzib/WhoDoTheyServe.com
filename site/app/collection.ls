@@ -59,7 +59,6 @@ module.exports.init = (models) ->
   users = c.extend do
     url       : Api.users
     model     : models.User
-    find-by-id: (id) -> exports.Users.findWhere _id:id .models.0
 
   me = module.exports
     ..Edges     = new edges!
