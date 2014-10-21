@@ -68,6 +68,8 @@ const META =
   'create-user':
     href: -> get-user-href @meta?create_user_id
     text: -> get-user-text @meta?create_user_id
+  update:
+    class: -> \hide unless @meta.update_user_id
   'update-by':
     class: -> \hide if get-is-admin @meta?update_user_id
   'update-date':
