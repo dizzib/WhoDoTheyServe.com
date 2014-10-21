@@ -1,14 +1,14 @@
-# draw convex hulls around certain clusters of nodes e.g. government departments
+# draw convex hulls around certain node regions e.g. governments
 _   = require \underscore
 H   = require \../../model/hive .instance
 Map = require \../../view .map
 
-var clusters
+var regions
 
 Map.on \cooled ->
-  for c in clusters
-    continue unless (hull = d3.geom.hull _.map c.nodes, -> [it.x, it.y]).length
-    @svg.insert \svg:g, \.edge .attr \class, "hull #{c.class}" # prepend as the lowest layer
+  for r in regions
+    continue unless (hull = d3.geom.hull _.map r.nodes, -> [it.x, it.y]).length
+    @svg.insert \svg:g, \.edge .attr \class, "hull #{r.class}" # prepend as the lowest layer
       .append \path
         .style \stroke-linejoin, \round
         .style \stroke-width, 80
@@ -18,7 +18,7 @@ Map.on \pre-cool ->
   d3.selectAll \.hull .remove!
 
 Map.on \render (ents) ->
-  function get-cluster cls, node-ids
+  function get-region cls, node-ids
     class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
   function get-node-ids id, filter
@@ -46,9 +46,9 @@ Map.on \render (ents) ->
       subords ++= ids
     [node-id] ++ subords
 
-  clusters := []
-  for seed-node in H.Map.get-prop \clusters
+  regions := []
+  for seed-node in H.Map.get-prop \regions
     subord-node-ids = get-subord-node-ids seed-node.id
     peer-node-ids = get-peer-node-ids subord-node-ids
-    clusters.push get-cluster seed-node.class, subord-node-ids
-    clusters.push get-cluster seed-node.class, subord-node-ids ++ peer-node-ids
+    regions.push get-region seed-node.class, subord-node-ids
+    regions.push get-region seed-node.class, subord-node-ids ++ peer-node-ids

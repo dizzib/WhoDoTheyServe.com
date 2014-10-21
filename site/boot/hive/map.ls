@@ -10,19 +10,19 @@ module.exports =
     return cb err if err
     json = Hive.get \map
     value = if json then JSON.parse json else {}
-    value.clusters = get-clusters nodes
+    value.regions = get-regions nodes
     value.icons = get-icons nodes
     Hive.set \map, JSON.stringify value
     cb!
 
     ## helpers
 
-    function get-clusters nodes
-      clusters = []
+    function get-regions nodes
+      regions = []
       for node in nodes
-        for d in Data.clusters when node.name.match d.name
-          clusters.push id:node._id, class:d.class
-      clusters
+        for d in Data.regions when node.name.match d.name
+          regions.push id:node._id, class:d.class
+      regions
 
     function get-icons nodes
       icons = []

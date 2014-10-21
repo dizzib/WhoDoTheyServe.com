@@ -1,12 +1,3 @@
-clusters:
-  * name : "Government"
-    class: \gov
-  * name : "European Union"
-    class: \eu
-  * name : "United Nations"
-    class: \un
-  * name : "^Trilateral Commission$"
-    class: \trilat
 icons:
   * name : "Bank|Barclays|Chase|Goldman Sachs|HSBC|^NM Rothschild"
     glyph: \\uf19c
@@ -40,3 +31,12 @@ icons:
   * name : "US Government"
     image: \http://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
     size : \23x12
+regions:
+  * name : "Government"
+    class: \gov
+  * name : "European Union"
+    class: \eu
+  * name : "United Nations"
+    class: \un
+  * name : "^Trilateral Commission$"
+    class: \trilat
