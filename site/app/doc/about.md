@@ -9,17 +9,6 @@ All actors and connections are backed up with evidence.
 This site is experimental and open to new ideas/suggestions which
 you can add to [github issues][issues].
 
-### Contribute
-
-If you feel like contributing then simply [login using your Facebook, Google or Github
-account][login] or to remain more anonymous email me at <mailto:dizzib0@gmail.com> and I'll set you up with
-a password account. Don't worry, you can delete your WhoDoTheyServe.com account at any time.
-
-Any actors and connections you add are shared and usable by other contributors and your
-maps are viewable by anyone.
-
-This feature is currently in beta test so please log any issues to [github issues][issues].
-
 ### Data
 
 The data is freely available in [JSON] format via an [API]:

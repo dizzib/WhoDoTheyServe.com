@@ -1,6 +1,6 @@
 include ../../lib/_form
 
-.openauth.well
+.openauth.well.hide
   legend OpenAuth Login
   a(href='api/auth/facebook')
     i.glyph.fa.fa-2x.fa-facebook
@@ -15,7 +15,7 @@ include ../../lib/_form
     span Login with your Google account
 
 form.form-horizontal.create.well
-  legend Standard Login
+  legend Login
   fieldset
     +field-text('handle', 'Username')
     +field-password('password', 'Password')
