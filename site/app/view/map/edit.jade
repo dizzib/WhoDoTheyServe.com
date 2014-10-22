@@ -12,14 +12,14 @@ form.map.signed-in.form-horizontal.well.bg-transparent
       span.input-xlarge
         +field-text('name', 'Name', 'Enter a name for the map')
       +field-select('nodes', 'Actors')
-        .help-block.v-gap Drag actors around the map to improve the layout.
+        .help-block.gap-t Drag actors around the map to improve the layout.
         .help-block Click a pin
           i.glyph.fa.fa-thumb-tack
           to fix or free an actor's position.
       span.input-xlarge
         +field-textarea('description', 'Description')
       +field-text('when', 'When')
-        .help-block.v-gap
+        .help-block.gap-t
           :markdown
             Optionally enter a date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
             Active connections on this date will have a solid line, otherwise dotted.  
