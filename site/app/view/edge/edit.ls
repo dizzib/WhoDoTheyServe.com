@@ -9,6 +9,12 @@ module.exports =
 
     $ \#how .typeahead source:_.uniq C.Edges.pluck \how
 
+    $ \.btn-swap-ab .click ->
+      a-id = (sel-a = V.edge-a-node-sel).get-selected-id!
+      b-id = (sel-b = V.edge-b-node-sel).get-selected-id!
+      sel-a.set-by-id b-id
+      sel-b.set-by-id a-id
+
     # defer, otherwise won't focus in new edge for some reason
     _.defer -> $ '.editing input[type=text]:first' .focus!
 

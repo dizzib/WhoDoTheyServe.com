@@ -6,7 +6,8 @@ T-Sel = F.readFileSync __dirname + \/select.html
 
 module.exports =
   MultiSelectView: B.View.extend do
-    get-selected-ids: -> @dropdown.multipleSelect \getSelects
+    get-selected-ids: ->
+      @dropdown.multipleSelect \getSelects
     initialize: ->
       @sel  = it.sel
       @opts = it.opts <<<
@@ -24,8 +25,10 @@ module.exports =
         ..multipleSelect \setSelects, sel-ids
 
   SelectView: B.View.extend do
-    get-selected-id: -> @dropdown.val!
-    initialize: -> @sel = it.sel
+    get-selected-id: ->
+      @dropdown.val!
+    initialize: ->
+      @sel = it.sel
     render: (coll, fname, sel-id = '') ->
       $t-sel = get-select $t = $ T-Sel
       render-select $t-sel, coll, fname
@@ -35,6 +38,11 @@ module.exports =
         ..val sel-id
         ..combobox bsVersion:2
         ..change ~> @trigger \selected
+    set-by-id: ->
+      @dropdown.val it
+      cbx = @dropdown.data \combobox
+      cbx.$element.val '' if it is '' # cbx.clearElement! causes focus problems
+      cbx.refresh!
 
 ## helpers
 

@@ -34,8 +34,10 @@ form.form-horizontal.well
         :markdown
           Optional note of how A relates to B (e.g. owned by, department of, attends).
           Please use present tense e.g. `is` rather than `was` even for past connections.
-    span.input-xxlarge
-      +field-select('b_node_id', 'Actor B')
+    span.clearfix.input-xxlarge
+      .pull-left
+        +field-select('b_node_id', 'Actor B')
+      button(type='button').btn.btn-inverse.btn-swap-ab.l-gap Swap AB
     +field-text('when', 'When')
       .help-block
         :markdown
