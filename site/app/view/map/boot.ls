@@ -7,7 +7,8 @@ B.on \boot, ->
   require \./overlay/slit
   require \./edge-glyph
   require \./overlay
-  require \./overlay/bil
+  require \./overlay/bil/edge
+  require \./overlay/bil/node
   require \./pin
   require \./region
   #require \./cursor
