@@ -49,7 +49,10 @@ Map.on \pre-render (ents) ->
   edges-steer  := _.filter ents.edges, is-steering
   nodes-steer  := _.map edges-steer, -> if N.is-steering it.source then it.target else it.source
   ents.edges = _.difference ents.edges, edges-attend, edges-steer
-  N.edges-attend = edges-attend # node on-render requires this info
+
+  # inject info required by node renderer
+  N.edges-attend = edges-attend
+  N.nodes-steer = nodes-steer
 
 Map.on \render ->
   ~function add-overlay name

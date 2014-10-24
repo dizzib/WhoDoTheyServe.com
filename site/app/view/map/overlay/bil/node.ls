@@ -18,7 +18,7 @@ Map.on \render ->
       .attr \ry, 5
     badge
 
-  function render-combined node, edges
+  function render-badges-combined node, edges
     const BADGE-X-SIZE = 82
     render-badge node, (-BADGE-X-SIZE / 2), BADGE-X-SIZE
       .append \svg:text
@@ -26,7 +26,7 @@ Map.on \render ->
         .attr \dy, 13
         .text "#{edges.0.yyyy} - #{edges[*-1].yyyy}"
 
-  function render-separate node, edges
+  function render-badges-separate node, edges
     const BADGE-X-GAP = 24
     const BADGE-X-SIZE = 20
     offset-x = - (BADGE-X-GAP * (edges.length - 1)) / 2
@@ -46,7 +46,7 @@ Map.on \render ->
   node <- @svg.selectAll \g.node .each
   edges = _.filter me.edges-attend, -> node._id is it.a_node_id or node._id is it.b_node_id
   edges = _.sortBy edges, -> it.yyyy
-  (if edges.length <= 4 then render-separate else render-combined) this, edges
+  (if edges.length <= 4 then render-badges-separate else render-badges-combined) this, edges
 
 module.exports = me =
   is-annual-conference: ->
