@@ -1,9 +1,10 @@
 _    = require \lodash
+Sh   = require \shelljs/global
 W4   = require \wait.for .for
 H    = require \../helper
 Http = require \./_http
 
-const HOST = "#{process.env.SITE_DOMAIN_NAME}:#{process.env.SITE_PORT}"
+const HOST = "#{env.SITE_DOMAIN_NAME || \SITE_DOMAIN_NAME}:#{env.SITE_PORT}"
 
 module.exports = me = _.extend do
   oa1 : get-spec-tests \oa1
