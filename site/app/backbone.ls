@@ -1,5 +1,6 @@
 B = require \backbone
 R = require \./router
+S = require \./session
 
 B.Model.prototype.idAttribute = \_id # mongodb
 B.tracker = edge:void, node-ids:[] # keep track of last edited entities
@@ -8,7 +9,7 @@ B.tracker = edge:void, node-ids:[] # keep track of last edited entities
 _sync = B.sync
 B.sync = (method, model, options) ->
   error = options.error
-  options.error = (coll, xhr) ->
+  options.error = (xhr) ->
     (error ...) if error
     return S.expire! if xhr?status is 401
     B.trigger \error, xhr?responseText

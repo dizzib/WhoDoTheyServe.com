@@ -31,7 +31,7 @@ B.on \routed, ->
 ## session
 B.on \signed-in-by-user , -> show-alert-once 'Welcome! You are now logged in'
 B.on \signed-out-by-user, -> show-alert-once 'Goodbye! You are now logged out'
-B.on \signed-out-by-session-expired, -> me.show-error 'Your session has expired. Please login again to continue.'
+B.on \signed-out-by-session-expired, -> show-error 'Your session has expired. Please login again to continue.'
 
 ## error handling
 B.on \error, -> show-error it

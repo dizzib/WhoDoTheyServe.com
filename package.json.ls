@@ -7,17 +7,18 @@ engines:
 scripts:
   start: 'node boot.js'
 dependencies:
-  bcrypt                 : \0.7.5
-  crypto                 : \0.0.3
-  express                : \3.1.1
-  'http-status'          : \0.1.8
-  lodash                 : \2.4.1
-  mongoose               : \3.5.5
-  passport               : \0.2.0
-  'passport-facebook'    : \1.0.3
-  'passport-github'      : \0.1.5
-  'passport-google-oauth': \0.1.5
-  shortid                : \2.0.0
+  bcrypt                  : \0.7.5
+  crypto                  : \0.0.3
+  'custom-error-generator': \7.0.0
+  express                 : \3.1.1
+  'http-status'           : \0.1.8
+  lodash                  : \2.4.1
+  mongoose                : \3.5.5
+  passport                : \0.2.0
+  'passport-facebook'     : \1.0.3
+  'passport-github'       : \0.1.5
+  'passport-google-oauth' : \0.1.5
+  shortid                 : \2.0.0
 devDependencies:
   brfs                  : \~0.0.9
   browserify            : \~3.24.13

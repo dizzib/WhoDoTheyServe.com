@@ -1,8 +1,10 @@
-class ApiError extends Error
+Errgen = require \custom-error-generator
+
+ApiError = Errgen \ApiError
 
 module.exports =
   Api: ApiError
 
-  Authenticate: class AuthenticateError extends ApiError
+  Authenticate: Errgen \AuthenticateError, ApiError
 
-  AuthenticateRequired: class AuthenticateRequiredError extends ApiError
+  AuthenticateRequired: Errgen \AuthenticateRequiredError, ApiError
