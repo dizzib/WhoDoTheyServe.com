@@ -17,12 +17,11 @@ schema
     err, node <~ me.findOne name:get-regexp @name
     return next err if err
     return next! unless node
-    return next new Err.Api "Duplicate detected: #{node.name}"
-    next!
+    next new Err.Api "Duplicate detected: #{node.name}"
 
 module.exports = me = Crud.set-fns (M.model \nodes, schema)
 
-function get-regexp name then
+function get-regexp name
   name = name.replace /\!/g, '\\!'
   name = name.replace /\(/g, '\\('
   name = name.replace /\)/g, '\\)'
