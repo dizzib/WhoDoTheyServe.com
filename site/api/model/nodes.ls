@@ -22,7 +22,6 @@ schema
 module.exports = me = Crud.set-fns (M.model \nodes, schema)
 
 function get-regexp name
-  name = name.replace /\!/g, '\\!'
-  name = name.replace /\(/g, '\\('
-  name = name.replace /\)/g, '\\)'
+  # http://stackoverflow.com/questions/2593637/how-to-escape-regular-expression-in-javascript
+  name = name.replace /[.?*+^$[\]\\(){}|-]/g, '\\$&'
   new RegExp "^#{name}$", \i
