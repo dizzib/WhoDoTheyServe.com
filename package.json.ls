@@ -12,7 +12,7 @@ dependencies:
   'custom-error-generator': \7.0.0
   express                 : \3.1.1
   'http-status'           : \0.1.8
-  lodash                  : \2.4.1
+  lodash                  : \3.5.0
   mongoose                : \3.5.5
   passport                : \0.2.0
   'passport-facebook'     : \1.0.3

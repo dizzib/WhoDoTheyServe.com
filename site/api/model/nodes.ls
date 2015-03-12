@@ -1,3 +1,4 @@
+_         = require \lodash
 M         = require \mongoose
 Cons      = require \../../lib/model-constraints
 Crud      = require \../crud
@@ -14,14 +15,9 @@ schema
   # TODO: refactor when mongo allows case-insensitive unique index
   # https://jira.mongodb.org/browse/SERVER-90
   ..pre \save, (next) ->
-    err, node <~ me.findOne name:get-regexp @name
+    err, node <~ me.findOne name:new RegExp "^#{_.escapeRegExp @name}$", \i
     return next err if err
     return next! unless node
     next new Err.Api "Duplicate detected: #{node.name}"
 
 module.exports = me = Crud.set-fns (M.model \nodes, schema)
-
-function get-regexp name
-  # http://stackoverflow.com/questions/2593637/how-to-escape-regular-expression-in-javascript
-  name = name.replace /[.?*+^$[\]\\(){}|-]/g, '\\$&'
-  new RegExp "^#{name}$", \i
