@@ -26,10 +26,9 @@ devDependencies:
   chai                  : \~1.8.1
   chalk                 : \~0.4.0
   cheerio               : \~0.14.0
+  chokidar              : \~1.0.1
   cron                  : \~1.0.3
   exposify              : \~0.1.4
-  gaze                  : \~0.6.4
-  globule               : \~0.2.0 # TODO: remove when gaze fixes issue 104
   gntp                  : \~0.1.1
   'istanbul-middleware' : \~0.1.1
   jade                  : \~1.6.0
