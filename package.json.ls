@@ -8,16 +8,23 @@ scripts:
   start: 'node boot.js'
 dependencies:
   bcrypt                  : \0.7.5
+  'body-parser'           : \1.12.3
+  compression             : \1.4.3
+  'cookie-parser'         : \1.3.4
+  'cookie-session'        : \1.1.0
   crypto                  : \0.0.3
   'custom-error-generator': \7.0.0
-  express                 : \3.1.1
+  errorhandler            : \1.3.5
+  express                 : \4.12.3
   'http-status'           : \0.1.8
   lodash                  : \3.5.0
   mongoose                : \3.5.5
+  morgan                  : \1.5.2
   passport                : \0.2.0
   'passport-facebook'     : \1.0.3
   'passport-github'       : \0.1.5
   'passport-google-oauth' : \0.1.5
+  'serve-favicon'         : \2.2.0
   shortid                 : \2.0.0
 devDependencies:
   brfs                  : \~0.0.9

@@ -1,10 +1,17 @@
-Express   = require \express
-HttpCode  = require \http-status
-Im        = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
-_         = require \lodash
-Passport  = require \passport
-Err       = require \./api/error
-H         = require \./api/helper
+BodyParser = require \body-parser
+Compress   = require \compression
+CookiePars = require \cookie-parser
+CookieSess = require \cookie-session
+ErrHandler = require \errorhandler
+Express    = require \express
+Favicon    = require \serve-favicon
+HttpCode   = require \http-status
+Im         = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
+_          = require \lodash
+Logger     = require \morgan
+Passport   = require \passport
+Err        = require \./api/error
+H          = require \./api/helper
 
 const ONE-HOUR = 60m * 60s * 1000ms
 const DIR-APP  = "#{__dirname}/app"
@@ -24,21 +31,19 @@ env = (express = Express!).settings.env
 module.exports = express
   ..set \port, process.env.PORT || 80
   ..use '/coverage', Im.createHandler! if is-cover
-  ..use Express.favicon \./app/asset/favicon.png, static-opts
-  ..use Express.logger \dev if env in <[ development ]>
-  ..use Express.compress! if env in <[ staging production ]>
-  ..use Express.cookieParser!
-  ..use Express.cookieSession cookie-opts
-  ..use Express.bodyParser!
+  ..use Favicon \./app/asset/favicon.png, static-opts
+  ..use Logger \dev if env in <[ development ]>
+  ..use Compress! if env in <[ staging production ]>
+  ..use CookiePars!
+  ..use CookieSess cookie-opts
+  ..use BodyParser!
   ..use allow-cross-domain
   ..use Passport.initialize!
-  ..use express.router
   ..use Express.static DIR-APP, static-opts
   ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
   ..use log-error show-stack:env in <[ development staging production ]>
   ..use handle-error
-  ..use Express.errorHandler! if env in <[ development ]>
-
+  ..use ErrHandler! if env in <[ development ]>
 
 # http://backbonetutorials.com/cross-domain-sessions/
 function allow-cross-domain req, res, next
