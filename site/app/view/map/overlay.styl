@@ -1,25 +1,13 @@
+overlay(id, color)
+  .badge-{id}
+    text
+      fill        color
+  .edge.{id}
+    stroke        color
+    stroke-width  1px
+
 .map
-  .badge-ac
-    text
-      fill    blue
-  .badge-bis
-    text
-      fill    red
-  .badge-cfr
-    text
-      fill    magenta
-  .badge-g7
-    text
-      fill    green
-  .edge.ac
-    stroke        blue
-    stroke-width  1px
-  .edge.bis
-    stroke        red
-    stroke-width  1px
-  .edge.cfr
-    stroke        magenta
-    stroke-width  1px
-  .edge.g7
-    stroke        green
-    stroke-width  1px
+  overlay('ac' , blue)
+  overlay('bis', red)
+  overlay('cfr', magenta)
+  overlay('g7' , green)
