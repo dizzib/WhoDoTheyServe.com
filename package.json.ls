@@ -43,7 +43,7 @@ devDependencies:
   nib                   : \~0.9.0
   request               : \~2.16.6
   shelljs               : \~0.2.6
-  stylus                : \~0.31.0
+  stylus                : \~0.51.1
   'uglify-js'           : \~2.4.12
   'variadic.js'         : \~0.0.1
   'wait.for'            : \~0.6.3
