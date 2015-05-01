@@ -62,3 +62,7 @@ new Overlay \bis,
 new Overlay \cfr,
   -> it.how is \member
   -> /^CFR/.test it.name
+
+new Overlay \g7,
+  -> it.how is \member
+  -> /^G7/.test it.name
