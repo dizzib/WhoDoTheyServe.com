@@ -47,7 +47,7 @@ devDependencies:
   memdown               : \~0.10.2 # cacheify
   mocha                 : \~1.15.1
   mongodb               : \~1.2.14
-  nib                   : \~0.9.0
+  nib                   : \~1.1.0
   request               : \~2.16.6
   shelljs               : \~0.2.6
   stylus                : \~0.51.1
