@@ -39,7 +39,7 @@ module.exports = express
   ..use Compress! if env in <[ staging production ]>
   ..use CookiePars!
   ..use CookieSess cookie-opts
-  ..use BodyParser!
+  ..use BodyParser.json!
   ..use allow-cross-domain
   ..use Passport.initialize!
 
