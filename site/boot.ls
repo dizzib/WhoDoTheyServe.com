@@ -2,8 +2,6 @@ global.log = console.log
 
 Http      = require \http
 Express   = require \./server
-OpenAuth  = require \./api/authenticate/openauth
-OpenAuthM = require \./api/authenticate/openauth-mock if process.env.NODE_ENV is \test
 Db        = require \./api/db
 Hive      = require \./api/hive
 Router    = require \./api/router

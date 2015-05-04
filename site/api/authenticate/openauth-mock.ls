@@ -3,19 +3,11 @@
 #
 # https://gist.github.com/mweibel/5219403
 
+Express  = require \express
 Passport = require \passport
-Express  = require \../../server
 Err      = require \../error
-Router   = require \../router
+Router   = require \./router
 OpenAuth = require \./openauth
-
-function set-route name, opts
-  l1-opts = successRedirect:"/api/auth/mock/#name/callback"
-  Router.set-api-openauth \mock, "mock/#name", (l1-opts <<< opts), opts
-
-set-route \oa1 , id:111 name:\oa1
-set-route \oa2 , id:111 name:\oa2
-set-route \fail, is-pass:false
 
 class StrategyMock extends Passport.Strategy
   (options, @verify) -> @name = \mock
@@ -29,3 +21,14 @@ class StrategyMock extends Passport.Strategy
       throw new Err.Authenticate \FAIL
 
 OpenAuth.set-config \mock, StrategyMock
+
+module.exports =
+  create-router: ->
+    function set-route name, opts
+      l1-opts = successRedirect:"/api/auth/mock/#name/callback"
+      Router.create \mock, "mock/#name", (l1-opts <<< opts), opts
+
+    Express.Router!
+      ..use set-route \oa1 , id:111 name:\oa1
+      ..use set-route \oa2 , id:111 name:\oa2
+      ..use set-route \fail, is-pass:false

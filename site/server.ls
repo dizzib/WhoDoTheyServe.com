@@ -1,17 +1,20 @@
-BodyParser = require \body-parser
-Compress   = require \compression
-CookiePars = require \cookie-parser
-CookieSess = require \cookie-session
-ErrHandler = require \errorhandler
-Express    = require \express
-Favicon    = require \serve-favicon
-HttpCode   = require \http-status
-Im         = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
-_          = require \lodash
-Logger     = require \morgan
-Passport   = require \passport
-Err        = require \./api/error
-H          = require \./api/helper
+BodyParser  = require \body-parser
+Compress    = require \compression
+CookiePars  = require \cookie-parser
+CookieSess  = require \cookie-session
+ErrHandler  = require \errorhandler
+Express     = require \express
+Favicon     = require \serve-favicon
+HttpCode    = require \http-status
+Im          = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
+_           = require \lodash
+Logger      = require \morgan
+Passport    = require \passport
+Err         = require \./api/error
+H           = require \./api/helper
+OAuthMock   = require \./api/authenticate/openauth-mock if process.env.NODE_ENV is \test
+OAuthRouter = require \./api/authenticate/router
+Router      = require \./api/router
 
 const ONE-HOUR = 60m * 60s * 1000ms
 const DIR-APP  = "#{__dirname}/app"
@@ -39,6 +42,14 @@ module.exports = express
   ..use BodyParser!
   ..use allow-cross-domain
   ..use Passport.initialize!
+
+  # routes
+  ..use '/api', Router
+  #..use '/api/auth', OAuthRouter.create \facebook
+  #..use '/api/auth', OAuthRouter.create \github
+  #..use '/api/auth', OAuthRouter.create \google
+  ..use '/api/auth', OAuthMock.create-router! if process.env.NODE_ENV is \test
+
   ..use Express.static DIR-APP, static-opts
   ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
   ..use log-error show-stack:env in <[ development staging production ]>
