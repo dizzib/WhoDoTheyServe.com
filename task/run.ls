@@ -31,8 +31,8 @@ const GLOB_2 = 'test/_integration/app.js'
 const RX-ERR = /(expected|error|exception)/i
 
 function drop-db cfg, cb
-  conn = Mg.createConnection cfg.WDTS_DB_URI
-  e <- conn.db.executeDbCommand dropDatabase:1
+  <- (conn = Mg.createConnection cfg.WDTS_DB_URI).on \open
+  e <- conn.db.dropDatabase
   throw new Error "drop-db failed: #e" if e
   conn.close!
   cb!
