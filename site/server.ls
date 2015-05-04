@@ -6,7 +6,7 @@ ErrHandler  = require \errorhandler
 Express     = require \express
 Favicon     = require \serve-favicon
 HttpCode    = require \http-status
-Im          = require \istanbul-middleware if is-cover = process.env.COVERAGE is \true
+Im          = require \istanbul-middleware if process.env.COVERAGE is \true
 _           = require \lodash
 Logger      = require \morgan
 Passport    = require \passport
@@ -28,12 +28,11 @@ cookie-opts =
 static-opts =
   maxAge: ONE-HOUR
 
-Im.hookLoader __dirname if is-cover
 env = (express = Express!).settings.env
 
 module.exports = express
   ..set \port, process.env.PORT || 80
-  ..use '/coverage', Im.createHandler! if is-cover
+  ..use '/coverage', Im.createHandler! if Im
   ..use Favicon \./app/asset/favicon.png, static-opts
   ..use Logger \dev if env in <[ development ]>
   ..use Compress! if env in <[ staging production ]>
@@ -51,7 +50,7 @@ module.exports = express
   ..use '/api/auth', OAuthMock.create-router! if process.env.NODE_ENV is \test
 
   ..use Express.static DIR-APP, static-opts
-  ..use Im.createClientHandler DIR-APP, matcher:matcher if is-cover
+  ..use Im.createClientHandler DIR-APP, matcher:matcher if Im
   ..use log-error show-stack:env in <[ development staging production ]>
   ..use handle-error
   ..use ErrHandler! if env in <[ development ]>
