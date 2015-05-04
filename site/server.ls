@@ -25,13 +25,11 @@ cookie-opts =
     maxAge: 4 * ONE-HOUR # https://github.com/senchalabs/connect/issues/670
 
 # http://docs.aws.amazon.com/AmazonCloudFront/2010-11-01/DeveloperGuide/Expiration.html
-static-opts =
-  maxAge: ONE-HOUR
+static-opts = maxAge:ONE-HOUR
 
 env = (express = Express!).settings.env
 
 module.exports = express
-  ..set \port, process.env.PORT || 80
   ..use '/coverage', Im.createHandler! if Im
   ..use Favicon \./app/asset/favicon.png, static-opts
   ..use Logger \dev if env in <[ development ]>
@@ -84,5 +82,4 @@ function log-error opts
     log if opts.show-stack and err.stack then err.stack else msg
     next err
 
-function matcher req
-  /(app|loader)\.js/.test req.url
+function matcher req then /(app|loader)\.js/.test req.url
