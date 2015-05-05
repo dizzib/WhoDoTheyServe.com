@@ -8,6 +8,7 @@ module.exports = me =
       update : me.get-invoker Model, me.update
       delete : me.get-invoker Model, me.delete
       list   : me.get-invoker Model, me.list
+    Model.on \index (err) -> log err if err
     Model
 
   ## crud
