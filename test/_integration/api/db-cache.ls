@@ -5,8 +5,6 @@ const DB-CACHE = "#{process.cwd!}/site/api/db-cache"
 Should   = require \chai .should!
 Client   = require \mongodb .MongoClient
 Mongoose = require \mongoose
-W        = require \wait.for
-R        = require \../helper .run
 Cache-C  = require "#DB-CACHE/collection-cache"
 Cache-Q  = require "#DB-CACHE/query-by-entity-cache"
 P-Id     = require "#DB-CACHE/../model/plugin-id"
@@ -26,26 +24,27 @@ Sweeper.create store-q = Store.create!
 Cache-C.create store-c
 Cache-Q.create store-q
 
-before R ->
+before (done) ->
   Mongoose.connect DB-URL
-  drop-db!
+  <- (conn = Mongoose.connection).on \open
+  e <- conn.db.dropDatabase
+  throw new Error "drop-db failed: #e" if e
 
   spec =
     tag      : type:String
     entity_id: type:String
     name     : type:String
-  schema = new Mongoose.Schema spec
-    ..plugin P-Id
+  schema = new Mongoose.Schema spec .plugin P-Id
   M-Foos := Mongoose.model \foos, schema
-  database = W.forMethod Client, \connect, DB-URL
 
-  db := database
+  err, db <- Client.connect DB-URL
   C-Foos := db.collection \foos
   store-c.clear!
   store-q.clear!
+  done!
 
-after R ->
-  drop-db!
+after (done) ->
+  Mongoose.connection.db.dropDatabase done
 
 # NOTE: each test must leave collection empty for next test
 it 'collection cache', (done) ->
@@ -195,6 +194,3 @@ function find-by-id-then-save tag-old, tag-new, done
   Should.not.exist err
   ids[tag-new] = foo._id
   done!
-
-function drop-db
-  W.forMethod Mongoose.connection.db, \executeDbCommand, dropDatabase:1
