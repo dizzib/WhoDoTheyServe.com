@@ -26,7 +26,7 @@ module.exports =
 
 ## helpers
 
-const GLOB_1 = 'test/_unit/**/*.js test/_integration/api.js test/_integration/api/**/*.js'
+const GLOB_1 = 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
 const GLOB_2 = 'test/_integration/app.js'
 const RX-ERR = /(expected|error|exception)/i
 
