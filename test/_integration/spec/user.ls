@@ -14,6 +14,8 @@ exports.get-spec = (...args) ->
   a: _.extend do
     get-spec-usera password:\Pass1!
     quota-daily:
+      four      : get-spec-usera quota_daily:4
+      five      : get-spec-usera quota_daily:5
       six       : get-spec-usera quota_daily:6
     email:
       null      : get-spec-usera email:''

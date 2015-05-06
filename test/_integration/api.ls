@@ -34,6 +34,7 @@ describe 'admin' ->
   test User.admin.create.ok
   test User.admin.create.bad
   test User.handle.min.create.bad
+  test Session.admin.password.z.signin.bad
   test Session.admin.password.a.signin.ok
   test User.handle.min.create.ok
   test User.handle.max.create.ok
@@ -54,6 +55,8 @@ describe 'admin' ->
   test User.a.email.new.update.ok
   test User.a.email.new.read.ok
   test User.a.email.new.read.ok
+  test User.a.quota-daily.six.update.ok
+  test User.a.password.b.update.ok
   test User.a.create.bad
   test User.b.create.ok
   test User.b.read.ok # admin can see any user's email
@@ -62,8 +65,13 @@ describe 'admin' ->
   test User.list.is5
   test User.e.create.bad # daily signup max
   test Hive.a.set.ok
-  test Session.a.password.a.signin.bad # signout required
+  test Session.a.password.b.signin.bad # signout required
+describe 'public' ->
   test Session.signout.ok
+  test Hive.a.get.ok
+  test Hive.b.get.bad
+  test User.a.read.bad # cannot read email
+  test User.b.read.bad # cannot read email
 describe 'openauth' ->
   test Session.null.read.ok
   test OpenAuth.oa1.leg1.ok
@@ -79,15 +87,23 @@ describe 'openauth' ->
   test OpenAuth.fail.leg2.bad
   test User.oa2.read.ok
   test User.list.is6
-describe 'public' ->
-  test Hive.a.get.ok
-  test Hive.b.get.bad
-  test User.a.read.bad # cannot read email
-  test User.b.read.bad # cannot read email
+describe 'more admin' ->
+  test Session.admin.password.a.signin.ok
+  test Hive.b.set.ok
+  describe 'sys.mode toggle maintenance/normal' ->
+    test Sys.mode.normal.read.ok
+    test Sys.mode.toggle.ok
+    test Sys.mode.maintenance.read.ok
+    test Session.signout.ok
+    test Session.a.password.b.signin.bad # maint mode
+    test Session.admin.password.a.signin.ok
+    test Sys.mode.toggle.ok
+    test Sys.mode.normal.read.ok
 describe 'userA' ->
+  test Session.signout.ok
   test Session.z.password.a.signin.bad
-  test Session.a.password.z.signin.bad
-  test Session.a.password.a.signin.ok
+  test Session.a.password.a.signin.bad
+  test Session.a.password.b.signin.ok
   test Hive.a.set.bad # not admin
   describe 'maint' ->
     test User.a.email.null.update.ok
@@ -103,16 +119,16 @@ describe 'userA' ->
     test User.a.info.path.update.ok
     test User.a.info.path.read.ok
     test User.a.info.path-qs.update.ok
-    test User.a.quota-daily.six.update.bad
+    test User.a.quota-daily.four.update.bad
     test User.a.password.min-lt.update.bad
     test User.a.password.max-gt.update.bad
     test User.a.password.weak-num.update.bad
     test User.a.password.weak-sym.update.bad
     test User.a.password.weak-ucase.update.bad
-    test User.a.password.b.update.ok
+    test User.a.password.c.update.ok
     test Session.signout.ok
-    test Session.a.password.a.signin.bad
-    test Session.a.password.b.signin.ok
+    test Session.a.password.b.signin.bad
+    test Session.a.password.c.signin.ok
   describe 'node a' ->
     test Node.list.is0
     test Node.a.create.ok
@@ -290,41 +306,25 @@ describe 'userD' -> # daily_quota = 0
   test Session.d.password.a.signin.ok
   test Node.f.create.bad
   test Edge.ac.create.bad
-describe 'userB teardown' ->
-  test Session.signout.ok
-  test Session.b.password.a.signin.ok
-  test Node.g.name.update.bad # on userC's map
-  test Node.g.remove.bad # on userC's map
-  test User.b.remove.ok # remove self
-  test Session.signout.bad # should already be signed out
-  test Session.b.password.a.signin.bad
-describe 'admin' ->
-  test Session.admin.password.z.signin.bad
-  test Session.admin.password.a.signin.ok
-  test Hive.b.set.ok
-  describe 'graph' ->
+describe 'teardown' ->
+  describe 'userB' ->
+    test Session.signout.ok
+    test Session.b.password.a.signin.ok
+    test Node.g.name.update.bad # on userC's map
+    test Node.g.remove.bad # on userC's map
+    test User.b.remove.ok # remove self
+    test Session.signout.bad # should already be signed out
+    test Session.b.password.a.signin.bad
+  describe 'map' ->
+    test Session.admin.password.a.signin.ok
     test Node.a.name.max.update.ok # despite edge
     test Edge.ab.to-ba.update.ok # despite immutable
     test Map.c.remove.ok
     test Edge.bc.remove.ok
     test Evidence.c0.remove.ok
     test Node.c.remove.ok
-  describe 'user' ->
-    test User.a.password.c.update.ok
-    test User.a.quota-daily.six.update.ok
-describe 'sys.mode toggle maintenance/normal' ->
-  test Sys.mode.normal.read.ok
-  test Sys.mode.toggle.ok
-  test Sys.mode.maintenance.read.ok
-  test Session.signout.ok
-  test Session.a.password.c.signin.bad
-  test Session.admin.password.a.signin.ok
-  test Sys.mode.toggle.ok
-  test Sys.mode.normal.read.ok
-  test Session.signout.ok
-  test Session.a.password.c.signin.ok
-  test Session.signout.ok
 describe 'public' ->
+  test Session.signout.ok
   test Node.a.create.bad
   test Edge.ab.create.bad
   test Edge.ab.remove.bad
