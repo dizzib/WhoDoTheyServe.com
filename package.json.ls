@@ -30,7 +30,7 @@ devDependencies:
   brfs                  : \~0.0.9
   browserify            : \~3.24.13
   cacheify              : \~0.4.0
-  chai                  : \~1.8.1
+  chai                  : \~2.3.0
   chalk                 : \~0.4.0
   cheerio               : \~0.14.0
   chokidar              : \~1.0.1
