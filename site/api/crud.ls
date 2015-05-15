@@ -1,51 +1,51 @@
 _ = require \lodash
 
 module.exports = me =
-  set-fns: (Model, opts) ->
-    Model.crud-fns =
-      create : me.get-invoker Model, me.create
-      read   : me.get-invoker Model, me.read
-      update : me.get-invoker Model, me.update
-      delete : me.get-invoker Model, me.delete
-      list   : me.get-invoker Model, me.list
-    Model.on \index (err) -> log err if err
-    Model
+  set-fns: (model, opts) ->
+    model.crud-fns =
+      create : me.get-invoker model, me.create
+      read   : me.get-invoker model, me.read
+      update : me.get-invoker model, me.update
+      delete : me.get-invoker model, me.delete
+      list   : me.get-invoker model, me.list
+    model.on \index (err) -> log err if err
+    model
 
   ## crud
-  create: (req, res, next, Model, opts) ->
-    doc = new Model req.body
+  create: (req, res, next, model, opts) ->
+    doc = new model req.body
     doc._req = req # pass req to pre-save middleware
     err, doc <- doc.save
     respond req, res, next, err, doc, opts
 
-  read: (req, res, next, Model, opts) ->
-    err, doc <- Model.findById req.id .lean!exec
+  read: (req, res, next, model, opts) ->
+    err, doc <- model.findById req.id .lean!exec
     respond req, res, next, err, doc, opts
 
-  update: (req, res, next, Model, opts) ->
+  update: (req, res, next, model, opts) ->
     # to apply validation and middleware we must retrieve and save
-    # http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
-    err, doc <- Model.findById req.id
+    # http://mongoosejs.com/docs/api.html#model_model.findByIdAndUpdate
+    err, doc <- model.findById req.id
     return next err if err
     doc <<< req.body
     doc._req = req # pass req to pre-save middleware
     err, doc <- doc.save!
     respond req, res, next, err, doc, opts
 
-  delete: (req, res, next, Model, opts) ->
-    err, doc <- Model.findByIdAndRemove req.id
+  delete: (req, res, next, model, opts) ->
+    err, doc <- model.findByIdAndRemove req.id
     respond req, res, next, err, doc, opts
 
-  list: (req, res, next, Model, opts) ->
-    err, docs <- Model.find!lean!exec
+  list: (req, res, next, model, opts) ->
+    err, docs <- model.find!lean!exec
     respond req, res, next, err, docs, opts
 
   ## public helpers
 
-  get-invoker: (Model, op, opts) ->
+  get-invoker: (model, op, opts) ->
     (req, res, next) ->
       try
-        op req, res, next, Model, opts
+        op req, res, next, model, opts
       catch
         next e
 
