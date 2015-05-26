@@ -35,5 +35,6 @@ function send note, text, opts = {}
   if text instanceof Error then text .= message
   Util.log note.chalk text unless opts.nolog
   return unless enabled
+  text .= substring 0, 1024
   req = note.toRequest! <<< (applicationName:APPNAME, text:text) <<< opts
   client.sendMessage req.toRequest!
