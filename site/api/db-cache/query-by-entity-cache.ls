@@ -1,6 +1,6 @@
-Model = require \mongoose .Model
-Query = require \mongoose .Query
-_     = require \lodash
+Model  = require \mongoose .Model
+MQuery = require \mongoose/node_modules/mquery
+_      = require \lodash
 
 exports.create = (store) -> new Cache store
 
@@ -9,8 +9,8 @@ class Cache
     log 'init query-by-entity cache'
     decorate-model-remove!
     decorate-model-save!
-    decorate-query-find!
-    decorate-query-findOneAndRemove!
+    decorate-mquery-find!
+    decorate-mquery-findOneAndRemove!
 
   function decorate-model-remove
     _orig = Model::remove
@@ -28,15 +28,17 @@ class Cache
       @@store.clear @collection.name, doc.entity_id if doc.entity_id unless err
       cb ...
 
-  function decorate-query-find
-    _orig = Query::execFind
-    Query::execFind = (cb) ->
-      #log 'Query::execFind'
+  function decorate-mquery-find
+    _orig = MQuery::find
+    MQuery::find = (crit, cb) ->
+      #log 'MQuery::find'
+      return _orig ... unless _.isFunction cb
       return miss! unless (cond-keys = _.keys conds = @_conditions).length is 1
       return miss! unless cond-keys.0 is \entity_id
       return miss! unless _.isEmpty @_fields
-      return miss! unless (opts = @_optionsForExec @model).lean
+      return miss! unless @_mongooseOptions.lean
       return hit docs if docs = @@store.get @model.modelName, (entity-id = _.values conds .0)
+      return _orig.apply this, [crit, cb-set]
 
       function hit docs
         #log 'HIT!'
@@ -44,15 +46,15 @@ class Cache
 
       ~function miss
         #log 'MISS!'
-        _orig.call this, cb
+        _orig.apply this, [crit, cb]
 
-      err, docs <~ _orig.call this
-      @@store.set @model.modelName, entity-id, docs unless err
-      cb err, docs
+      ~function cb-set err, docs
+        @@store.set @model.modelName, entity-id, docs unless err
+        cb err, docs
 
-  function decorate-query-findOneAndRemove
-    _orig = Query::findOneAndRemove
-    Query::findOneAndRemove = ->
-      #log 'Query::findOneAndRemove'
+  function decorate-mquery-findOneAndRemove
+    _orig = MQuery::findOneAndRemove
+    MQuery::findOneAndRemove = ->
+      #log 'MQuery::findOneAndRemove'
       @@store.clear @model.modelName # not sure how to get entity_id
       _orig ...

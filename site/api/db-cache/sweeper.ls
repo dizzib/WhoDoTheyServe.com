@@ -24,7 +24,7 @@ class Sweeper
       _.delay sweep, sweep-period-ms
 
     function sweep-coll coll-name, query
-      err, docs <- Query::_execFind.call query
+      err, docs <- query._find
       if err then return console.error "sweep #{coll-name} failed: #{err}"
       @@store.set coll-name, query.store-key, docs
       #log "sweep #{coll-name} ok"
