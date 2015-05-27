@@ -80,7 +80,7 @@ class Cache
       return _orig ... unless _.isFunction cb
       return _orig.apply this, [crit, opts, refresh]
 
-      ~function refresh err, doc
+      ~function refresh err
         refresh-object @model.modelName, crit unless err
         cb ...
 
@@ -89,7 +89,7 @@ class Cache
     MQuery::findOneAndUpdate = (crit, doc, opts, cb) ->
       #log 'MQuery::findOneAndUpdate', arguments
       return _orig ... unless _.isFunction cb
-      return _orig.apply this, [crit, doc, opts, refresh]
+      return _orig.apply this, [crit, doc, (opts or {}) <<< new:true, refresh]
 
       ~function refresh err, doc
         refresh-object @model.modelName, crit, doc unless err
