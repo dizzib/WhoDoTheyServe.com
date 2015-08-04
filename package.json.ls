@@ -36,7 +36,7 @@ devDependencies:
   chokidar              : \~1.0.1
   cron                  : \~1.0.3
   exposify              : \~0.1.4
-  gntp                  : \~0.1.1
+  growly                : \~1.2.0
   'istanbul-middleware' : \~0.2.0
   jade                  : \~1.9.2
   levelup               : \~0.19.0 # cacheify

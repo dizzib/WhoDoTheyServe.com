@@ -27,6 +27,7 @@ dir =
   TEST : "#root/#{DIRNAME.TEST}"
 
 module.exports =
+  APPNAME: \wdts
   dirname: DIRNAME
   dir    : dir
 
