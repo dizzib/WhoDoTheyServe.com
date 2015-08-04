@@ -40,7 +40,7 @@ devDependencies:
   'istanbul-middleware' : \~0.2.0
   jade                  : \~1.9.2
   levelup               : \~0.19.0 # cacheify
-  LiveScript            : \~1.2.0
+  livescript            : \~1.4.0
   marked                : \~0.3.1
   'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
   'marionette-js-logger': \~0.1.2
