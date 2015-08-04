@@ -20,24 +20,24 @@ const BIN = './node_modules/.bin'
 pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
 tasks  =
   jade:
-    cmd : "#BIN/jade --out $OUT $IN"
+    cmd : "#BIN/jade --out $ODIR $IN"
     ixt : \jade
     oxt : \html
     mixn: \_
   livescript:
-    cmd : "#BIN/lsc --output $OUT $IN"
+    cmd : "#BIN/lsc --output $ODIR $IN"
     ixt : \ls
     oxt : \js
     xsub: 'json.js->json'
   markdown:
-    cmd : markdown
+    cmd : "#BIN/marked --output $OUT --input $IN"
     ixt : \md
     oxt : \html
   static:
-    cmd : 'cp --target-directory $OUT $IN'
+    cmd : 'cp --target-directory $ODIR $IN'
     ixt : '{css,eot,gif,html,jpg,js,json,otf,pem,png,svg,ttf,txt,woff}'
   stylus:
-    cmd : "#BIN/stylus -u nib --out $OUT $IN"
+    cmd : "#BIN/stylus -u nib --out $ODIR $IN"
     ixt : \styl
     oxt : \css
     mixn: \_
@@ -82,19 +82,15 @@ module.exports = me = (new Emitter!) with
 ## helpers
 
 function compile t, ipath, cb
-  ipath-abs = Path.resolve Dir.ROOT, ipath
   odir = Path.dirname opath = get-opath t, ipath
-  mkdir \-p, odir # stylus fails if outdir doesn't exist
-  switch typeof t.cmd
-  | \string =>
-    cmd = t.cmd.replace(\$IN, "'#ipath-abs'").replace \$OUT, "'#odir'"
-    log cmd
-    code, res <- exec cmd
-    log code, res if code
-    cb (if code then res else void), opath
-  | \function =>
-    e <- t.cmd ipath-abs, opath
-    cb e, opath
+  ipath-abs = Path.resolve Dir.ROOT, ipath
+  mkdir \-p odir # stylus fails if outdir doesn't exist
+  cmd = t.cmd.replace(\$IN "'#ipath-abs'").replace(\$OUT "'#opath'")
+  cmd .= replace \$ODIR "'#odir'"
+  log cmd
+  code, res <- exec cmd
+  log code, res if code
+  cb (if code then res else void), opath
 
 function compile-batch tid
   t = tasks[tid]
@@ -136,11 +132,6 @@ function get-opath t, ipath
   return p or ipath unless (xsub = t.xsub?split '->')?
   p.replace xsub.0, xsub.1
 
-function markdown ipath, opath, cb
-  e, html <- Md cat ipath
-  html.to opath unless e?
-  cb e
-
 function prune-empty-dirs
   unless pwd! is Dir.build.DEV then return log 'bypass prune-empty-dirs'
   code, out <- exec "find . -type d -empty -delete"
@@ -164,13 +155,13 @@ function start-watching tid
         finalise ipath
       catch e then G.err e
     else switch act
-      | \add, \change
+      | \add \change
         try opath = W4 compile, t, ipath
         catch e then return G.err e
         G.ok opath
         finalise ipath, opath
       | \unlink
-        Assert.equal pwd!, Dir.BUILD
+        Assert.equal pwd!, Dir.build.DEV
         try W4m Fs, \unlink, opath = get-opath t, ipath
         catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
         G.ok "Delete #opath"
