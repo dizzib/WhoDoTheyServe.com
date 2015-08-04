@@ -26,59 +26,11 @@ The only information captured is [visitor count per 10-days][hit-count].
 
 ### Credits
 
-Many thanks to the authors of the opensource software used to make this site:
-
-arch-linux
-autolinker
-backbone
-backbone-deep-model
-backbone-validation
-bcrypt
-bootstrap
-brfs
-browserify
-chai
-chalk
-cheerio
-crypto
-d3
-express
-exposify
-font-awesome
-gaze
-git
-istanbul
-jade
-jquery
-jquery.multiple-select
-jquery.timeago
-livescript
-lodash
-marked
-marionette
-mocha
-mongodb
-mongoose
-node.js
-node-cron
-passport
-request
-shelljs
-shortid
-stylus
-transparency
-twitter-bootstrap
-uglifyjs
-underscore
-variadic
-wait.for
-yepnope
-
+Many thanks to the authors of the opensource software used to make this site.
 Also thanks to [GitHub], [MongoLab] and [AppFog] for the free hosting.
 
 This site's name is inspired from [WhatDoTheyKnow.com][wdtk], a database of freedom of
 information requests to UK public authorities.
-
 
 [appfog]:     http://appfog.com
 [api]:        http://en.wikipedia.org/wiki/Application_programming_interface
