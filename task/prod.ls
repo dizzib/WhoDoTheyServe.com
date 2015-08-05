@@ -44,7 +44,7 @@ module.exports =
 
 function exec-then-logout fn
   try
-    pushd Dir.build.STAGING
+    pushd Dir.dist.STAGING
     fn!
   catch e
     log e

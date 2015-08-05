@@ -1,4 +1,5 @@
 Assert = require \assert
+Path   = require \path
 Shell  = require \shelljs/global
 
 const DIRNAME =
@@ -11,6 +12,7 @@ const DIRNAME =
   TEST   : \test
 
 root = pwd!
+dist = Path.normalize "#root/../wdts-dist"
 
 dir =
   BUILD: "#root/#{DIRNAME.BUILD}"
@@ -19,8 +21,9 @@ dir =
     dev:
       SITE : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
       TASK : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.TASK}"
-    SEO    : "#root/#{DIRNAME.BUILD}/#{DIRNAME.SEO}"
-    STAGING: "#root/#{DIRNAME.BUILD}/#{DIRNAME.STAGING}"
+  dist:
+    SEO    : "#dist/#{DIRNAME.SEO}"
+    STAGING: "#dist/#{DIRNAME.STAGING}"
   ROOT : root
   SITE : "#root/#{DIRNAME.SITE}"
   TASK : "#root/#{DIRNAME.TASK}"

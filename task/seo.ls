@@ -6,8 +6,8 @@ Os      = require \os
 Path    = require \path
 Shell   = require \shelljs/global
 W4m     = require \wait.for .forMethod
-Build   = require \./constants .dir.build
 Cfg     = require \./config
+Dist    = require \./constants .dir.dist
 G       = require \./growl
 
 module.exports =
@@ -28,8 +28,8 @@ module.exports =
       W4m mc, \startSession
       W4m mc, \setSearchTimeout 15000
 
-      rm \-rf, Build.SEO if test '-e', Build.SEO
-      mkdir Build.SEO
+      rm \-rf Dist.SEO if test \-e Dist.SEO
+      mkdir Dist.SEO
 
       done    = [ ]
       pending = [ ROUTE-HOME ]
@@ -38,7 +38,7 @@ module.exports =
         done.push route = pending.shift!
         log "done=#{done.length - 1} pending=#{pending.length + 1} #route"
         url = "#STAGING-SITE-URL/#route"
-        W4m mc, \executeScript, (-> window.location.href = it), [ url ]
+        W4m mc, \executeScript (-> window.location.href = it), [ url ]
         W4m mc, \findElement \.ready
         html = W4m mc, \pageSource
         $ = Cheerio.load html
@@ -50,7 +50,7 @@ module.exports =
         html = $.html!
         save-html-to-file html, route
       mins = (Date.now! - start)/60000
-      G.ok "SEO: generated #{done.length} files in #mins minutes", sticky:true
+      G.ok "SEO: generated #{done.length} files in #mins minutes" sticky:true
     finally then W4m mc, \deleteSession
 
     ## helpers
@@ -76,7 +76,6 @@ module.exports =
           window.location.href = '/#' + window.location.pathname.replace('.html', '');
         </script>"
 
-
     function queue-links pending, done, $
       links = _.map ($ \a), -> $ it .attr \href
       for l in links
@@ -86,16 +85,16 @@ module.exports =
           pending.push l
 
     function save-html-to-file html, route
-      path = "#{Build.SEO}/#{route.replace('#/', '')}.html"
+      path = "#{Dist.SEO}/#{route.replace('#/', '')}.html"
       dir = Path.dirname path
-      mkdir \-p, dir unless test \-e, dir
+      mkdir \-p dir unless test \-e dir
       #log "write #{html.length} bytes to #path"
       html.to path
 
     function seoify-links $
       $ "a[href^='#']" .each ->
         href = ($el = $ this).attr \href
-        $el.attr \href, "#{href.replace('#', '')}.html"
+        $el.attr \href "#{href.replace('#', '')}.html"
 
     function strip-html $
       $ 'a.btn, a.hide, .meta, .seo-remove' .remove!

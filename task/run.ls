@@ -5,13 +5,13 @@ Cp     = require \child_process
 Mg     = require \mongoose
 W4     = require \wait.for .for
 Shell  = require \shelljs/global
-Build  = require \./constants .dir.build
+Dir    = require \./constants .dir
 Cfg    = require \./config
 G      = require \./growl
 
-Cfg.dev             <<< dirsite:Build.dev.SITE
+Cfg.dev             <<< dirsite:Dir.build.dev.SITE
 Cfg.dev.primary     <<< JSON.parse env.dev if env.dev
-Cfg.staging         <<< dirsite:Build.STAGING
+Cfg.staging         <<< dirsite:Dir.dist.STAGING
 Cfg.staging.primary <<< JSON.parse env.staging if env.staging
 
 module.exports =
@@ -38,7 +38,7 @@ function drop-db cfg, cb
   cb!
 
 function get-mocha-cmd glob
-  cmd = "#{Build.DEV}/node_modules/mocha/bin/_mocha"
+  cmd = "#{Dir.build.DEV}/node_modules/mocha/bin/_mocha"
   "#cmd --reporter spec --bail #glob"
 
 function get-site-desc cfg
@@ -103,7 +103,7 @@ function start-mocha cfg, flags, glob, cb
   log "start mocha in node #v: #glob"
   cfg <<< firefox-host:env.firefox-host or \localhost
   cmd = get-mocha-cmd glob
-  Cp.spawn \node, (cmd.split ' '), cwd:Build.DEV, env:(env with cfg), stdio:[ 0, 1, void ]
+  Cp.spawn \node, (cmd.split ' '), cwd:Dir.build.DEV, env:(env with cfg), stdio:[ 0, 1, void ]
     ..on \exit, ->
       cb if it then new Error "Exited with code #it" else void
     ..stderr.on \data, ->
