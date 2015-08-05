@@ -5,7 +5,7 @@ WFib  = require \wait.for .launchFiber
 Build = require \../build
 Dir   = require \../constants .dir
 Dist  = require \../dist
-#Test  = require \../test
+Test  = require \../test
 
 cd Dir.BUILD
 Build.start!

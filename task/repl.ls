@@ -13,9 +13,10 @@ Dist    = require \./dist
 Inst    = require \./npm/install
 MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
-Run     = require \./run
+Site    = require \./site
 Staging = require \./staging
 Seo     = require \./seo
+Test    = require \./test
 G       = require \./growl
 
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
@@ -23,19 +24,19 @@ const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
   * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'     fn:Inst.delete-modules
   * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'    fn:Inst.refresh-modules
-  * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Run.cancel
+  * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Test.cancel
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:run-dev-tests
   * cmd:'b.a  ' lev:0 desc:'build - all'                fn:build-all
   * cmd:'b.c  ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Bundle.all
   * cmd:'b.d  ' lev:0 desc:'build - delete'             fn:Build.delete
   * cmd:'b.l  ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
-  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Run.loop-dev-test_2 flags
+  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Test.loop.dev-test_2 flags
   * cmd:'b.1  ' lev:0 desc:'build - enable $api'        fn:-> toggle-run-tests \api
   * cmd:'b.2  ' lev:0 desc:'build - enable $app'        fn:-> toggle-run-tests \app
   * cmd:'b.t  ' lev:0 desc:'build - autorun tests $ta'  fn:-> toggle-flag \autorunTests
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Run.run-staging-tests flags
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Test.run.staging flags
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
@@ -79,13 +80,13 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
 Build
   ..on \built ->
     Dist!
-    Run.recycle-dev flags
-  ..on \built-api -> run-tests \api Run.run-dev-test_1 if flags.autorun-tests
-  ..on \built-app -> run-tests \app Run.run-dev-test_2 if flags.autorun-tests
+    Site.recycle.dev flags
+  ..on \built-api -> run-tests \api Test.run.dev1 if flags.autorun-tests
+  ..on \built-app -> run-tests \app Test.run.dev2 if flags.autorun-tests
   ..start!
-Run
-  ..recycle-dev flags
-  ..recycle-staging flags
+Site
+  ..recycle.dev flags
+  ..recycle.staging flags
 
 _.delay show-help, 1500ms
 _.delay (-> rl.prompt!), 1750ms
@@ -98,8 +99,8 @@ function build-all
 
 function generate-staging
   Staging.generate!
-  Run.recycle-staging flags
-  Run.run-staging-tests flags
+  Site.recycle.staging flags
+  Test.run.staging flags
 
 function load-flags
   try
@@ -123,8 +124,8 @@ function init-shelljs
     exec-orig cmd, opts, cb
 
 function run-dev-tests
-  run-tests \api Run.run-dev-test_1
-  run-tests \app Run.run-dev-test_2
+  run-tests \api Test.run.dev_1
+  run-tests \app Test.run.dev_2
 
 function run-tests id, fn
   if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"
