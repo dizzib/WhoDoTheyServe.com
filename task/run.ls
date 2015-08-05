@@ -9,7 +9,7 @@ Dir    = require \./constants .dir
 Cfg    = require \./config
 G      = require \./growl
 
-Cfg.dev             <<< dirsite:Dir.build.dev.SITE
+Cfg.dev             <<< dirsite:Dir.build.SITE
 Cfg.dev.primary     <<< JSON.parse env.dev if env.dev
 Cfg.staging         <<< dirsite:Dir.dist.STAGING
 Cfg.staging.primary <<< JSON.parse env.staging if env.staging
@@ -38,7 +38,7 @@ function drop-db cfg, cb
   cb!
 
 function get-mocha-cmd glob
-  cmd = "#{Dir.build.DEV}/node_modules/mocha/bin/_mocha"
+  cmd = "#{Dir.ROOT}/node_modules/.bin/_mocha"
   "#cmd --reporter spec --bail #glob"
 
 function get-site-desc cfg
@@ -99,14 +99,14 @@ function recycle-tests cfg-test, cfg-tester, flags, dirsite, glob, desc, cb
 
 function start-mocha cfg, flags, glob, cb
   if _.isFunction glob then [glob, cb] = [void, glob] # variadic
-  v = exec 'node --version', silent:true .output.replace '\n', ''
+  v = exec 'node --version' silent:true .output.replace '\n' ''
   log "start mocha in node #v: #glob"
   cfg <<< firefox-host:env.firefox-host or \localhost
   cmd = get-mocha-cmd glob
-  Cp.spawn \node, (cmd.split ' '), cwd:Dir.build.DEV, env:(env with cfg), stdio:[ 0, 1, void ]
-    ..on \exit, ->
+  Cp.spawn \node (cmd.split ' '), cwd:Dir.BUILD, env:(env with cfg), stdio:[ 0, 1, void ]
+    ..on \exit ->
       cb if it then new Error "Exited with code #it" else void
-    ..stderr.on \data, ->
+    ..stderr.on \data ->
       log s = it.toString!
       # data may be fragmented, so only growl relevant packet
       G.alert (Chalk.stripColor s), nolog:true if RX-ERR.test s
@@ -116,13 +116,13 @@ function start-site cwd, cfg, flags, cb
   desc = get-site-desc cfg
   args = get-start-site-args cfg
   log "start site in node #v: #args"
-  return log "unable to start non-existent site at #cwd" unless test \-e, cwd
+  return log "unable to start non-existent site at #cwd" unless test \-e cwd
   Cp.spawn \node, (args.split ' '), cwd:cwd, env:env with cfg
-    ..stderr.on \data, ->
+    ..stderr.on \data ->
       log-data s = it.toString!
       # data may be fragmented, so only growl relevant packet
       if RX-ERR.test s then G.alert "#desc\n#s", nolog:true
-    ..stdout.on \data, ->
+    ..stdout.on \data ->
       log-data it.toString! if flags.site-logging
       cb! if cb and /listening on port/.test it
 

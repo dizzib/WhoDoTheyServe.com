@@ -4,7 +4,6 @@ Shell  = require \shelljs/global
 
 const DIRNAME =
   BUILD  : \_build
-  DEV    : \dev
   SITE   : \site
   STAGING: \staging
   SEO    : \seo
@@ -17,10 +16,8 @@ dist = Path.normalize "#root/../wdts-dist"
 dir =
   BUILD: "#root/#{DIRNAME.BUILD}"
   build:
-    DEV: "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}"
-    dev:
-      SITE : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.SITE}"
-      TASK : "#root/#{DIRNAME.BUILD}/#{DIRNAME.DEV}/#{DIRNAME.TASK}"
+    SITE : "#root/#{DIRNAME.BUILD}/#{DIRNAME.SITE}"
+    TASK : "#root/#{DIRNAME.BUILD}/#{DIRNAME.TASK}"
   dist:
     SEO    : "#dist/#{DIRNAME.SEO}"
     STAGING: "#dist/#{DIRNAME.STAGING}"

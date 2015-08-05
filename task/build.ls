@@ -15,7 +15,7 @@ Dir      = require \./constants .dir
 Dirname  = require \./constants .dirname
 G        = require \./growl
 
-const BIN = './node_modules/.bin'
+const BIN = "#{Dir.ROOT}/node_modules/.bin"
 
 pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
 tasks  =
@@ -35,7 +35,7 @@ tasks  =
     oxt : \html
   static:
     cmd : 'cp --target-directory $ODIR $IN'
-    ixt : '{css,eot,gif,html,jpg,js,json,otf,pem,png,svg,ttf,txt,woff}'
+    ixt : '{css,eot,gif,html,jpg,js,otf,pem,png,svg,ttf,txt,woff}'
   stylus:
     cmd : "#BIN/stylus -u nib --out $ODIR $IN"
     ixt : \styl
@@ -44,26 +44,12 @@ tasks  =
 
 module.exports = me = (new Emitter!) with
   all: ->
-    try
-      for tid of tasks then compile-batch tid
-      finalise!
-    catch e then G.err e
+    for tid of tasks then compile-batch tid
+    finalise!
 
-  delete-files: ->
-    log "delete-files #{pwd!}"
-    Assert.equal pwd!, Dir.build.DEV
-    W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules|task)'"
-
-  delete-modules: ->
-    log "delete-modules #{pwd!}"
-    Assert.equal pwd!, Dir.build.DEV
-    rm '-rf' "./node_modules"
-
-  refresh-modules: ->
-    Assert.equal pwd!, Dir.build.DEV
-    W4 exec, 'npm -v'
-    W4 exec, 'npm prune'
-    W4 exec, 'npm install'
+  delete: ->
+    log "delete #{Dir.BUILD}"
+    rm \-rf Dir.BUILD
 
   start: ->
     G.say 'build started'
@@ -103,10 +89,6 @@ function compile-batch tid
   for f in files then W4 compile, t, Path.relative Dir.ROOT, f
   G.ok "...done #info!"
 
-function copy-package-json
-  # ensure package.json resides alongside /api and /app
-  cp \-f, './package.json', './site'
-
 function finalise ipath, opath
   const API = <[ /api/ /api.ls ]>
   const APP = <[ /app/ /app.ls ]>
@@ -124,7 +106,6 @@ function finalise ipath, opath
     me.emit \built-api
     Bundle.all!
     me.emit \built-app
-  copy-package-json!
   me.emit \built
 
 function get-opath t, ipath
@@ -133,7 +114,7 @@ function get-opath t, ipath
   p.replace xsub.0, xsub.1
 
 function prune-empty-dirs
-  unless pwd! is Dir.build.DEV then return log 'bypass prune-empty-dirs'
+  unless pwd! is Dir.BUILD then return log 'bypass prune-empty-dirs'
   code, out <- exec "find . -type d -empty -delete"
   G.err "prune failed: #code #out" if code
 
@@ -161,7 +142,7 @@ function start-watching tid
         G.ok opath
         finalise ipath, opath
       | \unlink
-        Assert.equal pwd!, Dir.build.DEV
+        Assert.equal pwd!, Dir.BUILD
         try W4m Fs, \unlink, opath = get-opath t, ipath
         catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
         G.ok "Delete #opath"

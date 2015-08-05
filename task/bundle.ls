@@ -52,7 +52,7 @@ module.exports = me =
       for l in LIBS then b.external l
       b
   css: ->
-    pushd "#{Dir.build.dev.SITE}/app"
+    pushd "#{Dir.build.SITE}/app"
     try
       const DEST = \app.css
       const EXCLUDES =
@@ -81,7 +81,7 @@ module.exports = me =
 ## helpers
 
 function bundle path, fn-setup
-  pushd "#{Dir.build.dev.SITE}/app"
+  pushd "#{Dir.build.SITE}/app"
   try
     W4 (cb) ->
       t0 = process.hrtime!

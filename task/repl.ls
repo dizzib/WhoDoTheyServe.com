@@ -7,8 +7,10 @@ Shell   = require \shelljs/global
 WFib    = require \wait.for .launchFiber
 Build   = require \./build
 Bundle  = require \./bundle
-DirBld  = require \./constants .dir.build
+Dir     = require \./constants .dir
 Data    = require \./data
+Dist    = require \./dist
+Inst    = require \./npm/install
 MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
 Run     = require \./run
@@ -19,19 +21,19 @@ G       = require \./growl
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
+  * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'     fn:Inst.delete-modules
+  * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'    fn:Inst.refresh-modules
   * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Run.cancel
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:run-dev-tests
-  * cmd:'b.all' lev:0 desc:'build - all'                fn:Build.all
+  * cmd:'b.a  ' lev:0 desc:'build - all'                fn:build-all
+  * cmd:'b.c  ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Bundle.all
-  * cmd:'b.fd ' lev:0 desc:'build - files delete'       fn:Build.delete-files
-  * cmd:'b.la ' lev:0 desc:'build - loop app tests'     fn:-> Run.loop-dev-test_2 flags
-  * cmd:'b.nd ' lev:0 desc:'build - npm delete'         fn:Build.delete-modules
-  * cmd:'b.nr ' lev:0 desc:'build - npm refresh'        fn:Build.refresh-modules
-  * cmd:'b.sl ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
+  * cmd:'b.d  ' lev:0 desc:'build - delete'             fn:Build.delete
+  * cmd:'b.l  ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
+  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Run.loop-dev-test_2 flags
+  * cmd:'b.1  ' lev:0 desc:'build - enable $api'        fn:-> toggle-run-tests \api
+  * cmd:'b.2  ' lev:0 desc:'build - enable $app'        fn:-> toggle-run-tests \app
   * cmd:'b.t  ' lev:0 desc:'build - autorun tests $ta'  fn:-> toggle-flag \autorunTests
-  * cmd:'b.t1 ' lev:0 desc:'build - toggle $api'        fn:-> toggle-run-tests \api
-  * cmd:'b.t2 ' lev:0 desc:'build - toggle $app'        fn:-> toggle-run-tests \app
-  * cmd:'b.tc ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Run.run-staging-tests flags
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
@@ -48,7 +50,7 @@ const COMMANDS =
   * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
   * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
 
-const FLAGS-PATH = "#{DirBld.dev.TASK}/flags.json"
+const FLAGS-PATH = "#{Dir.build.TASK}/flags.json"
 const FLAGS-DEFAULT =
   autorun-tests: true
   test-coverage: false
@@ -56,7 +58,7 @@ const FLAGS-DEFAULT =
   run-tests    : api:true app:true
 
 init-shelljs!
-cd DirBld.DEV # for safety, set working directory to dev build
+cd Dir.BUILD # for safety set working directory to build
 flags = load-flags!
 
 for c in COMMANDS
@@ -74,17 +76,25 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
     rl.resume!
     rl.prompt!
 
-Build.on \built, -> Run.recycle-dev flags
-Build.on \built-api, -> run-tests \api, Run.run-dev-test_1 if flags.autorun-tests
-Build.on \built-app, -> run-tests \app, Run.run-dev-test_2 if flags.autorun-tests
-Build.start!
-Run.recycle-dev flags
-Run.recycle-staging flags
+Build
+  ..on \built ->
+    Dist!
+    Run.recycle-dev flags
+  ..on \built-api -> run-tests \api Run.run-dev-test_1 if flags.autorun-tests
+  ..on \built-app -> run-tests \app Run.run-dev-test_2 if flags.autorun-tests
+  ..start!
+Run
+  ..recycle-dev flags
+  ..recycle-staging flags
 
 _.delay show-help, 1500ms
 _.delay (-> rl.prompt!), 1750ms
 
 # helpers
+
+function build-all
+  try Build.all!
+  catch e then G.err e
 
 function generate-staging
   Staging.generate!
@@ -93,13 +103,13 @@ function generate-staging
 
 function load-flags
   try
-    return JSON.parse(cat FLAGS-PATH) if test \-e, FLAGS-PATH
+    return JSON.parse(cat FLAGS-PATH) if test \-e FLAGS-PATH
     FLAGS-DEFAULT
   catch
     FLAGS-DEFAULT
 
 function get-flag-desc
-  "(#{if it then Chalk.bold.green \yes else Chalk.bold.cyan \no})"
+  if it then Chalk.bold.green \yes else Chalk.bold.cyan \no
 
 function get-run-tests-desc
   "#it tests #{get-flag-desc flags.run-tests[it]}"
@@ -113,8 +123,8 @@ function init-shelljs
     exec-orig cmd, opts, cb
 
 function run-dev-tests
-  run-tests \api, Run.run-dev-test_1
-  run-tests \app, Run.run-dev-test_2
+  run-tests \api Run.run-dev-test_1
+  run-tests \app Run.run-dev-test_2
 
 function run-tests id, fn
   if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"
@@ -131,7 +141,7 @@ function show-help
     tc : get-flag-desc flags.test-coverage
   for c in COMMANDS when !c.disabled
     s = c.display
-    for k, v of flag-vals then s = s.replace "$#k", v
+    for k, v of flag-vals then s = s.replace "$#k" v
     log s
 
 function toggle-run-tests

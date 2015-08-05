@@ -19,5 +19,4 @@
 - /task/
 - /test/
 - /.*
-- /package.json
 - /README.html

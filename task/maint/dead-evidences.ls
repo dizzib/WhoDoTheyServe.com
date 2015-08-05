@@ -11,7 +11,6 @@ W     = require \wait.for
 W4    = require \wait.for .for
 W4m   = require \wait.for .forMethod
 Cfg   = require \../config
-Hive  = require \../../site/api/hive
 
 module.exports =
   # readline is DI'd because multiple instances causes odd behaviour
@@ -78,6 +77,7 @@ function run rl, db-uri, cb
     ans <- rl.question "Update database #db-uri (y/N) ?"
     return cb! unless ans is \y
     M.connect db-uri
+    Hive = require \../../site/api/hive # require late for bootstrap
     err <- Hive.set \evidences, JSON.stringify value
     return cb err if err
     M.disconnect!

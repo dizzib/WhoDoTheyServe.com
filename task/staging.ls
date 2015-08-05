@@ -14,7 +14,6 @@ module.exports =
       mkdir \-p Dir.dist.STAGING unless test \-e Dir.dist.STAGING
       pushd Dir.dist.STAGING
       delete-files!
-      generate-package-json!
       copy-files!
       copy-minified-files!
       set-load-from-cdn!
@@ -55,12 +54,6 @@ function delete-files
   log "delete files from #{pwd!}"
   Assert.equal pwd!, Dir.dist.STAGING
   W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules)'"
-
-function generate-package-json
-  log "generating package.json"
-  json = require "#{Dir.build.dev.SITE}/package.json"
-  delete json.devDependencies
-  (JSON.stringify json, void, 2).to "#{Dir.dist.STAGING}/package.json"
 
 function set-load-from-cdn
   log "set-load-from-cdn"

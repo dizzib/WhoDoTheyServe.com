@@ -6,6 +6,8 @@ engines:
   npm : '>=1.0.x'
 scripts:
   start: 'node boot.js'
+  task : './task/bootstrap && node ./_build/task/repl'
+  test : './task/bootstrap && node ./_build/task/npm/test'
 dependencies:
   bcrypt                  : \0.7.5
   'body-parser'           : \1.12.3
@@ -43,7 +45,7 @@ devDependencies:
   livescript            : \~1.4.0
   marked                : \~0.3.1
   'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
-  'marionette-js-logger': \~0.1.2
+  'marionette-js-logger': \0.1.2
   memdown               : \~0.10.2 # cacheify
   mocha                 : \~1.15.1
   mongodb               : \~1.2.14
