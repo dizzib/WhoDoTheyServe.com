@@ -1,6 +1,10 @@
 language: node_js
-node_js : [ '0.10' ]
-services: mongodb
+node_js:
+  - '0.10'
+
+cache:
+  directories:
+    - node_modules
 
 before_install:
   - export DISPLAY=:99.0
@@ -8,3 +12,6 @@ before_install:
 
 before_script:
   - firefox -marionette &
+
+services:
+  - mongodb
