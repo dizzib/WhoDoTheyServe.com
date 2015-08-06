@@ -1,16 +1,8 @@
 #!/bin/bash
+set -e
 
 LSC='./node_modules/.bin/lsc --debug'
 
 $LSC -o ./_build/task -c ./task/*.ls
 $LSC -o ./_build/task/maint -c ./task/maint/*.ls
 $LSC -o ./_build/task/npm -c ./task/npm/*.ls
-
-#lsc -o $DEV/task -c task/*.ls
-#lsc -o $DEV/task/maint -c task/maint/*.ls
-#lsc -o $DEV -c package.json.ls
-
-# for some task dependencies
-#lsc -o $DEV/site/api -c site/api/*.ls
-#lsc -o $DEV/site/api/model -c site/api/model/*.ls
-

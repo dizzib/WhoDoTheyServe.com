@@ -15,8 +15,13 @@ Cfg.dev.primary     <<< JSON.parse env.dev if env.dev
 Cfg.staging         <<< dirsite:Dir.dist.STAGING
 Cfg.staging.primary <<< JSON.parse env.staging if env.staging
 
+const GLOB_1 = 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
+const GLOB_2 = 'test/_integration/app.js'
+const MOCHA  = "#{Dir.ROOT}/node_modules/.bin/_mocha --reporter spec --bail"
+
 module.exports =
   cancel: kill-all-mocha
+  exec: (cb) -> recycle-tests (c = Cfg.dev).test_1, c.tester_1, site-logging:true, c.dirsite, GLOB_1, "Unit & api tests", cb
   loop:
     dev_2: (flags) -> loop-dev_2 flags
   run:
@@ -27,10 +32,6 @@ module.exports =
 
 ## helpers
 
-const GLOB_1 = 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
-const GLOB_2 = 'test/_integration/app.js'
-const RX-ERR = /(expected|error|exception)/i
-
 function drop-db cfg, cb
   <- (conn = Mg.createConnection cfg.WDTS_DB_URI).on \open
   e <- conn.db.dropDatabase
@@ -38,9 +39,7 @@ function drop-db cfg, cb
   conn.close!
   cb!
 
-function get-mocha-cmd glob
-  cmd = "#{Dir.ROOT}/node_modules/.bin/_mocha"
-  "#cmd --reporter spec --bail #glob"
+function get-mocha-cmd glob then "#MOCHA #glob"
 
 function kill-all-mocha
   W4 kill-mocha, GLOB_1
@@ -81,10 +80,9 @@ function recycle-tests cfg-test, cfg-tester, flags, dirsite, glob, desc, cb
   <- Site.stop cfg-test
   <- drop-db cfg-test
   <- Site.start dirsite, cfg-test, flags
-  e <- start-mocha cfg-tester, flags, glob
-  return G.err e if e?
-  G.ok "#desc passed in #{(Date.now! - start)/1000}s"
-  cb! if cb?
+  err <- start-mocha cfg-tester, flags, glob
+  if err then G.err err else G.ok "#desc passed in #{(Date.now! - start)/1000}s"
+  cb err if cb
 
 function start-mocha cfg, flags, glob, cb
   if _.isFunction glob then [glob, cb] = [void, glob] # variadic
@@ -94,8 +92,9 @@ function start-mocha cfg, flags, glob, cb
   cmd = get-mocha-cmd glob
   Cp.spawn \node (cmd.split ' '), cwd:Dir.BUILD, env:(env with cfg), stdio:[ 0, 1, void ]
     ..on \exit ->
-      cb if it then new Error "Exited with code #it" else void
+      cb if it then (new Error "Exited with code #it") <<< code:it
     ..stderr.on \data ->
       log s = it.toString!
       # data may be fragmented, so only growl relevant packet
+      const RX-ERR = /(expected|error|exception)/i
       G.alert (Chalk.stripColor s), nolog:true if RX-ERR.test s
