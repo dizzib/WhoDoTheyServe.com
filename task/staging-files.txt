@@ -19,4 +19,4 @@
 - /task/
 - /test/
 - /.*
-- /README.html
+- /readme.html

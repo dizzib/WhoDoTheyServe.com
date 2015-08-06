@@ -1,6 +1,4 @@
-Source code for [WhoDoTheyServe.com][wdts]
-
-# build and run locally
+# build and run locally &nbsp;[![Build Status][badge-travis-svg]][badge-travis-url]
 
 ## install global dependencies
 
@@ -10,20 +8,16 @@ Source code for [WhoDoTheyServe.com][wdts]
 
 * [mongodb][mongodb] (run with [`mongod`][mongod])
 
-* [livescript][livescript] to build the task runner during bootstrap
-
 * [firefox][firefox] running locally for the app integration tests.
 Must be a recent version with [marionette][marionette-js].
 
-## clone and bootstrap project
+## git clone, build and run
 
-    $ git clone git@github.com:dizzib/WhoDoTheyServe.com.git
-    $ ./task/bootstrap          # compile task runner and install npm dependencies
-
-## build and run site
-
-    $ node _build/dev/task/repl # launch the task runner (ignore any dev/staging site errors)
-    wdts > b.all                # compile everything, run tests, and launch site
+    $ git clone --branch=dev https://github.com/dizzib/WhoDoTheyServe.com.git
+    $ cd WhoDoTheyServe.com
+    $ npm install           # install dependencies
+    $ npm test              # build site and run tests
+    $ npm run-script task   # start the developer task runner
 
 The dev site should now be running at `http://localhost:4000`
 
@@ -34,9 +28,10 @@ should then be able to signup further users.
 
 The build tasks rely on Linux shell commands such as `pkill` and `rsync` so are unlikely to run on other OS's without some tweaks.
 
+[badge-travis-svg]: https://travis-ci.org/dizzib/WhoDoTheyServe.com.svg?branch=dev
+[badge-travis-url]: https://travis-ci.org/dizzib/WhoDoTheyServe.com
 [bcrypt-deps]: https://github.com/ncb000gt/node.bcrypt.js#dependencies
 [firefox]: https://www.mozilla.org/en-US/firefox/new/
-[livescript]: http://livescript.net/#installation
 [marionette-js]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette
 [mongod]: http://docs.mongodb.org/manual/reference/program/mongod/
 [mongodb]: http://docs.mongodb.org/manual/installation/
