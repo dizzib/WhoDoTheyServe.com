@@ -8,12 +8,8 @@ Shell  = require \shelljs/global
 Dir    = require \./constants .dir
 Cfg    = require \./config
 G      = require \./growl
+Rt     = require \./runtime
 Site   = require \./site
-
-Cfg.dev             <<< dirsite:Dir.build.SITE
-Cfg.dev.primary     <<< JSON.parse env.dev if env.dev
-Cfg.staging         <<< dirsite:Dir.dist.STAGING
-Cfg.staging.primary <<< JSON.parse env.staging if env.staging
 
 const GLOB_1 = 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
 const GLOB_2 = 'test/_integration/app.js'
@@ -46,17 +42,7 @@ function kill-all-mocha
   W4 kill-mocha, GLOB_2
 
 function kill-mocha glob, cb
-  kill-node (get-mocha-cmd glob), cb
-
-function kill-node args, cb
-  # can't use WaitFor as we need the return code
-  code, out <- exec cmd = "pkill -ef 'node #{args.replace /\*/g '\\*'}'"
-  # 0 One or more processes matched the criteria.
-  # 1 No processes matched.
-  # 2 Syntax error in the command line.
-  # 3 Fatal error: out of memory etc.
-  throw new Error "#cmd returned #code" if code > 1
-  cb!
+  Rt.kill-node (get-mocha-cmd glob), cb
 
 function loop-dev_2 flags
   <- run_2 Cfg.dev, flags, ''
