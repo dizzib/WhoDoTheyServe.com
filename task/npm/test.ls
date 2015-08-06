@@ -20,6 +20,6 @@ function run
   process.exit 0
 
 function run-suite fn, cb
-  err <- fn site-logging:true
+  err <- fn
   process.exit err.code or 1 if err
   cb!
