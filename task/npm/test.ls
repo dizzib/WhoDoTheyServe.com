@@ -15,5 +15,11 @@ function run
   Build.all!
   Build.stop!
   Dist!
-  err <- Test.exec
-  process.exit if err then (err.code or 1) else 0
+  <- run-suite Test.run.dev_1
+  <- run-suite Test.run.dev_2
+  process.exit 0
+
+function run-suite fn, cb
+  err <- fn site-logging:true
+  process.exit err.code or 1 if err
+  cb!

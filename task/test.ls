@@ -17,12 +17,11 @@ const MOCHA  = "#{Dir.ROOT}/node_modules/.bin/_mocha --reporter spec --bail"
 
 module.exports =
   cancel: kill-all-mocha
-  exec: (cb) -> recycle-tests (c = Cfg.dev).test_1, c.tester_1, site-logging:true, c.dirsite, GLOB_1, "Unit & api tests", cb
   loop:
     dev_2: (flags) -> loop-dev_2 flags
   run:
-    dev_1  : (flags) -> run_1 Cfg.dev, flags
-    dev_2  : (flags) -> run_2 Cfg.dev, flags
+    dev_1  : (flags, cb) -> run_1 Cfg.dev, flags, '', cb
+    dev_2  : (flags, cb) -> run_2 Cfg.dev, flags, '', cb
     dev    : (flags) -> run Cfg.dev, flags
     staging: (flags) -> run Cfg.staging, flags, ' for staging'
 
@@ -52,8 +51,8 @@ function run
   run_1 ...
   run_2 ...
 
-function run_1 cfg, flags, desc = ''
-  recycle-tests cfg.test_1, cfg.tester_1, flags, cfg.dirsite, GLOB_1, "Unit & api tests#desc"
+function run_1 cfg, flags, desc = '', cb
+  recycle-tests cfg.test_1, cfg.tester_1, flags, cfg.dirsite, GLOB_1, "Unit & api tests#desc", cb
 
 function run_2 cfg, flags, desc = '', cb
   recycle-tests cfg.test_2, cfg.tester_2, flags, cfg.dirsite, GLOB_2, "App tests#desc", cb
