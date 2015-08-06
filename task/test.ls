@@ -7,6 +7,7 @@ W4     = require \wait.for .for
 Shell  = require \shelljs/global
 Dir    = require \./constants .dir
 Cfg    = require \./config
+Flags  = require \./flags
 G      = require \./growl
 Rt     = require \./runtime
 Site   = require \./site
@@ -18,12 +19,12 @@ const MOCHA  = "#{Dir.ROOT}/node_modules/.bin/_mocha --reporter spec --bail"
 module.exports =
   cancel: kill-all-mocha
   loop:
-    dev_2: (flags) -> loop-dev_2 flags
+    dev_2: loop-dev_2
   run:
-    dev_1  : (flags, cb) -> run_1 Cfg.dev, flags, '', cb
-    dev_2  : (flags, cb) -> run_2 Cfg.dev, flags, '', cb
-    dev    : (flags) -> run Cfg.dev, flags
-    staging: (flags) -> run Cfg.staging, flags, ' for staging'
+    dev_1  : (cb) -> run_1 Cfg.dev, '', cb
+    dev_2  : (cb) -> run_2 Cfg.dev, '', cb
+    dev    : -> run Cfg.dev
+    staging: -> run Cfg.staging, ' for staging'
 
 ## helpers
 
@@ -43,33 +44,33 @@ function kill-all-mocha
 function kill-mocha glob, cb
   Rt.kill-node (get-mocha-cmd glob), cb
 
-function loop-dev_2 flags
-  <- run_2 Cfg.dev, flags, ''
-  loop-dev_2 flags
+function loop-dev_2
+  <- run_2 Cfg.dev, ''
+  loop-dev_2!
 
 function run
   run_1 ...
   run_2 ...
 
-function run_1 cfg, flags, desc = '', cb
-  recycle-tests cfg.test_1, cfg.tester_1, flags, cfg.dirsite, GLOB_1, "Unit & api tests#desc", cb
+function run_1 cfg, desc = '', cb
+  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, GLOB_1, "Unit & api tests#desc", cb
 
-function run_2 cfg, flags, desc = '', cb
-  recycle-tests cfg.test_2, cfg.tester_2, flags, cfg.dirsite, GLOB_2, "App tests#desc", cb
+function run_2 cfg, desc = '', cb
+  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GLOB_2, "App tests#desc", cb
 
-function recycle-tests cfg-test, cfg-tester, flags, dirsite, glob, desc, cb
-  cfg-test.COVERAGE = flags.test-coverage if cfg-test.COVERAGE_FLAG
+function recycle-tests cfg-test, cfg-tester, dirsite, glob, desc, cb
+  cfg-test.COVERAGE = Flags.get!test.coverage if cfg-test.COVERAGE_FLAG
   <- kill-mocha glob
   G.say "#desc started"
   start = Date.now!
   <- Site.stop cfg-test
   <- drop-db cfg-test
-  <- Site.start dirsite, cfg-test, flags
-  err <- start-mocha cfg-tester, flags, glob
+  <- Site.start dirsite, cfg-test
+  err <- start-mocha cfg-tester, glob
   if err then G.err err else G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb err if cb
 
-function start-mocha cfg, flags, glob, cb
+function start-mocha cfg, glob, cb
   if _.isFunction glob then [glob, cb] = [void, glob] # variadic
   v = exec 'node --version' silent:true .output.replace '\n' ''
   log "start mocha in node #v: #glob"

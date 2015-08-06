@@ -10,6 +10,7 @@ Bundle  = require \./bundle
 Dir     = require \./constants .dir
 Data    = require \./data
 Dist    = require \./dist
+Flags   = require \./flags
 Inst    = require \./npm/install
 MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
@@ -27,14 +28,14 @@ const COMMANDS =
   * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Test.cancel
   * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:run-dev-tests
   * cmd:'b.a  ' lev:0 desc:'build - all'                fn:build-all
-  * cmd:'b.c  ' lev:0 desc:'build - test coverage $tc'  fn:-> toggle-flag \testCoverage
+  * cmd:'bc   ' lev:0 desc:'build - test coverage $tc'  fn:-> Flags.toggle \test.coverage
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Bundle.all
   * cmd:'b.d  ' lev:0 desc:'build - delete'             fn:Build.delete
-  * cmd:'b.l  ' lev:0 desc:'build - site logging $sl'   fn:-> toggle-flag \siteLogging
+  * cmd:'bl   ' lev:0 desc:'build - site logging $sl'   fn:-> Flags.toggle \site.logging
   * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Test.loop.dev-test_2 flags
-  * cmd:'b.1  ' lev:0 desc:'build - enable $api'        fn:-> toggle-run-tests \api
-  * cmd:'b.2  ' lev:0 desc:'build - enable $app'        fn:-> toggle-run-tests \app
-  * cmd:'b.t  ' lev:0 desc:'build - autorun tests $ta'  fn:-> toggle-flag \autorunTests
+  * cmd:'b1   ' lev:0 desc:'build - enable $api'        fn:-> Flags.toggle \test.run.api
+  * cmd:'b2   ' lev:0 desc:'build - enable $app'        fn:-> Flags.toggle \test.run.app
+  * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'  fn:-> Flags.toggle \test.autorun
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Test.run.staging flags
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
@@ -51,16 +52,8 @@ const COMMANDS =
   * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
   * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
 
-const FLAGS-PATH = "#{Dir.build.TASK}/flags.json"
-const FLAGS-DEFAULT =
-  autorun-tests: true
-  test-coverage: false
-  site-logging : false
-  run-tests    : api:true app:true
-
 init-shelljs!
 cd Dir.BUILD # for safety set working directory to build
-flags = load-flags!
 
 for c in COMMANDS
   c.disabled = (c.cmd.0 is \d and not Data.is-cfg!) or (c.cmd.0 is \p and not Prod.is-cfg!)
@@ -80,13 +73,15 @@ rl = Rl.createInterface input:process.stdin, output:process.stdout
 Build
   ..on \built ->
     Dist!
-    Site.recycle.dev flags
-  ..on \built-api -> run-tests \api Test.run.dev1 if flags.autorun-tests
-  ..on \built-app -> run-tests \app Test.run.dev2 if flags.autorun-tests
+    Site.recycle.dev!
+  ..on \built-api -> run-tests \api Test.run.dev1 if Flags.get!test.autorun
+  ..on \built-app -> run-tests \app Test.run.dev2 if Flags.get!test.autorun
   ..start!
+Flags
+  ..on \toggle show-help
 Site
-  ..recycle.dev flags
-  ..recycle.staging flags
+  ..recycle.dev!
+  ..recycle.staging!
 
 _.delay show-help, 1500ms
 _.delay (-> rl.prompt!), 1750ms
@@ -99,21 +94,8 @@ function build-all
 
 function generate-staging
   Staging.generate!
-  Site.recycle.staging flags
-  Test.run.staging flags
-
-function load-flags
-  try
-    return JSON.parse(cat FLAGS-PATH) if test \-e FLAGS-PATH
-    FLAGS-DEFAULT
-  catch
-    FLAGS-DEFAULT
-
-function get-flag-desc
-  if it then Chalk.bold.green \yes else Chalk.bold.cyan \no
-
-function get-run-tests-desc
-  "#it tests #{get-flag-desc flags.run-tests[it]}"
+  Site.recycle.staging!
+  Test.run.staging!
 
 function init-shelljs
   config.fatal  = true # shelljs doesn't raise exceptions, so set this process to die on error
@@ -128,29 +110,20 @@ function run-dev-tests
   run-tests \app Test.run.dev_2
 
 function run-tests id, fn
-  if flags.run-tests[id] then (fn flags) else log Chalk.cyan "skip #id tests"
-
-function save-flags
-  (JSON.stringify flags).to FLAGS-PATH
+  if Flags.get!test.run[id] then fn! else log Chalk.cyan "skip #id tests"
 
 function show-help
+  function get-flag-desc then if it then Chalk.bold.green \yes else Chalk.bold.cyan \no
+  function get-run-tests-desc then "#it tests #{get-flag-desc Flags.get!test.run[it]}"
+  f = Flags.get!
   flag-vals =
     api: get-run-tests-desc \api
     app: get-run-tests-desc \app
-    sl : get-flag-desc flags.site-logging
-    ta : get-flag-desc flags.autorun-tests
-    tc : get-flag-desc flags.test-coverage
+    sl : get-flag-desc f.site.logging
+    ta : get-flag-desc f.test.autorun
+    tc : get-flag-desc f.test.coverage
   for c in COMMANDS when !c.disabled
     s = c.display
     for k, v of flag-vals then s = s.replace "$#k" v
     log s
 
-function toggle-run-tests
-  (s = flags.run-tests)[it] = not s[it]
-  save-flags!
-  show-help!
-
-function toggle-flag
-  flags[it] = not (flags[it] or false)
-  save-flags!
-  show-help!
