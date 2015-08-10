@@ -12,7 +12,8 @@ module.exports =
     # pkill --echo not supported by Travis
     # can't use WaitFor as we need the return code
     pg = "pgrep -d ' ' -f 'node #{args.replace /\*/g '\\*'}'"
-    code, pids <- exec pg, silent:true
+    code, pids <- exec pg #, silent:true
+    log code, pids, pg
     # pgrep return codes:
     #   0 One or more processes matched the criteria.
     #   1 No processes matched.
@@ -21,8 +22,8 @@ module.exports =
     return cb! if code is 1
     throw new Error "#pg returned #code" if code > 1
 
-    pids .= replace '\n' ''
-    log "kill #pids node #args"
-    code <- exec k = "kill #pids"
+    k = "kill -9 #pids".replace '\n' ''
+    log "#k node #args"
+    code <- exec k
     throw new Error "#k returned #code" if code > 0
     cb!
