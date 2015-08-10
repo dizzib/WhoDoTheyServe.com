@@ -12,19 +12,26 @@ G      = require \./growl
 Rt     = require \./runtime
 Site   = require \./site
 
-const GLOB_1 = 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
-const GLOB_2 = 'test/_integration/app.js'
-const MOCHA  = "#{Dir.ROOT}/node_modules/.bin/_mocha --reporter spec --bail"
+const MOCHA = "#{Dir.ROOT}/node_modules/.bin/_mocha --reporter spec --bail"
+const SCOPES =
+  api:
+    desc: 'Unit & api'
+    glob: 'test/_unit/**/*.js test/_integration/api/**/*.js test/_integration/api.js'
+  app:
+    desc: 'App'
+    glob: 'test/_integration/app.js'
 
-module.exports =
-  cancel: kill-all-mocha
-  loop:
-    dev_2: loop-dev_2
-  run:
-    dev_1  : (cb) -> run_1 Cfg.dev, '', cb
-    dev_2  : (cb) -> run_2 Cfg.dev, '', cb
-    dev    : -> run Cfg.dev
-    staging: -> run Cfg.staging, ' for staging'
+module.exports = me =
+  cancel: ->
+    for k, v of SCOPES then W4 kill-mocha, v.glob
+  loop: (env-id, scope-id) ->
+    err <- run env-id, scope-id
+    me.loop env-id, scope-id unless err
+  run: (env-id, scope-id) ->
+    scopes = if scope-id then [scope-id] else <[ api app ]>
+    for sid in scopes then
+      skip = env-id is \dev and not Flags.get!test.run[sid]
+      if skip then log Chalk.cyan "skip #sid tests" else run env-id, sid
 
 ## helpers
 
@@ -36,42 +43,24 @@ function drop-db cfg, cb
   cb!
 
 function get-mocha-cmd glob then "#MOCHA #glob"
+function kill-mocha glob, cb then Rt.kill-node (get-mocha-cmd glob), cb
 
-function kill-all-mocha
-  W4 kill-mocha, GLOB_1
-  W4 kill-mocha, GLOB_2
-
-function kill-mocha glob, cb
-  Rt.kill-node (get-mocha-cmd glob), cb
-
-function loop-dev_2
-  <- run_2 Cfg.dev, ''
-  loop-dev_2!
-
-function run
-  run_1 ...
-  run_2 ...
-
-function run_1 cfg, desc = '', cb
-  recycle-tests cfg.test_1, cfg.tester_1, cfg.dirsite, GLOB_1, "Unit & api tests#desc", cb
-
-function run_2 cfg, desc = '', cb
-  recycle-tests cfg.test_2, cfg.tester_2, cfg.dirsite, GLOB_2, "App tests#desc", cb
-
-function recycle-tests cfg-test, cfg-tester, dirsite, glob, desc, cb
-  cfg-test.COVERAGE = Flags.get!test.coverage if cfg-test.COVERAGE_FLAG
-  <- kill-mocha glob
+function run env-id, scope-id, cb
+  scope = SCOPES[scope-id]
+  desc = "#{scope.desc} tests (#env-id)"
   G.say "#desc started"
   start = Date.now!
-  <- Site.stop cfg-test
-  <- drop-db cfg-test
-  <- Site.start dirsite, cfg-test
-  err <- start-mocha cfg-tester, glob
+  cfg = (env = Cfg[env-id]).test[scope-id]
+  <- kill-mocha scope.glob
+  <- Site.stop cfg.testee
+  <- drop-db cfg.testee
+  cfg.testee.COVERAGE = Flags.get!test.coverage if cfg.testee.COVERAGE_FLAG
+  <- Site.start env.dirsite, cfg.testee
+  err <- start-mocha cfg.tester, scope.glob
   if err then G.err err else G.ok "#desc passed in #{(Date.now! - start)/1000}s"
   cb err if cb
 
 function start-mocha cfg, glob, cb
-  if _.isFunction glob then [glob, cb] = [void, glob] # variadic
   v = exec 'node --version' silent:true .output.replace '\n' ''
   log "start mocha in node #v: #glob"
   cfg <<< firefox-host:env.firefox-host or \localhost

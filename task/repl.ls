@@ -26,18 +26,18 @@ const COMMANDS =
   * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'     fn:Inst.delete-modules
   * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'    fn:Inst.refresh-modules
   * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Test.cancel
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:run-dev-tests
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:-> Test.run \dev
   * cmd:'b.a  ' lev:0 desc:'build - all'                fn:build-all
   * cmd:'bc   ' lev:0 desc:'build - test coverage $tc'  fn:-> Flags.toggle \test.coverage
   * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Bundle.all
   * cmd:'b.d  ' lev:0 desc:'build - delete'             fn:Build.delete
   * cmd:'bl   ' lev:0 desc:'build - site logging $sl'   fn:-> Flags.toggle \site.logging
-  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Test.loop.dev-test_2 flags
+  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Test.loop \dev \app
   * cmd:'b1   ' lev:0 desc:'build - enable $api'        fn:-> Flags.toggle \test.run.api
   * cmd:'b2   ' lev:0 desc:'build - enable $app'        fn:-> Flags.toggle \test.run.app
   * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'  fn:-> Flags.toggle \test.autorun
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Test.run.staging flags
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Test.run \staging
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
@@ -74,8 +74,8 @@ Build
   ..on \built ->
     Dist!
     Site.recycle.dev!
-  ..on \built-api -> run-tests \api Test.run.dev_1 if Flags.get!test.autorun
-  ..on \built-app -> run-tests \app Test.run.dev_2 if Flags.get!test.autorun
+  ..on \built-api -> Test.run \dev \api if Flags.get!test.autorun
+  ..on \built-app -> Test.run \dev \app if Flags.get!test.autorun
   ..start!
 Flags
   ..on \toggle show-help
@@ -95,7 +95,7 @@ function build-all
 function generate-staging
   Staging.generate!
   Site.recycle.staging!
-  Test.run.staging!
+  Test.run \staging
 
 function init-shelljs
   config.fatal  = true # shelljs doesn't raise exceptions, so set this process to die on error
@@ -104,13 +104,6 @@ function init-shelljs
   global.exec = (cmd, opts, cb) -> # make exec noisy unless explicitly silenced
     [cb = opts, opts = silent:false] if _.isFunction opts
     exec-orig cmd, opts, cb
-
-function run-dev-tests
-  run-tests \api Test.run.dev_1
-  run-tests \app Test.run.dev_2
-
-function run-tests id, fn
-  if Flags.get!test.run[id] then fn! else log Chalk.cyan "skip #id tests"
 
 function show-help
   function get-flag-desc then if it then Chalk.bold.green \yes else Chalk.bold.cyan \no
