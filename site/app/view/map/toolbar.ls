@@ -8,7 +8,6 @@ const OVERLAYS =
   BilSteer : default:true , event:\bil-steer
   Bis      : default:false, event:\bis
   Cfr      : default:false, event:\cfr
-  G7       : default:false, event:\g7
 
 module.exports = B.View.extend do
 
