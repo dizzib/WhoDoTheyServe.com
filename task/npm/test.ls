@@ -15,11 +15,8 @@ function run
   Build.all!
   Build.stop!
   Dist!
-  <- run-suite Test.run.dev_1
-  <- run-suite Test.run.dev_2
-  process.exit 0
-
-function run-suite fn, cb
-  err <- fn
+  err <- Test.run \dev \api
   process.exit err.code or 1 if err
-  cb!
+  err <- Test.run \dev \app
+  process.exit err.code or 1 if err
+  process.exit 0
