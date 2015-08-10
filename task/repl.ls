@@ -74,8 +74,8 @@ Build
   ..on \built ->
     Dist!
     Site.recycle.dev!
-  ..on \built-api -> run-tests \api Test.run.dev1 if Flags.get!test.autorun
-  ..on \built-app -> run-tests \app Test.run.dev2 if Flags.get!test.autorun
+  ..on \built-api -> run-tests \api Test.run.dev_1 if Flags.get!test.autorun
+  ..on \built-app -> run-tests \app Test.run.dev_2 if Flags.get!test.autorun
   ..start!
 Flags
   ..on \toggle show-help
