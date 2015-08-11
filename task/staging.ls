@@ -27,7 +27,7 @@ module.exports =
 
 function copy-minified dir, files
   for f in files
-    (Ug.minify "#{Dir.build.dev.SITE}/#dir/#f.js").code.to "#{Dir.dist.STAGING}/#dir/#f.js"
+    (Ug.minify "#{Dir.build.SITE}/#dir/#f.js").code.to "#{Dir.dist.STAGING}/#dir/#f.js"
 
 function copy-minified-files
   log "copy minified files"
@@ -36,8 +36,8 @@ function copy-minified-files
 
 function copy-files
   log "copy files to #{Dir.dist.STAGING}"
-  const FILTER = "'. #{Dir.build.DEV}/task/staging-files.txt'"
-  W4 exec, "rsync -r --filter=#FILTER #{Dir.build.dev.SITE}/ #{Dir.dist.STAGING}/"
+  const FILTER = "'. #{Dir.build.TASK}/staging-files.txt'"
+  W4 exec, "rsync -r --filter=#FILTER #{Dir.build.SITE}/ #{Dir.dist.STAGING}/"
 
 function copy-seo-files
   return G.alert 'no seo' unless test \-e Dir.dist.SEO
