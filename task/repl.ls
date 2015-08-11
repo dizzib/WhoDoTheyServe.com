@@ -42,10 +42,10 @@ const COMMANDS =
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
   * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-config
-  * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.login
+  * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.af.login
   * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'  fn:MaintDE.prod
-  * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.update
-  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.send-env-vars
+  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.af.send-env-vars
+  * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.af.update
   * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-config
   * cmd:'d.ba ' lev:0 desc:'data  - PROD->bak'          fn:Data.dump-prod-to-backup
   * cmd:'d.s2b' lev:0 desc:'data  - stage->bak'         fn:Data.dump-stage-to-backup
