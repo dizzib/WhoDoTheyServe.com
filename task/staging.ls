@@ -10,8 +10,8 @@ G      = require \./growl
 
 module.exports =
   generate: ->
+    mkdir \-p Dir.dist.STAGING unless test \-e Dir.dist.STAGING
     try
-      mkdir \-p Dir.dist.STAGING unless test \-e Dir.dist.STAGING
       pushd Dir.dist.STAGING
       delete-files!
       copy-files!
@@ -20,6 +20,10 @@ module.exports =
       copy-seo-files!
       W4 exec, 'npm prune'
       W4 exec, 'npm install'
+      # shrinkwrap ensures exact staging dependency tree gets deployed,
+      # otherwise there's a small risk of breakage in production
+      W4 exec, 'npm shrinkwrap'
+      return 'shrinkwrap failed' unless test \-e \npm-shrinkwrap.json
       G.ok 'generated staging site'
     finally then popd!
 
@@ -51,9 +55,9 @@ function copy-seo-files
   finally then popd!
 
 function delete-files
-  log "delete files from #{pwd!}"
   Assert.equal pwd!, Dir.dist.STAGING
-  W4 exec, "bash -O extglob -O dotglob -c 'rm -rf !(node_modules)'"
+  log "delete files from #{pwd!}"
+  W4 exec, "bash -O extglob -c 'rm -rf !(.|..|.git*|.openshift|node_modules)'"
 
 function set-load-from-cdn
   log "set-load-from-cdn"

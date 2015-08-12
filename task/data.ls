@@ -18,7 +18,8 @@ try
 catch
 
 module.exports =
-  is-cfg: -> cfg?
+  enabled : -> cfg?
+  show-cfg: -> log cfg
 
   dump-prod-to-backup: ->
     try
@@ -48,4 +49,3 @@ module.exports =
     catch e
       log e
 
-  show-config: -> log cfg

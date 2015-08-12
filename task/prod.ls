@@ -1,35 +1,33 @@
-Assert = require \assert
-Shell  = require \shelljs
-W4     = require \wait.for .for
-Dir    = require \./constants .dir
-G      = require \./growl
+Shl = require \shelljs
+W4  = require \wait.for .for
+Dir = require \./constants .dir
+G   = require \./growl
 
-try
-  cfg = (JSON.parse env.prod).appfog
-  Assert appname = cfg.appname
-  Assert uid = cfg.account.uid
-  Assert pwd = cfg.account.pwd
+try cfg = (JSON.parse env.prod).site
 catch
 
 module.exports =
-  is-cfg: -> cfg?
-  show-config: -> log cfg
+  enabled : -> cfg?
+  show-cfg: -> log cfg
 
   af:
     login: ->
       <- try-exec
-      W4 exec, "af login --email #uid --passwd #pwd"
+      W4 exec, "af login --email #{cfg.af.account.uid} --passwd #{cfg.af.account.pwd}"
     logout: ->
       <- try-exec
       W4 exec, "af logout"
     send-env-vars: ->
       <- try-exec
+      appname = cfg.af.appname
+      env = cfg.env <<< cfg.af.env
       W4 exec, "af stop #appname" # stop to avoid restarting after each add
-      for k, v of cfg.env then W4 exec, "af env-add #appname #k=#v" # normally restarts
+      for k, v of env then W4 exec, "af env-add #appname #k=#v" # normally restarts
       W4 exec, "af start #appname"
       G.ok "sent env-vars to appfog PRODUCTION"
     update: ->
       <- try-exec
+      appname = cfg.af.appname
       # shrinkwrap ensures exact staging dependency tree gets deployed,
       # otherwise there's a small risk of breakage in production
       W4 exec, 'npm shrinkwrap'
@@ -38,6 +36,21 @@ module.exports =
       W4 exec, "af update #appname"
       return log error! if error!
       G.ok "updated site to appfog PRODUCTION"
+
+  rhc:
+    env:
+      list: -> rhc 'env list'
+      send: ->
+        <- try-exec
+        env = cfg.env <<< cfg.rhc.env
+        vars = ["#k=#v" for k, v of env].join ' '
+        rhc "env set #vars"
+        return log error! if error!
+        G.ok "sent env-vars to openshift PRODUCTION"
+
+function rhc cmd
+  appname = cfg.rhc.appname
+  W4 exec, "rhc #cmd -a #appname"
 
 function try-exec fn
   try

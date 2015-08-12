@@ -41,12 +41,13 @@ const COMMANDS =
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
-  * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-config
-  * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.af.login
+  * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-cfg
+# * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.af.login
+  * cmd:'p.lev' lev:0 desc:'prod  - list envvars<-PROD' fn:Prod.rhc.env.list
   * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'  fn:MaintDE.prod
-  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.af.send-env-vars
-  * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.af.update
-  * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-config
+  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.rhc.env.send
+# * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.af.update
+  * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-cfg
   * cmd:'d.ba ' lev:0 desc:'data  - PROD->bak'          fn:Data.dump-prod-to-backup
   * cmd:'d.s2b' lev:0 desc:'data  - stage->bak'         fn:Data.dump-stage-to-backup
   * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
@@ -56,7 +57,7 @@ init-shelljs!
 cd Dir.BUILD # for safety set working directory to build
 
 for c in COMMANDS
-  c.disabled = (c.cmd.0 is \d and not Data.is-cfg!) or (c.cmd.0 is \p and not Prod.is-cfg!)
+  c.disabled = (c.cmd.0 is \d and not Data.enabled!) or (c.cmd.0 is \p and not Prod.enabled!)
   c.display = "#{Chalk.bold CHALKS[c.lev] c.cmd} #{c.desc}"
 
 rl = Rl.createInterface input:process.stdin, output:process.stdout
