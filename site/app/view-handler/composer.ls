@@ -22,15 +22,12 @@ module.exports =
       done!
     false # async done
   edges: (id) ->
-    done = arguments[*-1]
-    fetch-default-map -> # try to show at least nodes of default map
-      V.edges-head.render!
-      V.edges.render C.Edges, D.edges
-      done!
-    false # async done
+    render-nodes-or-edges V.edges-head, (-> V.edges.render C.Edges, D.edges), arguments[*-1]
   map: (id) ->
     done = arguments[*-1]
+    loc = B.history.fragment
     function show m
+      return unless B.history.fragment is loc # bail if user navigated away
       V.map.map = m
       if is-sel-changed
         V.map.render!
@@ -64,12 +61,7 @@ module.exports =
       done!
     false # async done
   nodes: (id) ->
-    done = arguments[*-1]
-    fetch-default-map -> # try to show at least nodes of default map
-      V.nodes-head.render!
-      V.nodes.render C.Nodes, D.nodes
-      done!
-    false # async done
+    render-nodes-or-edges V.nodes-head, (-> V.nodes.render C.Nodes, D.nodes), arguments[*-1]
   user: (id) ->
     done = arguments[*-1]
     V.user.render user = C.Users.get(id ||= S.get-id!), D.user
@@ -85,15 +77,26 @@ module.exports =
 
 ## helpers
 
-function fetch-default-map cb
-  return cb! unless m = C.Maps.get Hv.Map.default-id
-  m.fetch success:cb
-
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
   <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
   return B.trigger \error, "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
+
+function render-nodes-or-edges v-head, render, done
+  v-head.render!
+  render!
+  # first time through after page reload this might render nothing, so
+  # at least show entities belonging to default map
+  return true unless m = C.Maps.get Hv.Map.default-id
+  loc = B.history.fragment
+  m.fetch success: ->
+    return unless B.history.fragment is loc # bail if user navigated away
+    # ideally we'd only render if the data has changed i.e. response code 200 not 304
+    # Unfortunately there is no easy way to detect a 304.
+    render!
+    done!
+  false # async done
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
