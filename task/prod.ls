@@ -38,6 +38,17 @@ module.exports =
       G.ok "updated site to appfog PRODUCTION"
 
   rhc:
+    deployments:
+      activate: (rl) ->
+        function question text, cb
+          ans <- rl.question text
+          cb null, ans
+        id = W4 question, "Enter deployment id:"
+        return log 'must be 8 chars' unless id.length is 8
+        rhc "deployment show #id"
+        sure = W4 question, "Are you sure (y/n)?"
+        rhc "deployment activate #id" if sure is \y
+      list: -> rhc 'deployment list'
     env:
       list: -> rhc 'env list'
       send: ->

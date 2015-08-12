@@ -22,36 +22,38 @@ G       = require \./growl
 
 const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
-  * cmd:'h    ' lev:0 desc:'help  - show commands'      fn:show-help
-  * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'     fn:Inst.delete-modules
-  * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'    fn:Inst.refresh-modules
-  * cmd:'     ' lev:0 desc:'build - halt test run'      fn:Test.cancel
-  * cmd:'b    ' lev:0 desc:'build - recycle + test'     fn:-> Test.run \dev
-  * cmd:'b.a  ' lev:0 desc:'build - all'                fn:build-all
-  * cmd:'bc   ' lev:0 desc:'build - test coverage $tc'  fn:-> Flags.toggle \test.coverage
-  * cmd:'b.b  ' lev:0 desc:'build - bundle'             fn:Bundle.all
-  * cmd:'b.d  ' lev:0 desc:'build - delete'             fn:Build.delete
-  * cmd:'bl   ' lev:0 desc:'build - site logging $sl'   fn:-> Flags.toggle \site.logging
-  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'     fn:-> Test.loop \dev \app
-  * cmd:'b1   ' lev:0 desc:'build - enable $api'        fn:-> Flags.toggle \test.run.api
-  * cmd:'b2   ' lev:0 desc:'build - enable $app'        fn:-> Flags.toggle \test.run.app
-  * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'  fn:-> Flags.toggle \test.autorun
-  * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'  fn:MaintDE.dev
-  * cmd:'s    ' lev:0 desc:'stage - recycle + test'     fn:-> Test.run \staging
-  * cmd:'s.g  ' lev:1 desc:'stage - generate + test'    fn:generate-staging
-  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'       fn:Seo.generate
-  * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'  fn:MaintDE.staging
-  * cmd:'p    ' lev:0 desc:'prod  - show config'        fn:Prod.show-cfg
-# * cmd:'p.l  ' lev:1 desc:'prod  - login'              fn:Prod.af.login
-  * cmd:'p.lev' lev:0 desc:'prod  - list envvars<-PROD' fn:Prod.rhc.env.list
-  * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'  fn:MaintDE.prod
-  * cmd:'p.ENV' lev:2 desc:'prod  - env vars->PROD'     fn:Prod.rhc.env.send
-# * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD' fn:Prod.af.update
-  * cmd:'d    ' lev:0 desc:'data  - show config'        fn:Data.show-cfg
-  * cmd:'d.ba ' lev:0 desc:'data  - PROD->bak'          fn:Data.dump-prod-to-backup
-  * cmd:'d.s2b' lev:0 desc:'data  - stage->bak'         fn:Data.dump-stage-to-backup
-  * cmd:'d.st ' lev:1 desc:'data  - bak->stage'         fn:Data.restore-backup-to-staging
-  * cmd:'d.B2P' lev:2 desc:'data  - bak->PROD'          fn:Data.restore-backup-to-prod
+  * cmd:'h    ' lev:0 desc:'help  - show commands'       fn:show-help
+  * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'      fn:Inst.delete-modules
+  * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'     fn:Inst.refresh-modules
+  * cmd:'     ' lev:0 desc:'build - halt test run'       fn:Test.cancel
+  * cmd:'b    ' lev:0 desc:'build - recycle + test'      fn:-> Test.run \dev
+  * cmd:'b.a  ' lev:0 desc:'build - all'                 fn:build-all
+  * cmd:'bc   ' lev:0 desc:'build - test coverage $tc'   fn:-> Flags.toggle \test.coverage
+  * cmd:'b.b  ' lev:0 desc:'build - bundle'              fn:Bundle.all
+  * cmd:'b.d  ' lev:0 desc:'build - delete'              fn:Build.delete
+  * cmd:'bl   ' lev:0 desc:'build - site logging $sl'    fn:-> Flags.toggle \site.logging
+  * cmd:'b.lt ' lev:0 desc:'build - loop app tests'      fn:-> Test.loop \dev \app
+  * cmd:'b1   ' lev:0 desc:'build - enable $api'         fn:-> Flags.toggle \test.run.api
+  * cmd:'b2   ' lev:0 desc:'build - enable $app'         fn:-> Flags.toggle \test.run.app
+  * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'   fn:-> Flags.toggle \test.autorun
+  * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'   fn:MaintDE.dev
+  * cmd:'s    ' lev:0 desc:'stage - recycle + test'      fn:-> Test.run \staging
+  * cmd:'s.g  ' lev:1 desc:'stage - generate + test'     fn:generate-staging
+  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:Seo.generate
+  * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'   fn:MaintDE.staging
+  * cmd:'p    ' lev:0 desc:'prod  - show config'         fn:Prod.show-cfg
+# * cmd:'p.l  ' lev:1 desc:'prod  - login'               fn:Prod.af.login
+  * cmd:'p.ld ' lev:0 desc:'PROD  - list deployments'    fn:Prod.rhc.deployments.list
+  * cmd:'p.le ' lev:0 desc:'PROD  - list env vars'       fn:Prod.rhc.env.list
+  * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'   fn:MaintDE.prod
+  * cmd:'p.AD ' lev:2 desc:'PROD  - activate deployment' fn:Prod.rhc.deployments.activate
+  * cmd:'p.ENV' lev:2 desc:'PROD  - env vars->PROD'      fn:Prod.rhc.env.send
+# * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD'  fn:Prod.af.update
+  * cmd:'d    ' lev:0 desc:'data  - show config'         fn:Data.show-cfg
+  * cmd:'d.ba ' lev:0 desc:'DATA  - PROD->bak'           fn:Data.dump-prod-to-backup
+  * cmd:'d.s2b' lev:0 desc:'data  - stage->bak'          fn:Data.dump-stage-to-backup
+  * cmd:'d.st ' lev:1 desc:'data  - bak->stage'          fn:Data.restore-backup-to-staging
+  * cmd:'d.B2P' lev:2 desc:'DATA  - bak->PROD'           fn:Data.restore-backup-to-prod
 
 init-shelljs!
 cd Dir.BUILD # for safety set working directory to build
