@@ -14,5 +14,9 @@ Db.connect!
 <- Hive.init
 err <- HiveMap.boot
 console.error err if err
-<- Server.listen port = process.env.PORT || 80
-console.log "Express server http listening on port #port"
+
+const msg = 'Express server http listening on'
+port = process.env.PORT or process.env.OPENSHIFT_NODEJS_PORT or 80
+if host = process.env.OPENSHIFT_NODEJS_IP
+  return Server.listen port, host, -> log "#msg #host:#port"
+Server.listen port, -> log "#msg port #port"
