@@ -13,7 +13,7 @@ M-Note = require \../model/note
 module.exports =
   edge: (id, act, child-id) ->
     done = arguments[*-1]
-    fetch-entity C.Edges, id, \connection, (edge) ->
+    fetch-entity C.Edges, id, \connection (edge) ->
       V.edge.render edge, D.edge
       V.meta.render edge, D.meta
       render-evidences id, act, child-id
@@ -22,7 +22,7 @@ module.exports =
       done!
     false # async done
   edges: (id) ->
-    render-nodes-or-edges V.edges-head, (-> V.edges.render C.Edges, D.edges), arguments[*-1]
+    render-nodes-or-edges V.edges-head, -> V.edges.render C.Edges, D.edges
   map: (id) ->
     done = arguments[*-1]
     loc = B.history.fragment
@@ -44,12 +44,12 @@ module.exports =
     is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
     return show m if not is-sel-changed
     return show M-Map.create! unless id?
-    return B.trigger \error, "Unable to get map #id" unless m = C.Maps.get id
+    return B.trigger \error "Unable to get map #id" unless m = C.Maps.get id
     m.fetch success:show
     false # async done
   node: (id, act, child-id) ->
     done = arguments[*-1]
-    fetch-entity C.Nodes, id, \actor, (node) ->
+    fetch-entity C.Nodes, id, \actor (node) ->
       V.node.render node, D.node
       V.node-edges-head.render!
       V.node-edges-a.render (C.Edges.find -> id is it.get \a_node_id), D.edges
@@ -61,7 +61,7 @@ module.exports =
       done!
     false # async done
   nodes: (id) ->
-    render-nodes-or-edges V.nodes-head, (-> V.nodes.render C.Nodes, D.nodes), arguments[*-1]
+    render-nodes-or-edges V.nodes-head, -> V.nodes.render C.Nodes, D.nodes
   user: (id) ->
     done = arguments[*-1]
     V.user.render user = C.Users.get(id ||= S.get-id!), D.user
@@ -80,10 +80,10 @@ module.exports =
 function fetch-entity coll, id, name, cb
   return cb ent if ent = coll.get id
   <- Cs.fetch-all # entity isn't in global cache so refresh gc and try again
-  return B.trigger \error, "Unable to render non-existant #name (#id)" unless ent = coll.get id
+  return B.trigger \error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
 
-function render-nodes-or-edges v-head, render, done
+function render-nodes-or-edges v-head, render
   v-head.render!
   render!
   # first time through after page reload this might render nothing, so
@@ -100,15 +100,15 @@ function render-nodes-or-edges v-head, render, done
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
   ev = C.Evidences.get id if act is \evi-edit
-  ev = M-Evi.create!set \entity_id, entity-id if act is \evi-new
-  V.evidences-head.render void, D.evidences-head
+  ev = M-Evi.create!set \entity_id entity-id if act is \evi-new
+  V.evidences-head.render void D.evidences-head
   V.evidence-edit.render ev, C.Evidences, fetch:no if ev
   V.evidences.render evs, D.evidences unless act is \evi-new
 
 function render-notes entity-id, act
   notes = C.Notes.find -> entity-id is it.get \entity_id
   note-by-signin =
-    if act is \note-new then M-Note.create!set \entity_id, entity-id
+    if act is \note-new then M-Note.create!set \entity_id entity-id
     else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
   V.notes-head.render note-by-signin, D.notes-head
   V.note-edit.render note-by-signin, C.Notes, fetch:no if act in <[ note-edit note-new ]>

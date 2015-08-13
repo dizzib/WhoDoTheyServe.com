@@ -17,7 +17,7 @@ module.exports =
       data = if @opts.query-string then Q.parse o else (o?toJSON-T! or {})
       ($tem = $ @template).render data, directive
       @$el.html $tem .set-access S .show!
-      @trigger \rendered, o
+      @trigger \rendered o
 
   ListView: B.View.extend do
     initialize: ->
@@ -27,12 +27,12 @@ module.exports =
     # 1. render current content immediately
     # 2. render async-fetched content
     render: (coll, directive, opts) ->
-      @$el.attr \data-loc, B.history.fragment # to detemine if navigated away
+      @$el.attr \data-loc B.history.fragment # to detemine if navigated away
       render coll, 0
       return unless @opts.fetch
       return unless coll.url # filtered collection won't have url
       coll.fetch success: -> render it, 1
-      ~function render c, pass then
+      ~function render c, pass
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
         c = c.find f if f = opts?filter
         ($tem = $ @template).render (items:c.toJSON-T!), items:directive
