@@ -88,15 +88,14 @@ function render-nodes-or-edges v-head, render, done
   render!
   # first time through after page reload this might render nothing, so
   # at least show entities belonging to default map
-  return true unless m = C.Maps.get Hv.Map.default-id
-  loc = B.history.fragment
-  m.fetch success: ->
-    return unless B.history.fragment is loc # bail if user navigated away
-    # ideally we'd only render if the data has changed i.e. response code 200 not 304
-    # Unfortunately there is no easy way to detect a 304.
-    render!
-    done!
-  false # async done
+  if m = C.Maps.get Hv.Map.default-id
+    loc = B.history.fragment
+    m.fetch success: ->
+      return unless B.history.fragment is loc # bail if user navigated away
+      # ideally we'd only render if the data has changed i.e. response code 200 not 304
+      # Unfortunately there is no easy way to detect a 304.
+      render!
+  true # sync
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
