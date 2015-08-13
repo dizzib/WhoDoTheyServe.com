@@ -69,4 +69,4 @@ function read req, res, next
   err, notes <- M-Notes.find!lean!exec
   return next err if err
   map.entities.notes = _.filter notes, -> _.contains map-entity-ids, it.entity_id
-  setTimeout (-> res.json map), 2000
+  res.json map

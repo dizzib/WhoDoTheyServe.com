@@ -22,7 +22,9 @@ module.exports =
       done!
     false # async done
   edges: (id) ->
-    render-nodes-or-edges V.edges-head, -> V.edges.render C.Edges, D.edges
+    <- render-nodes-or-edges arguments[*-1]
+    V.edges-head.render!
+    V.edges.render C.Edges, D.edges
   map: (id) ->
     done = arguments[*-1]
     loc = B.history.fragment
@@ -61,7 +63,9 @@ module.exports =
       done!
     false # async done
   nodes: (id) ->
-    render-nodes-or-edges V.nodes-head, -> V.nodes.render C.Nodes, D.nodes
+    <- render-nodes-or-edges arguments[*-1]
+    V.nodes-head.render!
+    V.nodes.render C.Nodes, D.nodes
   user: (id) ->
     done = arguments[*-1]
     V.user.render user = C.Users.get(id ||= S.get-id!), D.user
@@ -83,19 +87,25 @@ function fetch-entity coll, id, name, cb
   return B.trigger \error "Unable to render non-existant #name (#id)" unless ent = coll.get id
   cb ent
 
-function render-nodes-or-edges v-head, render
-  v-head.render!
-  render!
-  # first time through after page reload this might render nothing, so
-  # at least show entities belonging to default map
-  if m = C.Maps.get Hv.Map.default-id
-    loc = B.history.fragment
-    m.fetch success: ->
-      return unless B.history.fragment is loc # bail if user navigated away
-      # ideally we'd only render if the data has changed i.e. response code 200 not 304
-      # Unfortunately there is no easy way to detect a 304.
+function render-nodes-or-edges done, render
+  function refresh cb # at least show entities belonging to default map
+    if m = C.Maps.get Hv.Map.default-id
+      loc = B.history.fragment
+      m.fetch success: ->
+        # ideally we'd only render if the data has changed i.e. response code 200 not 304
+        # Unfortunately there is no easy way to detect a 304.
+        render! if B.history.fragment is loc # skip if user navigated away
+        cb!
+    else
       render!
-  true # sync
+      cb!
+  if C.Nodes.length # render immediately then refresh in background
+    render!
+    refresh ->
+    true # sync
+  else # first time through we have nothing to render immediately
+    refresh done
+    false # async
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id

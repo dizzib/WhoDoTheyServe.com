@@ -1,0 +1,63 @@
+/**
+ * (C)Leanest CSS lv-spinner ever
+ * https://gist.github.com/LeaVerou/7615212/fbea20965c86052ffdb134d83540896cc577f226
+ */
+
+@keyframes lv-spin {
+	to { transform: rotate(1turn); }
+}
+
+.lv-spinner {
+	position: relative;
+	display: inline-block;
+	width: 5em;
+	height: 5em;
+	margin: 0 .5em;
+	font-size: 12px;
+	text-indent: 999em;
+	overflow: hidden;
+	animation: lv-spin 1s infinite steps(8);
+}
+
+.small.lv-spinner {
+	font-size: 6px;
+}
+
+.large.lv-spinner {
+	font-size: 24px;
+}
+
+.lv-spinner:before,
+.lv-spinner:after,
+.lv-spinner > div:before,
+.lv-spinner > div:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 2.25em; /* (container width - part width)/2  */
+	width: .5em;
+	height: 1.5em;
+	border-radius: .2em;
+	background: #eee;
+	box-shadow: 0 3.5em #eee; /* container height - part height */
+	transform-origin: 50% 2.5em; /* container height / 2 */
+}
+
+.lv-spinner:before {
+	background: #555;
+}
+
+.lv-spinner:after {
+	transform: rotate(-45deg);
+	background: #777;
+}
+
+.lv-spinner > div:before {
+	transform: rotate(-90deg);
+	background: #999;
+}
+
+.lv-spinner > div:after {
+	transform: rotate(-135deg);
+	background: #bbb;
+}
