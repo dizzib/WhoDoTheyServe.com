@@ -27,12 +27,11 @@ The only information captured is [visitor count per 10-days][hit-count].
 ### Credits
 
 Many thanks to the authors of the opensource software used to make this site.
-Also thanks to [GitHub], [MongoLab] and [AppFog] for the free hosting.
+Also thanks to [GitHub], [MongoLab] and [RedHat] for the free hosting.
 
 This site's name is inspired from [WhatDoTheyKnow.com][wdtk], a database of freedom of
 information requests to UK public authorities.
 
-[appfog]:     http://appfog.com
 [api]:        http://en.wikipedia.org/wiki/Application_programming_interface
 [beta]:       https://en.wikipedia.org/wiki/Software_release_life_cycle
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
@@ -43,5 +42,6 @@ information requests to UK public authorities.
 [json]:       http://en.wikipedia.org/wiki/Json
 [login]:      #/user/signin
 [mongolab]:   http://mongolab.com
+[RedHat]:     https://www.openshift.com
 [opensource]: https://github.com/dizzib/WhoDoTheyServe.com
 [wdtk]:       https://www.whatdotheyknow.com
