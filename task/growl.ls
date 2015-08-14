@@ -7,7 +7,7 @@ const CHALKS = error:Chalk.red, info:Chalk.stripColor, success:Chalk.green
 enabled = (growl-at = process.env.growl-at)?
 
 function register cb
-  log "growl.register #{Const.APPNAME}"
+  log "growl.register #{Const.APPNAME} to growl at #growl-at"
   err <- G.register Const.APPNAME, [{label:\error} {label:\info} {label:\success}]
   log err if err
   cb err
@@ -34,7 +34,5 @@ module.exports =
   say  : (text, opts) -> send \info text, opts
 
 return log "growl disabled" unless enabled
-log "growl at #growl-at"
-
 G.setHost growl-at
 register ->
