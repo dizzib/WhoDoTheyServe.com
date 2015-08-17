@@ -4,14 +4,14 @@ R  = require \../helper .run
 ST = require \../state
 
 module.exports.get-spec = (...args) ->
-  h = H \map, ...args
+  h = H \map ...args
 
-  a: h.get-spec \a, name:'Map a' description:"Map a 123!&',()" nodes:<[ a ]> default:true
+  a: h.get-spec \a name:'Map a' description:"Map a 123!&',()" nodes:<[ a ]> default:true
   b: _.extend do
-    h.get-spec \b, name:'Map b' description:"Map b" nodes:<[ a b ]>
+    h.get-spec \b name:'Map b' description:"Map b" nodes:<[ a b ]>
     get-entities \b
   c: _.extend do
-    h.get-spec \c, name:"c's map" description:'' nodes:<[ a b c d g ]>
+    h.get-spec \c name:"c's map" description:'' nodes:<[ a b c d g ]>
     get-entities \c
   list:
     is0: h.get-spec-list 0

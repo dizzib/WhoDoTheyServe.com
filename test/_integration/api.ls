@@ -330,6 +330,9 @@ describe 'public' ->
   test Edge.ab.remove.bad
   test Hive.a.get.ok
   test Hive.b.get.ok
+  test Map.a.remove.bad
+  test Map.b.remove.bad
+  test Map.list.is2
 
 describe 'sys' ->
   t '/sys access should have incremented hit count after a short while' R ->
