@@ -1,4 +1,5 @@
-const PROD-URL = \http://wdts10.eu01.aws.af.cm/api
+# all api calls must bypass AWS cache so don't use whodotheyserve.com domain
+const PROD-URL = \http://wdts-dizzib0.rhcloud.com/api
 
 module.exports =
   post-coverage: -> # https://github.com/gotwarlost/istanbul-middleware
