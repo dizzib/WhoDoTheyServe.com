@@ -57,7 +57,7 @@ describe \admin ->
     test Node.a.name.dup.update.bad
     test Node.b.create.bad # node a missing evidence
   describe 'map' ->
-    test Map.a.create.ok # default map
+    test Map.a0.create.ok # default map
     test Session.signout.ok
 #describe 'openauth signup' ->
   #test OpenAuth.github
@@ -83,7 +83,7 @@ describe \userA ->
     test Node.list.is2
     test Evidence.b0.create.ok
   describe 'map' ->
-    test Map.b.create.ok
+    test Map.a1.create.ok
   describe 'edge' ->
     test Edge.list.is0
     test Edge.ab.create.ok
@@ -130,7 +130,7 @@ describe 'teardown' ->
     test Evidence.a.list.is0
     test Evidence.b0.remove.ok
     test Node.b.remove.bad # still on map
-    test Map.b.remove.ok
+    test Map.a1.remove.ok
     test Node.b.remove.ok
   describe 'admin' ->
     test Session.signout.ok

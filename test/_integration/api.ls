@@ -186,9 +186,9 @@ describe 'userA' ->
     test Edge.aa.create.bad # loop
   describe 'map' ->
     test Map.list.is0
-    test Map.a.create.ok
+    test Map.a0.create.ok
     test Map.list.is1
-    test Map.b.create.ok
+    test Map.a1.create.ok
     test Map.list.is2
   describe 'sys' ->
     test Sys.mode.toggle.bad
@@ -247,8 +247,8 @@ describe 'userB' ->
     test Edge.ab2.DMY2-DMY4.create.bad
     test Edge.ab2.DMY3-DMY4.create.ok
   describe 'map' ->
-    test Map.b.read.ok
-    test Map.b.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
+    test Map.a1.read.ok
+    test Map.a1.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
   describe 'node' ->
     test Node.a.remove.bad # has edge
     test Node.b.remove.bad # has edge
@@ -281,13 +281,13 @@ describe 'userC' ->
     test Edge.ac.remove.ok
     test Edge.list.is4
   describe 'map' ->
-    test Map.c.create.ok
+    test Map.c0.create.ok
     test Map.list.is3
-    test Map.c.read.ok
-    test Map.c.entities.edges.is4
+    test Map.c0.read.ok
+    test Map.c0.entities.edges.is4
     test Edge.ac.create.ok
-    test Map.c.read.ok
-    test Map.c.entities.edges.is5 # c's latest edge ac should be included on c's map
+    test Map.c0.read.ok
+    test Map.c0.entities.edges.is5 # c's latest edge ac should be included on c's map
     test Edge.ac.remove.ok
     test Evidence.bc0.remove.ok
     test Edge.bc.remove.bad # on map c
@@ -319,7 +319,7 @@ describe 'teardown' ->
     test Session.admin.password.a.signin.ok
     test Node.a.name.max.update.ok # despite edge
     test Edge.ab.to-ba.update.ok # despite immutable
-    test Map.c.remove.ok
+    test Map.c0.remove.ok
     test Edge.bc.remove.ok
     test Evidence.c0.remove.ok
     test Node.c.remove.ok
@@ -330,8 +330,8 @@ describe 'public' ->
   test Edge.ab.remove.bad
   test Hive.a.get.ok
   test Hive.b.get.ok
-  test Map.a.remove.bad
-  test Map.b.remove.bad
+  test Map.a0.remove.bad
+  test Map.a1.remove.bad
   test Map.list.is2
 
 describe 'sys' ->

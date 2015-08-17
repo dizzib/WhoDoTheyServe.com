@@ -6,13 +6,13 @@ ST = require \../state
 module.exports.get-spec = (...args) ->
   h = H \map ...args
 
-  a: h.get-spec \a name:'Map a' description:"Map a 123!&',()" nodes:<[ a ]> default:true
-  b: _.extend do
-    h.get-spec \b name:'Map b' description:"Map b" nodes:<[ a b ]>
-    get-entities \b
-  c: _.extend do
-    h.get-spec \c name:"c's map" description:'' nodes:<[ a b c d g ]>
-    get-entities \c
+  a0: h.get-spec \a0 name:'Map a0' description:"Map a0 123!&',()" nodes:<[ a ]> default:true
+  a1: _.extend do
+    h.get-spec \a1 name:'Map a1' description:"Map a1" nodes:<[ a b ]>
+    get-entities \a1
+  c0: _.extend do
+    h.get-spec \c0 name:"c's map" description:'' nodes:<[ a b c d g ]>
+    get-entities \c0
   list:
     is0: h.get-spec-list 0
     is1: h.get-spec-list 1
