@@ -26,13 +26,13 @@ before R ->
 after R ->
   B.go \__coverage # https://github.com/gotwarlost/istanbul-middleware
 
-t 'click About', R ->
+t 'click About' R ->
   B.click \About
-  B.wait-for \About, \h3
+  B.wait-for \About \h3
 
-t 'click Latest', R ->
+t 'click Latest' R ->
   B.click \Latest
-  B.wait-for 'Latest Updates', \legend
+  B.wait-for 'Latest Updates' \legend
 
 describe \admin ->
   describe 'signup users' ->

@@ -1,4 +1,4 @@
-# all api calls must bypass AWS cache so don't use whodotheyserve.com domain
+# api calls bypass CF by calling the native provider domain not whodotheyserve.com
 const PROD-URL = \http://wdts-dizzib0.rhcloud.com/api
 
 module.exports =

@@ -25,7 +25,7 @@ t = it
 <- describe 'api'
 @timeout 10000
 
-t '/sys access should increment hit count after a short while', R ->
+t '/sys access should increment hit count after a short while' R ->
   Http.assert W4 Http.get, \sys
   # this test completes at the end of this file
 
@@ -332,7 +332,7 @@ describe 'public' ->
   test Hive.b.get.ok
 
 describe 'sys' ->
-  t '/sys access should have incremented hit count after a short while', R ->
+  t '/sys access should have incremented hit count after a short while' R ->
     Http.assert res = W4 Http.get, "hive/n-hits-#{new Date!getFullYear!}"
     n-hits = JSON.parse res.object.value
     n-hits[*-1].should.equal 1
