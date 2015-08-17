@@ -247,6 +247,8 @@ describe 'userB' ->
     test Edge.ab2.DMY2-DMY4.create.bad
     test Edge.ab2.DMY3-DMY4.create.ok
   describe 'map' ->
+    test Map.a0.remove.bad
+    test Map.a1.remove.bad
     test Map.a1.read.ok
     test Map.a1.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
   describe 'node' ->
