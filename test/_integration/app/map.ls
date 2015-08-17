@@ -3,7 +3,7 @@ C  = require \./_crud
 Sp = require \../spec/map
 St = require \../state
 
-c = C \map,
+c = C \map do
   ent-ui     : -> \Map
   fill       : fill
   go-create  : -> B.go \map/new
@@ -22,10 +22,10 @@ function fill fields
   for key in fields?nodes then B.click St.nodes[key]
 
 function go-maintain key, is-ok, fields
-  B.click fields.name, '.map a', include-hidden:true
+  B.click fields.name, '.map a' include-hidden:true
 
 function on-remove
-  B.wait-for \Contributions, \legend
+  B.wait-for \Contributions \legend
 
 function on-save key, fields
   B.wait-for fields.name, '.nav li'
