@@ -253,6 +253,7 @@ describe 'userB' ->
     test Map.a1.remove.bad
     test Map.a1.read.ok
     test Map.a1.entities.edges.is0 # b's latest edge ab should be excluded from a's map b
+    test Map.ax.read.bad
   describe 'node' ->
     test Node.a.remove.bad # has edge
     test Node.b.remove.bad # has edge
@@ -296,6 +297,7 @@ describe 'userC' ->
     test Evidence.bc0.remove.ok
     test Edge.bc.remove.bad # on map c
     test Map.cx.create.ok
+    test Map.cx.read.ok
     test Map.list.is4
   describe 'node quota' ->
     test Node.e.create.ok
@@ -326,6 +328,7 @@ describe 'teardown' ->
     test Node.a.name.max.update.ok # despite edge
     test Edge.ab.to-ba.update.ok # despite immutable
     test Map.c0.remove.ok
+    test Map.cx.read.ok
     test Edge.bc.remove.ok
     test Evidence.c0.remove.ok
     test Node.c.remove.ok
@@ -339,6 +342,7 @@ describe 'public' ->
   test Map.a0.remove.bad
   test Map.a1.remove.bad
   test Map.ax.remove.bad
+  test Map.ax.read.bad
   test Map.list.is2
 
 describe 'sys' ->

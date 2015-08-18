@@ -16,6 +16,7 @@ M-Logins    = require \./model/logins
 M-Sessions  = require \./model/sessions
 M-Users     = require \./model/users
 Sec         = require \./security
+SecMaps     = require \./security/maps
 SecSessions = require \./security/sessions
 SecUsers    = require \./security/users
 Sys         = require \./sys
@@ -31,6 +32,7 @@ module.exports = Express.Router!
   ..param \id extract-id
   # security
   ..use sec-hive!
+  ..use sec-maps!
   ..use sec-sessions!
   ..use sec-sys!
   ..use sec-users!
@@ -111,6 +113,10 @@ function sec-hive then Express.Router!
   ..param \key extract-key
   ..post '/hive/:key' Sec.admin
   ..put  '/hive/:key' Sec.admin
+
+function sec-maps then Express.Router!
+  ..param \id extract-id
+  ..get '/maps/:id' SecMaps.read
 
 function sec-sessions then Express.Router!
   ..param \id extract-id

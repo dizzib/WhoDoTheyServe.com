@@ -12,7 +12,7 @@ function create key, is-ok, fields
 
 function read key, is-ok, fields
   res = c.read key, is-ok, get-payload fields
-  ST.maps[key] = res.object
+  ST.maps[key] <<< res.object
 
 function get-payload fields
   o =
