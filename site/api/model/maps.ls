@@ -26,6 +26,8 @@ schema = new M.Schema do
   edge_cutoff_date: type:Date  , default:Date.now # exclude edges created after this cutoff
   nodes           : [s-node]
   size            : s-size
+  flags           :
+    private       : type:Boolean, required:no
 
 schema
   ..plugin P-Id
@@ -34,7 +36,11 @@ schema
 module.exports = me = Crud.set-fns (M.model \maps schema)
   ..crud-fns
     ..read = read
-    ..list = Crud.get-invoker me, Crud.list, return-fields:<[ name meta ]>
+    ..list = (req, res, next) ->
+      err, maps <- me.find!lean!exec
+      return next err if err
+      res.json [_.pick map, <[ _id name meta ]> for map in _.filter maps, ->
+        not(it.flags?private) or req.session.signin?id is it.meta.create_user_id]
 
 # helpers
 

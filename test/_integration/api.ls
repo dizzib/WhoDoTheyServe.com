@@ -190,6 +190,8 @@ describe 'userA' ->
     test Map.list.is1
     test Map.a1.create.ok
     test Map.list.is2
+    test Map.ax.create.ok
+    test Map.list.is3
   describe 'sys' ->
     test Sys.mode.toggle.bad
 describe 'userB' ->
@@ -293,6 +295,8 @@ describe 'userC' ->
     test Edge.ac.remove.ok
     test Evidence.bc0.remove.ok
     test Edge.bc.remove.bad # on map c
+    test Map.cx.create.ok
+    test Map.list.is4
   describe 'node quota' ->
     test Node.e.create.ok
     test Evidence.e0.create.ok
@@ -334,6 +338,7 @@ describe 'public' ->
   test Hive.b.get.ok
   test Map.a0.remove.bad
   test Map.a1.remove.bad
+  test Map.ax.remove.bad
   test Map.list.is2
 
 describe 'sys' ->
