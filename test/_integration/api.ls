@@ -342,6 +342,7 @@ describe 'public' ->
   test Map.a0.remove.bad
   test Map.a1.remove.bad
   test Map.ax.remove.bad
+  test Map.a0.read.ok
   test Map.ax.read.bad
   test Map.list.is2
 
