@@ -13,12 +13,12 @@ const WAIT-TIMEOUT = 5000ms
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host or \localhost)
 mc = new Mc.Client md
-mc.plugin \logger, Mjl
+mc.plugin \logger Mjl
 
 module.exports = B =
   assert:
     ok: (is-ok = true) ->
-      B.assert.displayed !is-ok, { class:\alert-error.active, include-hidden:true }
+      B.assert.displayed !is-ok, class:\alert-error.active include-hidden:true
 
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
@@ -31,7 +31,7 @@ module.exports = B =
         return \ok if n-actual is n-expect
         "#sig expect=#n-expect, actual=#n-actual"
 
-    displayed: (expect = true, ...args) ->
+    displayed: (expect = true ...args) ->
       poll-for-ok WAIT-TIMEOUT, ->
         try
           B.wait-for ...args
@@ -41,7 +41,7 @@ module.exports = B =
           html = w4mc \executeScript -> window.el.outerHTML
           "displayed(#{U.inspect ...args}) expect=#expect, actual=#res, html=#html"
         catch e
-          log \displayed, e
+          log \displayed e
           "displayed failed: #e"
 
   click: (...args) ->
@@ -55,15 +55,15 @@ module.exports = B =
       # val is either a string or {value, opts}
       v = if _.has val, \value then val.value else val
       return unless v?
-      B.wait-for label-text, \label, val.opts
-      w4mc \executeScript, (-> window.fill it), [ v ]
+      B.wait-for label-text, \label val.opts
+      w4mc \executeScript (-> window.fill it), [ v ]
 
     if val? then fill-field ...
     else for [k, v] in _.pairs sel then fill-field k, v
 
   go: (path = '') ->
     url = "#SITE-URL#{if path then '/#' else ''}/#path"
-    w4mc \executeScript, (-> window.location.href = it), [ url ]
+    w4mc \executeScript (-> window.location.href = it), [ url ]
 
   init: ->
     log "connecting to firefox marionette at #host"
@@ -83,16 +83,16 @@ module.exports = B =
   send-keys: (keys) ->
     el = w4mc \executeScript -> window.el
     W4m el, \clear
-    W4m el, \sendKeys, keys
+    W4m el, \sendKeys keys
 
   wait-for: V ->
-    it.string \filter, 'a,button,input,label,legend'
+    it.string \filter 'a,button,input,label,legend'
       .object \opts
       .regExp \text-rx # text regexp e.g. /(foo|bar)/
       .string \text    # text string for exact match e.g. 'foo'
-      .form \text, \?opts
-      .form \text, \filter, \?opts
-      .form \text-rx, \?filter, \?opts
+      .form \text \?opts
+      .form \text \filter \?opts
+      .form \text-rx \?filter \?opts
       .form \opts
   , (args) ->
     opts = expect-unique:true include-hidden:false scope:\document timeout:WAIT-TIMEOUT
@@ -113,13 +113,13 @@ module.exports = B =
 
     n = void
     poll-for-ok opts.timeout, ->
-      n := w4mc \executeScript, remote-fn, remote-args
+      n := w4mc \executeScript remote-fn, remote-args
       return \ok if n is 1 or not opts.expect-unique
       "Found #{n} occurrences of #{U.inspect remote-args} expecting exactly 1."
     n
 
   wait-for-visible: ->
-    B.assert.displayed true, ...&
+    B.assert.displayed true ...&
 
 ## helpers
 
@@ -131,7 +131,7 @@ function handle-remote-log
   #throw new Error msg if /error/i.test msg
 
 function init-sandbox
-  view = w4mc \findElement, \.view
+  view = w4mc \findElement \.view
   w4mc \waitFor -> view.displayed!
   w4mc \executeScript ->
     log = console.log

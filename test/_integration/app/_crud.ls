@@ -6,35 +6,35 @@ module.exports = (ent-name, opts) ->
 
   # override default opts to customise behaviour
   opts = _.extend do
-    coll-name     : -> ent-name + \s                # e.g. nodes
-    coll-ui       : -> capitalise opts.ent-ui! + \s # e.g. Actors
-    ent-ui        : -> capitalise ent-name          # e.g. Actor
-    go-create     : go-create
-    go-edit       : go-edit
-    go-entity     : -> B.click it, \a
-    go-list       : -> B.click opts.coll-ui!, \a
-    go-maintain   : go-maintain
-    on-create     : -> wait-for-entity it
-    on-remove     : -> wait-for-list!
-    on-update     : -> wait-for-entity it
+    coll-name  : -> ent-name + \s                # e.g. nodes
+    coll-ui    : -> capitalise opts.ent-ui! + \s # e.g. Actors
+    ent-ui     : -> capitalise ent-name          # e.g. Actor
+    go-create  : go-create
+    go-edit    : go-edit
+    go-entity  : -> B.click it, \a
+    go-list    : -> B.click opts.coll-ui!, \a
+    go-maintain: go-maintain
+    on-create  : -> wait-for-entity it
+    on-remove  : -> wait-for-list!
+    on-update  : -> wait-for-entity it
     opts
 
   return
     create: function create key, is-ok, fields
       opts.go-create ...
       opts.fill fields, key
-      submit \Create, opts.on-create, ...&
+      submit \Create opts.on-create, ...&
 
     update: function update key, is-ok, fields
       opts.go-maintain ...
       opts.fill fields, key
-      submit \Update, opts.on-update, ...&
+      submit \Update opts.on-update, ...&
 
     remove: function remove key, is-ok, fields
       opts.go-maintain ...
       B.click \Delete...
-      B.wait-for-visible 'Really delete this item ?', \strong
-      B.click /Yes/, \button
+      B.wait-for-visible 'Really delete this item ?' \strong
+      B.click /Yes/ \button
       B.assert.ok is-ok
       opts.on-remove key, fields if is-ok
 
@@ -66,7 +66,7 @@ module.exports = (ent-name, opts) ->
     opts.go-edit key
 
   function go-edit key
-    B.click \Edit, \legend>a
+    B.click \Edit \legend>a
     B.wait-for-visible (new RegExp "Edit #{opts.ent-ui!}"), \legend
 
   function wait-for-entity key
@@ -74,4 +74,3 @@ module.exports = (ent-name, opts) ->
 
   function wait-for-list
     B.wait-for-visible (new RegExp opts.coll-ui!), \legend
-    #B.wait-for-visible class:opts.coll-name!
