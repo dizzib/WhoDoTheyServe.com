@@ -26,29 +26,29 @@ module.exports = B.View.extend do
     n-tick = 0
     is-resized = false
     @d3f = d3.layout.force!
-      ..on \start, ~>
+      ..on \start ~>
         @trigger \pre-cool
         is-resized := false
-      ..on \tick , ~>
+      ..on \tick ~>
         return unless n-tick++ % 4 is 0
         tick!
         @trigger \tick
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           set-map-size @
           is-resized := true # resize only once during cool-down
-      ..on \end  , ~>
+      ..on \end ~>
         @trigger \cooled
-    B.on 'signin signout', ~> @delete!
+    B.on 'signin signout' ~> @delete!
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
     return unless node-ids.length isnt (@map.get \nodes)?length
-    @map.set \nodes, _.map node-ids, (nid) ~>
+    @map.set \nodes _.map node-ids, (nid) ~>
       node = _.findWhere @d3f.nodes!, _id:nid
       _id: nid
       x  : node?x or @get-size-x!/2 # add new node to center
       y  : node?y or @get-size-y!/2
       pin: node?fixed
-    @map.set \entities,
+    @map.set \entities do
       nodes: C.Nodes.filter -> _.contains node-ids, it.id
       edges: C.Edges.filter ~>
         return false unless it.is-in-map node-ids
@@ -69,7 +69,7 @@ module.exports = B.View.extend do
     ents.nodes = _.map ents.nodes, -> it.toJSON-T!
     ents.edges = _.map ents.edges, -> it.toJSON-T!
     ents.edges = E.filter ents.nodes, ents.edges, @map.get \when
-    @trigger \pre-render, ents # ents can be modified by handlers
+    @trigger \pre-render ents # ents can be modified by handlers
 
     size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
     size-y = @map.get \size.y or @get-size-y! or SIZE-NEW
@@ -97,7 +97,7 @@ module.exports = B.View.extend do
     # order matters: svg uses painter's algo
     E.render @svg, @d3f
     N.render @svg, @d3f
-    @trigger \render, ents
+    @trigger \render ents
     @svg.selectAll \g.node .call @d3f.drag if is-editable
     @trigger \rendered
 
@@ -112,9 +112,9 @@ module.exports = B.View.extend do
 
   show: ->
     return unless @el # might be undefined for seo
-    @scroll = @scroll or x:0, y:0
+    @scroll = @scroll or x:0 y:0
     $window = $ window
-    B.once \pre-route, ~>
+    B.once \pre-route ~>
       @scroll.x = $window.scrollLeft!
       @scroll.y = $window.scrollTop!
     @$el.show!
@@ -132,15 +132,15 @@ function justify v
   return unless v.svg # might be undefined e.g. new map
   # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
   if (v.svg.attr \width) < $vm.width!
-    $vm.css \display, \flex
-    $vm.css \align-items, \center # vert
-    $vm.css \justify-content, \center # horiz
+    $vm.css \display \flex
+    $vm.css \align-items \center # vert
+    $vm.css \justify-content \center # horiz
   else
-    $vm.css \display, \block
-    $vm.css \justify-content, \flex-start
+    $vm.css \display \block
+    $vm.css \justify-content \flex-start
 
 function set-canvas-size svg, w, h
-  svg.attr \width, w .attr \height, h
+  svg.attr \width w .attr \height h
 
 function set-map-size v
   const PADDING = 200px
@@ -156,8 +156,8 @@ function set-map-size v
   justify v
   v.d3f.size [w, h]
 
-  v.map.set \size.x, w
-  v.map.set \size.y, h
+  v.map.set \size.x w
+  v.map.set \size.y h
 
   # reposition fixed nodes
   dx = (w - size-before.x) / 2
