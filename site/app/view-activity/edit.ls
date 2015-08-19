@@ -28,21 +28,21 @@ module.exports =
       @delegateEvents!
       $ \.view .addClass CLASS-EDITING
       B.Validation.bind this
-      @model.bind \validated:valid, ~> @trigger \validated, @model
+      @model.bind \validated:valid ~> @trigger \validated, @model
       ($tem = $ @template).addClass if is-new = @model.isNew! then \create else \update
       return render @model if is-new or opts?fetch is no
       @model.fetch success: -> render it
       ~function render model
         @$el.html $tem.render(model.toJSON-T!, opts?directive).set-access S .show!
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
-        @trigger \rendered, model
+        @trigger \rendered model
     save: ->
       it.preventDefault!
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = m.isNew!
       m.set ($ it.currentTarget .serializeObject!)
-      m.on \error, ~> @trigger \error, m
-      @trigger \serialized, m
-      @coll.create m, { +merge, +wait, success: ~> @trigger \saved, m, is-new }
+      m.on \error ~> @trigger \error m
+      @trigger \serialized m
+      @coll.create m, { +merge, +wait, success: ~> @trigger \saved m, is-new }
       false
 

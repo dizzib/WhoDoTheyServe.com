@@ -12,17 +12,17 @@ module.exports =
       @sel  = it.sel
       @opts = it.opts <<<
         placeholder : (get-select-placeholder $ T-Sel).text!
-        onCheckAll  : ~> @trigger \checkAll  , it
-        onClick     : ~> @trigger \click     , it
-        onUncheckAll: ~> @trigger \uncheckAll, it
+        onCheckAll  : ~> @trigger \checkAll it
+        onClick     : ~> @trigger \click it
+        onUncheckAll: ~> @trigger \uncheckAll it
     render: (coll, fname, sel-ids = []) ->
       $t-sel = get-select $ T-Sel
       render-select $t-sel, coll, fname
       @dropdown = $ @sel
         ..html $t-sel.children! # children! prevents duplicate nested select
-        ..attr \multiple, \multiple
+        ..attr \multiple \multiple
         ..multipleSelect @opts
-        ..multipleSelect \setSelects, sel-ids
+        ..multipleSelect \setSelects sel-ids
 
   SelectView: B.View.extend do
     get-selected-id: ->

@@ -12,35 +12,34 @@ Vus = require \../view/user/signin
 
 B.on \boot ->
   V.edge-edit
-    ..on \rendered, Vee.init
+    ..on \rendered Vee.init
   V.evidence-edit
-    ..on \rendered, -> Fpx.get-browser-url (-> $ \#url .attr \value, it) if it.isNew!
+    ..on \rendered -> Fpx.get-browser-url (-> $ \#url .attr \value it) if it.isNew!
   V.map
-    ..on \deleted, ->
-      V.navbar.render!
+    ..on \deleted -> V.navbar.render!
   V.map-edit
-    ..on \destroyed, -> R.navigate \user
-    ..on \saved, (map, is-new) ->
+    ..on \destroyed -> R.navigate \user
+    ..on \saved (map, is-new) ->
       V.navbar.render!
       R.navigate "map/#{map.id}" if is-new
   V.node-edit
-    ..on \rendered, -> $ \#name .typeahead source:C.Nodes.pluck \name
+    ..on \rendered -> $ \#name .typeahead source:C.Nodes.pluck \name
   V.user-edit
-    ..on \cancelled, -> Bh.history.back!
-    ..on \destroyed, Vue.after-delete
-    ..on \rendered , Vue.init
-    ..on \saved    , -> R.navigate "user/#{it.id}"
+    ..on \cancelled -> Bh.history.back!
+    ..on \destroyed Vue.after-delete
+    ..on \rendered  Vue.init
+    ..on \saved     -> R.navigate "user/#{it.id}"
   V.user-signin
-    ..on \cancelled, -> Bh.history.back!
-    ..on \error    , -> Vus.toggle-please-wait false
-    ..on \rendered , Vus.init
-    ..on \saved    , S.signin
-    ..on \validated, -> Vus.toggle-please-wait true
+    ..on \cancelled -> Bh.history.back!
+    ..on \error     -> Vus.toggle-please-wait false
+    ..on \rendered  Vus.init
+    ..on \saved     S.signin
+    ..on \validated -> Vus.toggle-please-wait true
   V.user-signout
-    ..on \rendered, S.signout
+    ..on \rendered S.signout
   V.user-signup
-    ..on \cancelled, -> Bh.history.back!
-    ..on \saved    , -> R.navigate "user/#{it.id}"
+    ..on \cancelled -> Bh.history.back!
+    ..on \saved     -> R.navigate "user/#{it.id}"
 
   add-entity-handlers V.edge-edit, \edge
   add-entity-handlers V.node-edit, \node
@@ -51,16 +50,16 @@ B.on \boot ->
 
   function add-entity-handlers view, name
     view
-      ..on \cancelled, -> Bh.history.back!
-      ..on \destroyed, -> R.navigate "#{name}s"
-      ..on \saved, (o, is-new) ->
+      ..on \cancelled -> Bh.history.back!
+      ..on \destroyed -> R.navigate "#{name}s"
+      ..on \saved (o, is-new) ->
         function nav path = '' then R.navigate "#name/#{o.id}#path"
         return nav! unless is-new
         <- C.Evidences.auto-create o.id
         return nav if it?ok then '' else '/evi-new'
 
   function add-sub-entity-handlers view, name
-    view.on 'cancelled destroyed saved', ->
-      R.navigate Bh.fragment.replace new RegExp("/#name-.*$", \g), ''
+    view.on 'cancelled destroyed saved' ->
+      R.navigate Bh.fragment.replace new RegExp("/#name-.*$" \g), ''
 
 Sys.on \sync -> V.version.render this
