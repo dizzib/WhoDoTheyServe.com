@@ -40,7 +40,7 @@ module.exports =
       V.map-info.render m, D.map
       V.map-meta.render m, D.meta
       return done! unless m.get-is-editable!
-      V.map-edit.render m, C.Maps, fetch:no
+      V.map-edit.render m, C.Maps, fetch:no directive:D.map-edit
       V.map-edit.show!
       done!
     is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id

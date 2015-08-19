@@ -9,7 +9,7 @@ W4m = require \wait.for .forMethod
 
 const POLL-TIME    = 50ms
 const SITE-URL     = "http://#{process.env.SITE_DOMAIN_NAME or \localhost}:#{process.env.SITE_PORT}"
-const WAIT-TIMEOUT = 10000ms
+const WAIT-TIMEOUT = 5000ms
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host or \localhost)
 mc = new Mc.Client md
@@ -100,7 +100,7 @@ module.exports = B =
 
     filter = switch
     | opts.class? => ".#{opts.class}"
-    | opts.id?    => "##{opts.id}"
+    | opts.id?    => "##{opts.id}".replace \. '\\.' # foo.bar is not class .bar
     | _           => opts.sel || args.filter
 
     sel = args.text || args.'text-rx'?toString!slice(1, -1) || void

@@ -8,6 +8,7 @@ form.map.signed-in.form-horizontal.well.bg-transparent
     span.update Edit Map
   .body.show-if-expanded
     .alert.alert-error
+    .alert.alert-success
     fieldset
       span.input-xlarge
         +field-text('name', 'Name', 'Enter a name for the map')
@@ -24,6 +25,7 @@ form.map.signed-in.form-horizontal.well.bg-transparent
             Optionally enter a date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
             Active connections on this date will have a solid line, otherwise dotted.  
             Leave blank to always use the current date.
+      +field-checkbox('flags.private', 'Private')
       span.signed-in-admin
         +field-checkbox('is-default', 'Default')
     +button-bar

@@ -12,6 +12,7 @@ B.once \signin -> # should only run once on first signin
       V.map.delete!
 
     ..on \rendered ->
+      alert-success void
       disable-buttons! # enabled when d3 has cooled
       render-dropdown!
       init-error-alert!
@@ -20,6 +21,7 @@ B.once \signin -> # should only run once on first signin
 
     ..on \saved (map, is-new) ->
       save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked
+      alert-success 'Successfully saved'
       init-error-alert!
 
     ..on \serialized ->
@@ -33,6 +35,7 @@ B.once \signin -> # should only run once on first signin
       it.set nodes:nodes, 'size.x':v.get-size-x!, 'size.y':v.get-size-y!
 
     ..show = ->
+      alert-success void
       init-error-alert!
       @$el.show!
 
@@ -50,6 +53,9 @@ B.once \signin -> # should only run once on first signin
   C.Nodes.on 'add remove' render-dropdown
 
   ## helpers
+
+  function alert-success msg
+    V.map-edit.$el.find \.alert-success .text msg .toggle msg?
 
   function disable-buttons
     V.map-edit.$el.find \.btn .prop \disabled true .addClass \disabled

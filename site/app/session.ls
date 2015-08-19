@@ -33,17 +33,17 @@ module.exports = me =
     Cs.fetch-all ok, fail
 
     function ok
-      B.trigger \signin
-      B.trigger \signed-in-by-user
+      C.Maps.fetch success: ->
+        B.trigger \signin
+        B.trigger \signed-in-by-user
 
     function fail coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
       B.history.history.back!
 
   signout: ->
-    return signout! unless m = C.Sessions.models.0
-    m.destroy success:signout
-
-    function signout
-      B.trigger \signout
-      B.trigger \signed-out-by-user
+    return unless m = C.Sessions.models.0
+    m.destroy success: ->
+      C.Maps.fetch success: ->
+        B.trigger \signout
+        B.trigger \signed-out-by-user

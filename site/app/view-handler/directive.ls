@@ -120,9 +120,12 @@ module.exports =
       html: -> htmlify-text @description
     when:
       text: -> "Date: #{@when}" if @when
+  map-edit:
+    'flags.private':
+      checked: -> @flags?private
   maps:
     map:
-      class: -> \active if @_id is V.map.map?id
+      class: -> 'map active' if @_id is V.map.map?id
     'edit-indicator':
       class: -> "fa fa-chevron-left" if @_id is V.map.map?id
     link:

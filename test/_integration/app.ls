@@ -57,11 +57,14 @@ describe \admin ->
     test Node.a.name.dup.update.bad
     test Node.b.create.bad # node a missing evidence
   describe 'map' ->
-    test Map.a0.create.ok # default map
-    test Session.signout.ok
+    test Map.a0.create.ok
+    test Map.ax.create.ok
 #describe 'openauth signup' ->
   #test OpenAuth.github
   #test User.list.is4
+describe 'public' ->
+  test Session.signout.ok
+  test Map.list.is1
 describe \userA ->
   test Session.z.password.a.signin.bad
   test Session.a.password.z.signin.bad
@@ -82,8 +85,6 @@ describe \userA ->
     test Node.b.create.ok
     test Node.list.is2
     test Evidence.b0.create.ok
-  describe 'map' ->
-    test Map.a1.create.ok
   describe 'edge' ->
     test Edge.list.is0
     test Edge.ab.create.ok
@@ -106,19 +107,12 @@ describe \userB ->
     test Note.a.list.is2
     test Note.a.remove.ok
     test Note.a.list.is1
-  describe 'delete self' ->
-    test User.b.remove.ok
-
-#t 'map', R ->
-#  B.refresh!
-#  B.click \Graph
-#  B.wait-for-visible sel:'.view>.graph'
-#  B.assert.count 2, sel:'.graph g.node'
-# TODO: why does B.assert.count think line is not displayed ?
-# B.assert.count 1, sel:'.graph line.edge'
-
+  describe 'map' ->
+    test Map.b0.create.ok
+    test Map.list.is1 # only has b's maps
 describe 'teardown' ->
   describe 'userA' ->
+    test Session.signout.ok
     test Session.a.password.b.signin.ok
     test Edge.ab.remove.bad # still has evidence
     test Evidence.ab0.remove.ok
@@ -129,16 +123,25 @@ describe 'teardown' ->
     test Evidence.a1.remove.ok
     test Evidence.a.list.is0
     test Evidence.b0.remove.ok
-    test Node.b.remove.bad # still on map
-    test Map.a1.remove.ok
-    test Node.b.remove.ok
-  describe 'admin' ->
+    test Node.b.remove.bad # still on map b0
+  describe \userB ->
     test Session.signout.ok
+    test Session.b.password.a.signin.ok
+    test Map.b0.remove.ok
+    describe 'delete self' ->
+      test User.b.remove.ok
+  describe 'admin' ->
     test Session.admin.password.a.signin.ok
+    test Node.b.remove.ok
     describe 'remove users' ->
       test User.a.remove.ok
       test User.list.is1
-describe 'recreate users' -> # ensure no orphaned logins causing duplicate key error
-  test User.a.create.ok
-  test User.b.create.ok
-  test User.list.is3
+describe 'admin 2' ->
+  describe 'recreate users: orphaned logins should not cause duplicate key error' ->
+    test User.a.create.ok
+    test User.b.create.ok
+    test User.list.is3
+  test Map.ax.private.update.ok
+describe 'public' ->
+  test Session.signout.ok
+  test Map.list.is2

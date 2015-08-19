@@ -33,7 +33,7 @@ module.exports =
       return render @model if is-new or opts?fetch is no
       @model.fetch success: -> render it
       ~function render model
-        @$el.html $tem.render model.toJSON-T! .set-access S .show!
+        @$el.html $tem.render(model.toJSON-T!, opts?directive).set-access S .show!
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
         @trigger \rendered, model
     save: ->
