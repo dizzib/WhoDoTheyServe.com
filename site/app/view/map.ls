@@ -92,8 +92,8 @@ module.exports = B.View.extend do
 
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
+    @scroll = get-initial-scroll-pos @
     justify @
-    @scroll = null
 
     # order matters: svg uses painter's algo
     E.render @svg, @d3f
@@ -114,12 +114,12 @@ module.exports = B.View.extend do
   show: ->
     return unless @el # might be undefined for seo
     $w = $ window
+    @scroll ?= get-initial-scroll-pos @
     @$el.show!.on \hide ~>
       @$el.off \hide
       @scroll.x = $w.scrollLeft!
       @scroll.y = $w.scrollTop!
     justify @
-    @scroll ?= get-initial-scroll-pos @
     _.defer ~>
       $w.scrollLeft @scroll.x if @scroll.x
       $w.scrollTop @scroll.y if @scroll.y
@@ -127,6 +127,7 @@ module.exports = B.View.extend do
 ## helpers
 
 function get-initial-scroll-pos v
+  return x:0 y:0 unless v.svg # might be undefined e.g. new map
   x: Math.max 0 (v.svg.attr(\width) - $(window).width!) / 2
   y: Math.max 0 (v.svg.attr(\height) - $(window).height!) / 2
 
