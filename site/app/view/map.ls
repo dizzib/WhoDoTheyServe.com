@@ -93,6 +93,7 @@ module.exports = B.View.extend do
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
     justify @
+    @scroll = null
 
     # order matters: svg uses painter's algo
     E.render @svg, @d3f
@@ -112,19 +113,22 @@ module.exports = B.View.extend do
 
   show: ->
     return unless @el # might be undefined for seo
-    @scroll = @scroll or x:0 y:0
     $w = $ window
     @$el.show!.on \hide ~>
+      @$el.off \hide
       @scroll.x = $w.scrollLeft!
       @scroll.y = $w.scrollTop!
     justify @
-    _.defer ~> $w .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
+    @scroll ?= get-initial-scroll-pos @
+    _.defer ~>
+      $w.scrollLeft @scroll.x if @scroll.x
+      $w.scrollTop @scroll.y if @scroll.y
 
 ## helpers
 
-function tick
-  N.refresh-position!
-  E.refresh-position!
+function get-initial-scroll-pos v
+  x: Math.max 0 (v.svg.attr(\width) - $(window).width!) / 2
+  y: Math.max 0 (v.svg.attr(\height) - $(window).height!) / 2
 
 function justify v
   return unless ($vm = $ '.view>.map').is \:visible # prevent show if it's hidden
@@ -154,7 +158,6 @@ function set-map-size v
   set-canvas-size v.svg, w, h
   justify v
   v.d3f.size [w, h]
-
   v.map.set \size.x w
   v.map.set \size.y h
 
@@ -164,3 +167,7 @@ function set-map-size v
   for n in v.d3f.nodes! when n.fixed
     n.px += dx
     n.py += dy
+
+function tick
+  N.refresh-position!
+  E.refresh-position!
