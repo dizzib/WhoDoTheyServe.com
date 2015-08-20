@@ -8,9 +8,9 @@ cache = {}
 module.exports = me =
   init: (cb) ->
     err, docs <- M-Hive.load
-    throw err if err
+    return cb err if err
     _.each docs, -> cache[it.key] = it.value
-    cb! if cb
+    cb!
 
   get: (key) ->
     cache[key]

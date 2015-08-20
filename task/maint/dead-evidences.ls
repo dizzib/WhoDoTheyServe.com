@@ -4,12 +4,9 @@
 Chalk = require \chalk
 _     = require \lodash
 M     = require \mongoose
-Mc    = require \mongodb .MongoClient
 Req   = require \request
 Shell = require \shelljs/global
-W     = require \wait.for
 W4    = require \wait.for .for
-W4m   = require \wait.for .forMethod
 Cfg   = require \../config
 
 module.exports =
@@ -19,24 +16,29 @@ module.exports =
   prod   : (rl) -> W4 run, rl, (JSON.parse env.prod).mongolab.uri
 
 function run rl, db-uri, cb
-  dead      = []    # dead evidences
-  n-max     = 99999 # reduce limit to test
-  n-pending = 0     # current number of http requests curling
+  # require here to avoid bootstrap
+  Hive  = require \../../site/api/hive
+  M-Evs = require \../../site/api/model/evidences
+
+  dead      = []   # dead evidences
+  n-max     = 9999 # reduce limit to test
+  n-pending = 0    # current number of http requests curling
 
   log "db-uri=#db-uri"
-  err, db <- Mc.connect db-uri
-  return cb err if err
-  coll = db.collection \evidences
-  err, cursor <- coll.find
-  add-next!
-
-  function add-next
-    return unless n-max-- > 0
-    err, ev <- cursor.nextObject
-    return cb err if err
-    return unless ev
-    check ev
-    _.delay add-next, 50ms # avoid running too many requests in parallel
+  M.connect db-uri
+  err, evs <- M-Evs.find!lean!exec
+  bail err if err
+  err <- Hive.init
+  bail err if err
+  log hive-evs = Hive.get \evidences
+  d-ids = JSON.parse(hive-evs).'dead-ids'
+  ans <- rl.question "Check All (#{evs.length}) or just dead (#{d-ids.length}) (A/d)?"
+  switch ans
+  | \A => add-next evs
+  | \d =>
+    evs := _.filter evs, -> it._id in d-ids
+    if evs.length then add-next evs else bail!
+  | _ => bail!
 
   # helpers
 
@@ -45,17 +47,27 @@ function run rl, db-uri, cb
     dead.push ev
     save-if-done!
 
+  function add-next evs
+    return unless n-max--
+    return unless ev = evs.pop!
+    check ev
+    _.delay (-> add-next evs), 100ms # avoid running too many requests in parallel
+
+  function bail err
+    M.disconnect!
+    cb err
+
   function check ev
     print url = ev.url
     n-pending++
     try
-      r = Req url, timeout:15000ms, (err, res) ->
+      r = Req url, { strictSSL:false timeout:20000ms }, (err, res) ->
         return add-dead ev, err if err
         sc = res.statusCode
         # for some reason, cpexposed.com returns 402 (payment required) even though it's ok
-        return add-dead ev, Chalk.magenta "response code = #sc" unless sc in [ 200, 402 ]
+        return add-dead ev, Chalk.magenta "response code = #sc" unless sc in [200 402]
         save-if-done!
-      r.on \data, ->
+      r.on \data ->
         r.abort!
         print Chalk.green "#url is ok"
         save-if-done!
@@ -70,16 +82,11 @@ function run rl, db-uri, cb
 
   function save-if-done
     return unless --n-pending is 0
-    db.close!
     dead-ids = _.pluck dead, \_id
     value = 'dead-ids':dead-ids
-    log "found #{Chalk.yellow dead-ids.length} dead-ids: #dead-ids"
+    log "found #{Chalk.cyan dead-ids.length} dead-ids: #dead-ids"
     ans <- rl.question "Update database #db-uri (y/N) ?"
-    return cb! unless ans is \y
-    M.connect db-uri
-    Hive = require \../../site/api/hive # require late for bootstrap
-    err <- Hive.set \evidences, JSON.stringify value
-    return cb err if err
-    M.disconnect!
-    log 'Database updated!'
-    cb!
+    return bail! unless ans is \y
+    err <- Hive.set \evidences JSON.stringify value
+    log 'Database updated!' unless err
+    bail err
