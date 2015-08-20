@@ -113,13 +113,12 @@ module.exports = B.View.extend do
   show: ->
     return unless @el # might be undefined for seo
     @scroll = @scroll or x:0 y:0
-    $window = $ window
-    B.once \pre-route ~>
-      @scroll.x = $window.scrollLeft!
-      @scroll.y = $window.scrollTop!
-    @$el.show!
+    $w = $ window
+    @$el.show!.on \hide ~>
+      @scroll.x = $w.scrollLeft!
+      @scroll.y = $w.scrollTop!
     justify @
-    _.defer ~> $window .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
+    _.defer ~> $w .scrollTop(@scroll.y) .scrollLeft(@scroll.x)
 
 ## helpers
 

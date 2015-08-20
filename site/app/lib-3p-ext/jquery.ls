@@ -1,3 +1,8 @@
+_hide = $.fn.hide
+$.fn.hide = (speed, cb) ->
+  $ this .trigger \hide
+  _hide.apply this, arguments
+
 $.fn.set-access = (session) ->
   show-or-hide \.signed-in       session.is-signed-in!
   show-or-hide \.signed-in-admin session.is-signed-in-admin!
