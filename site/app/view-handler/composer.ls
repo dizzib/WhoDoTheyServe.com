@@ -39,13 +39,16 @@ module.exports =
       V.map-toolbar.show!
       V.map-info.render m, D.map
       V.map-meta.render m, D.meta
-      return done! unless m.get-is-editable!
-      V.map-edit.render m, C.Maps, fetch:no directive:D.map-edit
-      V.map-edit.show!
+      if m.get-is-editable!
+        if is-init-new or is-sel-changed
+          V.map-edit.render m, C.Maps, fetch:no directive:D.map-edit
+        V.map-edit.show!
       done!
-    is-sel-changed = (not (m = V.map.map)? and not id?) or id isnt m?id
-    return show m if not is-sel-changed
-    return show M-Map.create! unless id?
+    m = V.map.map
+    is-init-new = not id and (not m or not m.isNew!)
+    is-sel-changed = id isnt (m?id or null)
+    return show M-Map.create! if is-init-new
+    return show m unless is-sel-changed
     return B.trigger \error "Unable to get map #id" unless m = C.Maps.get id
     m.fetch success:show
     false # async done

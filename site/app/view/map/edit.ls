@@ -13,7 +13,6 @@ B.once \signin -> # should only run once on first signin
 
     ..on \rendered ->
       alert-success void
-      disable-buttons! # enabled when d3 has cooled
       render-dropdown!
       init-error-alert!
       load-is-default it.id
