@@ -42,6 +42,8 @@ m = B.DeepModel.extend do
       * required: yes
       * pattern : Con.map.name.regex
         msg     : "Name should be #{Con.map.name.info}"
+    'nodes': ->
+      'At least one actor must be selected' unless it?length
     'when':
       * required: no
       * pattern : Con.map.when.regex

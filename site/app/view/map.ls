@@ -13,6 +13,7 @@ module.exports = B.View.extend do
     @trigger \deleted
 
   get-nodes-xy: ->
+    return null unless @map.get(\nodes)?length
     _.map @d3f.nodes!, ->
       _id: it._id
       x  : Math.round it.x
@@ -41,7 +42,7 @@ module.exports = B.View.extend do
     B.on 'signin signout' ~> @delete!
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
-    return unless node-ids.length isnt (@map.get \nodes)?length
+    return false if node-ids.length is (@map.get \nodes)?length
     @map.set \nodes _.map node-ids, (nid) ~>
       node = _.findWhere @d3f.nodes!, _id:nid
       _id: nid

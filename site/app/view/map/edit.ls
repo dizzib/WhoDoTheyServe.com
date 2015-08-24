@@ -71,8 +71,8 @@ B.once \signin -> # should only run once on first signin
     V.map-edit.$el.find \#is-default .prop \checked id is (Hv.Map.get-prop \default)?id
 
   function render-dropdown
-    return unless map = V.map.map # might not be initialised e.g. add node before edit map
-    V.map-nodes-sel.render C.Nodes, \name _.pluck (map.get \nodes), \_id
+    nodes = if (map = V.map.map) then _.pluck (map.get \nodes), \_id else []
+    V.map-nodes-sel.render C.Nodes, \name, nodes
 
   function save-is-default id
     Hv.Map
