@@ -23,7 +23,7 @@ module.exports =
 
   dump-prod-to-backup: ->
     try
-      W4 exec, "mongodump --host #host --db #dbid -u #uid -p #pwd -o #BAK-ROOT"
+      W4 exec, "mongodump --excludeCollection=system.users --host #host --db #dbid -u #uid -p #pwd -o #BAK-ROOT"
       G.ok 'dumped PRODUCTION db to backup'
     catch e
       log e
