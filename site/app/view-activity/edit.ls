@@ -41,8 +41,11 @@ module.exports =
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"
       is-new = m.isNew!
       m.set ($ it.currentTarget .serializeObject!)
-      m.on \error ~> @trigger \error m
+      m.on \error ~>
+        $ \.button-bar .enable-buttons!
+        @trigger \error m
+      m.on \request -> $ \.button-bar .disable-buttons!
+      m.on \sync    -> $ \.button-bar .enable-buttons!
       @trigger \serialized m
       @coll.create m, { +merge, +wait, success: ~> @trigger \saved m, is-new }
       false
-
