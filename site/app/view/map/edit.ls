@@ -46,8 +46,8 @@ B.once \signin -> # should only run once on first signin
     V.map-toolbar.reset!
 
   V.map
-    ..on \pre-cool disable-buttons
-    ..on \cooled   enable-buttons
+    ..on \pre-cool -> V.map-edit.$el.disable-buttons!
+    ..on \cooled   -> V.map-edit.$el.enable-buttons!
 
   C.Nodes.on 'add remove' render-dropdown
 
@@ -55,12 +55,6 @@ B.once \signin -> # should only run once on first signin
 
   function alert-success msg
     V.map-edit.$el.find \.alert-success .text msg .toggle msg?
-
-  function disable-buttons
-    V.map-edit.$el.find \.btn .prop \disabled true .addClass \disabled
-
-  function enable-buttons
-    V.map-edit.$el.find \.btn .prop \disabled false .removeClass \disabled
 
   function init-error-alert
     # show errors on this form rather than in base view

@@ -1,3 +1,9 @@
+$.fn.disable-buttons = ->
+  @find \.btn .prop \disabled true .addClass \disabled
+
+$.fn.enable-buttons = ->
+  @find \.btn .prop \disabled false .removeClass \disabled
+
 _hide = $.fn.hide
 $.fn.hide = (speed, cb) ->
   $ this .trigger \hide
@@ -10,7 +16,7 @@ $.fn.set-access = (session) ->
   @find '.signed-in-admin input' .prop \disabled not session.is-signed-in-admin!
   return @
 
-  ~function show-or-hide sel, show then
+  ~function show-or-hide sel, show
     @find sel
       .addClass    (if show then \show else \hide)
       .removeClass (if show then \hide else \show)
