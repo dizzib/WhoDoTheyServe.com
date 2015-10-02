@@ -81,7 +81,6 @@ module.exports = B.View.extend do
         node = _.findWhere ents.nodes, _id:n._id
         node <<< { x:n.x, y:n.y, fixed:(not is-editable) or n.pin } if node?
 
-    @d3f.stop!
     @d3f.nodes ents.nodes
      .links (ents.edges or [])
      .charge -2000
