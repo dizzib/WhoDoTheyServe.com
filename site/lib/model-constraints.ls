@@ -9,7 +9,7 @@ module.exports =
   edge:
     how:
       info: 'a string of 2 to 50 alphanumerics e.g. chairman'
-      regex: /^[a-z0-9 &,\/]{2,50}$/i
+      regex: /^[a-z0-9 &,-\/]{2,50}$/i
     when:
       info: 'a valid From-To time period of format F-T or F- or -T, where F or T is dd/mm/yyyy or mm/yyyy or yyyy'
       regex: new RegExp "^#{WHEN-RX}-$|^-#{WHEN-RX}$|^#{WHEN-RX}-#{WHEN-RX}$"

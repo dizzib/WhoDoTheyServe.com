@@ -226,11 +226,8 @@ describe 'userB' ->
     test Edge.ab.how.max-gt.update.bad
     test Edge.ab.how.min.update.ok
     test Edge.ab.how.min-lt.update.bad
-    test Edge.ab.how.amp.update.ok
-    test Edge.ab.how.caps.update.ok
-    test Edge.ab.how.comma.update.ok
     test Edge.ab.how.number.update.ok
-    test Edge.ab.how.slash.update.ok
+    test Edge.ab.how.symbol.update.ok
     test Edge.ab.when.null.update.ok
     test Edge.ab.when.from.y.update.ok
     test Edge.ab.when.from.my.update.ok

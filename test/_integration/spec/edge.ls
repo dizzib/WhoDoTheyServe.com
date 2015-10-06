@@ -25,11 +25,8 @@ exports.get-spec = (...args) ->
       gt: get-spec-ab a_is:\gt
       lt: get-spec-ab a_is:\lt
     how:
-      amp   : get-spec-ab how:'is founder & CEO'
-      caps  : get-spec-ab how:'Honorary European Chairman'
-      comma : get-spec-ab how:'is founder, CEO'
       number: get-spec-ab how:'7 voting members'
-      slash : get-spec-ab how:'is founder/CEO'
+      symbol: get-spec-ab how:'founder, co-chair &/or CEO'
       max   : get-spec-ab how:\x * 50
       max-gt: get-spec-ab how:\x * 51
       min   : get-spec-ab how:\xx
