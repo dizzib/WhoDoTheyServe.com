@@ -5,7 +5,7 @@
     stroke            #aaa
     stroke-width      1.5px
   .edge.minor
-    stroke-dasharray  5,5
+    stroke-dasharray  5
     stroke-width      1px
   .edge.family
     stroke            #000
@@ -19,3 +19,10 @@
       fill              red
     text.live
       fill              #0a0
+
+for i in 0..4
+  .map.frame-{i}
+    .edge.ants
+      stroke-dasharray  5
+      stroke-dashoffset -2 * i
+      stroke-width      2px
