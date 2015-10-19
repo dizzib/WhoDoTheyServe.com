@@ -4,10 +4,6 @@ Shell  = require \shelljs/global
 W4     = require \wait.for .for
 G      = require \./growl
 
-const BAK-ROOT   = "$HOME/data/prod-db-dump"
-const BAK-DIR    = "#BAK-ROOT/wdts-0"
-const STAGING-DB = "wdts_staging"
-
 try
   cfg = (JSON.parse env.prod).mongolab
   Assert dbid = cfg.dbid
@@ -16,6 +12,10 @@ try
   Assert uid  = cfg.login.uid
   Assert pwd  = cfg.login.pwd
 catch
+
+const BAK-ROOT   = "$HOME/data/prod-db-dump"
+const BAK-DIR    = "#BAK-ROOT/#{cfg.dbid}"
+const STAGING-DB = "wdts_staging"
 
 module.exports =
   enabled : -> cfg?
