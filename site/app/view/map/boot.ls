@@ -11,13 +11,5 @@ B.on \boot ->
   require \./overlay/bil/node
   require \./pin
   require \./region
-  #require \./cursor
-
-  frame = 0
-  ($map = $ \.map).addClass \frame-0
-  function advance-frame
-    $map .toggleClass "frame-#frame"
-    frame := ++frame % 5
-    $map .toggleClass "frame-#frame"
-
-  setInterval advance-frame, 500ms
+  require \./cursor
+  require \./animator

@@ -1,5 +1,8 @@
+Eve = require \events .EventEmitter
 _   = require \underscore
 Map = require \../../view .map
+
+module.exports = me = new Eve!
 
 Map.on \render ->
   $svg = @$el.find \svg
@@ -9,10 +12,15 @@ Map.on \render ->
   ## helpers
 
   ~function find-nearby-node x, y
-    function get-distance x0, x1, y0, y1 then Math.sqrt(((x1 - x0) ^ 2) + ((y1 - y0) ^ 2))
-    dists = _.map @d3f.nodes!, -> node:it, d:get-distance it.x, x, it.y, y
+    const RADIUS = 100px
+    function is-near x0, x1, y0, y1 # rough but fast initial proximity test
+      Math.abs(x1 - x0) < RADIUS and Math.abs(y1 - y0) < RADIUS
+    function get-distance x0, x1, y0, y1
+      ((x1 - x0) ^ 2) + ((y1 - y0) ^ 2) # for performance no need to Math.sqrt
+    near-nodes = _.filter @d3f.nodes!, -> is-near it.x, x, it.y, y
+    dists = _.map near-nodes, -> node:it, d:get-distance it.x, x, it.y, y
     min = _.min dists, -> it.d
-    min.node if min.d < 100
+    min.node if min.d < RADIUS ^ 2
 
   function get-cursor-path
     function get-segment sign-x, sign-y
@@ -27,9 +35,10 @@ Map.on \render ->
 
   ~function refresh
     @svg.select \.cursor .remove!
-    return unless nd = find-nearby-node it.offsetX, it.offsetY
+    return me.emit \hide unless nd = find-nearby-node it.offsetX, it.offsetY
     id = nd._id
     n = @svg.select "g.node.id_#id"
     n.append \svg:path
       .attr \class \cursor
       .attr \d get-cursor-path!
+    me.emit \show nd
