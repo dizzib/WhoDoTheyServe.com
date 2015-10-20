@@ -7,18 +7,18 @@ N   = require \./node
 
 var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
-Map.on \cooled, ->
+Map.on \cooled ->
   ~function render g, edges, fn-get-hub, fn-is-hub, css-class
     return unless hub = _.find @d3f.nodes!, fn-get-hub
     g-child = g.append \svg:g
     for edge in edges
       [src, tar] = [edge.source, edge.target]
       g-child.append \svg:line
-        .attr \x1, if fn-is-hub src then hub.x else src.x
-        .attr \y1, if fn-is-hub src then hub.y else src.y
-        .attr \x2, if fn-is-hub tar then hub.x else tar.x
-        .attr \y2, if fn-is-hub tar then hub.y else tar.y
-        .attr \class, "edge #{css-class}"
+        .attr \x1 if fn-is-hub src then hub.x else src.x
+        .attr \y1 if fn-is-hub src then hub.y else src.y
+        .attr \x2 if fn-is-hub tar then hub.x else tar.x
+        .attr \y2 if fn-is-hub tar then hub.y else tar.y
+        .attr \class "edge id_#{edge._id} #{css-class}"
     g-child
 
   # attends
@@ -33,7 +33,7 @@ Map.on \cooled, ->
   glyphs = g-steer.selectAll \g.edge-glyphs
     .data edges
     .enter!append \svg:g
-      .attr \class, \edge-glyphs
+      .attr \class \edge-glyphs
   glyphs.each Egl.append
   glyphs.attr \transform Egl.get-transform
 
@@ -56,8 +56,8 @@ Map.on \pre-render (ents) ->
 
 Map.on \render ->
   ~function add-overlay name
-    g = @svg.append \svg:g .attr \class, name
-    V.map-toolbar.on "toggle-#name", -> g.attr \display, if it then '' else \none
+    g = @svg.append \svg:g .attr \class name
+    V.map-toolbar.on "toggle-#name" -> g.attr \display, if it then '' else \none
     g
   ga := add-overlay \bil-attend
   gs := add-overlay \bil-steer

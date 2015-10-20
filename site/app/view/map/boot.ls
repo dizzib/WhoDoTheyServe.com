@@ -13,3 +13,4 @@ B.on \boot ->
   require \./region
   require \./cursor
   require \./animator
+  require \./anthill

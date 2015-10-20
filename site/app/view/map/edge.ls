@@ -52,13 +52,14 @@ module.exports =
         .attr \id           String
         .attr \viewBox      '0 -5 10 10'
         .attr \refX         20
-        .attr \markerWidth  10
-        .attr \markerHeight 10
+        .attr \markerWidth  15
+        .attr \markerHeight 15
+        .attr \markerUnits  \userSpaceOnUse
         .attr \orient       \auto
       .append \svg:path
         .attr \d, 'M0,-5L10,0L0,5'
     lines := svg.selectAll \line
       .data d3f.links!
       .enter!append \svg:line
-        .attr \class      -> "edge #{it.class}".trim!
+        .attr \class      -> "edge id_#{it._id} #{it.class}".trim!
         .attr \marker-end -> if it.a_is is \lt then 'url(#end)' else ''

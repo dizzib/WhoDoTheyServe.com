@@ -35,7 +35,8 @@ Map.on \render ->
 
   ~function refresh
     @svg.select \.cursor .remove!
-    return me.emit \hide unless nd = find-nearby-node it.offsetX, it.offsetY
+    me.emit \hide
+    return unless nd = find-nearby-node it.offsetX, it.offsetY
     id = nd._id
     n = @svg.select "g.node.id_#id"
     n.append \svg:path
