@@ -40,25 +40,25 @@ module.exports =
 
   refresh-position: ->
     lines
-      .attr \x1, -> it.source.x
-      .attr \y1, -> it.source.y
-      .attr \x2, -> it.target.x
-      .attr \y2, -> it.target.y
+      .attr \x1 -> it.source.x
+      .attr \y1 -> it.source.y
+      .attr \x2 -> it.target.x
+      .attr \y2 -> it.target.y
 
   render: (svg, d3f) ->
     svg.append \svg:defs .selectAll \marker
       .data <[ end ]>
       .enter!append \svg:marker
-        .attr \id          , String
-        .attr \viewBox     , '0 -5 10 10'
-        .attr \refX        , 20
-        .attr \markerWidth , 10
-        .attr \markerHeight, 10
-        .attr \orient      , \auto
+        .attr \id           String
+        .attr \viewBox      '0 -5 10 10'
+        .attr \refX         20
+        .attr \markerWidth  10
+        .attr \markerHeight 10
+        .attr \orient       \auto
       .append \svg:path
         .attr \d, 'M0,-5L10,0L0,5'
     lines := svg.selectAll \line
       .data d3f.links!
       .enter!append \svg:line
-        .attr \class     , -> "edge #{it.class}".trim!
-        .attr \marker-end, -> if it.a_is is \lt then 'url(#end)' else ''
+        .attr \class      -> "edge #{it.class}".trim!
+        .attr \marker-end -> if it.a_is is \lt then 'url(#end)' else ''
