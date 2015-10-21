@@ -9,7 +9,7 @@ module.exports = B.View.extend do
     B.on \boot ~> @render!
 
   render: ->
-    @$el.html @T .show!
+    @$el.replaceWith @T .show!
     $ \ul.themes>li .on \click -> Th.switch-theme ($ this .data \theme-id)
 
     attach \facebook-jssdk '//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=1655165271375218&version=v2.0'
