@@ -42,7 +42,6 @@ module.exports = B.View.extend do
     B.on 'signin signout' ~> @delete!
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
-    return false if node-ids.length is (@map.get \nodes)?length
     @map.set \nodes _.map node-ids, (nid) ~>
       node = _.findWhere @d3f.nodes!, _id:nid
       _id: nid
@@ -58,7 +57,7 @@ module.exports = B.View.extend do
         edge-create-date = it.get \meta .create_date
         edge-create-uid  = it.get \meta .create_user_id
         edge-create-date < edge-cutoff-date or edge-create-uid is map-create-uid
-    true
+    @
 
   render: (opts) ->
     return unless @el # might be undefined for seo

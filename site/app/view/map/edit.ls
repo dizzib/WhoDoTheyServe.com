@@ -7,6 +7,19 @@ B.once \signin -> # should only run once on first signin
   # multi-select can't be browserified 'cos it references an adjacent png
   yepnope.injectCss \/lib-3p/multiple-select.css
 
+  C.Edges.on 'add remove' ->
+    node-ids = V.map-nodes-sel.get-selected-ids!
+    refresh-map node-ids if do
+      _.contains node-ids, it.get \a_node_id and _.contains node-ids, it.get \b_node_id
+
+  C.Nodes
+    ..on \add ->
+      node-ids = render-dropdown(it.id if add2map = it?get \__add-to-map)
+      refresh-map node-ids if add2map
+    ..on \remove ->
+      node-ids = render-dropdown!
+      refresh-map node-ids if _.contains node-ids, it.id
+
   V.map-edit
     ..on \destroyed ->
       V.map.delete!
@@ -39,17 +52,15 @@ B.once \signin -> # should only run once on first signin
       @$el.show!
 
   V.map-nodes-sel.on 'checkAll click uncheckAll' ->
+    node-ids = V.map-nodes-sel.get-selected-ids!
     # checkAll also fires if all nodes are already selected and the dropdown is opened
     # even if the selection is unchanged, in which case bail
-    return unless V.map.refresh-entities V.map-nodes-sel.get-selected-ids!
-    V.map.render is-slow-to-cool:true
-    V.map-toolbar.reset!
+    return if node-ids.length is (V.map.map.get \nodes)?length
+    refresh-map node-ids
 
   V.map
     ..on \pre-cool -> V.map-edit.$el.disable-buttons!
     ..on \cooled   -> V.map-edit.$el.enable-buttons!
-
-  C.Nodes.on 'add remove' render-dropdown
 
   ## helpers
 
@@ -64,9 +75,14 @@ B.once \signin -> # should only run once on first signin
   function load-is-default id
     V.map-edit.$el.find \#is-default .prop \checked id is (Hv.Map.get-prop \default)?id
 
-  function render-dropdown
-    nodes = if (map = V.map.map) then _.pluck (map.get \nodes), \_id else []
-    V.map-nodes-sel.render C.Nodes, \name, nodes
+  function render-dropdown add-node-id
+    node-ids = if (map = V.map.map) then _.pluck (map.get \nodes), \_id else []
+    node-ids.push add-node-id if add-node-id
+    V.map-nodes-sel.render C.Nodes, \name, node-ids
+    node-ids
+
+  function refresh-map node-ids
+    V.map.refresh-entities node-ids .render is-slow-to-cool:true
 
   function save-is-default id
     Hv.Map

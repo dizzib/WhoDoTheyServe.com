@@ -7,6 +7,7 @@ S   = require \../session
 Sys = require \../model/sys .instance
 V   = require \../view
 Vee = require \../view/edge/edit
+Vne = require \../view/node/edit
 Vue = require \../view/user/edit
 Vus = require \../view/user/signin
 
@@ -23,7 +24,7 @@ B.on \boot ->
       V.navbar.render!
       R.navigate "map/#{map.id}" if is-new
   V.node-edit
-    ..on \rendered -> $ \#name .typeahead source:C.Nodes.pluck \name
+    ..on \rendered Vne.init
   V.user-edit
     ..on \cancelled -> Bh.history.back!
     ..on \destroyed Vue.after-delete
