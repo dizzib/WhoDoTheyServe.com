@@ -57,7 +57,7 @@ module.exports
   ..map-edit        = new Ve.EditView template:T-MapEdit      , el:\.view>.map-edit
   ..map-info        = new Vr.InfoView template:T-MapInfo      , el:\.view>.map-info
   ..map-meta        = new Vr.InfoView template:T-Meta         , el:\.view>.map-meta
-  ..map-nodes-sel   = new Vs.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:800 width:370 }
+  ..map-nodes-sel   = new Vs.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:500 width:370 }
   ..map-toolbar     = new V-MapTBar                             el:\.view>.map-toolbar
   ..maps            = new Vr.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
