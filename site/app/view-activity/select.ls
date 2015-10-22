@@ -4,6 +4,9 @@ T = require \transparency
 
 T-Sel = F.readFileSync __dirname + \/select.html
 
+# multi-select can't be browserified 'cos it references an adjacent png
+B.once \signin -> yepnope.injectCss \/lib-3p/multiple-select.css
+
 module.exports =
   MultiSelectView: B.View.extend do
     get-selected-ids: ->
