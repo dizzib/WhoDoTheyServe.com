@@ -25,6 +25,7 @@ B.on \boot ->
       R.navigate "map/#{map.id}" if is-new
   V.node-edit
     ..on \rendered Vne.init
+    ..on \saved    Vne.save
   V.user-edit
     ..on \cancelled -> Bh.history.back!
     ..on \destroyed Vue.after-delete
