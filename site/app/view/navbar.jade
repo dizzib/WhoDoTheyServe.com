@@ -5,9 +5,15 @@ ul.nav.nav-tabs
   li(active='^node')
     a(href='#/nodes')
       i.fa.fa-male Actors
+  li.signed-in
+    a(href='#/node/new')
+      i.fa.fa-plus
   li(active='^edge')
     a(href='#/edges')
       i.fa.fa-chain Connections
+  li.signed-in
+    a(href='#/edge/new')
+      i.fa.fa-plus
   li.seo-remove.dropdown
     a(href='#', data-toggle='dropdown').dropdown-toggle
       i.fa.fa-list Maps
