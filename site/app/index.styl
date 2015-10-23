@@ -1,32 +1,47 @@
+// NOTE YOU MUST SAVE INDEX.JADE FOR CHANGES TO TAKE EFFECT!!!
 body
   font-family "Helvetica Neue", Helvetica, Arial, sans-serif
+  position      relative  // required for splash z-index to work
+  height        100%      // attempt to stop splash moving around during load
+  width         100%
 
-h1
-  font-size   38.5px
-  margin      10px 0
-  line-height 40px
+.splash
+  position      fixed
+  top           0
+  left          0
+  height        50%
+  width         100%
+  z-index       -999
+  display       flex
+  align-items   center
+  justify-content center
+  animation     4s splash
+  font-size     50px
+  opacity       0
+
+@keyframes splash
+  from
+    opacity     1
+  to
+    opacity     0
 
 a
   color           #08c
   text-decoration none
 
-.container
-  width        940px
-  margin-right auto
-  margin-left  auto
-
 .hide-during-boot
-  display      none
+  display       none
 
 .pull-left
-  float        left
+  float         left
 
 .seo-link
-  display      none
+  display       none
 
 .spinner
-  position     fixed
-  top          50%
-  left         50%
-  margin-right -50%
-  transform    translate(-50%, -50%)
+  position      fixed
+  top           50%
+  left          50%
+  margin-right  -50%
+  transform     translate(-50%, -50%)
+  z-index       999

@@ -1,4 +1,3 @@
-include _header
 doctype html
 html
   meta(charset='utf-8')
@@ -15,10 +14,14 @@ html
   noscript
     meta(http-equiv='refresh', content='0;URL=latest.html')
   body
+    h1.splash WhoDoTheyServe.com
     .spinner
       .lv-spinner
         div Busy...
-    +header
+    .navbar-fixed-top.bg-transparent
+      a.seo-link(href='latest.html') SEO-site
+      .view-version.pull-right
+      .navigator
     .view.hide-during-boot
       .alert.alert-error
       .alert.alert-info
