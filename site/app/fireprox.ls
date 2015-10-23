@@ -8,7 +8,7 @@ module.exports =
     return console.error 'localStorage not supported' unless localStorage
     url = prompt 'Fireprox url' localStorage.getItem STORE-KEY
     return if url is null
-    if url?length then
+    if url?length
       localStorage.setItem STORE-KEY, url
     else
       localStorage.removeItem STORE-KEY
