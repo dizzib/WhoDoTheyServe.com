@@ -13,6 +13,7 @@ module.exports = B.View.extend do
 
   initialize: ->
     @$el.html F.readFileSync __dirname + \/toolbar.html
+    @$el.find \legend .on \click ~> @$el.toggleClass \collapsed
 
     for let k, v of OVERLAYS
       $el = get-chk$ k .click ~> @trigger (get-toggle-event v), $el.prop \checked

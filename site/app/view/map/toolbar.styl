@@ -1,5 +1,20 @@
 .map-toolbar
-  right             0
-  top               40px
-  padding           10px
-  position          fixed
+  position        fixed
+  right           0
+  top             15%
+
+  .show-if-expanded
+    display         inline
+
+  legend
+    padding         10px
+    line-height     inherit // undo bootstrap
+  fieldset
+    padding         0 10px 0 10px
+
+.map-toolbar.collapsed
+  .show-if-expanded
+    display         none
+
+  legend
+    margin          0

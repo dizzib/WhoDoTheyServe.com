@@ -1,7 +1,11 @@
 include ../../lib/_form
 
-+field-checkbox('chkAc', 'Atlantic Council')
-+field-checkbox('chkBilAttend', 'Bilderberg attendee')
-+field-checkbox('chkBilSteer' , 'Bilderberg steering')
-+field-checkbox('chkBis', 'BIS')
-+field-checkbox('chkCfr', 'CFR')
+legend
+  i.glyph.fa.fa-bars
+  .show-if-expanded Layers
+fieldset.show-if-expanded
+  +field-checkbox('chkAc', 'Atlantic Council')
+  +field-checkbox('chkBilAttend', 'Bilderberg attendee')
+  +field-checkbox('chkBilSteer' , 'Bilderberg steering')
+  +field-checkbox('chkBis', 'BIS')
+  +field-checkbox('chkCfr', 'CFR')
