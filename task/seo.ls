@@ -65,8 +65,8 @@ module.exports =
     function amend-scripts $
       $ \script .remove!
       $ \noscript .remove!
-      $ \.navbar-fixed-top .after "
-        <div class='navbar-fixed-top'><div class='alert'>
+      $ \.navbar-fixed-bottom .replaceWith "
+        <div class='navbar-fixed-bottom'><div class='alert alert-danger navbar-text'>
           You are currently viewing the cut-down version of this site. 
           To view the feature-rich version, please ensure javascript 
           is enabled in your browser before refreshing the page.
