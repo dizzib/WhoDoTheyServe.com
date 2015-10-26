@@ -6,14 +6,14 @@ Cu = require \./cursor
 cache = {}
 
 Cu.on \hide ->
-  V.map.svg.selectAll \.ants .classed \ants false
+  V.map.view.graph.svg.selectAll \.ants .classed \ants false
 
 Cu.on \show ->
   ueids = get-uphill-edge-ids it._id
   deids = get-downhill-edge-ids it._id
   eids = ueids ++ deids
   sel = (_.map eids, -> ".id_#it").join \,
-  V.map.svg.selectAll sel .classed \ants true if sel
+  V.map.view.graph.svg.selectAll sel .classed \ants true if sel
 
 function get-downhill-edge-ids node-id, done = []
   return [] if _.contains done, node-id # infinite recursion guard

@@ -7,7 +7,6 @@ V  = require \../view
 D  = require \./directive
 
 M-Evi  = require \../model/evidence
-M-Map  = require \../model/map
 M-Note = require \../model/note
 
 module.exports =
@@ -25,33 +24,6 @@ module.exports =
     <- render-nodes-or-edges arguments[*-1]
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
-  map: (id) ->
-    done = arguments[*-1]
-    loc = B.history.fragment
-    function show m
-      return unless B.history.fragment is loc # bail if user navigated away
-      V.map.map = m
-      if is-sel-changed
-        V.map.render!
-        V.map-toolbar.reset!
-        V.navbar.render!
-      V.map.show!
-      V.map-toolbar.show!
-      V.map-info.render m, D.map
-      V.map-meta.render m, D.meta
-      if m.get-is-editable!
-        if is-init-new or is-sel-changed
-          V.map-edit.render m, C.Maps, fetch:no directive:D.map-edit
-        V.map-edit.show!
-      done!
-    m = V.map.map
-    is-init-new = not id and (not m or not m.isNew!)
-    is-sel-changed = id isnt (m?id or null)
-    return show M-Map.create! if is-init-new
-    return show m unless is-sel-changed
-    return B.trigger \error "Unable to get map #id" unless m = C.Maps.get id
-    m.fetch success:show
-    false # async done
   node: (id, act, child-id) ->
     done = arguments[*-1]
     fetch-entity C.Nodes, id, \actor (node) ->

@@ -4,7 +4,7 @@ Map = require \../../view .map
 
 module.exports = me = new Eve!
 
-Map.on \render ->
+Map.view.graph.on \render ->
   $svg = @$el.find \svg
   @$el.off \click refresh # otherwise handler runs against old svg in closure
   @$el.on  \click refresh

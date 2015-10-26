@@ -1,13 +1,14 @@
 _   = require \underscore
 C   = require \../../../../collection
 V   = require \../../../../view
-Map = require \../../../../view .map
 Egl = require \../../edge-glyph
 N   = require \./node
 
 var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
-Map.on \cooled ->
+vg = V.map.view.graph
+
+vg.on \cooled ->
   ~function render g, edges, fn-get-hub, fn-is-hub, css-class
     return unless hub = _.find @d3f.nodes!, fn-get-hub
     g-child = g.append \svg:g
@@ -37,11 +38,11 @@ Map.on \cooled ->
   glyphs.each Egl.append
   glyphs.attr \transform Egl.get-transform
 
-Map.on \pre-cool ->
+vg.on \pre-cool ->
   g-attend?remove!
   g-steer?remove!
 
-Map.on \pre-render (ents) ->
+vg.on \pre-render (ents) ->
   function is-conference-yyyy then N.is-conference-yyyy it.source or N.is-conference-yyyy it.target
   function is-steering then it.how is \member and (N.is-steering it.source or N.is-steering it.target)
 
@@ -54,10 +55,10 @@ Map.on \pre-render (ents) ->
   N.edges-attend = edges-attend
   N.nodes-steer = nodes-steer
 
-Map.on \render ->
+vg.on \render ->
   ~function add-overlay name
     g = @svg.append \svg:g .attr \class name
-    V.map-toolbar.on "toggle-#name" -> g.attr \display, if it then '' else \none
+    V.map.view.tool.layers.on "toggle-#name" -> g.attr \display, if it then '' else \none
     g
   ga := add-overlay \bil-attend
   gs := add-overlay \bil-steer

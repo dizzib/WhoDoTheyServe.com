@@ -4,7 +4,9 @@ V = require \../../view
 class Overlay
   (@tag, @fn-edge-is-match, @fn-node-is-match) ->
     o = this
-    V.map.on \cooled ->
+    vg = V.map.view.graph
+
+    vg.on \cooled ->
       return unless o.edges.length
       node = _.find o.d3f.nodes!, o.fn-node-is-match
       o.g = o.g-root.append \svg:g
@@ -17,21 +19,21 @@ class Overlay
           .attr \y2 if o.fn-node-is-match tar then node.y else tar.y
           .attr \class "edge id_#{edge._id} #{o.tag}"
 
-    V.map.on \pre-cool ->
+    vg.on \pre-cool ->
       o.g?remove!
 
-    V.map.on \pre-render (entities) ->
+    vg.on \pre-render (entities) ->
       function node-is-match then o.fn-node-is-match it.source or o.fn-node-is-match it.target
       groups = _.groupBy entities.edges, ->
         if o.fn-edge-is-match it and node-is-match it then \yes else \no
       o.edges = groups.yes or []
       entities.edges = groups.no
 
-    V.map.on \render ->
+    vg.on \render ->
       o.d3f = @d3f
       o.g-root = @svg.append \svg:g .attr \class o.tag
       append-badges!
-      V.map-toolbar.on "toggle-#{o.tag}", ~>
+      V.map.view.tool.layers.on "toggle-#{o.tag}", ~>
         o.g-root.attr \display if it then '' else \none
 
       function append-badges

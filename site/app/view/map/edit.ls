@@ -4,6 +4,10 @@ Hv = require \../../model/hive .instance
 V  = require \../../view
 
 B.once \signin -> # should only run once on first signin
+  v  = V.map.view
+  ve = v.tool.edit
+  vg = v.graph
+
   C.Edges.on 'add remove' ->
     node-ids = V.map-nodes-sel.get-selected-ids!
     refresh-map node-ids if do
@@ -17,7 +21,7 @@ B.once \signin -> # should only run once on first signin
       node-ids = render-dropdown!
       refresh-map node-ids if _.contains node-ids, it.id
 
-  V.map-edit
+  ve
     ..on \destroyed ->
       V.map.delete!
 
@@ -29,19 +33,19 @@ B.once \signin -> # should only run once on first signin
       @$el.find \legend .on \click ~> @$el.find \form .toggleClass \collapsed
 
     ..on \saved (map, is-new) ->
-      save-is-default map.id if V.map-edit.$el.find \#is-default .prop \checked
+      save-is-default map.id if ve.$el.find \#is-default .prop \checked
       alert-success 'Successfully saved'
       init-error-alert!
 
     ..on \serialized ->
       # save all selected nodes -- some may have been filtered out of the map in
       # which case they'll be saved without (x, y)
-      nodes = (v = V.map).get-nodes-xy!
+      nodes = vg.get-nodes-xy!
       sel-node-ids = V.map-nodes-sel.get-selected-ids!
       map-node-ids = _.map nodes, -> it._id
       for id in sel-node-ids then unless _.contains map-node-ids, id
         nodes.push _id:id # node is selected but filtered out of map
-      it.set nodes:nodes, 'size.x':v.get-size-x!, 'size.y':v.get-size-y!
+      it.set nodes:nodes, 'size.x':vg.get-size-x!, 'size.y':vg.get-size-y!
 
     ..show = ->
       alert-success void
@@ -52,34 +56,34 @@ B.once \signin -> # should only run once on first signin
     node-ids = V.map-nodes-sel.get-selected-ids!
     # checkAll also fires if all nodes are already selected and the dropdown is opened
     # even if the selection is unchanged, in which case bail
-    return if node-ids.length is (V.map.map.get \nodes)?length
+    return if node-ids.length is (vg.map.get \nodes)?length
     refresh-map node-ids
 
-  V.map
-    ..on \pre-cool -> V.map-edit.$el.disable-buttons!
-    ..on \cooled   -> V.map-edit.$el.enable-buttons!
+  vg
+    ..on \pre-cool -> ve.$el.disable-buttons!
+    ..on \cooled   -> ve.$el.enable-buttons!
 
   ## helpers
 
   function alert-success msg
-    V.map-edit.$el.find \.alert-success .text msg .toggle msg?
+    ve.$el.find \.alert-success .text msg .toggle msg?
 
   function init-error-alert
     # show errors on this form rather than in base view
     $ \.alert-error .removeClass \active
-    V.map-edit.$el.find \.alert-error .addClass \active .hide!
+    ve.$el.find \.alert-error .addClass \active .hide!
 
   function load-is-default id
-    V.map-edit.$el.find \#is-default .prop \checked id is (Hv.Map.get-prop \default)?id
+    ve.$el.find \#is-default .prop \checked id is (Hv.Map.get-prop \default)?id
 
   function render-dropdown add-node-id
-    node-ids = if (map = V.map.map) then _.pluck (map.get \nodes), \_id else []
+    node-ids = if vg.map then _.pluck (vg.map.get \nodes), \_id else []
     node-ids.push add-node-id if add-node-id
     V.map-nodes-sel.render C.Nodes, \name, node-ids
     node-ids
 
   function refresh-map node-ids
-    V.map.refresh-entities node-ids .render is-slow-to-cool:true
+    vg.refresh-entities node-ids .render is-slow-to-cool:true
 
   function save-is-default id
     Hv.Map

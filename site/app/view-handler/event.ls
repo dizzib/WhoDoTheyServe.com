@@ -18,7 +18,7 @@ B.on \boot ->
     ..on \rendered -> Fpx.get-browser-url (-> $ \#url .attr \value it) if it.isNew!
   V.map
     ..on \deleted -> V.navbar.render!
-  V.map-edit
+  V.map.view.tool.edit
     ..on \destroyed -> R.navigate \user
     ..on \saved (map, is-new) ->
       V.navbar.render!

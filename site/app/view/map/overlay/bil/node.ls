@@ -1,11 +1,13 @@
-_   = require \underscore
-C   = require \../../../../collection
-Map = require \../../../../view .map
+_ = require \underscore
+C = require \../../../../collection
+V = require \../../../../view
 
-Map.on \pre-render (ents) ->
+vg = V.map.view.graph
+
+vg.on \pre-render (ents) ->
   ents.nodes = _.filter ents.nodes, -> not me.is-conference-yyyy it
 
-Map.on \render ->
+vg.on \render ->
   function render-badge node, x, x-size
     const BADGE-Y-SIZE = 16
     badge = d3.select node .append \svg:g
