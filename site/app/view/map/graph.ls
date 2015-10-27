@@ -86,7 +86,6 @@ module.exports = B.View.extend do
 
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
-    @scroll = get-initial-scroll-pos @
     justify @
 
     # order matters: svg uses painter's algo
@@ -106,24 +105,9 @@ module.exports = B.View.extend do
     @trigger \tick
 
   show: ->
-    return unless @el # might be undefined for seo
-    $w = $ window
-    @scroll ?= get-initial-scroll-pos @
-    @$el.show!.on \hide ~>
-      @$el.off \hide
-      @scroll.x = $w.scrollLeft!
-      @scroll.y = $w.scrollTop!
     justify @
-    _.defer ~>
-      $w.scrollLeft @scroll.x if @scroll.x
-      $w.scrollTop @scroll.y if @scroll.y
 
 ## helpers
-
-function get-initial-scroll-pos v
-  return x:0 y:0 unless v.svg # might be undefined e.g. new map
-  x: Math.max 0 (v.svg.attr(\width) - $(window).width!) / 2
-  y: Math.max 0 (v.svg.attr(\height) - $(window).height!) / 2
 
 function justify v
   return unless ($g = $ \.graph).is \:visible # prevent show if it's hidden

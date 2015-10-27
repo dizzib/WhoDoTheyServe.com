@@ -7,6 +7,7 @@ D  = require \../view-handler/directive
 V  = require \../view
 Ve = require \../view-activity/edit
 Vr = require \../view-activity/read
+Sp = require \./map/scroll-pos
 T  = require \./map/tool
 
 M-Map    = require \../model/map
@@ -36,17 +37,18 @@ module.exports = B.View.extend do
       @delete!
       @$el.set-access S
     T.init @
+    @scroll-pos = new Sp @view.graph
     @view.tool.info.on \rendered -> @$el.hide! unless it.get \description
 
   render: (id) ->
     ~function show m
       return unless B.history.fragment is loc # bail if user navigated away
-      @$el.show!
       @view.graph.map = @map
       if is-sel-changed
         @view.graph.render!
         @view.tool.layers.reset!
         V.navbar.render!
+        @scroll-pos.delete!
       @view
         ..graph.show!
         ..meta.render @map, D.meta
@@ -57,6 +59,10 @@ module.exports = B.View.extend do
         if is-init-new or is-sel-changed
           @view.tool.edit.render @map, C.Maps, fetch:no directive:D.map-edit
         @view.tool.edit.show!
+      @$el.show!.on \hide ~>
+        @$el.off \hide
+        @scroll-pos.save!
+      @scroll-pos.restore!
       done!
 
     done = arguments[*-1]
