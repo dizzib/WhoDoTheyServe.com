@@ -23,3 +23,7 @@ module.exports = class
   save: ->
     @pos.x = $w.scrollLeft!
     @pos.y = $w.scrollTop!
+
+    _.defer ->
+      $w.scrollLeft 0
+      $w.scrollTop 0
