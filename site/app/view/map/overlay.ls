@@ -33,7 +33,7 @@ class Overlay
       o.d3f = @d3f
       o.g-root = @svg.append \svg:g .attr \class o.tag
       append-badges!
-      V.map.view.tool.layers.on "toggle-#{o.tag}", ~>
+      V.map.view.tool.layers.on "toggle-#{o.tag}" ~>
         o.g-root.attr \display if it then '' else \none
 
       function append-badges

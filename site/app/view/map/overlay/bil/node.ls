@@ -11,21 +11,21 @@ vg.on \render ->
   function render-badge node, x, x-size
     const BADGE-Y-SIZE = 16
     badge = d3.select node .append \svg:g
-      .attr \class, \badge-bil
-      .attr \transform, -> "translate(#x,10)"
+      .attr \class \badge-bil
+      .attr \transform -> "translate(#x,10)"
     badge.append \svg:rect
-      .attr \height, BADGE-Y-SIZE
-      .attr \width, x-size
-      .attr \rx, 5
-      .attr \ry, 5
+      .attr \height BADGE-Y-SIZE
+      .attr \width x-size
+      .attr \rx 5
+      .attr \ry 5
     badge
 
   function render-badges-combined node, edges
     const BADGE-X-SIZE = 82
     render-badge node, (-BADGE-X-SIZE / 2), BADGE-X-SIZE
       .append \svg:text
-        .attr \dx, 2
-        .attr \dy, 13
+        .attr \dx 2
+        .attr \dy 13
         .text "#{edges.0.yyyy} - #{edges[*-1].yyyy}"
 
   function render-badges-separate node, edges
@@ -37,12 +37,12 @@ vg.on \render ->
       n-evs = evs.length
       x = offset-x + (i * BADGE-X-GAP) - (BADGE-X-SIZE / 2)
       render-badge node, x, BADGE-X-SIZE .append \svg:a
-        .attr \target, if n-evs is 1 then \_blank else ''
-        .attr \xlink:href, if n-evs is 1 then evs.0.get \url else "#/edge/#{edge._id}"
-        .attr \xlink:title, if n-evs is 1 then "Evidence at Bilderberg #{edge.yyyy}" else ''
+        .attr \target if n-evs is 1 then \_blank else ''
+        .attr \xlink:href if n-evs is 1 then evs.0.get \url else "#/edge/#{edge._id}"
+        .attr \xlink:title if n-evs is 1 then "Evidence at Bilderberg #{edge.yyyy}" else ''
         .append \svg:text
-          .attr \dx, 1
-          .attr \dy, 13
+          .attr \dx 1
+          .attr \dy 13
           .text edge.yy
 
   node <- @svg.selectAll \g.node .each
