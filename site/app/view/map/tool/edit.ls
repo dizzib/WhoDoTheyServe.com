@@ -1,7 +1,7 @@
 B  = require \backbone
-C  = require \../../collection
-Hv = require \../../model/hive .instance
-V  = require \../../view
+C  = require \../../../collection
+Hv = require \../../../model/hive .instance
+V  = require \../../../view
 
 B.once \signin -> # should only run once on first signin
   v  = V.map.view

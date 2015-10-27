@@ -9,12 +9,12 @@ Ve = require \../view-activity/edit
 Vr = require \../view-activity/read
 
 M-Map    = require \../model/map
-V-Edit   = require \./map/edit
 V-Graph  = require \./map/graph
-V-Layers = require \./map/toolbar
+V-Edit   = require \./map/tool/edit
+V-Layers = require \./map/tool/layers
 
-T-Edit = F.readFileSync __dirname + \/map/edit.html
-T-Info = F.readFileSync __dirname + \/map/info.html
+T-Edit = F.readFileSync __dirname + \/map/tool/edit.html
+T-Info = F.readFileSync __dirname + \/map/tool/info.html
 T-Meta = F.readFileSync __dirname + \/meta.html
 
 module.exports = B.View.extend do

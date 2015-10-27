@@ -1,6 +1,6 @@
 B = require \backbone
 F = require \fs
-S = require \../../session
+S = require \../../../session
 
 const OVERLAYS =
   Ac       : default:false, event:\ac
@@ -12,7 +12,7 @@ const OVERLAYS =
 module.exports = B.View.extend do
 
   initialize: ->
-    @$el.html F.readFileSync __dirname + \/toolbar.html
+    @$el.html F.readFileSync __dirname + \/layers.html
     for let k, v of OVERLAYS
       $el = get-chk$ k .click ~> @trigger (get-toggle-event v), $el.prop \checked
     @reset!
