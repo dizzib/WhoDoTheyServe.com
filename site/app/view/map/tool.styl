@@ -1,0 +1,23 @@
+.tool
+  position        fixed
+  z-index         1
+
+  .show-if-collapsed
+    display         none
+  .show-if-expanded
+    display         inline
+
+  legend
+    padding         10px
+    line-height     inherit // undo bootstrap
+  fieldset
+    padding         0 10px 0 10px
+
+.tool.collapsed
+  .show-if-collapsed
+    display         inline
+  .show-if-expanded
+    display         none
+
+  legend
+    margin          0

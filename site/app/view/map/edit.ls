@@ -30,7 +30,6 @@ B.once \signin -> # should only run once on first signin
       render-dropdown!
       init-error-alert!
       load-is-default it.id
-      @$el.find \legend .on \click ~> @$el.find \form .toggleClass \collapsed
 
     ..on \saved (map, is-new) ->
       save-is-default map.id if ve.$el.find \#is-default .prop \checked

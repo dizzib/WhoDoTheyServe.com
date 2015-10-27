@@ -1,37 +1,28 @@
-.tool > .edit
-  position      fixed
+.tool.edit
   left          0
   top           40px
-  height        80%   // scroll
-  overflow-y    auto  // scroll
   z-index       2
-
-  .btn.cancel
-    visibility    hidden
-  .input-xlarge
-    input
-      width         370px
-  .show-if-expanded
-    display       inline
-  .show-if-collapsed
-    display       none
-  .collapsed
-    legend
-      margin-bottom 0
-    .show-if-expanded
-      display       none
-    .show-if-collapsed
-      display       inline
 
   legend
     .fa
       color         orange
-    line-height   inherit
-
   fieldset
+    .btn.cancel
+      visibility    hidden
     .control-label
       width         100px
     .controls
       margin-left   120px
     .glyph
       margin-left   0.5em
+    .input-xlarge
+      input
+        width         370px
+
+.tool.edit:not(.collapsed)
+  height        80%   // scroll
+  overflow-y    auto  // scroll
+  overflow-x    hidden
+
+  form
+    padding-bottom  20px

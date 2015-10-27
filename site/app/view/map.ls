@@ -28,12 +28,14 @@ module.exports = B.View.extend do
       graph: new V-Graph el:\.map>.graph
       meta: new Vr.InfoView el:\.map>.meta template:T-Meta
       tool:
-        edit  : new Ve.EditView el:\.map>.tool>.edit template:T-Edit
-        info  : new Vr.InfoView el:\.map>.tool>.info template:T-Info
-        layers: new V-Layers el:\.map>.tool>.layers
+        edit  : new Ve.EditView el:\.tool.edit template:T-Edit
+        info  : new Vr.InfoView el:\.tool.info template:T-Info
+        layers: new V-Layers el:\.tool.layers
     B.on 'signin signout' ~>
       @delete!
       @$el.set-access S
+    @$ \.tools .on \click \legend -> $ this .parents \.tool .toggleClass \collapsed
+    @view.tool.info.on \rendered -> @$el.hide! unless it.get \description
 
   render: (id) ->
     ~function show m
