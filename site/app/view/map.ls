@@ -7,6 +7,7 @@ D  = require \../view-handler/directive
 V  = require \../view
 Ve = require \../view-activity/edit
 Vr = require \../view-activity/read
+T  = require \./map/tool
 
 M-Map    = require \../model/map
 V-Graph  = require \./map/graph
@@ -34,7 +35,7 @@ module.exports = B.View.extend do
     B.on 'signin signout' ~>
       @delete!
       @$el.set-access S
-    @$ \.tools .on \click \legend -> $ this .parents \.tool .toggleClass \collapsed
+    T.init @
     @view.tool.info.on \rendered -> @$el.hide! unless it.get \description
 
   render: (id) ->
@@ -50,7 +51,7 @@ module.exports = B.View.extend do
         ..graph.show!
         ..meta.render @map, D.meta
         ..tool
-          ..layers.show!
+          ..layers.render!
           ..info.render @map, D.map
       if @map.get-is-editable!
         if is-init-new or is-sel-changed
