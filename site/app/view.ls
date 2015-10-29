@@ -18,7 +18,7 @@ T-EdgesHead     = F.readFileSync __dirname + \/view/edges-head.html
 T-EvidenceEdit  = F.readFileSync __dirname + \/view/evidence-edit.html
 T-Evidences     = F.readFileSync __dirname + \/view/evidences.html
 T-EvidencesHead = F.readFileSync __dirname + \/view/evidences-head.html
-T-Maps          = F.readFileSync __dirname + \/view/maps.html
+T-MapsList      = F.readFileSync __dirname + \/view/maps-list.html
 T-Meta          = F.readFileSync __dirname + \/view/meta.html
 T-Node          = F.readFileSync __dirname + \/view/node.html
 T-NodeEdit      = F.readFileSync __dirname + \/view/node/edit.html
@@ -50,7 +50,7 @@ module.exports
   ..footer          = new V-Footer                              el:\.footer
   ..latest          = new V-Latest                              el:\.view>.main
   ..map             = new V-Map                                 el:\.view>.map
-  ..maps            = new Vr.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
+  ..maps-list       = new Vr.ListView template:T-MapsList     , el:\.view>.maps-list, opts:{ fetch:false }
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
   ..navbar          = new V-NavBar                              el:\.navigator
   ..node            = new Vr.InfoView template:T-Node         , el:\.view>.main

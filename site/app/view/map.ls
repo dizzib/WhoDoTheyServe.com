@@ -35,10 +35,10 @@ module.exports = B.View.extend do
 
     @v-edit.on \destroyed ~> @delete!
     @v-info.on \rendered -> @$el.hide! unless it.get \description
-
     B.on 'signin signout' ~>
       @delete!
       @$el.set-access S
+
     T.init @
     @scroll-pos = new Sp @v-graph
 
