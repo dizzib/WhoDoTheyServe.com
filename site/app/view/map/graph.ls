@@ -130,8 +130,8 @@ function set-map-size v
   nodes = v.get-nodes-xy!
   xs = _.map nodes, -> it.x
   ys = _.map nodes, -> it.y
-  w  = (_.max xs) - (xmin = _.min xs) + 2 * PADDING
-  h  = (_.max ys) - (ymin = _.min ys) + 2 * PADDING
+  w  = Math.max SIZE-NEW, (_.max xs) - (xmin = _.min xs) + 2 * PADDING
+  h  = Math.max SIZE-NEW, (_.max ys) - (ymin = _.min ys) + 2 * PADDING
 
   size-before = x:v.get-size-x!, y:v.get-size-y!
   set-canvas-size v.svg, w, h
