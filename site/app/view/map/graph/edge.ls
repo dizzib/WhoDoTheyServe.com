@@ -1,5 +1,5 @@
 _ = require \underscore
-W = require \../../../lib/when
+W = require \../../../../lib/when
 
 var lines
 

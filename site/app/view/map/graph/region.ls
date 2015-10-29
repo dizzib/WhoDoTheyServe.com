@@ -1,6 +1,6 @@
 # draw convex hulls around certain node regions e.g. governments
 _ = require \underscore
-H = require \../../model/hive .instance
+H = require \../../../model/hive .instance
 
 module.exports = (vg) ->
   var regions

@@ -1,5 +1,5 @@
 _  = require \underscore
-C  = require \../../collection
+C  = require \../../../collection
 
 module.exports = (vg, cursor) ->
   cache = {}

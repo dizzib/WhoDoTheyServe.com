@@ -1,5 +1,5 @@
 _  = require \underscore
-Hv = require \../../model/hive .instance
+Hv = require \../../../model/hive .instance
 
 var nodes
 

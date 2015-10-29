@@ -1,4 +1,4 @@
-C = require \../../collection
+C = require \../../../collection
 
 module.exports = (vg = v-graph, v-layers) ->
   class Overlay

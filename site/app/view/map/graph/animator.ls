@@ -1,6 +1,4 @@
 # a javascript timer uses much less cpu than css animations
-C = require \./cursor
-
 module.exports = (vg, cursor) ->
   const N-FRAMES = 5
 
