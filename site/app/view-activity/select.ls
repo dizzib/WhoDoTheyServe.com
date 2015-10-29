@@ -21,7 +21,7 @@ module.exports =
     render: (coll, fname, sel-ids = []) ->
       $t-sel = get-select $ T-Sel
       render-select $t-sel, coll, fname
-      @dropdown = $ @sel
+      @dropdown = @$el or $ @sel
         ..html $t-sel.children! # children! prevents duplicate nested select
         ..attr \multiple \multiple
         ..multipleSelect @opts

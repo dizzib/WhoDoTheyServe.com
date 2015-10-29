@@ -50,7 +50,6 @@ module.exports
   ..footer          = new V-Footer                              el:\.footer
   ..latest          = new V-Latest                              el:\.view>.main
   ..map             = new V-Map                                 el:\.view>.map
-  ..map-nodes-sel   = new Vs.MultiSelectView                    sel:'form.map #nodes', opts:{ filter:true maxHeight:500 width:370 }
   ..maps            = new Vr.ListView template:T-Maps         , el:\.view>.maps, opts:{ fetch:false }
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
   ..navbar          = new V-NavBar                              el:\.navigator
