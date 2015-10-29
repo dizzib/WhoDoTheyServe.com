@@ -5,9 +5,8 @@ V  = require \../../../view
 Vs = require \../../../view-activity/select
 
 B.once \signin -> # should only run once on first signin
-  v  = V.map.view
-  ve = v.tool.edit
-  vg = v.graph
+  ve = V.map.v-edit
+  vg = V.map.v-graph
 
   C.Edges.on 'add remove' ->
     node-ids = ve.v-nodes-sel.get-selected-ids!
@@ -21,8 +20,6 @@ B.once \signin -> # should only run once on first signin
       node-ids = render-dropdown!
       refresh-map node-ids if _.contains node-ids, it.id
   ve
-    ..on \destroyed ->
-      V.map.delete!
     ..on \rendered ->
       alert-success void
       init-dropdown!

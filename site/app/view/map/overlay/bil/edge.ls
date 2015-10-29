@@ -6,7 +6,7 @@ N   = require \./node
 
 var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
-vg = V.map.view.graph
+vg = V.map.v-graph
 
 vg.on \cooled ->
   ~function render g, edges, fn-get-hub, fn-is-hub, css-class
@@ -58,7 +58,7 @@ vg.on \pre-render (ents) ->
 vg.on \render ->
   ~function add-overlay name
     g = @svg.append \svg:g .attr \class name
-    V.map.view.tool.layers.on "toggle-#name" -> g.attr \display, if it then '' else \none
+    V.map.v-layers.on "toggle-#name" -> g.attr \display, if it then '' else \none
     g
   ga := add-overlay \bil-attend
   gs := add-overlay \bil-steer

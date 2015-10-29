@@ -2,7 +2,7 @@ _ = require \underscore
 C = require \../../../../collection
 V = require \../../../../view
 
-vg = V.map.view.graph
+vg = V.map.v-graph
 
 vg.on \pre-render (ents) ->
   ents.nodes = _.filter ents.nodes, -> not me.is-conference-yyyy it

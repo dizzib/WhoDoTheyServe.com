@@ -26,39 +26,39 @@ module.exports = B.View.extend do
 
   initialize: ->
     @$el.html F.readFileSync __dirname + \/map.html
-    @view =
-      graph: new V-Graph el:\.map>.graph
-      meta: new Vr.InfoView el:\.map>.meta template:T-Meta
-      tool:
-        edit  : new Ve.EditView el:\.tool.edit template:T-Edit
-        info  : new Vr.InfoView el:\.tool.info template:T-Info
-        layers: new V-Layers el:\.tool.layers
+
+    @v-graph  = new V-Graph el:\.map>.graph
+    @v-meta   = new Vr.InfoView el:\.map>.meta template:T-Meta
+    @v-edit   = new Ve.EditView el:\.tool.edit template:T-Edit
+    @v-info   = new Vr.InfoView el:\.tool.info template:T-Info
+    @v-layers = new V-Layers el:\.tool.layers
+
+    @v-edit.on \destroyed ~> @delete!
+    @v-info.on \rendered -> @$el.hide! unless it.get \description
+
     B.on 'signin signout' ~>
       @delete!
       @$el.set-access S
     T.init @
-    @scroll-pos = new Sp @view.graph
-    @view.tool.info.on \rendered -> @$el.hide! unless it.get \description
+    @scroll-pos = new Sp @v-graph
 
   render: (id) ->
     ~function show m
       return unless B.history.fragment is loc # bail if user navigated away
-      @view.graph.map = @map
+      @v-graph.map = @map
       if is-sel-changed
-        @view.graph.render!
-        @view.tool.layers.reset!
+        @v-graph.render!
+        @v-layers.reset!
         V.navbar.render!
         @scroll-pos.delete!
-      @view
-        ..graph.show!
-        ..meta.render @map, D.meta
-        ..tool
-          ..layers.render!
-          ..info.render @map, D.map
+      @v-graph.show!
+      @v-meta.render @map, D.meta
+      @v-layers.render!
+      @v-info.render @map, D.map
       if @map.get-is-editable!
         if is-init-new or is-sel-changed
-          @view.tool.edit.render @map, C.Maps, fetch:no directive:D.map-edit
-        @view.tool.edit.show!
+          @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit
+        @v-edit.show!
       @$el.show!.on \hide ~>
         @$el.off \hide
         @scroll-pos.save!

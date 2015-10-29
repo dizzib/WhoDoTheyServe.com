@@ -5,9 +5,8 @@ module.exports =
       return unless has-store-key $tool
       localStorage.setItem (get-store-key $tool), $tool.hasClass \collapsed
 
-    v-map.view.tool
-      ..info.on \rendered restore-state
-      ..layers.on \rendered restore-state
+    v-map.v-info.on \rendered restore-state
+    v-map.v-layers.on \rendered restore-state
 
 function get-store-key $tool then "#{$tool.attr \data-state-key}/collapsed"
 function has-store-key $tool then $tool.attr \data-state-key
