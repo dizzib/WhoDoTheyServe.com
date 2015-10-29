@@ -1,6 +1,6 @@
 _   = require \underscore
 C   = require \../../../../../collection
-Egl = require \../../../edge-glyph
+Egl = require \../../edge-glyph
 N   = require \./node
 
 module.exports = (vg, v-layers) ->

@@ -2,8 +2,8 @@ B   = require \backbone
 _   = require \underscore
 C   = require \../../collection
 Sys = require \../../model/sys .instance
-E   = require \./edge
-N   = require \./node
+E   = require \./graph/edge
+N   = require \./graph/node
 
 const SIZE-NEW = 500px
 
