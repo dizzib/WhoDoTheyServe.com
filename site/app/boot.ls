@@ -14,7 +14,6 @@ C  = require \./collection
 Cs = require \./collections
 S  = require \./session
 
-require \./view/map/boot
 require \./view-handler/event
 require \./view-handler/ui
 

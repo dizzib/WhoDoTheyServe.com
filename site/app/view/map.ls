@@ -7,6 +7,7 @@ D  = require \../view-handler/directive
 V  = require \../view
 Ve = require \../view-activity/edit
 Vr = require \../view-activity/read
+Gc = require \./map/graph/composer
 Sp = require \./map/scroll-pos
 T  = require \./map/tool
 
@@ -39,6 +40,7 @@ module.exports = B.View.extend do
       @delete!
       @$el.set-access S
 
+    Gc @
     T.init @
     @scroll-pos = new Sp @v-graph
 
