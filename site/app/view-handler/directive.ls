@@ -123,7 +123,9 @@ module.exports =
   map-edit:
     'flags.private':
       checked: -> @flags?private
-  maps:
+  meta: META
+  meta-compact: META-COMPACT
+  nav-maps:
     map:
       class: -> 'map active' if @_id is V.map.map?id
     'edit-indicator':
@@ -131,8 +133,6 @@ module.exports =
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name
-  meta: META
-  meta-compact: META-COMPACT
   node:
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
