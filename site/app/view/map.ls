@@ -10,10 +10,10 @@ Vr = require \../view-activity/read
 Gc = require \./map/graph/composer
 Sp = require \./map/scroll-pos
 T  = require \./map/tool
+Te = require \./map/tool/edit
 
 M-Map    = require \../model/map
 V-Graph  = require \./map/graph
-V-Edit   = require \./map/tool/edit
 V-Layers = require \./map/tool/layers
 
 T-Edit = F.readFileSync __dirname + \/map/tool/edit.html
@@ -41,7 +41,9 @@ module.exports = B.View.extend do
       @$el.set-access S
 
     Gc @
-    T.init @
+    T @
+    Te @v-edit, @v-graph
+
     @scroll-pos = new Sp @v-graph
 
   render: (id) ->

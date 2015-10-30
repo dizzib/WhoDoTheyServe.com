@@ -16,7 +16,7 @@ module.exports = me =
     B.trigger \signed-out-by-session-expired
 
   is-signed-in: ->
-    return C.Sessions.length > 0 unless it
+    return C.Sessions?length unless it
     return me.get-id! is it
 
   is-signed-in-admin: ->
