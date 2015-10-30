@@ -16,4 +16,4 @@ module.exports =
     add2map = $ \#__add-to-map .prop \checked
     localStorage.setItem STORE-KEY, add2map
 
-function get-map-name then V.map.map?get \name
+function get-map-name then V.maps.get-current!?get \name

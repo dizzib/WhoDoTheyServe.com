@@ -127,9 +127,9 @@ module.exports =
   meta-compact: META-COMPACT
   nav-maps:
     map:
-      class: -> 'map active' if @_id is V.map.map?id
+      class: -> 'map active' if V.maps.is-current @_id
     'edit-indicator':
-      class: -> "fa fa-chevron-left" if @_id is V.map.map?id
+      class: -> "fa fa-chevron-left" if V.maps.is-current @_id
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name

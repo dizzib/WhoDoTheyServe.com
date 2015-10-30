@@ -16,10 +16,10 @@ B.on \boot ->
     ..on \rendered Vee.init
   V.evidence-edit
     ..on \rendered -> Fpx.get-browser-url (-> $ \#url .attr \value it) if it.isNew!
-  V.map
-    ..on \deleted -> V.navbar.render!
-  V.map.v-edit
-    ..on \destroyed -> R.navigate \user
+  V.maps
+    ..on \cleared  -> V.navbar.render!
+    ..on \deleted  -> R.navigate \user
+    ..on \rendered -> V.navbar.render!
     ..on \saved (map, is-new) ->
       V.navbar.render!
       R.navigate "map/#{map.id}" if is-new

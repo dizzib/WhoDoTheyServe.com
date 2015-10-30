@@ -5,7 +5,7 @@ Vs = require \./view-activity/select
 
 V-Footer  = require \./view/footer
 V-Latest  = require \./view/latest
-V-Map     = require \./view/map
+V-Maps    = require \./view/maps
 V-NavBar  = require \./view/navbar
 V-Sys     = require \./view/sys
 
@@ -49,7 +49,7 @@ module.exports
   ..evidences-head  = new Vr.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
   ..footer          = new V-Footer                              el:\.footer
   ..latest          = new V-Latest                              el:\.view>.main
-  ..map             = new V-Map                                 el:\.view>.map
+  ..maps            = new V-Maps                                el:\.view.maps
   ..maps-list       = new Vr.ListView template:T-MapsList     , el:\.view>.maps-list, opts:{ fetch:false }
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
   ..navbar          = new V-NavBar                              el:\.navigator

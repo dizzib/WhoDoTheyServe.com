@@ -22,7 +22,7 @@ module.exports = B.View.extend do
 
 function render-map $t
   $el = $t.find \>li.map
-  if (m = V.map.map)? then $el.render m, D.map else $el.remove!
+  if (m = V.maps.get-current!)? then $el.render m, D.map else $el.remove!
 
 function render-maps-dropdown $t
   $maps = $t.find \ul.maps
@@ -37,7 +37,8 @@ function render-maps-dropdown $t
 
   # create new
   $new = $t.find \li.map-new
-  $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left' if V.map.map?isNew!
+  if V.maps.get-current!?isNew!
+    $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left'
   $maps.append $new
 
 function set-active-tab $t
