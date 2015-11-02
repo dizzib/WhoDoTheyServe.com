@@ -1,13 +1,13 @@
+C = require \../../../collection
+
 const ICON-GAP   = 1
 const ICON-SIZE  = 16
 const ICON-SPACE = ICON-SIZE + ICON-GAP
 
-var evis, g
-
 module.exports = me =
   init: (vg) ->
-    vg.on \render (ents) ->
-      evis := ents.evidences
+    var g
+    vg.on \render ->
       g := @svg.selectAll \g.edge-glyphs
         .data @d3f.links!
         .enter!append \svg:g
@@ -17,7 +17,7 @@ module.exports = me =
       g.attr \transform me.get-transform
 
   append: (edge) ->
-    evs = _.filter evis, -> edge._id is it.get \entity_id
+    evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
     dx  = - (ICON-SPACE * (evs.length - 1)) / 2
     dy  = ICON-SIZE / 2
     for ev, i in evs
