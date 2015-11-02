@@ -9,7 +9,7 @@ module.exports = (vg) ->
     @svg.selectAll \.slit .each ->
       slit = d3.select this
       badges = slit.selectAll \a
-      if (n = badges.0.length) then
+      if (n = badges.0.length)
         dx = - (n - 1) * (BADGE-WIDTH / 2)
         slit.attr \transform -> "translate(#{dx},-10)"
         badges.each (d, i) ->

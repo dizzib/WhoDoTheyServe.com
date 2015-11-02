@@ -4,7 +4,7 @@ C = require \../../../../../collection
 module.exports = me =
   init: (vg) ->
     vg.on \pre-render (ents) ->
-      ents.nodes = _.filter ents.nodes, -> not me.is-conference-yyyy it
+      ents.nodes = _.reject ents.nodes, me.is-conference-yyyy
 
     vg.on \render ->
       function render-badge node, x, x-size
