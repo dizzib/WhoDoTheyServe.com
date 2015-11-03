@@ -167,8 +167,9 @@ function init-sandbox
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
         continue if el.disabled
-        if cond-fn el.textContent and ((not include-hidden and el.offsetParent) or include-hidden)
-          #log 'match:', el.outerHTML
+        continue unless cond-fn el.textContent
+        if (not include-hidden and is-visible el) or include-hidden
+          #console.log 'match:', el.outerHTML, el.offsetWidth, el.offsetHeight
           window.el = el
           n++
       n
@@ -182,12 +183,15 @@ function init-sandbox
 
     window.fill = ->
       id = window.el.getAttribute \for
-      el = document.querySelector "input##{id},textarea##{id}"
-      switch attr = el.getAttribute \type
-      | \text     => el.value = it
-      | \password => el.value = it
-      | \radio    => el.checked = it
-      attr
+      for el in document.querySelectorAll "input##{id},textarea##{id}"
+        continue unless is-visible el
+        switch attr = el.getAttribute \type
+        | \text     => el.value = it
+        | \password => el.value = it
+        | \radio    => el.checked = it
+        return attr
+
+    function is-visible el then el.offsetWidth > 0 or el.offsetHeight > 0
 
 function poll-for-ok timeout, fn
   start-time = Date.now!

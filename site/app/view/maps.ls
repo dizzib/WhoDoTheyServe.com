@@ -4,47 +4,56 @@ M  = require \../model/map
 S  = require \../session
 Vm = require \./map
 
-module.exports = B.View.extend do
-  clear: ->
-    delete @v-map.map
-    @trigger \cleared
+const NEW-MAP-KEY = -1
 
+module.exports = B.View.extend do
   get-current: ->
-    @v-map.map
+    @map-views[@cur-key]?map
 
   is-current: (id) ->
     id is @get-current!?id
 
   initialize: ->
-    @$el.append $map = (@$ \.map.template .clone!removeClass \template)
-    @v-map = vm = new Vm el:$map
-    vm.v-edit
-      ..on \destroyed ~>
-        @clear!
-        @trigger \deleted
-      ..on \saved ~>
-        @trigger \saved ...&
+    ~function reset
+      @cur-key   = null # current
+      @map-views = {}   # cache by key
+    reset!
     B.on 'signin signout' ~>
-      @clear!
+      for ,v of @map-views then v.remove!
       @$el.set-access S
+      reset!
 
   render: (id) ->
     done = arguments[*-1]
-    loc = B.history.fragment
-    m = @v-map.map
+    @cur-key = id or NEW-MAP-KEY
+    return display vm.map if vm = @map-views[@cur-key]
+    return display M.create! unless id
 
-    is-init-new = not id and (not m or not m.isNew!)
-    is-sel-changed = id isnt (m?id or null)
-
-    return display M.create! if is-init-new
-    return display m unless is-sel-changed
     return B.trigger \error "Unable to get map #id" unless map = C.Maps.get id
-    map.fetch success:display
-    false # async done
+    loc = B.history.fragment
+    map.fetch success: ->
+      return unless B.history.fragment is loc # bail if user navigated away
+      display it
+      done!
+    return false # async done
+
+    ~function append-map-view
+      @$el.append $map = (@$ \.map.template .clone!removeClass \template)
+      vm = new Vm el:$map
+      vm.v-edit
+        ..on \destroyed ~>
+          @map-views[it.id].remove!
+          delete @map-views[it.id]
+        ..on \saved (map, is-new) ~>
+          if is-new # update key with new id
+            @map-views[map.id] = @map-views[NEW-MAP-KEY]
+            delete @map-views[NEW-MAP-KEY]
+      @trigger \appended vm
+      vm
 
     ~function display map
-      return unless B.history.fragment is loc # bail if user navigated away
-      @v-map.render map if is-sel-changed or is-init-new
-      @v-map.show!
-      @trigger \rendered
-      done!
+      unless vm = @map-views[@cur-key]
+        vm = @map-views[@cur-key] = append-map-view!
+        vm.render map
+      vm.show!
+      true # sync done

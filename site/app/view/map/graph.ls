@@ -31,10 +31,22 @@ module.exports = B.View.extend do
         tick!
         @trigger \tick
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
-          set-map-size @
+          resize @
+          @justify!
           is-resized := true # resize only once during cool-down
       ..on \end ~>
         @trigger \cooled
+
+  justify: ->
+    return unless @svg # might be undefined e.g. new map
+    # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
+    if (@svg.attr \width) < @$el.width!
+      @$el.css \display \flex
+      @$el.css \align-items \center # vert
+      @$el.css \justify-content \center # horiz
+    else
+      @$el.css \display \block
+      @$el.css \justify-content \flex-start
 
   refresh-entities: (node-ids) -> # !!! client-side version of server-side logic in model/maps.ls
     @map.set \nodes _.map node-ids, (nid) ~>
@@ -86,7 +98,7 @@ module.exports = B.View.extend do
 
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
-    justify @
+    @justify!
 
     # order matters: svg uses painter's algo
     E.render @svg, @d3f
@@ -104,27 +116,12 @@ module.exports = B.View.extend do
     tick!        # single tick required to render frozen map
     @trigger \tick
 
-  show: ->
-    justify @
-
 ## helpers
-
-function justify v
-  return unless ($g = $ \.graph).is \:visible # prevent show if it's hidden
-  return unless v.svg # might be undefined e.g. new map
-  # only apply flex if svg needs centering, due to bugs in flex when content exceeds container width
-  if (v.svg.attr \width) < $g.width!
-    $g.css \display \flex
-    $g.css \align-items \center # vert
-    $g.css \justify-content \center # horiz
-  else
-    $g.css \display \block
-    $g.css \justify-content \flex-start
 
 function set-canvas-size svg, w, h
   svg.attr \width w .attr \height h
 
-function set-map-size v
+function resize v
   const PADDING = 200px
 
   nodes = v.get-nodes-xy!
@@ -135,7 +132,6 @@ function set-map-size v
 
   size-before = x:v.get-size-x!, y:v.get-size-y!
   set-canvas-size v.svg, w, h
-  justify v
   v.d3f.size [w, h]
   v.map.set \size.x w
   v.map.set \size.y h

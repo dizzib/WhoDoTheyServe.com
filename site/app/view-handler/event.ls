@@ -11,18 +11,18 @@ Vne = require \../view/node/edit
 Vue = require \../view/user/edit
 Vus = require \../view/user/signin
 
+B.on 'routed signin signout' -> V.navbar.render!
+
 B.on \boot ->
   V.edge-edit
     ..on \rendered Vee.init
   V.evidence-edit
     ..on \rendered -> Fpx.get-browser-url (-> $ \#url .attr \value it) if it.isNew!
   V.maps
-    ..on \cleared  -> V.navbar.render!
-    ..on \deleted  -> R.navigate \user
-    ..on \rendered -> V.navbar.render!
-    ..on \saved (map, is-new) ->
-      V.navbar.render!
-      R.navigate "map/#{map.id}" if is-new
+    ..on \appended ->
+      it.v-edit
+        ..on \destroyed -> R.navigate \user
+        ..on \saved (map, is-new) -> R.navigate "map/#{map.id}" if is-new
   V.node-edit
     ..on \rendered Vne.init
     ..on \saved    Vne.save

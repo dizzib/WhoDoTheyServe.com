@@ -12,6 +12,6 @@ module.exports = (vm = v-map) ->
   (require \./overlay/bil/node).init vg
   (require \./pin) vg
   (require \./region) vg
-  (Cu = require \./cursor).init vg
-  (require \./animator) vg, Cu
-  (require \./anthill) vg, Cu
+  cu = (new (require \./cursor) vg)
+  (require \./animator) vg, cu
+  (require \./anthill) vg, cu

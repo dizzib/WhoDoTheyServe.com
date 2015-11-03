@@ -12,21 +12,15 @@ const OVERLAYS =
 module.exports = B.View.extend do
   initialize: ->
     @$el.html F.readFileSync __dirname + \/layers.html
-    @reset!
 
   render: ->
     for let k, v of OVERLAYS
-      $el = get-chk$ k .click ~> @trigger (get-toggle-event v), $el.prop \checked
+      $c = @$ "\#chk#k" .click ~> @trigger "toggle-#{v.event}" $c.prop \checked
     @$el.show!
     @trigger \rendered
+    @reset!
 
   reset: ->
     for let k, v of OVERLAYS
-      get-chk$ k .prop \checked v.default
-      @trigger (get-toggle-event v), v.default
-
-## helpers
-
-function get-chk$ then $ "\#chk#it"
-
-function get-toggle-event then "toggle-#{it.event}"
+      @$ "\#chk#k" .prop \checked v.default
+      @trigger "toggle-#{v.event}" v.default

@@ -5,9 +5,6 @@ $w = $ window
 module.exports = class
   (@v-graph) ->
 
-  delete: ->
-    delete @pos
-
   restore: ->
     ~function get-initial-scroll-pos
       return x:0 y:0 unless svg = @v-graph.svg # might be undefined e.g. new map

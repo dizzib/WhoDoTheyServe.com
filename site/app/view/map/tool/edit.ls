@@ -10,7 +10,7 @@ module.exports = (ve, vg) ->
   ## helpers
 
   function alert-success msg
-    ve.$el.find \.alert-success .text msg .toggle msg?
+    ve.$ \.alert-success .text msg .toggle msg?
 
   function init
     C.Edges.on 'add remove' ->

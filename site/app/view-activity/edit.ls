@@ -47,5 +47,9 @@ module.exports =
       m.on \request -> $ \.button-bar .disable-buttons!
       m.on \sync    -> $ \.button-bar .enable-buttons!
       @trigger \serialized m
-      @coll.create m, { +merge, +wait, success: ~> @trigger \saved m, is-new }
-      false
+      @coll.create m, { +merge, +wait, success:saved }
+      return false
+
+      ~function saved
+        @$ \form .removeClass \create .addClass \update if is-new
+        @trigger \saved m, is-new

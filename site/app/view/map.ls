@@ -34,18 +34,17 @@ module.exports = B.View.extend do
 
     @scroll-pos = new Sp @v-graph
 
-  render: (@map) ->
+  render: (@map) -> # @map for external ref
     @v-graph.map = @map
     @v-graph.render!
-    @v-layers.reset!
     @v-layers.render!
     @v-info.render @map, D.map
     @v-meta.render @map, D.meta
     @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
-    @scroll-pos.delete!
 
   show: ->
-    @$el.show!.on \hide ~>
+    @$el.show! .on \hide ~>
       @$el.off \hide
       @scroll-pos.save!
+    @v-graph.justify!
     @scroll-pos.restore!
