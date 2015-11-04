@@ -7,18 +7,28 @@ S = require \../session
 V = require \../view
 
 module.exports = B.View.extend do
-  render: ->
+  initialize: ->
     @$el.html F.readFileSync __dirname + \/navbar.html
-    set-active-tab!
-    render-map!
+
+  render: ->
+    render-map-tabs!
     render-maps-dropdown!
+    set-active-tab!
     S.auto-sync-el @$el
 
     ## helpers
 
-    function render-map
-      $map = @$ \ul.nav>li.map
-      if (m = V.maps.get-current!)? then $map.show!render m, D.map else $map.hide!
+    function render-map-tabs
+      const SEL = \.nav>li.map
+      return unless m = V.maps.get-current!
+      id = m.id
+      unless @$ "#SEL[data-id=#id]" .length
+        $t = @$ "#SEL:not([data-id])" .first!
+        $t = @$ "#SEL.hot" unless $t.length
+        $t.render m, D.map
+        $t.attr \data-id id
+        $t.attr \active "^$|^map/#id"
+      @$ SEL .each -> ($t = $ @).toggleClass \hot id is $t.attr \data-id
 
     function render-maps-dropdown
       $maps = @$ \ul.maps
@@ -37,6 +47,7 @@ module.exports = B.View.extend do
 
     function set-active-tab
       function clean-hash then it.replace('#/' '').replace '#'  ''
-      @$ \ul.nav>li .each ->
-        return unless (s = ($li = $ @).attr \active)?
+      @$ \.nav>li .each ->
+        $li = $ @
+        return unless (s = $li.attr \active)?
         $li.toggleClass \active (new RegExp s, \i).test (clean-hash location.hash)

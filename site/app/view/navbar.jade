@@ -1,3 +1,8 @@
+mixin map
+  a.link
+    i.fa.fa-share-alt
+      span.name
+
 ul.nav.nav-tabs
   li(active='^doc/about')
     a(href='#/doc/about')
@@ -28,10 +33,8 @@ ul.nav.nav-tabs
         a(href='#/map/new')
           i.fa.fa-plus Create new
           i.edit-indicator
-  li(active='^$|^map').map
-    a.link
-      i.fa.fa-share-alt
-        span.name
+  li.map.hot: +map
+  li.map: +map
   li(active='^user/signin').seo-remove.pull-right.signed-out
     a(href='#/user/signin')
       i.fa.fa-sign-in Login

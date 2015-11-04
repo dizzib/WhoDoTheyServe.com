@@ -1,8 +1,10 @@
 .navbar-fixed-top
-  min-width 800px // prevent wrapping
   .nav
+    min-width       800px
     .fa:before
       margin-right  0.5em
+    > .map:not([active])
+      display       none
     .maps
       .fa:before
         margin-left   0.5em
