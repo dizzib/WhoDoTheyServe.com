@@ -21,25 +21,21 @@ module.exports = B.View.extend do
     function render-map-tabs
       const SEL = \.nav>li.map
       return unless m = V.maps.get-current!
-      id = m.id
-      unless @$ "#SEL[data-id=#id]" .length
-        $t = @$ "#SEL:not([data-id])" .first!
+      key = m.id or \new
+      unless @$ "#SEL[data-key=#key]" .length
+        $t = @$ "#SEL:not([data-key])" .first!
         $t = @$ "#SEL.hot" unless $t.length
         $t.render m, D.map
-        $t.attr \data-id id
-        $t.attr \active "^$|^map/#id"
-      @$ SEL .each -> ($t = $ @).toggleClass \hot id is $t.attr \data-id
+        $t.attr \data-key key
+        $t.attr \active "^$|^map/#key"
+      @$ SEL .each -> ($t = $ @).toggleClass \hot key is $t.attr \data-key
 
     function render-maps-dropdown
       $maps = @$ \ul.maps
-      if C.Maps.length
-        uid = S.get-id! or C.Users.find(-> it.get-is-admin!).models.0.id
-        maps = C.Maps.where 'meta.create_user_id':uid
-        json = _.map maps, -> it.toJSON-T!
-        $maps.render json, D.nav-maps
-      else
-        $maps.empty!
-      # create new
+      uid = S.get-id! or C.Users.find(-> it.get-is-admin!).models.0?id
+      maps = C.Maps.where 'meta.create_user_id':uid
+      json = _.map maps, -> it.toJSON-T!
+      $maps.render json, D.nav-maps
       $new = @$ \li.map-new
       if V.maps.get-current!?isNew!
         $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left'
