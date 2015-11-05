@@ -3,14 +3,20 @@
     min-width       800px
     .fa:before
       margin-right  0.5em
-    >.map.hot
-      .shortname
-        display       none
-    >.map:not(.hot)
-      .name
-        display       none
     >.map:not([data-key])
       display       none
     .maps
       .fa:before
         margin-left   0.5em
+
+    @media screen and (min-width: 981px)
+      >.map
+        .shortname
+          display       none
+    @media screen and (max-width: 980px)
+      >.map.hot
+        .shortname
+          display       none
+      >.map:not(.hot)
+        .name
+          display       none
