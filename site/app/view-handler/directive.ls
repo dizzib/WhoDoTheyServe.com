@@ -118,6 +118,10 @@ module.exports =
       text: -> @name or @get \name or 'New map'
     description:
       html: -> htmlify-text @description
+    shortname:
+      text: ->
+        return s unless (s = @name or @get \name or 'New map').length > 3
+        s.substr(0, 3) + \...
     when:
       text: -> "Date: #{@when}" if @when
   map-edit:

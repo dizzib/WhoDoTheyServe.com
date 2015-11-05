@@ -3,7 +3,13 @@
     min-width       800px
     .fa:before
       margin-right  0.5em
-    > .map:not([active])
+    >.map.hot
+      .shortname
+        display       none
+    >.map:not(.hot)
+      .name
+        display       none
+    >.map:not([data-key])
       display       none
     .maps
       .fa:before
