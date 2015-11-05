@@ -1,7 +1,6 @@
 B  = require \backbone
 C  = require \../collection
 M  = require \../model/map
-S  = require \../session
 Vm = require \./map
 
 const NEW-MAP-KEY = -1
@@ -20,7 +19,6 @@ module.exports = B.View.extend do
     reset!
     B.on 'signin signout' ~>
       for ,v of @map-views then v.remove!
-      @$el.set-access S
       reset!
 
   render: (id) ->

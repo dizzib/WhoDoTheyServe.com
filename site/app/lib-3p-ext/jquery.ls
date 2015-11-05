@@ -9,18 +9,6 @@ $.fn.hide = (speed, cb) ->
   $ this .trigger \hide
   _hide.apply this, arguments
 
-$.fn.set-access = (session) ->
-  show-or-hide \.signed-in       session.is-signed-in!
-  show-or-hide \.signed-in-admin session.is-signed-in-admin!
-  show-or-hide \.signed-out      session.is-signed-out!
-  @find '.signed-in-admin input' .prop \disabled not session.is-signed-in-admin!
-  return @
-
-  ~function show-or-hide sel, show
-    @find sel
-      .addClass    (if show then \show else \hide)
-      .removeClass (if show then \hide else \show)
-
 # http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
 $.fn.serializeObject = ->
   function set name, val, to-array = true

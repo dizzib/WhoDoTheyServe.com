@@ -1,9 +1,18 @@
-// NOTE YOU MUST SAVE INDEX.JADE FOR CHANGES TO TAKE EFFECT!!!
+// SAVE INDEX.JADE FOR CHANGES TO TAKE EFFECT!!!
 body
   font-family "Helvetica Neue", Helvetica, Arial, sans-serif
   position      relative  // required for splash z-index to work
   height        100%      // attempt to stop splash moving around during load
   width         100%
+body.signed-in
+  .signed-out
+    display       none
+body:not(.signed-in)
+  .signed-in
+    display       none
+body:not(.signed-in-admin)
+  .signed-in-admin
+    display       none
 
 .splash
   position      fixed

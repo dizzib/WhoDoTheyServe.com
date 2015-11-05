@@ -1,7 +1,6 @@
 B = require \backbone
 T = require \transparency
 _ = require \underscore
-S = require \../session
 
 const CLASS-EDITING = \editing
 
@@ -33,7 +32,7 @@ module.exports =
       return render @model if is-new or opts?fetch is no
       @model.fetch success: -> render it
       ~function render model
-        @$el.html $tem.render(model.toJSON-T!, opts?directive).set-access S .show!
+        @$el.html $tem.render(model.toJSON-T!, opts?directive) .show!
         @trigger \rendered model # before focus, for bootstrap-typeahead
         @$el.find 'input[type=text],textarea,select' .filter \:visible:first .focus!
     save: ->

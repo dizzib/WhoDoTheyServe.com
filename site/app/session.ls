@@ -2,31 +2,24 @@ B  = require \backbone
 C  = require \./collection
 Cs = require \./collections
 
-module.exports = me =
-  auto-sync-el: ($el) ->
-    C.Sessions.on \sync, -> $el.set-access me
-    $el.set-access me
+B.on \boot ->
+  C.Sessions.on \sync set-access
+  set-access!
 
-  get-id: ->
-    C.Sessions.models.0?id
+module.exports = me =
+  get-id: -> C.Sessions.models.0?id
 
   expire: ->
     C.Sessions.reset!
+    set-access!
     B.trigger \signout
     B.trigger \signed-out-by-session-expired
 
-  is-signed-in: ->
-    return C.Sessions?length unless it
-    return me.get-id! is it
+  is-signed-in      : -> if it then me.get-id! is it else C.Sessions?length > 0
+  is-signed-in-admin: -> \admin is C.Sessions.models.0?get \role
+  is-signed-out     : -> C.Sessions.length is 0
 
-  is-signed-in-admin: ->
-    \admin is C.Sessions.models.0?get \role
-
-  is-signed-out: ->
-    C.Sessions.length is 0
-
-  refresh: (cb) ->
-    C.Sessions.fetch success:cb
+  refresh: (cb) -> C.Sessions.fetch success:cb
 
   signin: ->
     <- me.refresh
@@ -44,6 +37,12 @@ module.exports = me =
   signout: ->
     return unless m = C.Sessions.models.0
     m.destroy success: ->
+      set-access!
       C.Maps.fetch success: ->
         B.trigger \signout
         B.trigger \signed-out-by-user
+
+function set-access
+  $ \body
+    ..toggleClass \signed-in me.is-signed-in!
+    ..toggleClass \signed-in-admin me.is-signed-in-admin!

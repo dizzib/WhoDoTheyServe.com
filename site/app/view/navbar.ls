@@ -14,7 +14,6 @@ module.exports = B.View.extend do
     render-map-tabs!
     render-maps-dropdown!
     set-active-tab!
-    S.auto-sync-el @$el
 
     ## helpers
 

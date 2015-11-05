@@ -1,7 +1,6 @@
 B = require \backbone
 Q = require \querystring # browserified
 T = require \transparency
-S = require \../session
 
 module.exports =
   DocuView: B.View.extend do
@@ -16,7 +15,7 @@ module.exports =
       # transparency won't process void data, hence {}
       data = if @opts.query-string then Q.parse o else (o?toJSON-T! or {})
       ($tem = $ @template).render data, directive
-      @$el.html $tem .set-access S .show!
+      @$el.html $tem .show!
       @trigger \rendered o
 
   ListView: B.View.extend do
@@ -38,4 +37,4 @@ module.exports =
         ($tem = $ @template).render (items:c.toJSON-T!), items:directive
         $tem.find \.no-items .toggle (c.length is 0)
         @$el.html $tem
-        @$el.set-access S .show! if pass is 0
+        @$el.show! if pass is 0
