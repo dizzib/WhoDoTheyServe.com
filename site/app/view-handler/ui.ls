@@ -20,17 +20,13 @@ B.on \pre-route ->
   spinner-timeout := setTimeout (-> $ \.spinner .show!), 50ms
 
 B.on \routed ->
-  # use a delgated event since view may still be rendering asyncly
-  $ \.view .on \focus 'input[type=text]' ->
-    # defer, to workaround Chrome mouseup bug
-    # http://stackoverflow.com/questions/2939122/problem-with-chrome-form-handling-input-onfocus-this-select
-    _.defer ~> @select!
   <- _.defer
-  $ \.btn-new:visible:first .focus!
   $ \.view .addClass \ready # signal for seo crawler
   $ \.timeago .timeago!
   clearTimeout spinner-timeout
   $ \.spinner .hide!
+  <- _.defer # must come after navbar focus
+  $ 'input[type=text],textarea,select,.btn-new' .filter \:visible:first .focus!
 
 ## session
 B.on \signed-in-by-user  -> show-alert-once 'Welcome! You are now logged in'

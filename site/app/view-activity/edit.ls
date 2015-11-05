@@ -27,8 +27,7 @@ module.exports =
       @model.fetch success: -> render it
       ~function render model
         @$el.html $tem.render(model.toJSON-T!, opts?directive) .show!
-        @trigger \rendered model # before focus, for bootstrap-typeahead
-        @$ 'input[type=text],textarea,select' .filter \:visible:first .focus!
+        @trigger \rendered model
     save: ->
       it.preventDefault!
       unless (m = @model) then alert "ERROR! @model is void. Check $el isn't used by other edit views!"

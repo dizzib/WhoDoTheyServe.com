@@ -630,7 +630,9 @@ select:focus:invalid:focus {
 .nav-tabs {
   border-bottom: 1px solid #666666;
 }
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
   background-color: #2f2f2f;
   color: #fff;
   border-color: #666666 #666666 transparent #666666;

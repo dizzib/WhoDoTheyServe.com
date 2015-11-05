@@ -46,3 +46,4 @@ module.exports = B.View.extend do
         $li = $ @
         return unless (s = $li.attr \active)?
         $li.toggleClass \active (new RegExp s, \i).test (clean-hash location.hash)
+      @$ \.nav>li.active>a .focus!

@@ -15,9 +15,6 @@ module.exports =
       sel-a.set-by-id b-id
       sel-b.set-by-id a-id
 
-    # defer, otherwise won't focus in new edge for some reason
-    _.defer ~> @$ 'input[type=text]:first' .focus!
-
     function auto-populate-how
       a-id = V.edge-a-node-sel.get-selected-id!
       b-id = V.edge-b-node-sel.get-selected-id!
