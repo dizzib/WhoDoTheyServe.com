@@ -48,3 +48,4 @@ module.exports = B.View.extend do
       @scroll-pos.save!
     @v-graph.justify!
     @scroll-pos.restore!
+    @trigger \show
