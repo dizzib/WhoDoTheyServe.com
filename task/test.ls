@@ -28,8 +28,8 @@ module.exports = me =
     err <- run env-id, scope-id
     me.loop env-id, scope-id unless err
   run: (env-id, scope-id, cb) ->
-    scopes = if scope-id then [scope-id] else <[ api app ]>
-    for sid in scopes then
+    return run env-id, scope-id, cb if scope-id
+    for sid in <[ api app ]>
       skip = env-id is \dev and not Flags.get!test.run[sid]
       if skip then log Chalk.cyan "skip #sid tests" else run env-id, sid, cb
 
