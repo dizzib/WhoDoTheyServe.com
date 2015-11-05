@@ -7,23 +7,23 @@ module.exports =
     init-sel V.edge-a-node-sel, it.get \a_node_id
     init-sel V.edge-b-node-sel, it.get \b_node_id
 
-    $ \#how .typeahead source:_.uniq C.Edges.pluck \how
+    @$ \#how .typeahead source:_.uniq C.Edges.pluck \how
 
-    $ \.btn-swap-ab .click ->
+    @$ \.btn-swap-ab .click ->
       a-id = (sel-a = V.edge-a-node-sel).get-selected-id!
       b-id = (sel-b = V.edge-b-node-sel).get-selected-id!
       sel-a.set-by-id b-id
       sel-b.set-by-id a-id
 
     # defer, otherwise won't focus in new edge for some reason
-    _.defer -> $ '.editing input[type=text]:first' .focus!
+    _.defer ~> @$ 'input[type=text]:first' .focus!
 
     function auto-populate-how
       a-id = V.edge-a-node-sel.get-selected-id!
       b-id = V.edge-b-node-sel.get-selected-id!
       return unless a-id and b-id
       top-hows = (get-top-hows a-id) ++ (get-top-hows b-id)
-      $ \#how .attr \value, (_.max top-hows, -> it.1).0
+      @$ \#how .attr \value, (_.max top-hows, -> it.1).0
 
     function get-top-hows node-id
       edges = (C.Edges.where a_node_id:node-id) ++ (C.Edges.where b_node_id:node-id)
