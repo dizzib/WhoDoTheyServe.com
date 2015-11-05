@@ -13,7 +13,7 @@ ul.nav.nav-tabs
   li.seo-remove.signed-in
     a(href='#/node/new')
       i.fa.fa-plus
-  li(active='^edge')
+  li(active='^edge').hide-on-tablet
     a(href='#/edges')
       i.fa.fa-chain Connections
   li.seo-remove.signed-in
@@ -35,7 +35,7 @@ ul.nav.nav-tabs
           i.edit-indicator
   li.map.hot: +map
   li.map: +map
-  li(active='^user/signin').seo-remove.pull-right.signed-out
+  li(active='^user/signin').hide-on-tablet.seo-remove.pull-right.signed-out
     a(href='#/user/signin')
       i.fa.fa-sign-in Login
   li(active='^user/signout').seo-remove.pull-right.signed-in
