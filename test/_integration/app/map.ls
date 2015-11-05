@@ -35,5 +35,5 @@ function on-remove
   B.wait-for \Contributions \legend
 
 function on-save key, fields
-  B.wait-for fields.name, '.nav li'
+  B.wait-for fields.name, '.nav>li .name'
   B.wait-for-visible 'Successfully saved' \.alert-success
