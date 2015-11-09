@@ -1,6 +1,5 @@
 B = require \backbone
 F = require \fs
-S = require \../../../session
 
 const OVERLAYS =
   Ac       : default:false event:\ac
