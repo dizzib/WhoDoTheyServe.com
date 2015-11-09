@@ -27,15 +27,14 @@ module.exports =
       target: _.find nodes, -> it._id is edge.b_node_id
 
     for d3e in d3es
-      arr = []
-      arr.push \minor if not is-in-range d3e.when-obj
-      arr.push \family if a = d3e.source.family-name and b = d3e.target.family-name and a is b
-      d3e.class = arr * ' '
+      d3e.classes.push \minor if not is-in-range d3e.when-obj
+      d3e.classes.push \family if a = d3e.source.family-name and b = d3e.target.family-name and a is b
     d3es
 
-  get-strength: ->
-    x = if it.class is \minor then 1 else 20
-    w = it.source.weight + it.target.weight
+  get-strength: (edge) ->
+    function has-class then _.contains edge.classes, it
+    x = if has-class \layer then 0 else if has-class \minor then 1 else 20
+    w = edge.source.weight + edge.target.weight
     x / w
 
   refresh-position: ->

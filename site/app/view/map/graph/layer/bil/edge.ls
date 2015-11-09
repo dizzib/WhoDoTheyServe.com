@@ -3,7 +3,7 @@ C  = require \../../../../../collection
 Eg = require \../../edge-glyph
 N  = require \./node
 
-module.exports = (vg, v-layers) ->
+module.exports = (vg) ->
   var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
   vg.on \cooled ->
@@ -17,7 +17,7 @@ module.exports = (vg, v-layers) ->
           .attr \y1 if fn-is-hub src then hub.y else src.y
           .attr \x2 if fn-is-hub tar then hub.x else tar.x
           .attr \y2 if fn-is-hub tar then hub.y else tar.y
-          .attr \class "edge id_#{edge._id} #{css-class}"
+          .attr \class "edge id_#{edge._id} layer #{css-class}"
       g-child
 
     # attends
@@ -32,7 +32,7 @@ module.exports = (vg, v-layers) ->
     glyphs = g-steer.selectAll \g.edge-glyphs
       .data edges
       .enter!append \svg:g
-        .attr \class \edge-glyphs
+        .attr \class 'edge-glyphs layer bil-steer'
     glyphs.each Eg.append
     glyphs.attr \transform Eg.get-transform
 
@@ -54,9 +54,6 @@ module.exports = (vg, v-layers) ->
     N.nodes-steer = nodes-steer
 
   vg.on \render ->
-    ~function add-overlay name
-      g = @svg.append \svg:g .attr \class name
-      v-layers.on "toggle-#name" -> g.attr \display, if it then '' else \none
-      g
+    ~function add-overlay name then @svg.append \svg:g .attr \class name
     ga := add-overlay \bil-attend
     gs := add-overlay \bil-steer

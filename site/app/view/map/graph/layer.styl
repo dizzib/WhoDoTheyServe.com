@@ -1,0 +1,19 @@
+layer(tag, color, width = 1px)
+  .graph
+    .badge-{tag}
+      text
+        fill        color
+    .edge.{tag}
+      stroke        color
+      stroke-width  width
+    .layer.{tag}
+      display       none
+  .graph.{tag}
+    .layer.{tag}
+      display       inherit
+
+layer('ac'        , blue)
+layer('bil-attend', #fc4)
+layer('bil-steer' , #f80, 2px)
+layer('bis'       , red)
+layer('cfr'       , magenta)

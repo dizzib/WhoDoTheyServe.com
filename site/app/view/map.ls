@@ -37,7 +37,7 @@ module.exports = B.View.extend do
   render: (@map) -> # @map for external ref
     @v-graph.map = @map
     @v-graph.render!
-    @v-layers.render!
+    @v-layers.render @v-graph
     @v-info.render @map, D.map
     @v-meta.render @map, D.meta
     @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!

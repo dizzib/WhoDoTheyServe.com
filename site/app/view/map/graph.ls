@@ -74,9 +74,10 @@ module.exports = B.View.extend do
     return unless ents.nodes?length
 
     ents.nodes = _.map ents.nodes, -> it.toJSON-T!
-    ents.edges = _.map ents.edges, -> it.toJSON-T!
+    ents.edges = _.map ents.edges, -> it.toJSON-T! <<< classes:[]
     ents.edges = E.filter ents.nodes, ents.edges, @map.get \when
     @trigger \pre-render ents # ents can be modified by handlers
+    for d3e in ents.edges then d3e.class = d3e.classes * ' '
 
     size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
     size-y = @map.get \size.y or @get-size-y! or SIZE-NEW
