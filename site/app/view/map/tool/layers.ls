@@ -14,10 +14,14 @@ module.exports = B.View.extend do
     @$el.html F.readFileSync __dirname + \/layers.html
 
   render: (v-graph) ->
-    @$el.show!
-    $g = v-graph.$el
     for let k, v of OVERLAYS
-      $c = @$ "\#chk#k" .click -> $g.toggleClass v.class, $c.prop \checked
-      @$ "\#chk#k" .prop \checked v.default
-      $g.toggleClass v.class, v.default
+      @$ "\#chk#k"
+        ..prop \checked v.default
+        ..click -> toggle v.class, $ @ .prop \checked
+      toggle v.class, v.default
+
+    @$el.show!
     @trigger \rendered
+
+    function toggle css-class, state
+      v-graph.$el.toggleClass css-class, state
