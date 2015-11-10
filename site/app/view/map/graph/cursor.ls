@@ -4,12 +4,11 @@ _   = require \underscore
 module.exports = class extends Eve
   (vg) ->
     vg.on \render ~>
-      vg.$el.off \click refresh # otherwise handler runs against old svg in closure
       vg.$el.on  \click refresh
 
       ## helpers
 
-      ~function find-nearby-node x, y
+      function find-nearby-node x, y
         const RADIUS = 100px
         function is-near x0, x1, y0, y1 # rough but fast initial proximity test
           Math.abs(x1 - x0) < RADIUS and Math.abs(y1 - y0) < RADIUS

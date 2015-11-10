@@ -22,7 +22,6 @@ module.exports = (vg) ->
     # include this path to show bounding box for debugging pin rotation
     #pin.append \svg:path .attr \d "M -#{l = SIZE / 2} -#l L #l -#l L #l #l L -#l #l L -#l -#l"
 
-    @$el.off \click \.pin # otherwise handler runs against old svg in closure
     @$el.on  \click \.pin ->
       c = $ this .parent!attr \class
       id = (c.match /id_([-\|\w]+)/).1 # some ids include a pipe | but short-id shouldn't do this !?
