@@ -34,7 +34,7 @@ module.exports =
 
   get-strength: (edge) ->
     function has-class then _.contains edge.classes, it
-    x = if has-class \layer then 0 else if has-class \minor then 1 else 20
+    x = if has-class \layer then 0 else if has-class \out-of-date then 1 else 20
     w = edge.source.weight + edge.target.weight
     x / w
 

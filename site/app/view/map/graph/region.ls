@@ -22,7 +22,8 @@ module.exports = (vg) ->
       class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
     function get-node-ids id, filter
-      edges = _.filter ents.edges, -> it.class isnt \minor and filter id, it
+      edges = _.filter ents.edges, ->
+        (not _.contains it.classes, \out-of-date) and filter id, it
       (_.pluck edges, \a_node_id) ++ _.pluck edges, \b_node_id
 
     function get-peer-node-ids subord-node-ids
