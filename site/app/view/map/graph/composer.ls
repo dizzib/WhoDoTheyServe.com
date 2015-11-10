@@ -11,6 +11,8 @@ module.exports = (vm = v-map) ->
   (require \./layer/bil/node).init vg
   (require \./pin) vg
   (require \./region) vg
+
   cu = (new (require \./cursor) vg)
   (require \./animator) vg, cu
   (require \./anthill) vg, cu
+  (require \./spotlight) vg, cu

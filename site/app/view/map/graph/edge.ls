@@ -27,6 +27,8 @@ module.exports =
       target: _.find nodes, -> it._id is edge.b_node_id
 
     for d3e in d3es
+      log d3e
+      d3e.classes.push "id_#{d3e._id}"
       d3e.classes.push \out-of-date if not is-in-range d3e.when-obj
       d3e.classes.push \family if a = d3e.source.family-name and b = d3e.target.family-name and a is b
     d3es
@@ -60,5 +62,5 @@ module.exports =
     lines := svg.selectAll \line
       .data d3f.links!
       .enter!append \svg:line
-        .attr \class      -> "edge id_#{it._id} #{it.class}".trim!
+        .attr \class      -> "edge #{it.class}".trim!
         .attr \marker-end -> if it.a_is is \lt then 'url(#end)' else ''

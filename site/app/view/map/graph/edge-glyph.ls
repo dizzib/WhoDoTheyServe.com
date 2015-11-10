@@ -11,7 +11,7 @@ module.exports = me =
       g := @svg.selectAll \g.edge-glyphs
         .data @d3f.links!
         .enter!append \svg:g
-          .attr \class \edge-glyphs
+          .attr \class -> "edge-glyphs #{it.class}"
       g.each me.append
     vg.on \tick ->
       g.attr \transform me.get-transform
@@ -23,7 +23,6 @@ module.exports = me =
     for ev, i in evs
       d3.select this
         .append \svg:a
-          .attr \class -> edge.class
           .attr \target \_blank
           .attr \xlink:href  -> ev.get \url
           .attr \xlink:title -> edge.tip
