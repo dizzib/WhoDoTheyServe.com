@@ -11,7 +11,7 @@ module.exports = (vg, cursor) ->
     ueids = get-uphill-edge-ids it._id
     deids = get-downhill-edge-ids it._id
     eids = ueids ++ deids
-    sel = (_.map eids, -> ".id_#it").join \,
+    sel = (_.map eids, -> ".id_#it:not(.out-of-date)").join \,
     vg.svg.selectAll sel .classed \ants true if sel
 
   function get-downhill-edge-ids node-id, done = []
