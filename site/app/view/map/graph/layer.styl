@@ -6,11 +6,25 @@ layer(tag, color, width = 1px)
     .edge.{tag}
       stroke        color
       stroke-width  width
+  .graph
     .layer.{tag}
       display       none
   .graph.{tag}
     .layer.{tag}
       display       inherit
+  .graph:not(.out-of-date)
+    .layer.{tag}.out-of-date
+      display       none
+  .graph.{tag}.out-of-date
+    .layer.{tag}.out-of-date
+      display       inherit
+
+.graph
+  .out-of-date
+    display       none
+.graph.out-of-date
+  .out-of-date:not(.layer)
+    display       inherit
 
 layer('ac'        , blue)
 layer('bil-attend', #fc4)

@@ -27,7 +27,7 @@ module.exports =
       target: _.find nodes, -> it._id is edge.b_node_id
 
     for d3e in d3es
-      d3e.classes.push \minor if not is-in-range d3e.when-obj
+      d3e.classes.push \out-of-date if not is-in-range d3e.when-obj
       d3e.classes.push \family if a = d3e.source.family-name and b = d3e.target.family-name and a is b
     d3es
 
