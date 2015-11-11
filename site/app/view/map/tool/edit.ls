@@ -14,7 +14,7 @@ module.exports = (ve, vg) ->
 
   function init
     C.Edges.on 'add remove' ->
-      node-ids = ve.v-nodes-sel.get-selected-ids!
+      return unless node-ids = ve.v-nodes-sel?get-selected-ids!
       refresh-map node-ids if do
         _.contains node-ids, it.get \a_node_id and _.contains node-ids, it.get \b_node_id
     C.Nodes
