@@ -28,7 +28,6 @@ module.exports = B.View.extend do
         is-resized := false
       ..on \tick ~>
         return unless n-tick++ % 4 is 0
-        tick!
         @trigger \tick
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           resize @
@@ -75,7 +74,6 @@ module.exports = B.View.extend do
 
     ents.nodes = _.map ents.nodes, -> it.toJSON-T!
     ents.edges = _.map ents.edges, -> it.toJSON-T! <<< classes:[]
-    ents.edges = E.filter ents.nodes, ents.edges, @map.get \when
     @trigger \pre-render ents # ents can be modified by handlers
     for d3e in ents.edges then d3e.class = d3e.classes * ' '
 
@@ -93,7 +91,11 @@ module.exports = B.View.extend do
      .charge -2000
      .friction 0.85
      .linkDistance 100
-     .linkStrength E.get-strength
+     .linkStrength (edge) ->
+        function has-class then _.contains edge.classes, it
+        x = if has-class \layer then 0 else if has-class \out-of-date then 1 else 20
+        w = edge.source.weight + edge.target.weight
+        x / w
      .size [size-x, size-y]
      .start!
 
@@ -102,8 +104,6 @@ module.exports = B.View.extend do
     @justify!
 
     # order matters: svg uses painter's algo
-    E.render @svg, @d3f
-    N.render @svg, @d3f
     @trigger \render ents
     @svg.selectAll \g.node .call @d3f.drag if is-editable
     @trigger \rendered
@@ -113,9 +113,8 @@ module.exports = B.View.extend do
       return if @map.isNew!
       return if opts?is-slow-to-cool
 
-    @d3f.alpha 0 # freeze map -- must be called after start
-    tick!        # single tick required to render frozen map
-    @trigger \tick
+    @d3f.alpha 0   # freeze map -- must be called after start
+    @trigger \tick # single tick required to render frozen map
 
 ## helpers
 
@@ -143,7 +142,3 @@ function resize v
   for n in v.d3f.nodes! when n.fixed
     n.px += dx
     n.py += dy
-
-function tick
-  N.refresh-position!
-  E.refresh-position!

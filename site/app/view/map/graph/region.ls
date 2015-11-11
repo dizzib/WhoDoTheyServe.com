@@ -15,7 +15,7 @@ module.exports = (vg) ->
           .attr \d "M#{hull.join \L}Z"
 
   vg.on \pre-cool ->
-    d3.selectAll \.hull .remove!
+    @svg?selectAll \.hull .remove!
 
   vg.on \render (ents) ->
     function get-region cls, node-ids

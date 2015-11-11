@@ -4,6 +4,8 @@
 module.exports = (vm = v-map) ->
   vg = vm.v-graph
 
+  (require \./node) vg
+  (require \./edge) vg
   (require \./layer/slit) vg
   (require \./edge-glyph).init vg
   (require \./layer) vg
