@@ -7,9 +7,9 @@ module.exports = (vm = v-map) ->
   (require \./node) vg
   (require \./edge) vg
   (require \./layer/slit) vg
-  (require \./edge-glyph).init vg
+  eg = (require \./edge-glyph) vg
   (require \./layer) vg
-  (require \./layer/bil/edge) vg
+  (require \./layer/bil/edge) vg, eg
   (require \./layer/bil/node).init vg
   (require \./pin) vg
   (require \./region) vg

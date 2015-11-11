@@ -1,9 +1,8 @@
 _  = require \underscore
 C  = require \../../../../../collection
-Eg = require \../../edge-glyph
 N  = require \./node
 
-module.exports = (vg) ->
+module.exports = (vg, edge-glyph) ->
   var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
   vg.on \cooled ->
@@ -33,8 +32,8 @@ module.exports = (vg) ->
       .data edges
       .enter!append \svg:g
         .attr \class 'edge-glyphs layer bil-steer'
-    glyphs.each Eg.append
-    glyphs.attr \transform Eg.get-transform
+    glyphs.each edge-glyph.append
+    glyphs.attr \transform edge-glyph.get-transform
 
   vg.on \pre-cool ->
     g-attend?remove!
