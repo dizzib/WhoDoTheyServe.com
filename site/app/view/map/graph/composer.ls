@@ -12,6 +12,7 @@ module.exports = (vm = v-map) ->
   (require \./layer/bil/edge) vg, eg
   (require \./layer/bil/node).init vg
   (require \./pin) vg
+  (require \./proximity) vg
   (require \./region) vg
 
   cu = (new (require \./cursor) vg)

@@ -7,7 +7,7 @@ const OVERLAYS =
   BilSteer : default:true  class:\bil-steer
   Bis      : default:false class:\bis
   Cfr      : default:false class:\cfr
-  OutOfDate: default:true  class:\out-of-date
+  OutOfDate: default:false class:\out-of-date
 
 module.exports = B.View.extend do
   initialize: ->
