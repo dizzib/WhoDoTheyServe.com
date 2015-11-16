@@ -1,19 +1,13 @@
 .navbar.navbar-fixed-bottom.bg-transparent.seo-remove
-  #fb-root
   ul.nav.social
-    li.twitter
-      a.twitter-share-button(
-        data-url="http://www.whodotheyserve.com"
-        href    ='https://twitter.com/share') Tweet
-    li.fb
-      .fb-like(
-        data-action    ="recommend",
-        data-href      ="http://www.whodotheyserve.com",
-        data-layout    ="button_count",
-        data-send      ="false",
-        data-share     ="false",
-        data-show-faces="false",
-        data-width     ="450")
+    li
+      a.twitter(target='_blank')
+        i.fa.fa-twitter
+          small.text Tweet
+    li
+      a.facebook(target='_blank')
+        i.fa.fa-facebook
+          small.text Share
   ul.nav.pull-right
     li.dropup
       a(href='#', data-toggle='dropdown').dropdown-toggle
