@@ -8,9 +8,8 @@ module.exports = B.View.extend do
     Th.init!
     B.on \boot ~> @render!
     B.on \routed ->
-      hash = window.location.hash.replace \# \%23
-      loc = "http://whodotheyserve.com/#hash"
-      @$ \.title .text "Share #loc"
+      @$ \.title .text loc = "http://whodotheyserve.com/#{window.location.hash}"
+      loc .= replace \# \%23
       @$ \.email .attr \href "mailto:?subject=Check out this site&body=#loc"
       @$ \.facebook .attr \href "http://www.facebook.com/sharer/sharer.php?u=#loc"
       @$ \.twitter .attr \href "https://twitter.com/intent/tweet?url=#loc"
