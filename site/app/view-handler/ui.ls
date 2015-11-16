@@ -7,6 +7,10 @@ var spinner-timeout # to prevent unsightly flash when render happens quickly
 $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
 
 ## initialisation
+B.on \boot ->
+  $.fn.bootstrapDropdownHover!
+
+## routing
 B.on \pre-route ->
   $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
   # handle view persistance -- some views (e.g. map) should not be cleared down, for performance

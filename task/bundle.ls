@@ -23,9 +23,10 @@ const LIBS =
   \./lib-3p/bootstrap/js/bootstrap-dropdown
   \./lib-3p/bootstrap/js/bootstrap-typeahead
   \./lib-3p/bootstrap-combobox
-  \./lib-3p/transparency
+  \./lib-3p/jquery.bootstrap-dropdown-hover
   \./lib-3p/jquery.multiple.select
   \./lib-3p/jquery.timeago
+  \./lib-3p/transparency
   \./lib-3p-ext/jquery
 
 cache = brfs:(LevelUp Memdown), exposify:LevelUp Memdown
