@@ -1,26 +1,35 @@
 .navbar.navbar-fixed-bottom.bg-transparent.seo-remove
   ul.nav.social
-    li
-      a.email(target='_blank')
-        i.fa.fa-envelope-o
-          small.text Email
-    li
-      a.twitter(target='_blank' title='Tweet')
-        i.fa.fa-twitter
-          small.text Tweet
-    li
-      a.facebook(target='_blank')
-        i.fa.fa-facebook
-          small.text Share
-    li
-      a.gplus(target='_blank')
-        i.fa.fa-google-plus
-          small.text Share
+    li.dropup
+      a(href='#', data-toggle='dropdown').dropdown-toggle
+        img(src='/asset/openshareicon-24x24.png')
+        small Share this page
+        b.caret
+      ul.dropdown-menu
+        li
+          p.title
+        li.divider
+        li
+          a.email(target='_blank')
+            i.fa.fa-envelope-o
+            small.text Email
+        li
+          a.twitter(target='_blank' title='Tweet')
+            i.fa.fa-twitter
+            small.text Twitter
+        li
+          a.facebook(target='_blank')
+            i.fa.fa-facebook-square
+            small.text Facebook
+        li
+          a.gplus(target='_blank')
+            i.fa.fa-google-plus
+            small.text Google +1
   ul.nav.pull-right
     li.dropup
       a(href='#', data-toggle='dropdown').dropdown-toggle
         i.fa.fa-paint-brush
-          small Switch theme
+        small Switch theme
         b.caret
       ul.dropdown-menu.themes
         li(data-theme-id='dark')
@@ -30,8 +39,8 @@
     li
       a(href='https://github.com/dizzib/WhoDoTheyServe.com' target='_blank')
         i.fa.fa-github
-          small Source code on Github
+        small Source code on Github
     li
       a(href='mailto:&#100;&#105;&#122;&#122;&#105;&#098;&#048;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;')
         i.fa.fa-envelope-o
-          small Email site author
+        small Email site author
