@@ -31,6 +31,9 @@ module.exports =
     name:
       info: 'a string of 4 to 50 letters or numbers e.g. Bank of England'
       regex: /^(?!(the| ))([a-z0-9\,!&\(\)]|[- ](?=[a-z0-9&\(])){4,50}$/i
+    tag:
+      info: 'a string of 2 to 20 lower-case letters'
+      regex: /^[a-z]{2,20}$/
   note: TEXT
   password:  # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/
     info : 'a mix of 6 to 16 uppercase A-Z, lowercase a-z, digits 0-9 and symbols !@#$%^&*?_~-'

@@ -54,7 +54,6 @@ describe \admin ->
     test Node.a.name.max.update.ok
     test Node.a.name.max-gt.update.bad
     test Node.a.name.update.ok
-    test Node.a.name.dup.update.bad
     test Node.b.create.bad # node a missing evidence
   describe 'map' ->
     test Map.a0.create.ok
@@ -83,6 +82,7 @@ describe \userA ->
     test Evidence.a.list.is2
     test Evidence.a1.update.ok
     test Node.b.create.ok
+    test Node.b.dup.update.bad
     test Node.list.is2
     test Evidence.b0.create.ok
   describe 'edge' ->

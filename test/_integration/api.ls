@@ -148,7 +148,12 @@ describe 'userA' ->
     test Node.a.name.dcms.update.ok
     test Node.a.name.paren.open.update.ok
     test Node.a.name.update.ok
-    test Node.a.name.dup.update.bad
+    test Node.a.name.ucase.update.ok
+    test Node.a.tags.lcase1.update.ok
+    test Node.a.tags.lcase2.update.ok
+    test Node.a.tags.ucase.update.bad
+    test Node.a.tags.min-lt.update.bad
+    test Node.a.tags.max-gt.update.bad
     test Node.b.create.bad # prior node missing evidence
     test Evidence.a.list.is0
     test Evidence.a0.create.ok
@@ -179,6 +184,7 @@ describe 'userA' ->
     test Note.a.text.max-gt.update.bad
   describe 'node b' ->
     test Node.b.create.ok
+    test Node.b.dup.update.bad
     test Evidence.b.list.is0
     test Evidence.b0.create.ok
     test Evidence.b.list.is1
