@@ -15,8 +15,8 @@ function run
   Build.all!
   Build.stop!
   Dist!
-  err <- Test.run \dev \api
+  err <- Test.run-forced \dev \api
   process.exit err.code or 1 if err
-  err <- Test.run \dev \app
+  err <- Test.run-forced \dev \app
   process.exit err.code or 1 if err
   process.exit 0
