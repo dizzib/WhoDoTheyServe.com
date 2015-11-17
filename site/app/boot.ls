@@ -39,13 +39,18 @@ function boot
   Cs.fetch-core start, fail unless S.is-signed-in!
   B.trigger \boot
 
-function fail coll, xhr then alert \core, xhr
-function fail-si coll, xhr then alert \signin, xhr
+function fail coll, xhr then alert \core xhr
+function fail-si coll, xhr then alert \signin xhr
+
+function load-lib-signin cb
+  yepnope load:\lib-signin.js complete:cb
 
 function start
+  B.once \signin load-lib-signin
   B.history.start!
   $ \.hide-during-boot .removeClass \hide-during-boot
 
 function start-signed-in
+  <- load-lib-signin
   B.trigger \signin
   start!

@@ -99,7 +99,7 @@ function finalise ipath, opath
     me.emit \built-api unless contains APP
     switch
       | /\.css$/.test opath => Bundle.css!
-      | Bundle.is-lib ipath => Bundle.lib!
+      | Bundle.is-lib ipath => Bundle.libs!
       | not (contains-base \test or contains API) => Bundle.app opath
     me.emit \built-app unless contains API
   else # full build

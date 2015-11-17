@@ -20,14 +20,16 @@ const LIBS =
   \./lib-3p/backbone-deep-model
   \./lib-3p/backbone-validation
   \./lib-3p/backbone-validation-bootstrap
-  \./lib-3p/bootstrap/js/bootstrap-dropdown
-  \./lib-3p/bootstrap/js/bootstrap-typeahead
-  \./lib-3p/bootstrap-combobox
   \./lib-3p/jquery.bootstrap-dropdown-hover
-  \./lib-3p/jquery.multiple.select
   \./lib-3p/jquery.timeago
   \./lib-3p/transparency
   \./lib-3p-ext/jquery
+const LIBS-SIGNIN =
+  \./lib-3p/bootstrap/js/bootstrap-dropdown
+  \./lib-3p/bootstrap/js/bootstrap-typeahead
+  \./lib-3p/bootstrap-combobox
+  \./lib-3p/jquery.multiple.select
+const ALL-LIBS = LIBS ++ LIBS-SIGNIN
 
 cache = brfs:(LevelUp Memdown), exposify:LevelUp Memdown
 Exposify.config = backbone:\Backbone underscore:\_
@@ -36,9 +38,9 @@ module.exports = me =
   all: ->
     me.app!
     me.css!
-    me.lib!
+    me.libs!
   app: (opath) ->
-    bundle \app.js, ->
+    bundle \app.js ->
       # Cacheify has no concept of dependencies so we must ensure an update to a brfs'd
       # file invalidates its parent js. Quick and dirty method is to clear the whole cache!
       if /\.(html|css)$/.test opath # file types which can be brfs'd
@@ -46,11 +48,11 @@ module.exports = me =
         cache.brfs = LevelUp Memdown
         cache.exposify = LevelUp Memdown
       b = Browsify \./boot.js
-        ..require \./lib-3p/Autolinker  , expose:\Autolinker
-        ..require \./lib-3p/transparency, expose:\transparency
+        ..require \./lib-3p/Autolinker   expose:\Autolinker
+        ..require \./lib-3p/transparency expose:\transparency
         ..transform Cacheify Exposify, cache.exposify
         ..transform Cacheify Brfs, cache.brfs
-      for l in LIBS then b.external l
+      for l in ALL-LIBS then b.external l
       b
   css: ->
     pushd "#{Dir.build.SITE}/app"
@@ -61,7 +63,7 @@ module.exports = me =
         /^lib-3p\/font-awesome/
         /^lib-3p\/multiple-select/
         /^theme/
-      rm DEST if test \-e, DEST
+      rm DEST if test \-e DEST
       files = (find \.).filter -> it.match /\.css$/
       for rx in EXCLUDES then files .= filter -> not it.match rx
       css = cat files
@@ -71,12 +73,16 @@ module.exports = me =
     finally
       popd!
   is-lib: (ipath) ->
-    ipath-app = ipath.replace "#{Dirname.SITE}/app/", './'
-    _.any LIBS, -> _.contains ipath-app, it
-  lib: ->
-    bundle \lib.js, ->
+    ipath-app = ipath.replace "#{Dirname.SITE}/app/" './'
+    _.any ALL-LIBS, -> _.contains ipath-app, it
+  libs: ->
+    bundle \lib.js ->
       b = Browsify LIBS
       for l in LIBS then b.require l
+      b
+    bundle \lib-signin.js ->
+      b = Browsify LIBS-SIGNIN
+      for l in LIBS-SIGNIN then b.require l
       b
 
 ## helpers
@@ -88,14 +94,14 @@ function bundle path, fn-setup
       t0 = process.hrtime!
       b = fn-setup!
       out = Fs.createWriteStream path
-        ..on \finish, ->
+        ..on \finish ->
           t = process.hrtime t0
           size = Math.floor out.bytesWritten / 1024
           G.say "Bundled #path (#{size}k) in #{t.0}.#{t.1}s"
           G.alert "#path is too large!" if size > 200k
           cb!
       b.bundle detectGlobals:false, insertGlobals:false
-        ..on \error, ->
+        ..on \error ->
           G.alert "Bundle error: #{it.message}"
           cb!
         ..pipe out
