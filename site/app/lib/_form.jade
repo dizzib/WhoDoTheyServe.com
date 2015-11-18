@@ -38,6 +38,11 @@ mixin field-select(name, label)
     select(id=name, name=name)
     block
 
+mixin field-tags(name, label)
+  +field-label(name, label)
+    select(data-role='tagsinput', id=name, multiple, name=name)
+    block
+
 mixin button-bar
   hr
   .button-bar.mode-edit

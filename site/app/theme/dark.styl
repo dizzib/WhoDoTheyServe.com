@@ -3,8 +3,13 @@ col1 = #66dddd // link foreground
 col2 = #c6c6c6 // text foreground
 col3 = #00ff00 // live evidence foreground
 
-bg-col()
+bg()
   background-color  rgba(70, 70, 70, 0.85)
+
+field()
+  border            0
+  background-color  col0
+  color             col2
 
 a
   color             col1
@@ -19,17 +24,26 @@ h1
 // fields
 input[type="text"]
 textarea
-.ms-choice
-.ms-drop
-  background-color  col0
-  color             col2
+  field()
+
+.badge, .label
+  text-shadow   1px 1px 0 rgba(0, 0, 0, 0.25) // improve styling
 
 .bg-transparent
-  bg-col()
+  bg()
+
+.bootstrap-tagsinput
+  field()
+  input
+    box-shadow  inherit
+
+.ms-choice
+.ms-drop
+  field()
 
 .dropdown-menu
-  bg-col()
-  border-color  rgba(255, 255, 255, 0.2)
+  bg()
+  border    0
   li
     a
       color       col1

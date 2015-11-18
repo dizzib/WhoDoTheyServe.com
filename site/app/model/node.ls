@@ -22,10 +22,14 @@ m = B.DeepModel.extend do
 
   ## validation
   validation:
-    'name':
+    name:
       * required: yes
       * pattern : Con.node.name.regex
         msg     : "Name should be #{Con.node.name.info}"
+    tags: ->
+      const MSG = "Every tag should be #{Con.node.tag.info}"
+      tags = if _.isString it then [it] else it
+      MSG unless tags and tags.every -> Con.node.tag.regex.test it
 
 m.create = Fac.get-factory-method m
 
