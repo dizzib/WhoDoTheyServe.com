@@ -92,6 +92,11 @@ const META-COMPACT = # show only the last action
 const SHOW-IF-CREATOR-OR-ADMIN = ->
   \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
 
+const TAGS =
+  tags:
+    tag:
+      text: -> @value
+
 # _.extend seems to work better then livescript's with (aka the cloneport)
 module.exports =
   edge: _.extend do
@@ -137,14 +142,16 @@ module.exports =
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name
-  node:
+  node: _.extend do
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
+    TAGS
   nodes: _.extend do
     name:
       href: -> get-node-href @_id
     GLYPHS
+    TAGS
   notes: _.extend do
     note:
       html: -> htmlify-text @text
