@@ -38,7 +38,6 @@ module.exports =
       done!
     false # async done
   nodes: (tag) ->
-    log tag
     <- render-nodes-or-edges arguments[*-1]
     V.nodes-head.render!
     V.nodes.render (if tag then C.Nodes.with-tag tag else C.Nodes), D.nodes
