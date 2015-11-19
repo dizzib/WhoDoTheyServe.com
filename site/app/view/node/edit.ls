@@ -9,6 +9,7 @@ module.exports =
     $ \#name .typeahead source:C.Nodes.pluck \name
 
     # tags
+    $.extend $.fn.typeahead.Constructor.prototype, val: -> # fix tagsinput #436
     ($tags = $ \#tags).tagsinput typeahead: source:C.Nodes.tags!
     for tag in @model.get(\tags) or [] then $tags .tagsinput \add tag
 

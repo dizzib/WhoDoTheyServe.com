@@ -323,7 +323,7 @@
           },
           updater: function (text) {
             self.add(this.map[text]);
-            return this.map[text];
+            return ''; // fix #331
           },
           matcher: function (text) {
             return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
