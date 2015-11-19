@@ -2,16 +2,22 @@ _  = require \underscore
 Hv = require \../../../model/hive .instance
 
 module.exports = (vg) ->
+  const ICON-SIZE = 20
+  const GLYPHS =
+    bank :\\uf19c
+    film :\\uf008
+    music:\\uf001
+    tv   :\\uf26c
   var nodes
 
   vg.on \render ->
-    function is-you then /^YOU/.test it.name
-
     nodes := @svg.selectAll \g.node
       .data @d3f.nodes!
       .enter!append \svg:g
         .attr \class ->
-          "node id_#{it._id} #{if is-you it then \you else ''}".trim!
+          tag = if it.tags? then \tag else ''
+          you = if is-you it then \you else ''
+          "node id_#{it._id} #tag #you".trim!
     nodes
       ..append \svg:circle
         .attr \r -> 5 + it.weight + if is-you it then 10 else 0
@@ -21,20 +27,12 @@ module.exports = (vg) ->
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
+    append-glyph (@svg.selectAll \g.node.tag), -> GLYPHS[it.tags.0] # only render 1st
 
-    return unless icons = Hv.Map.get-prop \icons
-
-    const ICON-SIZE = 20
-    for icon in icons
+    for icon in icons =  (Hv.Map.get-prop \icons) or []
       g = @svg.select "g.id_#{icon.id}"
       if icon.glyph
-        g.append \text
-          .attr \class \fa
-          .attr \font-family \FontAwesome
-          .attr \font-size ICON-SIZE
-          .attr \x - ICON-SIZE * 0.5
-          .attr \y - ICON-SIZE * 0.75
-          .text -> icon.glyph
+        append-glyph g, -> icon.glyph
       else if icon.image
         size = icon.size / \x
         g.append \svg:image
@@ -49,6 +47,19 @@ module.exports = (vg) ->
             .attr \y      y - 1
             .attr \width  2 + parseInt size.0
             .attr \height 2 + parseInt size.1
+
+    ## helpers
+
+    function append-glyph gs, fn-text
+      gs.append \text
+        .attr \class \fa
+        .attr \font-family \FontAwesome
+        .attr \font-size ICON-SIZE
+        .attr \x ICON-SIZE * -0.5
+        .attr \y ICON-SIZE * -0.75
+        .text fn-text
+
+    function is-you then /^YOU/.test it.name
 
   vg.on \tick ->
     nodes.attr \transform -> "translate(#{it.x},#{it.y})"

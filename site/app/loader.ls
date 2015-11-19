@@ -12,8 +12,8 @@ const LIBS =
     loc: \d3.js
     ok : -> d3?
   font_awesome_css:
-    cdn: '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'
-    loc: \font-awesome-4.2.0/css/font-awesome.css
+    cdn: '//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'
+    loc: \font-awesome-4.4.0/css/font-awesome.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   jquery:
     cdn: '//cdn.jsdelivr.net/jquery/2.0.1/jquery.min.js'

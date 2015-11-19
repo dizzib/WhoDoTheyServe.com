@@ -47,6 +47,8 @@ module.exports.init = (models) ->
     url       : Api.nodes
     model     : models.Node
     comparator: name-comparator
+    tags      : -> _.uniq _.flatten _.filter (@pluck \tags), -> it
+    with-tag  : (tag) -> new c @filter -> _.contains (it.get \tags), tag
 
   notes = c.extend do
     url  : Api.notes

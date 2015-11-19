@@ -9,8 +9,7 @@ module.exports =
     $ \#name .typeahead source:C.Nodes.pluck \name
 
     # tags
-    tags = _.uniq _.flatten _.filter (C.Nodes.pluck \tags), -> it
-    ($tags = $ \#tags).tagsinput typeahead: source:tags
+    ($tags = $ \#tags).tagsinput typeahead: source:C.Nodes.tags!
     for tag in @model.get(\tags) or [] then $tags .tagsinput \add tag
 
     # add-to-map
