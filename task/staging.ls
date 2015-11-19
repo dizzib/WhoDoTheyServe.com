@@ -35,7 +35,7 @@ function copy-minified dir, files
 
 function copy-minified-files
   log "copy minified files"
-  copy-minified \app, <[ app lib loader ]>
+  copy-minified \app, <[ app lib lib-signin loader ]>
   copy-minified \app/lib-3p, <[ backbone d3 jquery underscore ]> # CDN fallbacks
 
 function copy-files
