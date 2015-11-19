@@ -27,7 +27,10 @@ module.exports = (vg) ->
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
-    append-glyph (@svg.selectAll \g.node.tag), -> GLYPHS[it.tags.0] # only render 1st
+    append-glyph do
+      (@svg.selectAll \g.node.tag),
+      (-> GLYPHS[it.tags.0]), # only render 1st
+      (-> it.tags.join ', ')
 
     for icon in icons =  (Hv.Map.get-prop \icons) or []
       g = @svg.select "g.id_#{icon.id}"
@@ -50,7 +53,7 @@ module.exports = (vg) ->
 
     ## helpers
 
-    function append-glyph gs, fn-text
+    function append-glyph gs, fn-text, fn-tooltip
       gs.append \text
         .attr \class \fa
         .attr \font-family \FontAwesome
@@ -58,6 +61,8 @@ module.exports = (vg) ->
         .attr \x ICON-SIZE * -0.5
         .attr \y ICON-SIZE * -0.75
         .text fn-text
+        .append \title
+          .text fn-tooltip
 
     function is-you then /^YOU/.test it.name
 
