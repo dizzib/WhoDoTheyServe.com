@@ -20,7 +20,7 @@ module.exports =
       B.tracker.edge = edge
       done!
     false # async done
-  edges: (id) ->
+  edges: ->
     <- render-nodes-or-edges arguments[*-1]
     V.edges-head.render!
     V.edges.render C.Edges, D.edges
@@ -37,10 +37,11 @@ module.exports =
       B.tracker.node-ids.push id
       done!
     false # async done
-  nodes: (id) ->
+  nodes: (tag) ->
+    log tag
     <- render-nodes-or-edges arguments[*-1]
     V.nodes-head.render!
-    V.nodes.render C.Nodes, D.nodes
+    V.nodes.render (if tag then C.Nodes.with-tag tag else C.Nodes), D.nodes
   user: (id) ->
     done = arguments[*-1]
     V.user.render user = C.Users.get(id ||= S.get-id!), D.user

@@ -95,6 +95,7 @@ const SHOW-IF-CREATOR-OR-ADMIN = ->
 const TAGS =
   tags:
     tag:
+      href: -> "#/nodes/#{@value}"
       text: -> @value
 
 # _.extend seems to work better then livescript's with (aka the cloneport)

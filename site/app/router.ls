@@ -43,6 +43,7 @@ r = B.Router.extend do
     \node/:id/:act        : \node
     \node/:id/:act/:id    : \node
     \nodes                : \nodes
+    \nodes/:tag           : \nodes
     \sys                  : \sys
     \user                 : \user
     \user/edit/:id        : \user_edit
