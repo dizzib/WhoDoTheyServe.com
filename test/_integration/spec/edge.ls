@@ -11,12 +11,12 @@ exports.get-spec = (...args) ->
   const DMY4 = '30/06/2014'
   const DMY5 = '01/07/2014'
 
-  h = H \edge, ...args
+  h = H \edge ...args
 
-  function get-spec-ab fields then h.get-spec \ab, fields
-  function get-spec-ac fields then h.get-spec \ac, fields
-  function get-spec-ba fields then h.get-spec \ba, fields
-  function get-spec-bc fields then h.get-spec \bc, fields
+  function get-spec-ab fields then h.get-spec \ab fields
+  function get-spec-ac fields then h.get-spec \ac fields
+  function get-spec-ba fields then h.get-spec \ba fields
+  function get-spec-bc fields then h.get-spec \bc fields
 
   ab: _.extend do
     get-spec-ab!
