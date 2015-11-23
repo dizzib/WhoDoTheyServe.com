@@ -10,33 +10,6 @@ module.exports =
   enabled : -> cfg?
   show-cfg: -> log cfg
 
-  af:
-    login: ->
-      <- try-exec
-      W4 exec, "af login --email #{cfg.af.account.uid} --passwd #{cfg.af.account.pwd}"
-    logout: ->
-      <- try-exec
-      W4 exec, "af logout"
-    send-env-vars: ->
-      <- try-exec
-      appname = cfg.af.appname
-      env = cfg.env <<< cfg.af.env
-      W4 exec, "af stop #appname" # stop to avoid restarting after each add
-      for k, v of env then W4 exec, "af env-add #appname #k=#v" # normally restarts
-      W4 exec, "af start #appname"
-      G.ok "sent env-vars to appfog PRODUCTION"
-    update: ->
-      <- try-exec
-      appname = cfg.af.appname
-      # shrinkwrap ensures exact staging dependency tree gets deployed,
-      # otherwise there's a small risk of breakage in production
-      W4 exec, 'npm shrinkwrap'
-      return log error! if error!
-      test \-e \npm-shrinkwrap.json
-      W4 exec, "af update #appname"
-      return log error! if error!
-      G.ok "updated site to appfog PRODUCTION"
-
   rhc:
     deployments:
       activate: (rl) ->
