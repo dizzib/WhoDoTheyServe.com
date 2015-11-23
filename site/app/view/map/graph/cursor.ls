@@ -21,7 +21,7 @@ module.exports = class extends Eve
         min.node if min.d < RADIUS ^ 2
 
     vm.on \render (id) ~>
-      vg.on \cooled ~> render id if id
+      if id then vg.on \cooled ~> render id
 
     function get-cursor-path
       function get-segment sign-x, sign-y

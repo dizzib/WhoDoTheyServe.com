@@ -1,4 +1,5 @@
 B  = require \backbone
+_  = require \underscore
 C  = require \../collection
 M  = require \../model/map
 Vm = require \./map
@@ -21,8 +22,10 @@ module.exports = B.View.extend do
       for ,v of @map-views then v.remove!
       reset!
 
-  render: (id, node-id) ->
-    done = arguments[*-1]
+  render: (id, node-id, done) ->
+    if _.isFunction node-id
+      done = node-id
+      node-id = null
     @cur-key = id or NEW-MAP-KEY
     return display vm.map if vm = @map-views[@cur-key]
     return display M.create! unless id
