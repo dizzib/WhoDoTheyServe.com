@@ -4,12 +4,12 @@ C  = require \../../../collection
 module.exports = (vg, cursor) ->
   cache = {}
 
-  cursor.on \hide ->
+  cursor.on \remove ->
     vg.svg.selectAll \.ants .classed \ants false
 
-  cursor.on \show ->
-    ueids = get-uphill-edge-ids it._id
-    deids = get-downhill-edge-ids it._id
+  cursor.on \render (id) ->
+    ueids = get-uphill-edge-ids id
+    deids = get-downhill-edge-ids id
     eids = ueids ++ deids
     sel = (_.map eids, -> ".id_#it:not(.out-of-date)").join \,
     vg.svg.selectAll sel .classed \ants true if sel

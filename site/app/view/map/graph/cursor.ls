@@ -2,11 +2,12 @@ Eve = require \events .EventEmitter
 _   = require \underscore
 
 module.exports = class extends Eve
-  (vg) ->
+  (vm, vg) ->
     vg.on \render ~>
-      vg.$el.on  \click refresh
-
-      ## helpers
+      vg.$el.on \click ~>
+        vg.svg.select \.cursor .remove!
+        @emit \remove
+        render nd._id if nd = find-nearby-node it.offsetX, it.offsetY
 
       function find-nearby-node x, y
         const RADIUS = 100px
@@ -19,24 +20,23 @@ module.exports = class extends Eve
         min = _.min dists, -> it.d
         min.node if min.d < RADIUS ^ 2
 
-      function get-cursor-path
-        function get-segment sign-x, sign-y
-          const RADIUS = 32px
-          const LENGTH = 8px
-          px = RADIUS * sign-x
-          py = RADIUS * sign-y
-          qx = px + LENGTH * sign-x
-          qy = py + LENGTH * sign-y
-          "M #px #py L #px #qy L #qx #py L #px #py "
-        get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
+    vm.on \render (id) ~>
+      vg.on \cooled ~> render id if id
 
-      ~function refresh
-        vg.svg.select \.cursor .remove!
-        @emit \hide
-        return unless nd = find-nearby-node it.offsetX, it.offsetY
-        id = nd._id
-        n = vg.svg.select "g.node.id_#id"
-        n.append \svg:path
-          .attr \class \cursor
-          .attr \d get-cursor-path!
-        @emit \show nd
+    function get-cursor-path
+      function get-segment sign-x, sign-y
+        const RADIUS = 32px
+        const LENGTH = 8px
+        px = RADIUS * sign-x
+        py = RADIUS * sign-y
+        qx = px + LENGTH * sign-x
+        qy = py + LENGTH * sign-y
+        "M #px #py L #px #qy L #qx #py L #px #py "
+      get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
+
+    ~function render id
+      n = vg.svg.select "g.node.id_#id"
+      n.append \svg:path
+        .attr \class \cursor
+        .attr \d get-cursor-path!
+      @emit \render id

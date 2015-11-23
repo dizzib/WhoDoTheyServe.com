@@ -4,8 +4,8 @@ module.exports = (vg, cursor) ->
   frame = 0
   toggle!
 
-  cursor.on \hide -> clearInterval timer
-  cursor.on \show -> timer := setInterval advance-frame, 500ms
+  cursor.on \remove -> clearInterval timer
+  cursor.on \render -> timer := setInterval advance-frame, 500ms
 
   function advance-frame
     toggle!

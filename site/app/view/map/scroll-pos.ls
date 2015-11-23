@@ -5,6 +5,11 @@ $w = $ window
 module.exports = class
   (@v-graph) ->
 
+  center: (x, y) ->
+    @pos =
+      x: x - $w.width! / 2
+      y: y - $w.height! / 2 + 40px
+
   restore: ->
     ~function get-initial-scroll-pos
       return x:0 y:0 unless svg = @v-graph.svg # might be undefined e.g. new map

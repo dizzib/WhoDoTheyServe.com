@@ -15,7 +15,8 @@ module.exports = (vm = v-map) ->
   (require \./proximity) vg
   (require \./region) vg
 
-  cu = (new (require \./cursor) vg)
+  cu = (new (require \./cursor) vm, vg)
   (require \./animator) vg, cu
   (require \./anthill) vg, cu
+  (require \./locator) vm, cu
   (require \./spotlight) vg, cu

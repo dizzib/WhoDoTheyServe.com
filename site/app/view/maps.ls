@@ -21,7 +21,7 @@ module.exports = B.View.extend do
       for ,v of @map-views then v.remove!
       reset!
 
-  render: (id) ->
+  render: (id, node-id) ->
     done = arguments[*-1]
     @cur-key = id or NEW-MAP-KEY
     return display vm.map if vm = @map-views[@cur-key]
@@ -52,6 +52,6 @@ module.exports = B.View.extend do
     ~function display map
       unless vm = @map-views[@cur-key]
         vm = @map-views[@cur-key] = append-map-view!
-        vm.render map
+        vm.render map, node-id
       vm.show!
       true # sync done

@@ -37,6 +37,7 @@ r = B.Router.extend do
     \latest               : \latest
     \map/new              : \map
     \map/:id              : \map
+    \map/:id/node/:id     : \map
     \node/edit/:id        : \node_edit
     \node/new             : \node_edit
     \node/:id             : \node
