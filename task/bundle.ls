@@ -20,6 +20,7 @@ const LIBS =
   \./lib-3p/backbone-deep-model
   \./lib-3p/backbone-validation
   \./lib-3p/backbone-validation-bootstrap
+  \./lib-3p/bootstrap-combobox
   \./lib-3p/bootstrap/js/bootstrap-dropdown
   \./lib-3p/jquery.bootstrap-dropdown-hover
   \./lib-3p/jquery.timeago
@@ -27,7 +28,6 @@ const LIBS =
   \./lib-3p-ext/jquery
 const LIBS-SIGNIN =
   \./lib-3p/bootstrap/js/bootstrap-typeahead
-  \./lib-3p/bootstrap-combobox
   \./lib-3p/bootstrap-tagsinput
   \./lib-3p/jquery.multiple.select
 const ALL-LIBS = LIBS ++ LIBS-SIGNIN

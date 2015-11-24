@@ -2,11 +2,10 @@ Eve = require \events .EventEmitter
 _   = require \underscore
 
 module.exports = class extends Eve
-  (vm, vg) ->
+  (vm, vg, v-find) ->
     vg.on \render ~>
       vg.$el.on \click ~>
-        vg.svg.select \.cursor .remove!
-        @emit \remove
+        remove!
         render nd._id if nd = find-nearby-node it.offsetX, it.offsetY
 
       function find-nearby-node x, y
@@ -23,6 +22,10 @@ module.exports = class extends Eve
     vm.on \render (id) ~>
       if id then vg.on \cooled ~> render id
 
+    v-find.on \select (id) ->
+      remove!
+      render id
+
     function get-cursor-path
       function get-segment sign-x, sign-y
         const RADIUS = 32px
@@ -33,6 +36,10 @@ module.exports = class extends Eve
         qy = py + LENGTH * sign-y
         "M #px #py L #px #qy L #qx #py L #px #py "
       get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
+
+    ~function remove
+      vg.svg.select \.cursor .remove!
+      @emit \remove
 
     ~function render id
       n = vg.svg.select "g.node.id_#id"

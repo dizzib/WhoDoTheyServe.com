@@ -10,6 +10,7 @@ T  = require \./map/tool
 Te = require \./map/tool/edit
 
 V-Graph  = require \./map/graph
+V-Find   = require \./map/tool/find
 V-Layers = require \./map/tool/layers
 
 T-Edit = F.readFileSync __dirname + \/map/tool/edit.html
@@ -24,6 +25,7 @@ module.exports = B.View.extend do
     @v-meta   = new Vr.InfoView el:@$(\.meta), template:T-Meta
     @v-edit   = new Ve.EditView el:@$(\.edit), template:T-Edit
     @v-info   = new Vr.InfoView el:@$(\.info), template:T-Info
+    @v-find   = new V-Find el:@$ \.find
     @v-layers = new V-Layers el:@$ \.layers
 
     @v-info.on \rendered -> @$el.hide! unless it.get \description
@@ -37,6 +39,7 @@ module.exports = B.View.extend do
   render: (@map, node-id) -> # @map for external ref
     @v-graph.map = @map
     @v-graph.render!
+    @v-find.render @v-graph
     @v-layers.render @v-graph
     @v-info.render @map, D.map
     @v-meta.render @map, D.meta

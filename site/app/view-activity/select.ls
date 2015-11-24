@@ -1,6 +1,7 @@
 B = require \backbone
 F = require \fs # inlined by brfs
 T = require \transparency
+_ = require \underscore
 
 T-Sel = F.readFileSync __dirname + \/select.html
 
@@ -35,12 +36,14 @@ module.exports =
     render: (coll, fname, sel-id = '') ->
       $t-sel = get-select $t = $ T-Sel
       render-select $t-sel, coll, fname
-      if coll.findWhere _id:sel-id .length is 0 then $t-sel.prepend get-select-placeholder $t
-      @dropdown = $ @sel
+      if not coll.findWhere or coll.findWhere _id:sel-id .length is 0
+        $t-sel.prepend get-select-placeholder $t
+      @dropdown = (if @sel then $ @sel else @$el)
+      _.defer ~> @set-by-id sel-id
+      @dropdown
         ..html $t-sel.children! # children! prevents duplicate nested select
-        ..val sel-id
         ..combobox bsVersion:2
-        ..change ~> @trigger \selected
+        ..change ~> @trigger \selected @get-selected-id!
     set-by-id: ->
       @dropdown.val it
       cbx = @dropdown.data \combobox
@@ -55,7 +58,8 @@ function get-select $tem
 function get-select-placeholder $tem
   $tem.filter \.placeholder .find \option
 
-function render-select $sel, coll, fname
-  $sel.render coll.toJSON!, item:
+function render-select $el, coll, fname
+  items = if coll.toJSON? then coll.toJSON! else coll
+  $el.render items, item:
     html : -> @[fname]
     value: -> @_id
