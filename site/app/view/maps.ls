@@ -23,9 +23,9 @@ module.exports = B.View.extend do
       reset!
 
   render: (id, node-id, done) ->
-    if _.isFunction node-id
-      done = node-id
-      node-id = null
+    done = _.find arguments, -> _.isFunction it
+    node-id = null if _.isFunction node-id
+
     @cur-key = id or NEW-MAP-KEY
     return display vm.map if vm = @map-views[@cur-key]
     return display M.create! unless id
