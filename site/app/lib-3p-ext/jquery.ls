@@ -9,6 +9,12 @@ $.fn.hide = (speed, cb) ->
   $ this .trigger \hide
   _hide.apply this, arguments
 
+_toggle = $.fn.dropdown.Constructor.prototype.toggle
+$.fn.dropdown.Constructor.prototype.toggle = ->
+  r = _toggle.apply this, arguments
+  $ this .trigger \toggled
+  r
+
 # http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
 $.fn.serializeObject = ->
   function set name, val, to-array = true

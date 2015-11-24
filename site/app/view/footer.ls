@@ -6,8 +6,11 @@ module.exports = B.View.extend do
   initialize: ->
     @T = F.readFileSync __dirname + \/footer.html
     Th.init!
-    B.on \boot ~> @render!
-    B.on \routed ->
+    B.on \boot ~>
+      @render!
+      $ '.social [data-toggle="dropdown"]' .dropdown!on \toggled -> update-hrefs!
+
+    function update-hrefs
       @$ \.title .text loc = "http://whodotheyserve.com/#{window.location.hash}"
       loc .= replace \# \%23
       @$ \.email .attr \href "mailto:?subject=Check out this site&body=#loc"
