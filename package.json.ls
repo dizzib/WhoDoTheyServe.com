@@ -30,7 +30,7 @@ dependencies:
   shortid                 : \2.0.0
 devDependencies:
   brfs                  : \~0.0.9
-  browserify            : \~3.24.13
+  browserify            : \~3.38.0
   cacheify              : \~0.4.0
   chai                  : \~2.3.0
   chalk                 : \~0.4.0
