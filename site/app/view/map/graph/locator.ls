@@ -4,10 +4,13 @@ R = require \../../../router
 
 module.exports = (vm, cursor, v-find) ->
 
+  var frag
+
   cursor.on \remove -> set-hash ''
   cursor.on \render -> set-hash "/node/#it"
 
   vm.on \render -> locate it
+  vm.on \show   -> set-hash frag if frag  # restore hash
 
   v-find.on \select ->
     locate it
@@ -18,8 +21,8 @@ module.exports = (vm, cursor, v-find) ->
     return unless n = _.findWhere vm.v-graph.d3f.nodes!, _id:id
     vm.scroll-pos.center n.x, n.y
 
-function set-hash
-  B.history.stop!
-  l = window.location
-  l.replace l.href.replace(/\/node\/.*$/ '') + it
-  B.history.start silent:true
+  function set-hash
+    B.history.stop!
+    window.location.hash = "map/#{vm.map.id}#it"
+    B.history.start silent:true
+    frag := it
