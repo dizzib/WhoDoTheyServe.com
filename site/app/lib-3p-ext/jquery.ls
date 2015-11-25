@@ -4,11 +4,6 @@ $.fn.disable-buttons = ->
 $.fn.enable-buttons = ->
   @find \.btn .prop \disabled false .removeClass \disabled
 
-_hide = $.fn.hide
-$.fn.hide = (speed, cb) ->
-  $ this .trigger \hide
-  _hide.apply this, arguments
-
 _toggle = $.fn.dropdown.Constructor.prototype.toggle
 $.fn.dropdown.Constructor.prototype.toggle = ->
   r = _toggle.apply this, arguments

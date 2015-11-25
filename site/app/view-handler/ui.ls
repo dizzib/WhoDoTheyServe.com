@@ -14,7 +14,7 @@ B.on \boot ->
 B.on \pre-route ->
   $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
   # handle view persistance -- some views (e.g. map) should not be cleared down, for performance
-  $ '.view>:not(.persist-once)' .hide!
+  $ '.view>:not(.persist-once)' .trigger(\hide).hide!
   $ '.view>:not(.persist-once,.persist)' .off! # so different views can use same element
   $ '.view>:not(.persist-once,.persist)' .empty! # leave persistent views e.g. map
   $ '.view>.persist-once' .removeClass \persist-once

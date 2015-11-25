@@ -47,9 +47,7 @@ module.exports = B.View.extend do
     @trigger \render node-id
 
   show: ->
-    @$el.show! .on \hide ~>
-      @$el.off \hide
-      @scroll-pos.save!
+    @$el.show! .one \hide ~> @scroll-pos.save!
     @v-graph.justify!
     @scroll-pos.restore!
     @trigger \show
