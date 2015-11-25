@@ -39,16 +39,18 @@ module.exports =
       if not coll.findWhere or coll.findWhere _id:sel-id .length is 0
         $t-sel.prepend get-select-placeholder $t
       @dropdown = (if @sel then $ @sel else @$el)
-      _.defer ~> @set-by-id sel-id
-      @dropdown
         ..html $t-sel.children! # children! prevents duplicate nested select
         ..combobox bsVersion:2
         ..change ~> @trigger \selected @get-selected-id!
-    set-by-id: ->
-      @dropdown.val it
+      @set-by-id sel-id
+    set-by-id: (id) ->
+      @dropdown.val id
       cbx = @dropdown.data \combobox
-      cbx.$element.val '' if it is '' # cbx.clearElement! causes focus problems
-      cbx.refresh!
+      _.defer ->
+        if id is ''
+          cbx.$element.val '' # cbx.clearElement! causes focus problems
+          cbx.clearTarget!
+        cbx.refresh!
 
 ## helpers
 
