@@ -28,6 +28,8 @@ module.exports =
         ..multipleSelect \setSelects sel-ids
 
   SelectView: B.View.extend do
+    blur: -> @cbx.$element.blur!
+    clear: -> @set-by-id ''
     get-selected-id: -> @$dropdown.val!
     initialize: -> @sel = it.sel
     open: -> _.defer ~>
@@ -52,6 +54,7 @@ module.exports =
           @cbx.$element.val '' # cbx.clearElement! causes focus problems
           @cbx.clearTarget!
         @cbx.refresh!
+      @
 
 ## helpers
 

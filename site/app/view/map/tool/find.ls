@@ -15,5 +15,5 @@ module.exports = B.View.extend do
     @v-sel.on \selected (id) ~>
       return unless id
       @trigger \select id
-      @v-sel.set-by-id ''
+      @v-sel.clear!blur!
       @$el.addClass \collapsed
