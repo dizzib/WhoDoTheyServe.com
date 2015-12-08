@@ -10,7 +10,7 @@ module.exports = B.View.extend do
     @$el.on \expand ~> @v-sel.open!
 
   render: (v-graph) ->
-    return unless ns = v-graph.d3f.nodes!
+    return unless ns = _.sortBy v-graph.d3f.nodes!, -> it.name.toLowerCase!
     @v-sel.render ns, \name
     @v-sel.on \selected (id) ~>
       return unless id
