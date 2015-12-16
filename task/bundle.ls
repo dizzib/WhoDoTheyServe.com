@@ -61,12 +61,14 @@ module.exports = me =
       const DEST = \app.css
       const EXCLUDES =
         /^lib-3p\/bootstrap\//
-        /^lib-3p\/font-awesome/
+        /^lib-3p\/fontello\/fontello\.css/
+        /^lib-3p\/fontello\/fontello-(emb|ie7)/
         /^lib-3p\/multiple-select/
         /^theme/
       rm DEST if test \-e DEST
       files = (find \.).filter -> it.match /\.css$/
       for rx in EXCLUDES then files .= filter -> not it.match rx
+      log files
       css = cat files
       css.to DEST
       size = Math.floor css.length / 1024
