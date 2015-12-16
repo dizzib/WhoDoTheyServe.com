@@ -1,28 +1,28 @@
 mixin map
   a.link
-    i.fa.fa-share-alt
+    i.fe.fe-share-alt
       span.name
       span.shortname
 
 ul.nav.nav-tabs
   li(active='^doc/about')
     a(href='#/doc/about')
-      i.fa.fa-info-circle About
+      i.fe.fe-info-circle About
   li(active='^node')
     a(href='#/nodes')
-      i.fa.fa-male Actors
+      i.fe.fe-male Actors
   li.seo-remove.signed-in
     a(href='#/node/new')
-      i.fa.fa-plus
+      i.fe.fe-plus
   li(active='^edge').hide-on-tablet
     a(href='#/edges')
-      i.fa.fa-chain Connections
+      i.fe.fe-chain Connections
   li.seo-remove.signed-in
     a(href='#/edge/new')
-      i.fa.fa-plus
+      i.fe.fe-plus
   li.seo-remove.dropdown
     a(href='#', data-toggle='dropdown').dropdown-toggle
-      i.fa.fa-list Maps
+      i.fe.fe-list Maps
       b.caret
     ul.dropdown-menu.maps
       li.map
@@ -32,28 +32,28 @@ ul.nav.nav-tabs
       li.map-new.signed-in.divider
       li.map-new.signed-in
         a(href='#/map/new')
-          i.fa.fa-plus Create new
+          i.fe.fe-plus Create new
           i.edit-indicator
   li.map.hot: +map
   li.map: +map
   li(active='^user/signin').hide-on-tablet.seo-remove.pull-right.signed-out
     a(href='#/user/signin')
-      i.fa.fa-sign-in Login
+      i.fe.fe-sign-in Login
   li(active='^user/signout').seo-remove.pull-right.signed-in
     a(href='#/user/signout')
-      i.fa.fa-sign-out Logout
+      i.fe.fe-sign-out Logout
   li(active='^sys').seo-remove.pull-right.signed-in-admin
     a(href='#/sys')
-      i.fa.fa-wrench Sys
+      i.fe.fe-wrench Sys
   li(active='^user(/edit|$)').seo-remove.pull-right.signed-in
     a(href='#/user')
-      i.fa.fa-user Account
+      i.fe.fe-user Account
   li(active='^user/signup').seo-remove.pull-right.signed-in-admin
     a(href='#/user/signup')
-      i.fa.fa-user Signup
+      i.fe.fe-user Signup
   li(active='^user(s|/[0-9a-f]+)$').seo-remove.pull-right.hide
     a(href='#/users')
-      i.fa.fa-pencil Contributors
+      i.fe.fe-pencil Contributors
   li(active='^latest').pull-right
     a(href='#/latest')
-      i.fa.fa-history Latest
+      i.fe.fe-history Latest

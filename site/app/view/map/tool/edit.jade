@@ -2,8 +2,8 @@ include ../../../lib/_form
 
 form.signed-in.form-horizontal.bg-transparent
   legend
-    i.glyph.fa.fa-caret-right.show-if-collapsed
-    i.glyph.fa.fa-caret-down.show-if-expanded
+    i.glyph.fe.fe-caret-right.show-if-collapsed
+    i.glyph.fe.fe-caret-down.show-if-expanded
     span.create Create Map
     span.update Edit Map
   .show-if-expanded
@@ -15,7 +15,7 @@ form.signed-in.form-horizontal.bg-transparent
       +field-select('nodes', 'Actors')
         .help-block.gap-t Drag actors around the map to improve the layout.
         .help-block Click a pin
-          i.glyph.fa.fa-thumb-tack
+          i.glyph.fe.fe-thumb-tack
           to fix or free an actor's position.
       span.input-xlarge
         +field-textarea('description', 'Description')
