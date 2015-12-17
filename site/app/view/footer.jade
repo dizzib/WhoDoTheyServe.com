@@ -1,8 +1,7 @@
 .navbar.navbar-fixed-bottom.bg-transparent.seo-remove
   ul.nav.social
     li.dropup
-      a(href='#', data-toggle='dropdown').dropdown-toggle
-        img(src='/asset/openshareicon-24x24.png')
+      a(href='#', data-toggle='dropdown').dropdown-toggle.fe.fe-shareable
         small Share this page
         b.caret
       ul.dropdown-menu
@@ -10,25 +9,20 @@
           p.title
         li.divider
         li
-          a.email(target='_blank')
-            i.fe.fe-envelope-o
+          a.email(target='_blank').fe.fe-mail
             small.text Email
         li
-          a.twitter(target='_blank' title='Tweet')
-            i.fe.fe-twitter
+          a.twitter(target='_blank' title='Tweet').fe.fe-twitter
             small.text Twitter
         li
-          a.facebook(target='_blank')
-            i.fe.fe-facebook-square
+          a.facebook(target='_blank').fe.fe-facebook-squared
             small.text Facebook
         li
-          a.gplus(target='_blank')
-            i.fe.fe-google-plus
+          a.gplus(target='_blank').fe.fe-gplus
             small.text Google +1
   ul.nav.pull-right
     li.dropup
-      a(href='#', data-toggle='dropdown').dropdown-toggle
-        i.fe.fe-paint-brush
+      a(href='#', data-toggle='dropdown').dropdown-toggle.fe.fe-brush
         small Switch theme
         b.caret
       ul.dropdown-menu.themes
@@ -37,10 +31,8 @@
         li(data-theme-id='light')
           a Light
     li
-      a(href='https://github.com/dizzib/WhoDoTheyServe.com' target='_blank')
-        i.fe.fe-github
+      a(href='https://github.com/dizzib/WhoDoTheyServe.com' target='_blank').fe.fe-github-circled
         small Source code on Github
     li
-      a(href='mailto:&#100;&#105;&#122;&#122;&#105;&#098;&#048;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;')
-        i.fe.fe-envelope-o
+      a(href='mailto:&#100;&#105;&#122;&#122;&#105;&#098;&#048;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;').fe.fe-mail
         small Email site author

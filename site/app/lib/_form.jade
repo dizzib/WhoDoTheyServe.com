@@ -49,21 +49,21 @@ mixin button-bar
     .mode.edit
       button(type='button').btn.cancel
         span Back
-        i.fe.fe-arrow-left
+        .fe.fe-left-big
       button(type='button').btn.btn-danger.update.delete-ask
         span Delete...
-        i.fe.fe-trash-o
+        .fe.fe-trash-empty
       button(type='submit').btn.btn-primary.create
         span Create
-        i.fe.fe-check
+        .fe.fe-ok
       button(type='submit').btn.btn-primary.update
         span Update
-        i.fe.fe-check
+        .fe.fe-ok
     .mode.delete-ask
       button(type='button').btn.delete-no
         span No, keep it
-        i.fe.fe-arrow-left
+        .fe.fe-left-big
       strong Really delete this item ?
       button(type='button').btn.btn-danger.delete-yes
         span Yes, get rid of it!
-        i.fe.fe-trash-o
+        .fe.fe-trash-empty

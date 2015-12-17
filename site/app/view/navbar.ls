@@ -37,7 +37,7 @@ module.exports = B.View.extend do
       $maps.render json, D.nav-maps
       $new = @$ \li.map-new
       if V.maps.get-current!?isNew!
-        $new.addClass \active .find \i.edit-indicator .addClass 'fa fa-chevron-left'
+        $new.addClass \active .find \i.edit-indicator .addClass 'fe fe-chevron-left'
       $maps.append $new
 
     function set-active-tab

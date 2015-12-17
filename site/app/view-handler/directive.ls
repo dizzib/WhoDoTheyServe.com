@@ -20,7 +20,7 @@ const EDGE =
 const EVI =
   glyph:
     class: ->
-      "glyph fa #{@glyph.name} #{get-evi-class @is-dead}"
+      "glyph fe #{@glyph.name} #{get-evi-class @is-dead}"
   'url-outer':
     href: -> @url
   'url-inner':
@@ -43,18 +43,14 @@ const GLYPHS =
       $el = $ it.element
       evs = C.Evidences.find ~> @_id is it.get \entity_id
       if evs.models.length is 0
-        $el.append "
-          <a title='Please add some evidence'>
-            <i class='glyph fa fa-lg fa-exclamation'/>
-          </a>"
+        $el.append "<a title='Please add some evidence'
+          class='glyph fe fe-lg fe-attention'/></a>"
       else for ev in evs.models
-        $el.append "
-          <a target='_blank' title='#{@tip}' href='#{ev.get \url}'>
-            <i class='glyph fa #{ev.get-glyph!name} #{get-evi-class ev.is-dead!}'/>
-          </a>"
+        $el.append "<a target='_blank' title='#{@tip}' href='#{ev.get \url}'
+          class='glyph fe #{ev.get-glyph!name} #{get-evi-class ev.is-dead!}'/></a>"
       notes = C.Notes.find ~> @_id is it.get \entity_id
       for note in notes.models
-        $el.append "<i title='#{note.get \text}' class='glyph fa fa-comment'/>"
+        $el.append "<span title='#{note.get \text}' class='glyph fe fe-comment'/>"
       return ''
 
 const REMOVE =
@@ -139,7 +135,7 @@ module.exports =
     map:
       class: -> 'map active' if V.maps.is-current @_id
     'edit-indicator':
-      class: -> "fa fa-chevron-left" if V.maps.is-current @_id
+      class: -> "fe fe-chevron-left" if V.maps.is-current @_id
     link:
       href: -> "#/map/#{@_id}"
       text: -> @name

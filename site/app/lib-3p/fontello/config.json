@@ -1,6 +1,6 @@
 {
   "name": "",
-  "css_prefix_text": "icon-",
+  "css_prefix_text": "fe-",
   "css_use_suffix": false,
   "hinting": true,
   "units_per_em": 1000,
@@ -52,6 +52,12 @@
       "uid": "dc3f1d5b1d006f7f7b3b6295eccab9da",
       "css": "camera",
       "code": 59401,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "12f4ece88e46abd864e40b35e05b11cd",
+      "css": "ok",
+      "code": 59438,
       "src": "fontawesome"
     },
     {
@@ -109,6 +115,12 @@
       "src": "fontawesome"
     },
     {
+      "uid": "f48ae54adfb27d8ada53d0fd9e34ee10",
+      "css": "trash-empty",
+      "code": 59439,
+      "src": "fontawesome"
+    },
+    {
       "uid": "5408be43f7c42bccee419c6be53fdef5",
       "css": "doc-text",
       "code": 59419,
@@ -130,6 +142,12 @@
       "uid": "e99461abfef3923546da8d745372c995",
       "css": "cog",
       "code": 59412,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "5bb103cd29de77e0e06a52638527b575",
+      "css": "wrench",
+      "code": 59436,
       "src": "fontawesome"
     },
     {
@@ -166,6 +184,12 @@
       "uid": "399ef63b1e23ab1b761dfbb5591fa4da",
       "css": "right-open",
       "code": 59411,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "555ef8c86832e686fef85f7af2eb7cde",
+      "css": "left-big",
+      "code": 59437,
       "src": "fontawesome"
     },
     {
@@ -220,6 +244,12 @@
       "uid": "4743b088aa95d6f3b6b990e770d3b647",
       "css": "facebook-squared",
       "code": 59416,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "5e0a374728ffa8d0ae1f331a8f648231",
+      "css": "github",
+      "code": 59440,
       "src": "fontawesome"
     },
     {

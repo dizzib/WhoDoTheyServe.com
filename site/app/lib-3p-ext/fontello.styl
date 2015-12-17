@@ -1,22 +1,24 @@
 @font-face
   font-family 'fontello'
-  src url('../lib-3p/fontello/font/fontello.eot?9540017')
-  src url('../lib-3p/fontello/font/fontello.eot?9540017#iefix') format('embedded-opentype'),
-       url('../lib-3p/fontello/font/fontello.woff?9540017') format('woff'),
-       url('../lib-3p/fontello/font/fontello.ttf?9540017') format('truetype'),
-       url('../lib-3p/fontello/font/fontello.svg?9540017#fontello') format('svg')
+  font-style  normal
   font-weight normal
-  font-style normal
+  src url('/lib-3p/fontello/font/fontello.eot?9540017')
+  src url('/lib-3p/fontello/font/fontello.eot?9540017#iefix') format('embedded-opentype'),
+      url('/lib-3p/fontello/font/fontello.woff?9540017') format('woff'),
+      url('/lib-3p/fontello/font/fontello.ttf?9540017') format('truetype'),
+      url('/lib-3p/fontello/font/fontello.svg?9540017#fontello') format('svg')
 
-// classes based on font-awesome
+// classes loosely based on font-awesome
 
 .fe
-  display inline-block
-  font normal normal normal 14px/1 FontAwesome
-  font-size inherit
-  text-rendering auto
-  -webkit-font-smoothing antialiased
+  display         inline-block
+.fe:before
+  font-family     'fontello'
+  font-size       inherit
+  line-height     1em /* fix buttons height for twitter bootstrap */
+  text-rendering  auto
   -moz-osx-font-smoothing grayscale
+  -webkit-font-smoothing  antialiased
 
 .fe-lg // make the font 33% larger relative to the icon container
   font-size       1.33333333em

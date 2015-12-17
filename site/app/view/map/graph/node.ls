@@ -4,10 +4,10 @@ Hv = require \../../../model/hive .instance
 module.exports = (vg) ->
   const ICON-SIZE = 20
   const GLYPHS =
-    bank :\\uf19c
-    film :\\uf008
-    music:\\uf001
-    tv   :\\uf26c
+    bank :\\ue827
+    film :\\ue823
+    music:\\ue822
+    tv   :\\ue808
   var nodes
 
   vg.on \render ->
@@ -55,8 +55,8 @@ module.exports = (vg) ->
 
     function append-glyph gs, fn-text, fn-tooltip
       gs.append \text
-        .attr \class \fa
-        .attr \font-family \FontAwesome
+        .attr \class \fe
+        .attr \font-family \fontello
         .attr \font-size ICON-SIZE
         .attr \x ICON-SIZE * -0.5
         .attr \y ICON-SIZE * -0.75

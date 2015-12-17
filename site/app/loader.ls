@@ -11,10 +11,6 @@ const LIBS =
     cdn: '//cdn.jsdelivr.net/d3js/3.4.12/d3.min.js'
     loc: \d3.js
     ok : -> d3?
-  font_awesome_css:
-    cdn: '//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'
-    loc: \font-awesome-4.4.0/css/font-awesome.css
-    ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   jquery:
     cdn: '//cdn.jsdelivr.net/jquery/2.0.1/jquery.min.js'
     loc: \jquery.js
@@ -30,7 +26,6 @@ resources # order is important for dependencies
   ..push get-resource \jquery
   ..push get-resource \backbone
   ..push get-resource \bootstrap_css
-  ..push get-resource \font_awesome_css
   ..push get-resource \d3
   ..push load:\lib.js
   ..push load:\app.js

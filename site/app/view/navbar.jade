@@ -1,28 +1,21 @@
 mixin map
-  a.link
-    i.fe.fe-share-alt
-      span.name
-      span.shortname
+  a.link.fe.fe-share
+    span.name
+    span.shortname
 
 ul.nav.nav-tabs
   li(active='^doc/about')
-    a(href='#/doc/about')
-      i.fe.fe-info-circle About
+    a(href='#/doc/about').fe.fe-info-circled About
   li(active='^node')
-    a(href='#/nodes')
-      i.fe.fe-male Actors
+    a(href='#/nodes').fe.fe-male Actors
   li.seo-remove.signed-in
-    a(href='#/node/new')
-      i.fe.fe-plus
+    a(href='#/node/new').fe.fe-plus
   li(active='^edge').hide-on-tablet
-    a(href='#/edges')
-      i.fe.fe-chain Connections
+    a(href='#/edges').fe.fe-link Connections
   li.seo-remove.signed-in
-    a(href='#/edge/new')
-      i.fe.fe-plus
+    a(href='#/edge/new').fe.fe-plus
   li.seo-remove.dropdown
-    a(href='#', data-toggle='dropdown').dropdown-toggle
-      i.fe.fe-list Maps
+    a(href='#', data-toggle='dropdown').dropdown-toggle.fe.fe-menu Maps
       b.caret
     ul.dropdown-menu.maps
       li.map
@@ -31,29 +24,21 @@ ul.nav.nav-tabs
     ul.hide
       li.map-new.signed-in.divider
       li.map-new.signed-in
-        a(href='#/map/new')
-          i.fe.fe-plus Create new
+        a(href='#/map/new').fe.fe-plus Create new
           i.edit-indicator
   li.map.hot: +map
   li.map: +map
   li(active='^user/signin').hide-on-tablet.seo-remove.pull-right.signed-out
-    a(href='#/user/signin')
-      i.fe.fe-sign-in Login
+    a(href='#/user/signin').fe.fe-login Login
   li(active='^user/signout').seo-remove.pull-right.signed-in
-    a(href='#/user/signout')
-      i.fe.fe-sign-out Logout
+    a(href='#/user/signout').fe.fe-logout Logout
   li(active='^sys').seo-remove.pull-right.signed-in-admin
-    a(href='#/sys')
-      i.fe.fe-wrench Sys
+    a(href='#/sys').fe.fe-wrench Sys
   li(active='^user(/edit|$)').seo-remove.pull-right.signed-in
-    a(href='#/user')
-      i.fe.fe-user Account
+    a(href='#/user').fe.fe-user Account
   li(active='^user/signup').seo-remove.pull-right.signed-in-admin
-    a(href='#/user/signup')
-      i.fe.fe-user Signup
+    a(href='#/user/signup').fe.fe-user Signup
   li(active='^user(s|/[0-9a-f]+)$').seo-remove.pull-right.hide
-    a(href='#/users')
-      i.fe.fe-pencil Contributors
+    a(href='#/users').fe.fe-pencil Contributors
   li(active='^latest').pull-right
-    a(href='#/latest')
-      i.fe.fe-history Latest
+    a(href='#/latest').fe.fe-history Latest

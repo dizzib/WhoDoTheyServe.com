@@ -20,10 +20,10 @@ m = B.DeepModel.extend do
   ## extensions
   get-glyph: ->
     const GLYPHS =
-      * name:\fa-file-pdf-o   unicode:\\uf1c1 rxs:[ /\.pdf$/i ]
-      * name:\fa-video-camera unicode:\\uf03d rxs:[ VID-VIMEO.rx, VID-YOUTUBE.rx ]
+      * name:\fe-file-pdf unicode:\\ue807 rxs:[ /\.pdf$/i ]
+      * name:\fe-videocam unicode:\\ue81c rxs:[ VID-VIMEO.rx, VID-YOUTUBE.rx ]
     for g in GLYPHS then return g if _.find g.rxs, ~> it.test @get \url
-    name:\fa-file-text-o unicode:\\uf0f6
+    name:\fe-doc-text unicode:\\ue81b
 
   is-dead: ->
     _.contains Hv.dead-ids, @id

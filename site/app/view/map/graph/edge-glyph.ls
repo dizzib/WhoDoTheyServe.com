@@ -28,7 +28,7 @@ module.exports = (vg) ->
             .attr \xlink:title -> edge.tip
             .append \text
               .attr \class -> if ev.is-dead! then \dead else \live
-              .attr \font-family \FontAwesome
+              .attr \font-family \fontello
               .attr \x dx + i * ICON-SPACE
               .attr \y dy
               .text -> ev.get-glyph!unicode

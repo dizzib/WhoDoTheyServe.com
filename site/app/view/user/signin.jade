@@ -3,15 +3,15 @@ include ../../lib/_form
 .openauth.well.hide
   legend OpenAuth Login
   a(href='api/auth/facebook')
-    i.glyph.fe.fe-2x.fe-facebook
+    .glyph.fe.fe-2x.fe-facebook
     span Login with your Facebook account
   hr
   a(href='api/auth/github')
-    i.glyph.fe.fe-2x.fe-github
+    .glyph.fe.fe-2x.fe-github
     span Login with your Github account
   hr
   a(href='api/auth/google')
-    i.glyph.fe.fe-2x.fe-google-plus
+    .glyph.fe.fe-2x.fe-gplus
     span Login with your Google account
 
 form.form-horizontal.create.well
@@ -23,6 +23,6 @@ form.form-horizontal.create.well
 
 .please-wait.well.hide
   legend
+    .glyph.fe.fe-2x.fe-cog.animate-spin
     // high cpu usage!
-    i.glyph.fe.fe-2x.fe-spin.fe-cog
     span Logging in...
