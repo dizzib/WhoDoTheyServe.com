@@ -35,7 +35,7 @@ tasks  =
     oxt : \html
   static:
     cmd : 'cp --target-directory $ODIR $IN'
-    ixt : '{css,eot,gif,html,jpg,js,makefile,otf,pem,png,svg,ttf,txt,woff,woff2}'
+    ixt : '{css,eot,gif,html,jpg,js,mak,otf,pem,png,svg,ttf,txt,woff,woff2}'
   stylus:
     cmd : "#BIN/stylus -u nib --out $ODIR $IN"
     ixt : \styl

@@ -7,8 +7,8 @@ module.exports =
 
 function make op
   try
-    pushd Dir.SITE
-    log cmd = "make -f #{Dir.TASK}/fontello.makefile #op"
+    pushd Dir.TASK
+    log cmd = "make --file=./fontello.mak #op"
     code, out <- exec cmd
     log out
     log "exit code #code"
