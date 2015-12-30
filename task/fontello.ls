@@ -5,11 +5,13 @@ module.exports =
   open: -> make \fontopen
   save: -> make \fontsave
 
-function make cmd
+function make op
   try
     pushd Dir.SITE
-    log "make -f #{Dir.TASK}/fontello.makefile #cmd"
-    exec "make -f #{Dir.TASK}/fontello.makefile #cmd"
+    log cmd = "make -f #{Dir.TASK}/fontello.makefile #op"
+    code, out <- exec cmd
+    log out
+    log "exit code #code"
   catch e
     log e
   finally
