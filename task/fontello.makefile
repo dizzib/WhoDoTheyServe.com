@@ -1,6 +1,6 @@
 # Edit here - set path to you directory with config.json & fonts
 
-FONT_DIR      ?= ../../site/app/lib-3p/fontello
+FONT_DIR      ?= ./app/lib-3p/fontello
 
 ### Don't edit below ###
 

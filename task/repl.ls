@@ -11,6 +11,7 @@ Dir     = require \./constants .dir
 Data    = require \./data
 Dist    = require \./dist
 Flags   = require \./flags
+Fntello = require \./fontello
 Inst    = require \./npm/install
 MaintDE = require \./maint/dead-evidences
 Prod    = require \./prod
@@ -37,6 +38,8 @@ const COMMANDS =
   * cmd:'b2   ' lev:0 desc:'build - enable $app'         fn:-> Flags.toggle \test.run.app
   * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'   fn:-> Flags.toggle \test.autorun
   * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'   fn:MaintDE.dev
+  * cmd:'f.o  ' lev:0 desc:'fonts - open fontello'       fn:Fntello.open
+  * cmd:'f.s  ' lev:0 desc:'fonts - save fontello'       fn:Fntello.save
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'      fn:-> Test.run \staging
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'     fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:Seo.generate
