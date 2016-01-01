@@ -37,7 +37,7 @@ information requests to UK public authorities.
 [beta]:       https://en.wikipedia.org/wiki/Software_release_life_cycle
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
 [db-dump]:    https://github.com/dizzib/prod-db-dump
-[hit-count]:  http://wdts-dizzib0.rhcloud.com/api/hive/n-hits-2015
+[hit-count]:  http://wdts-dizzib0.rhcloud.com/api/hive/n-hits-2016
 [github]:     https://github.com
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
 [json]:       http://en.wikipedia.org/wiki/Json
