@@ -4,10 +4,13 @@ Hv = require \../../../model/hive .instance
 module.exports = (vg) ->
   const ICON-SIZE = 20
   const GLYPHS =
-    bank :\\ue827
-    film :\\ue823
-    music:\\ue822
-    tv   :\\ue808
+    bank      : \\ue827
+    film      : \\ue823
+    individual: \\ue801
+    magazine  : \\ue832
+    music     : \\ue822
+    newspaper : \\ue824
+    tv        : \\ue808
   var nodes
 
   vg.on \render ->

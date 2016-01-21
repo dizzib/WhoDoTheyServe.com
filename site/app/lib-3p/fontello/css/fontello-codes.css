@@ -36,8 +36,6 @@
 .fe-music:before { content: '\e822'; } /* '' */
 .fe-video:before { content: '\e823'; } /* '' */
 .fe-newspaper:before { content: '\e824'; } /* '' */
-.fe-book-open:before { content: '\e825'; } /* '' */
-.fe-book:before { content: '\e826'; } /* '' */
 .fe-bank:before { content: '\e827'; } /* '' */
 .fe-flight:before { content: '\e828'; } /* '' */
 .fe-fighter-jet:before { content: '\e829'; } /* '' */
@@ -48,3 +46,4 @@
 .fe-ok:before { content: '\e82e'; } /* '' */
 .fe-trash-empty:before { content: '\e82f'; } /* '' */
 .fe-github:before { content: '\e830'; } /* '' */
+.fe-book-open-1:before { content: '\e832'; } /* '' */

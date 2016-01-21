@@ -271,22 +271,16 @@
       "src": "fontawesome"
     },
     {
-      "uid": "51727ca007aa35ceabcaffc28934faee",
-      "css": "book-open",
-      "code": 59429,
-      "src": "entypo"
-    },
-    {
-      "uid": "48b79f27e4798f23bafa07b55dbe5b73",
-      "css": "book",
-      "code": 59430,
-      "src": "entypo"
-    },
-    {
       "uid": "e4536ab890a215f2fe8952de5c2fe354",
       "css": "shareable",
       "code": 59435,
       "src": "entypo"
+    },
+    {
+      "uid": "8fc56819afcd07e2786e34f18d39b71b",
+      "css": "book-open-1",
+      "code": 59442,
+      "src": "iconic"
     },
     {
       "uid": "afdef1656447e2558662b393d6b4bb75",
