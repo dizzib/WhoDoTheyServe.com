@@ -14,7 +14,7 @@ try
 catch
 
 const BAK-ROOT   = "$HOME/data/prod-db-dump"
-const BAK-DIR    = "#BAK-ROOT/#{cfg.dbid}"
+const BAK-DIR    = "#BAK-ROOT/#{cfg?dbid}"
 const STAGING-DB = "wdts_staging"
 
 module.exports =
