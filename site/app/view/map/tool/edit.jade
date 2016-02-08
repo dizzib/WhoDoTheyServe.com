@@ -25,7 +25,7 @@ form.signed-in.form-horizontal.bg-transparent
             Optionally enter a date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
             Active connections on this date will have a solid line, otherwise dotted.  
             Leave blank to always use the current date.
-      +field-checkbox('flags.private', 'Private')
+      +field-checkbox('flags.private', 'Private (hide this map from public visitors)')
       span.signed-in-admin
-        +field-checkbox('is-default', 'Default')
+        +field-checkbox('is-default', 'Default (show this map when a visitor first hits the site)')
     +button-bar
