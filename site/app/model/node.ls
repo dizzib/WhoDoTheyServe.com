@@ -9,11 +9,8 @@ m = B.DeepModel.extend do
 
   ## core
   toJSON-T: (opts) ->
-    function get-family-name node
-      return unless name = node.get \name
-      name.match(/^\w+,/)?0.replace ',', ''
     _.extend (@toJSON opts),
-      family-name: get-family-name this
+      family-name: if name = @get \name then name.match(/^\w+,/)?0.replace ',' ''
       tip        : 'Evidence'
 
   ## extensions
