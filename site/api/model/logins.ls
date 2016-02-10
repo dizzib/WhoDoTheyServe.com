@@ -1,6 +1,6 @@
 _        = require \lodash
 M        = require \mongoose
-Cons     = require \../../lib/model-constraints
+Cons     = require \../../lib/model/constraints
 CryptPwd = require \../crypt-pwd
 H        = require \../helper
 P-Id     = require \./plugin-id

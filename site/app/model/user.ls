@@ -1,5 +1,5 @@
 B   = require \backbone
-Con = require \../../lib/model-constraints
+Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 

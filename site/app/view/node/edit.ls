@@ -1,4 +1,4 @@
-Con = require \../../../lib/model-constraints
+Con = require \../../../lib/model/constraints
 C   = require \../../collection
 V   = require \../../view
 

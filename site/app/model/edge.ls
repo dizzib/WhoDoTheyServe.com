@@ -1,6 +1,6 @@
 B   = require \backbone
 _   = require \underscore
-Con = require \../../lib/model-constraints
+Con = require \../../lib/model/constraints
 W   = require \../../lib/when
 Api = require \../api
 C   = require \../collection

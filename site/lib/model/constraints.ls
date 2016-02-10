@@ -1,4 +1,4 @@
-When = require \./when
+When = require \../when
 
 const TEXT =
   info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'

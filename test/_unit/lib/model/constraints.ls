@@ -1,7 +1,7 @@
 Assert = require \chai .assert
-Cons   = require "#{process.cwd!}/site/lib/model-constraints"
+Cons   = require "#{process.cwd!}/site/lib/model/constraints"
 
-(...) <- describe 'model-constraints'
+(...) <- describe 'model/constraints'
 
 it 'edge.when', (done) ->
   rx = Cons.edge.when.regex

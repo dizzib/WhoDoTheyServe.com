@@ -1,6 +1,6 @@
 M      = require \mongoose
 _      = require \lodash
-Cons   = require \../../lib/model-constraints
+Cons   = require \../../lib/model/constraints
 When   = require \../../lib/when
 Crud   = require \../crud
 H      = require \../helper

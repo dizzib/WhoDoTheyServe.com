@@ -1,5 +1,5 @@
 _    = require \lodash
-Cons = require "#{process.cwd!}/site/lib/model-constraints"
+Cons = require "#{process.cwd!}/site/lib/model/constraints"
 H    = require \./helper
 
 exports.get-spec = (...args) ->

@@ -1,6 +1,6 @@
 B   = require \backbone
 _   = require \underscore
-Con = require \../../lib/model-constraints
+Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 
