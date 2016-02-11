@@ -53,6 +53,11 @@ const GLYPHS =
         $el.append "<span title='#{note.get \text}' class='glyph fe fe-comment'/>"
       return ''
 
+const IS-PERSON =
+  'is-person':
+    class: -> "glyph fe fe-male" if @is-person
+    title: -> \person
+
 const REMOVE =
   text: -> it.element.remove!
 
@@ -143,11 +148,13 @@ module.exports =
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
+    IS-PERSON
     TAGS
   nodes: _.extend do
     name:
       href: -> get-node-href @_id
     GLYPHS
+    IS-PERSON
     TAGS
   notes: _.extend do
     note:

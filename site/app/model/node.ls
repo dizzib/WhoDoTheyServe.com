@@ -1,6 +1,7 @@
 B   = require \backbone
 _   = require \underscore
 Con = require \../../lib/model/constraints
+Lib = require \../../lib/model/node
 Api = require \../api
 Fac = require \./_factory
 
@@ -11,6 +12,7 @@ m = B.DeepModel.extend do
   toJSON-T: (opts) ->
     _.extend (@toJSON opts),
       family-name: (@get \name)?match(/^\w+,/)?0.replace ',' ''
+      is-person  : Lib.is-person @get \name
       tip        : 'Evidence'
 
   ## extensions
