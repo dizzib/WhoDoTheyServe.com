@@ -5,11 +5,13 @@ Node   = require "#{process.cwd!}/site/lib/model/node"
 
 it 'is a person' ->
   const NAMES =
-    'Maxwell, James Clark'
+    'Clarke, Kenneth (QC, MP)'
+    'Maxwell, James Clerk'
     'Rothschild, Lyn Forester de (Lady)'
     'Sutherland, Peter D (KCMG)'
+    'Svanberg, Carl-Henric'
     'Tesla, Nikola'
-    'Von Braun, Werner'
+    'Von Braun, Wernher'
   for n in NAMES then Assert.ok (Node.is-person n), n
 
 it 'is not a person' ->
