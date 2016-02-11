@@ -27,16 +27,16 @@ m = B.DeepModel.extend do
     when-obj = W.parse-range when-raw
 
     _.extend (@toJSON opts),
-      a_node_name: a-node?get \name
-      b_node_name: b-node?get \name
-      a_is_eq    : \eq is @get \a_is
-      a_is_lt    : \lt is @get \a_is
-      tip        : get-tip!
-      when-obj   : when-obj
-      when-text  : get-when-text!
-      yy         : yyyy?substring 2
-      yyyy       : yyyy
-      year       : parseInt yyyy
+      'a-node' : a-node.toJSON-T!
+      'b-node' : b-node.toJSON-T!
+      a_is_eq  : \eq is @get \a_is
+      a_is_lt  : \lt is @get \a_is
+      tip      : get-tip!
+      when-obj : when-obj
+      when-text: get-when-text!
+      yy       : yyyy?substring 2
+      yyyy     : yyyy
+      year     : parseInt yyyy
 
   ## extensions
   is-in-map: (node-ids) ->

@@ -1,11 +1,14 @@
 include ../lib/_form
+include _mixin
 
 form.form-horizontal
   legend
     a.btn.btn-edit.pull-right.signed-in Edit 
       .fe.fe-edit
     h2.edge-title
-      a.a-node
+      span.a-node
+        +node-name
       span.how
-      a.b-node
+      span.b-node
+        +node-name
       span.when-text

@@ -1,8 +1,12 @@
+include _mixin
+
 ul.items.unstyled
   li
     span.edge-title
-      a.a-node
+      span.a-node
+        +node-name
       a.how
-      a.b-node
+      span.b-node
+        +node-name
       span.when-text
     span.glyphs

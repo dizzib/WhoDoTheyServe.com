@@ -4,13 +4,18 @@ C = require \../collection
 S = require \../session
 V = require \../view
 
+const NODE-NAME =
+  link:
+    href: -> get-node-href @_id
+  name:
+    text: -> @name
+  'person-glyph':
+    class: -> "glyph fe fe-male" if @is-person
+    title: -> \person
+
 const EDGE =
-  'a-node':
-    href: -> get-node-href @a_node_id
-    text: -> @a_node_name
-  'b-node':
-    href: -> get-node-href @b_node_id
-    text: -> @b_node_name
+  'a-node': NODE-NAME
+  'b-node': NODE-NAME
   how:
     href: -> "#/edge/#{@_id}"
     text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
@@ -53,14 +58,6 @@ const GLYPHS =
         $el.append "<span title='#{note.get \text}' class='glyph fe fe-comment'/>"
       return ''
 
-const IS-PERSON =
-  'is-person':
-    class: -> "glyph fe fe-male" if @is-person
-    title: -> \person
-
-const REMOVE =
-  text: -> it.element.remove!
-
 const META =
   'create-by':
     class: -> \hide if get-is-admin @meta?create_user_id
@@ -90,14 +87,17 @@ const META-COMPACT = # show only the last action
     href: -> get-user-href (@meta?update_user_id or @meta?create_user_id)
     text: -> get-user-text (@meta?update_user_id or @meta?create_user_id)
 
-const SHOW-IF-CREATOR-OR-ADMIN = ->
-  \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
-
-const TAGS =
+const NODE-TAGS =
   tags:
     tag:
       href: -> "#/nodes/#{@value}"
       text: -> @value
+
+const REMOVE =
+  text: -> it.element.remove!
+
+const SHOW-IF-CREATOR-OR-ADMIN = ->
+  \hide unless S.is-signed-in @meta?create_user_id or S.is-signed-in-admin!
 
 # _.extend seems to work better then livescript's with (aka the cloneport)
 module.exports =
@@ -148,14 +148,12 @@ module.exports =
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
-    IS-PERSON
-    TAGS
+    NODE-NAME
+    NODE-TAGS
   nodes: _.extend do
-    name:
-      href: -> get-node-href @_id
     GLYPHS
-    IS-PERSON
-    TAGS
+    NODE-NAME
+    NODE-TAGS
   notes: _.extend do
     note:
       html: -> htmlify-text @text
