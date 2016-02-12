@@ -28,4 +28,6 @@ $.fn.serializeObject = ->
   for {name, value} in @serializeArray! then set name, value
   # http://stackoverflow.com/questions/3029870/jquery-serialize-does-not-register-checkboxes
   for c in @find 'input[type=checkbox]:visible' then set c.name, c.checked, false
+  # serializeArray misses empty multiple selects
+  for s in @find 'select[multiple]:not(:has(*))' then set s.name, []
   res
