@@ -30,6 +30,8 @@ module.exports = (vg) ->
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
+        .append \title
+          .text -> it.name
     append-glyph (@svg.selectAll \g.node.person), GLYPHS.person, \person
     append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]), (-> it.tags.join ', ')
 
