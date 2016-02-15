@@ -18,30 +18,32 @@ module.exports = (vg) ->
     @svg?selectAll \.hull .remove!
 
   vg.on \render (ents) ->
+    edges-active = _.reject ents.edges, -> _.contains it.classes, \out-of-date
+    edges-a-is   = _.groupBy edges-active, -> it.a_is
+    edges-a-is.eq?by-a-node = _.groupBy edges-a-is.eq, -> it.a_node_id
+    edges-a-is.eq?by-b-node = _.groupBy edges-a-is.eq, -> it.b_node_id
+    edges-a-is.lt?by-b-node = _.groupBy edges-a-is.lt, -> it.b_node_id
+
+    function get-node-ids-on-edges edges
+      (_.pluck edges, \a_node_id) ++ (_.pluck edges, \b_node_id)
+
     function get-region cls, node-ids
       class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
-    function get-node-ids id, filter
-      edges = _.filter ents.edges, ->
-        (not _.contains it.classes, \out-of-date) and filter id, it
-      (_.pluck edges, \a_node_id) ++ _.pluck edges, \b_node_id
-
     function get-peer-node-ids subord-node-ids
-      function filter node-id, edge
-        edge.a_is_eq and (node-id is edge.a_node_id or node-id is edge.b_node_id)
       ids = []
       for id in subord-node-ids
-        peer-node-ids = get-node-ids id, filter
+        peer-node-ids = get-node-ids-on-edges do
+          (edges-a-is.eq?by-a-node[id] or []) ++ (edges-a-is.eq?by-b-node[id] or [])
         ids ++= _.without peer-node-ids, id
       _.uniq ids
 
     function get-subord-node-ids node-id
-      function filter node-id, edge then edge.a_is_lt and edge.b_node_id is node-id
       subords = []
       pending = [node-id]
       while pending.length
         id = pending.shift!
-        ids = get-node-ids id, filter
+        ids = get-node-ids-on-edges edges-a-is.lt?by-b-node[id]
         ids = _.difference ids, subords # cycle prevention
         pending ++= ids
         subords ++= ids

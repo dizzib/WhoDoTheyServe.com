@@ -29,6 +29,7 @@ m = B.DeepModel.extend do
     _.extend (@toJSON opts),
       'a-node' : a-node.toJSON-T!
       'b-node' : b-node.toJSON-T!
+      a_is     : @get \a_is
       a_is_eq  : \eq is @get \a_is
       a_is_lt  : \lt is @get \a_is
       tip      : get-tip!
