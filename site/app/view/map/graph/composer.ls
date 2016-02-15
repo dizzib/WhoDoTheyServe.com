@@ -5,8 +5,8 @@ module.exports = (vm = v-map) ->
   vf = vm.v-find
   vg = vm.v-graph
 
-  (require \./node) vg
   (require \./edge) vg
+  (require \./node) vg
   (require \./layer/slit) vg
   eg = (require \./edge-glyph) vg
   (require \./layer) vg
