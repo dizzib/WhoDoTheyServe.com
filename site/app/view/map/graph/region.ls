@@ -31,12 +31,12 @@ module.exports = (vg) ->
       class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
     function get-peer-node-ids subord-node-ids
-      ids = []
+      peer-node-ids = []
       for id in subord-node-ids
-        peer-node-ids = get-node-ids-on-edges do
+        ids = get-node-ids-on-edges do
           (edges-a-is.eq?by-a-node[id] or []) ++ (edges-a-is.eq?by-b-node[id] or [])
-        ids ++= _.without peer-node-ids, id
-      _.uniq ids
+        peer-node-ids ++= _.without ids, id
+      _.uniq peer-node-ids
 
     function get-subord-node-ids node-id
       subords = []
