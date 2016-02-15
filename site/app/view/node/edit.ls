@@ -1,4 +1,5 @@
 Con = require \../../../lib/model/constraints
+N   = require \../../../lib/model/node
 C   = require \../../collection
 V   = require \../../view
 
@@ -6,7 +7,11 @@ const STORE-KEY = \node/edit/add-to-map
 
 module.exports =
   init: ->
-    @$ \#name .typeahead source:C.Nodes.pluck \name
+    # name
+    function show-or-hide-person-glyph then $ \.person-glyph .toggle N.is-person $name.val!
+    ($name = @$ \#name).typeahead source:C.Nodes.pluck \name
+    $name.on 'change keyup' show-or-hide-person-glyph
+    show-or-hide-person-glyph!
 
     # tags
     $.extend $.fn.typeahead.Constructor.prototype, val: -> # fix tagsinput #436
