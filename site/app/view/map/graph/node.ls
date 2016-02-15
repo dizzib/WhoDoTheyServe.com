@@ -4,13 +4,13 @@ Hv = require \../../../model/hive .instance
 module.exports = (vg) ->
   const ICON-SIZE = 20
   const GLYPHS =
-    bank      : \\ue827
-    film      : \\ue823
-    individual: \\ue801
-    magazine  : \\ue832
-    music     : \\ue822
-    newspaper : \\ue824
-    tv        : \\ue808
+    bank     : \\ue827
+    film     : \\ue823
+    magazine : \\ue832
+    music    : \\ue822
+    newspaper: \\ue824
+    person   : \\ue801
+    tv       : \\ue808
   var nodes
 
   vg.on \render ->
@@ -18,9 +18,9 @@ module.exports = (vg) ->
       .data @d3f.nodes!
       .enter!append \svg:g
         .attr \class ->
-          tag = if it.tags? then \tag else ''
+          glyph = if it.tags?length then \tag else if it.is-person then \person else ''
           you = if is-you it then \you else ''
-          "node id_#{it._id} #tag #you".trim!
+          "node id_#{it._id} #glyph #you".trim!
     nodes
       ..append \svg:circle
         .attr \r -> 5 + it.weight + if is-you it then 10 else 0
@@ -30,10 +30,8 @@ module.exports = (vg) ->
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
-    append-glyph do
-      (@svg.selectAll \g.node.tag),
-      (-> GLYPHS[it.tags.0]), # only render 1st
-      (-> it.tags.join ', ')
+    append-glyph (@svg.selectAll \g.node.person), GLYPHS.person, \person
+    append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]), (-> it.tags.join ', ')
 
     for icon in icons =  (Hv.Map.get-prop \icons) or []
       g = @svg.select "g.id_#{icon.id}"
