@@ -72,10 +72,11 @@ module.exports = B.View.extend do
     return unless ents = _.deepClone @map.get \entities
     return unless ents.nodes?length
 
-    ents.nodes = _.map ents.nodes, -> it.toJSON-T!
+    ents.nodes = _.map ents.nodes, -> it.toJSON-T! <<< classes:[]
     ents.edges = _.map ents.edges, -> it.toJSON-T! <<< classes:[]
     @trigger \pre-render ents # ents can be modified by handlers
-    for d3e in ents.edges then d3e.class = d3e.classes * ' '
+    for n in ents.nodes then n.class = n.classes * ' '
+    for e in ents.edges then e.class = e.classes * ' '
 
     size-x = @map.get \size.x or @get-size-x! or SIZE-NEW
     size-y = @map.get \size.y or @get-size-y! or SIZE-NEW

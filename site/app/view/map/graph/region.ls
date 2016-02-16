@@ -18,23 +18,26 @@ module.exports = (vg) ->
     @svg?selectAll \.hull .remove!
 
   vg.on \render (ents) ->
-    edges-active = _.reject ents.edges, -> _.contains it.classes, \out-of-date
-    edges-a-is   = _.groupBy edges-active, -> it.a_is
+    regions := []
+    edges = _.reject ents.edges, -> (_.intersection it.classes, <[ layer out-of-date ]>).length
+    edges-a-is = _.groupBy edges, -> it.a_is
     edges-a-is.eq?by-a-node = _.groupBy edges-a-is.eq, -> it.a_node_id
     edges-a-is.eq?by-b-node = _.groupBy edges-a-is.eq, -> it.b_node_id
-    edges-a-is.lt?by-b-node = _.groupBy edges-a-is.lt, -> it.b_node_id
-
-    function get-node-ids-on-edges edges
-      (_.pluck edges, \a_node_id) ++ (_.pluck edges, \b_node_id)
+    return unless edges-a-is.lt?by-a-node = _.groupBy edges-a-is.lt, -> it.a_node_id
+    return unless edges-a-is.lt?by-b-node = _.groupBy edges-a-is.lt, -> it.b_node_id
+    nodes-free = _.indexBy (_.reject ents.nodes, -> it.is-person), \_id
+    explicit-boss-nodes = H.Map.get-prop \regions
+    explicit-boss-node-ids = _.map explicit-boss-nodes, -> it.id
 
     function get-region cls, node-ids
       class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
 
     function get-peer-node-ids subord-node-ids
+      return [] unless edges-a-is.eq?
       peer-node-ids = []
       for id in subord-node-ids
-        ids = get-node-ids-on-edges do
-          (edges-a-is.eq?by-a-node[id] or []) ++ (edges-a-is.eq?by-b-node[id] or [])
+        ids = _.pluck (edges-a-is.eq.by-a-node[id] or []), \b_node_id
+        ids ++= _.pluck (edges-a-is.eq.by-b-node[id] or []), \a_node_id
         peer-node-ids ++= _.without ids, id
       _.uniq peer-node-ids
 
@@ -43,15 +46,40 @@ module.exports = (vg) ->
       pending = [node-id]
       while pending.length
         id = pending.shift!
-        ids = get-node-ids-on-edges edges-a-is.lt?by-b-node[id]
+        ids = _.pluck edges-a-is.lt.by-b-node[id], \a_node_id
         ids = _.difference ids, subords # cycle prevention
         pending ++= ids
         subords ++= ids
       [node-id] ++ subords
 
-    regions := []
-    for seed-node in H.Map.get-prop \regions
-      subord-node-ids = get-subord-node-ids seed-node.id
-      peer-node-ids = get-peer-node-ids subord-node-ids
-      regions.push get-region seed-node.class, subord-node-ids
-      regions.push get-region seed-node.class, subord-node-ids ++ peer-node-ids
+    function get-boss-node-id node-id
+      visited = {}
+      until visited[node-id]
+        edges = edges-a-is.lt.by-a-node[node-id]
+        return node-id unless edges?length is 1
+        return node-id unless nodes-free[b-node-id = edges.0.b_node_id]
+        visited[node-id] = true
+        node-id = b-node-id
+      node-id # bail on cycle detection
+
+    function push-implicit-regions # boss nodes seeked out at runtime
+      while node = _.sample nodes-free
+        boss-node-id = get-boss-node-id node._id
+        subord-node-ids = get-subord-node-ids boss-node-id
+        if subord-node-ids.length > 2
+          unless (_.intersection subord-node-ids, explicit-boss-node-ids).length
+            regions.push get-region '' subord-node-ids
+        nodes-free := _.omit nodes-free, subord-node-ids
+
+    function push-explicit-regions # boss nodes specified in config
+      for boss-node in explicit-boss-nodes when nodes-free[boss-node.id]
+        subord-node-ids = get-subord-node-ids boss-node.id
+        peer-node-ids = get-peer-node-ids subord-node-ids
+        subord-and-peer-node-ids = subord-node-ids ++ peer-node-ids
+        if subord-node-ids.length > 2
+          regions.push get-region boss-node.class, subord-node-ids
+          regions.push get-region boss-node.class, subord-and-peer-node-ids
+        nodes-free := _.omit nodes-free, subord-and-peer-node-ids
+
+    push-explicit-regions!
+    push-implicit-regions!

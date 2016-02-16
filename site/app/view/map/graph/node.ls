@@ -13,14 +13,18 @@ module.exports = (vg) ->
     tv       : \\ue808
   var nodes
 
+  vg.on \pre-render (ents) ->
+    for n in ents.nodes
+      n.classes.push "id_#{n._id}"
+      n.classes.push \tag if n.tags?length
+      n.classes.push \person if n.is-person
+      n.classes.push \you if is-you n
+
   vg.on \render ->
     nodes := @svg.selectAll \g.node
       .data @d3f.nodes!
       .enter!append \svg:g
-        .attr \class ->
-          glyph = if it.tags?length then \tag else if it.is-person then \person else ''
-          you = if is-you it then \you else ''
-          "node id_#{it._id} #glyph #you".trim!
+        .attr \class -> "node #{it.class}".trim!
     nodes
       ..append \svg:circle
         .attr \r -> 5 + it.weight + if is-you it then 10 else 0
@@ -54,8 +58,6 @@ module.exports = (vg) ->
             .attr \width  2 + parseInt size.0
             .attr \height 2 + parseInt size.1
 
-    ## helpers
-
     function append-glyph gs, fn-text, fn-tooltip
       gs.append \text
         .attr \class \fe
@@ -67,7 +69,7 @@ module.exports = (vg) ->
         .append \title
           .text fn-tooltip
 
-    function is-you then /^YOU/.test it.name
-
   vg.on \tick ->
     nodes.attr \transform -> "translate(#{it.x},#{it.y})"
+
+  function is-you then /^YOU/.test it.name
