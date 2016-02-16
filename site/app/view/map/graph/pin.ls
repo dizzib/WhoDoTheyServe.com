@@ -15,10 +15,10 @@ module.exports = (vg) ->
     pin.append \g # for some reason, rotation doesn't work on text so we'll do it on a parent group
       .attr \transform -> if it.fixed then PIN-IN else PIN-OUT
       .append \text
-        .attr \class \fa
-        .attr \font-family \FontAwesome
+        .attr \class \fe
+        .attr \font-family \fontello
         .attr \font-size SIZE
-        .text \\uf08d
+        .text \\ue81e
     # include this path to show bounding box for debugging pin rotation
     #pin.append \svg:path .attr \d "M -#{l = SIZE / 2} -#l L #l -#l L #l #l L -#l #l L -#l -#l"
 
