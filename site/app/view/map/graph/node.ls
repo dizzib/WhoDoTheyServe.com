@@ -27,7 +27,7 @@ module.exports = (vg) ->
         .attr \class -> "node #{it.class}".trim!
     nodes
       ..append \svg:circle
-        .attr \r -> 5 + it.weight + if is-you it then 10 else 0
+        .attr \r -> 5 + it.weight + if is-you it then 30 else 0
       ..append \svg:a
         .attr \xlink:href -> "#/node/#{it._id}"
         .append \svg:text
