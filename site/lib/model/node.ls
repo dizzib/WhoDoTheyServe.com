@@ -1,4 +1,8 @@
+const NAMECH = require \./constants .RX.NAMECHAR
+const PROPER = "[A-Z][#NAMECH]+"
+
+const RX-PERSON = new RegExp do
+  "^(#PROPER[ -])*#PROPER, #PROPER([ -]\\(?[#NAMECH]+[\\),]?)*$"
+
 module.exports =
-  is-person: ->
-    /^([A-Z]\w+[\s-])*[A-Z]\w+, [A-Z]\w+([\s-]\(?\w+[\)\,]?)*$/.test it
-      and not /(, The(\s|$))/.test it
+  is-person: -> RX-PERSON.test it and not /(, [tT]he(\s|$))/.test it

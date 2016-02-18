@@ -1,12 +1,9 @@
-When = require \../when
-
-const RX =
-  LETTER: 'A-Za-záàäçéèêíñöùü0-9!&\'"'
-  WHEN  : When.constants.RX
+const RXC = require \./constants .RX.NAMECHAR
+const RXW = require \../when .constants.RX
 
 const NAME =
   info: "a string of 4 to 50 letters, numbers or symbols !&,'\"()"
-  regex: new RegExp "^(?![tT]he)[A-Z0-9]([#{RX.LETTER}\,\(\)]|[- ](?=[#{RX.LETTER}\(])){3,49}$"
+  regex: new RegExp "^(?![tT]he)[A-Z0-9]([#RXC\,\(\)]|[- ](?=[#RXC\(])){3,49}$"
 const TEXT =
   info: 'a string of up to 200 letters, numbers or symbols !@"#%&*:\'<>/-.+$,()?'
   regex: /^[a-z 0-9!@"#%&*:'<>/\-\.\+\$\,\(\)\?\r\n]{1,200}$/i
@@ -18,7 +15,7 @@ module.exports =
       regex: /^[a-z0-9 &,-\/]{2,50}$/i
     when:
       info: 'a valid From-To time period of format F-T or F- or -T, where F or T is dd/mm/yyyy or mm/yyyy or yyyy'
-      regex: new RegExp "^#{RX.WHEN}-$|^-#{RX.WHEN}$|^#{RX.WHEN}-#{RX.WHEN}$"
+      regex: new RegExp "^#{RXW}-$|^-#{RXW}$|^#{RXW}-#{RXW}$"
   email:     # regex copied from backbone-validation
     info : 'a valid email address e.g. foo@bar.com'
     regex: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
@@ -30,7 +27,7 @@ module.exports =
     name: NAME
     when:
       info: 'a valid date, month or year of format dd/mm/yyyy or mm/yyyy or yyyy'
-      regex: new RegExp "^#{RX.WHEN}$"
+      regex: new RegExp "^#{RXW}$"
   node:
     name: NAME
     tag:
