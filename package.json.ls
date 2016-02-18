@@ -1,5 +1,5 @@
 name   : \wdts
-version: \0.12.0
+version: \0.12.1
 private: true
 engines:
   node: '>=0.10.x'
