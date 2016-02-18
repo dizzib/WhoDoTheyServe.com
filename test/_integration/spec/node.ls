@@ -7,9 +7,9 @@ exports.get-spec = (...args) ->
   a: _.extend do
     h.get-spec \a name:'Node a'
     name: _.extend do
-      h.get-spec \a name:'Node aá'
+      h.get-spec \a name:'Node aa'
       dash  : h.get-spec \a name:'Foo-bar-baz'
-      dcms  : h.get-spec \a name:'Department for Culture, Media & Sport'
+      dcms  : h.get-spec \a name:'Départment for Culture, Media & Sport'
       max   : h.get-spec \a name:\X * 50
       max-gt: h.get-spec \a name:\X * 51
       min   : h.get-spec \a name:\X * 4
