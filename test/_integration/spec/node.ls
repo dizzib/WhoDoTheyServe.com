@@ -7,18 +7,18 @@ exports.get-spec = (...args) ->
   a: _.extend do
     h.get-spec \a name:'Node a'
     name: _.extend do
-      h.get-spec \a name:'Node aa'
-      dash  : h.get-spec \a name:'foo-bar-baz'
+      h.get-spec \a name:'Node aá'
+      dash  : h.get-spec \a name:'Foo-bar-baz'
       dcms  : h.get-spec \a name:'Department for Culture, Media & Sport'
-      max   : h.get-spec \a name:\x * 50
-      max-gt: h.get-spec \a name:\x * 51
-      min   : h.get-spec \a name:\x * 4
-      min-lt: h.get-spec \a name:\x * 3
+      max   : h.get-spec \a name:\X * 50
+      max-gt: h.get-spec \a name:\X * 51
+      min   : h.get-spec \a name:\X * 4
+      min-lt: h.get-spec \a name:\X * 3
       paren :
-        open: h.get-spec \a name:'foo((('
+        open: h.get-spec \a name:'Foo((('
       space:
-        end  : h.get-spec \a name:'foo '
-        start: h.get-spec \a name:' foo'
+        end  : h.get-spec \a name:'Foo '
+        start: h.get-spec \a name:' Foo'
         multi: h.get-spec \a name:'  multi   spaced  '
       the:
         start: h.get-spec \a name:'The Band of England'
@@ -29,7 +29,7 @@ exports.get-spec = (...args) ->
       lcase1: h.get-spec \a tags:<[ bank ]>
       lcase2: h.get-spec \a tags:<[ tv music ]>
       min-lt: h.get-spec \a tags:<[ a ]>
-      max-gt: h.get-spec \a tags:[ \x * 21 ]
+      max-gt: h.get-spec \a tags:[ \X * 21 ]
       ucase : h.get-spec \a tags:<[ Tv music ]>
   b: _.extend do
     h.get-spec \b name:'Node b'

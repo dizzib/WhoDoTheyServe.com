@@ -22,6 +22,6 @@ module.exports.get-spec = (...args) ->
     get-spec \ax nodes:<[ a ]> flags: private:true
     private: get-spec \ax flags: private:true
   b0: get-spec \b0 nodes:<[ b ]>
-  c0: get-spec \c0 name:"c's map" nodes:<[ a b c d g ]>
+  c0: get-spec \c0 name:"C's map" nodes:<[ a b c d g ]>
   cx: get-spec \cx nodes:<[ g ]> flags: private:true
   list: {["is#i" h.get-spec-list i] for i in [0 to 5]}

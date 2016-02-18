@@ -3,27 +3,39 @@ Cons   = require "#{process.cwd!}/site/lib/model/constraints"
 
 (...) <- describe 'model/constraints'
 
-it 'edge.when', (done) ->
-  rx = Cons.edge.when.regex
+it 'edge.when ok' ->
+  const WHENS =
+    <[ 1000- 2999- 01/1000- 12/2999- 01/01/1000- 31/12/2999-
+       -1000 -2999 -01/1000 -12/2999 -01/01/1000 -31/12/2999
+       1000-2999 ]>
+  for w in WHENS then Assert.ok (Cons.edge.when.regex.test w), w
 
-  for good in <[ 1000- 2999-
-                 01/1000- 12/2999-
-                 01/01/1000- 31/12/2999-
-                 -1000 -2999
-                 -01/1000 -12/2999
-                 -01/01/1000 -31/12/2999
-                 1000-2999
-              ]>
-    Assert.ok (rx.test good), good
+it 'edge.when bad' ->
+  const WHENS =
+    <[ a 1 10 100 1000 1900 2000
+       a- 1- 10- 100- 999- 0999- 3000- 0/1000- 00/1000- 13/1000- 1/1000-
+       -b -2 -20 -200 -999 -3000 -9999
+       - a-b 999-3000 2999-3000 ]>
+  for w in WHENS then Assert.notOk (Cons.edge.when.regex.test w), w
 
-  for bad in <[ a 1 10 100 1000 1900 2000
-                - a- -b a-b 1- 10- 100- -2 -20 -200
-                999- 0999- 3000-
-                0/1000- 00/1000- 13/1000-
-                1/1000-
-                -999 -3000 -9999
-                999-3000 2999-3000
-             ]>
-    Assert.notOk (rx.test bad), bad
+it 'node.name ok' ->
+  const NAMES =
+    '21st Century Fox'
+    'Bank of England' 'Bank of England, The'
+    'Botín, Aná Patricia'
+    'Clarke, Kenneth (QC, MP)'
+    'EU (European Union)'
+    'In-Q-Tel'
+    'NASA'
+    'News UK (& Ireland Ltd)'
+    'Tesla, Nikola'
+    'Turner, "Ted"' 'Turner, \'Ted\''
+  for n in NAMES then Assert.ok (Cons.node.name.regex.test n), n
 
-  done!
+it 'node.name bad' ->
+  const NAMES =
+    'ECB'
+    ' NASA' 'NASA ' 'NASA ,' 'NASA )'
+    'the Bank of England' 'The Bank of England'
+    'tesla, Nikola'
+  for n in NAMES then Assert.notOk (Cons.node.name.regex.test n), n
