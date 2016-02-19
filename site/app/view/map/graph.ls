@@ -27,13 +27,14 @@ module.exports = B.View.extend do
         @trigger \pre-cool
         is-resized := false
       ..on \tick ~>
-        return unless n-tick++ % 4 is 0
+        return unless n-tick++ % 16 is 0
         @trigger \tick
         if @map.get-is-editable! and not is-resized and @d3f.alpha! < 0.03
           resize @
           @justify!
           is-resized := true # resize only once during cool-down
       ..on \end ~>
+        @trigger \tick
         @trigger \cooled
 
   justify: ->
@@ -114,8 +115,7 @@ module.exports = B.View.extend do
       return if @map.isNew!
       return if opts?is-slow-to-cool
 
-    @d3f.alpha 0   # freeze map -- must be called after start
-    @trigger \tick # single tick required to render frozen map
+    @d3f.alpha 0 # freeze map -- must be called after start
 
 ## helpers
 
