@@ -24,7 +24,7 @@ module.exports = (vg = v-graph) ->
           url  = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
           tip  = if evs.length is 1 then edge.tip else ''
           node = if o.fn-node-is-match edge.source then edge.target else edge.source
-          slit = d3.select ".id_#{node._id} .slit"
+          slit = @svg.select ".id_#{node._id} .slit"
           slit.append \svg:a
             .attr \class       "badge-#{o.tag}"
             .attr \target      \_blank
