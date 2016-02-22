@@ -15,7 +15,6 @@ module.exports = (vg) ->
 
   vg.on \pre-render (ents) ->
     for n in ents.nodes
-      n.classes.push "id_#{n._id}"
       n.classes.push \tag if n.tags?length
       n.classes.push \person if n.is-person
       n.classes.push \you if is-you n
@@ -24,7 +23,7 @@ module.exports = (vg) ->
     nodes := @svg.selectAll \g.node
       .data @d3f.nodes!
       .enter!append \svg:g
-        .attr \class -> "node #{it.class}".trim!
+        .attr \class -> "node id_#{it._id} #{it.class}".trim!
     nodes
       ..append \svg:circle
         .attr \r -> 5 + it.weight + if is-you it then 30 else 0

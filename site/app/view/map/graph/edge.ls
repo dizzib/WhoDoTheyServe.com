@@ -28,7 +28,6 @@ module.exports = (vg) ->
       target: _.find ents.nodes, -> it._id is edge.b_node_id
 
     for e in ents.edges
-      e.classes.push "id_#{e._id}"
       e.classes.push \out-of-date if not is-in-range e.when-obj
       e.classes.push \family if a = e.source.family-name and b = e.target.family-name and a is b
 
@@ -48,7 +47,7 @@ module.exports = (vg) ->
     lines := @svg.selectAll \line
       .data @d3f.links!
       .enter!append \svg:line
-        .attr \class      -> "edge #{it.class}".trim!
+        .attr \class      -> "edge id_#{it._id} #{it.class}".trim!
         .attr \marker-end -> if it.a_is is \lt then 'url(#end)' else ''
 
   vg.on \tick ->
