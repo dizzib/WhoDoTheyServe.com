@@ -1,5 +1,10 @@
 C = require \../../../collection
 
+const LAYERS =
+  ac : rx:/^Atlantic Council$/
+  bis: rx:/^BIS/ how:\director
+  cfr: rx:/^CFR/ how:\member
+
 module.exports = (vg = v-graph) ->
   class Layer
     (@tag, @fn-edge-is-match, @fn-node-is-match) ->
@@ -30,14 +35,6 @@ module.exports = (vg = v-graph) ->
               .attr \text-anchor \middle
               .text o.tag.toUpperCase!
 
-  new Layer \ac,
-    -> true
-    -> /^Atlantic Council$/.test it.name
-
-  new Layer \bis,
-    -> it.how is \director
-    -> /^BIS/.test it.name
-
-  new Layer \cfr,
-    -> it.how is \member
-    -> /^CFR/.test it.name
+  for let tag, cfg of LAYERS then new Layer tag,
+    -> if cfg.how then (it.how is cfg.how) else true
+    -> cfg.rx.test it.name
