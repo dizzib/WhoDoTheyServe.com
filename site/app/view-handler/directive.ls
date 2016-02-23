@@ -122,12 +122,12 @@ module.exports =
     link:
       href: -> "#/map/#{@id or @_id or \new}"
     name:
-      text: -> @name or @get \name or 'New map'
+      text: -> @name or 'New map'
     description:
       html: -> htmlify-text @description
     shortname:
       text: ->
-        return s unless (s = @name or @get \name or 'New map').length > 3
+        return s unless (s = @name or 'New map').length > 3
         s.substr(0, 3) + \...
     when:
       text: -> "Date: #{@when}" if @when

@@ -1,10 +1,11 @@
-B = require \backbone
-F = require \fs
-_ = require \underscore
-C = require \../collection
-D = require \../view-handler/directive
-S = require \../session
-V = require \../view
+B  = require \backbone
+F  = require \fs
+_  = require \underscore
+C  = require \../collection
+Hm = require \../model/hive .instance.Map
+S  = require \../session
+V  = require \../view
+D  = require \../view-handler/directive
 
 module.exports = B.View.extend do
   initialize: ->
@@ -19,15 +20,19 @@ module.exports = B.View.extend do
 
     function render-map-tabs
       const SEL = \.nav>li.map
-      return unless m = V.maps.get-current!
-      key = m.id or \new
+      return unless map = V.maps.get-current! or C.Maps.get Hm.default-ids?0
+      key = map.id or \new
       unless @$ "#SEL[data-key=#key]" .length
-        $t = @$ "#SEL:not([data-key])" .first!
-        $t = @$ "#SEL.hot" unless $t.length
-        $t.render m, D.map
-        $t.attr \data-key key
-        $t.attr \active "^$|^map/#key"
-      @$ SEL .each -> ($t = $ @).toggleClass \hot key is $t.attr \data-key
+        $tab = @$ "#SEL:not([data-key]):first"
+        $tab = @$ "#SEL.hot" unless $tab.length
+        render $tab, key, map, \^$|
+      if ($tab = @$ "#SEL:not([data-key])").length is 1 and id = Hm.default-ids?1
+        render $tab, id, C.Maps.get id unless id is key # tab-2 default
+      @$ SEL .each -> ($tab = $ @).toggleClass \hot key is $tab.attr \data-key
+
+      function render $tab, key, map, active-rx = ''
+        $tab.render map.toJSON-T!, D.map
+        $tab.attr \data-key key .attr \active "#active-rx^map/#key"
 
     function render-maps-dropdown
       $maps = @$ \ul.maps

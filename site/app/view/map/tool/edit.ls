@@ -1,6 +1,6 @@
 B  = require \backbone
 C  = require \../../../collection
-Hv = require \../../../model/hive .instance
+Hm = require \../../../model/hive .instance.Map
 S  = require \../../../session
 Vs = require \../../../view-activity/select
 
@@ -30,9 +30,10 @@ module.exports = (ve, vg) ->
         init-dropdown!
         render-dropdown!
         init-error-alert!
-        load-is-default it.id
+        load-default-tab it.id
       ..on \saved (map, is-new) ->
-        save-is-default map.id if ve.$el.find \#is-default .prop \checked
+        for i from 0 to 1
+          save-default-tab i, map.id if ve.$el.find "\#default-id-#i" .prop \checked
         alert-success 'Successfully saved'
         init-error-alert!
       ..on \serialized ->
@@ -67,8 +68,10 @@ module.exports = (ve, vg) ->
     $ \.alert-error .removeClass \active
     ve.$el.find \.alert-error .addClass \active .hide!
 
-  function load-is-default id
-    ve.$el.find \#is-default .prop \checked id is (Hv.Map.get-prop \default)?id
+  function load-default-tab id
+    for let i from 0 to 1 then ve.$el.find "\#default-id-#i"
+      ..prop \checked id is Hm.default-ids[i]
+      ..on \change -> ve.$el.find "\#default-id-#{1-i}" .prop \checked false
 
   function render-dropdown add-node-id
     return unless ve.v-nodes-sel?
@@ -80,7 +83,12 @@ module.exports = (ve, vg) ->
   function refresh-map node-ids
     vg.refresh-entities node-ids .render is-slow-to-cool:true
 
-  function save-is-default id
-    Hv.Map
-      ..set-prop \default id:id
-      ..save success: -> log 'saved default map-id'
+  function save-default-tab tab-index, map-id
+    default-ids = Hm.default-ids
+    default-ids[tab-index] = map-id
+    Hm
+      ..set-prop \default void # TODO remove
+      ..set-prop \default-ids default-ids
+      ..save void,
+        success: -> log 'saved default-ids' default-ids
+        error  : -> log 'error saving default-ids' default-ids

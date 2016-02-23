@@ -64,7 +64,7 @@ function fetch-entity coll, id, name, cb
 
 function render-nodes-or-edges done, render
   function refresh cb # at least show entities belonging to default map
-    if m = C.Maps.get Hv.Map.default-id
+    if m = C.Maps.get Hv.Map.default-ids?0
       loc = B.history.fragment
       m.fetch success: ->
         # ideally we'd only render if the data has changed i.e. response code 200 not 304

@@ -17,12 +17,12 @@ m-evs = m.extend urlRoot:"#{Api.hive}/evidences"
 m-map = m.extend urlRoot:"#{Api.hive}/map"
 
 evs = new m-evs!
-  ..on \sync, -> # set convenience properties
+  ..on \sync -> # set convenience properties
     @dead-ids = @get-prop \dead-ids or []
 
 map = new m-map!
-  ..on \sync, -> # set convenience properties
-    @default-id = (@get-prop \default)?id
+  ..on \sync -> # set convenience properties
+    @default-ids = @get-prop \default-ids or [(@get-prop \default)?id]
 
 module.exports =
   Evidences: m-evs

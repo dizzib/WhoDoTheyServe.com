@@ -1,5 +1,10 @@
 include ../../../lib/_form
 
+mixin checkbox(name, label)
+  label.checkbox
+    input(type='checkbox', id=name, name=name)
+    div #{label}
+
 form.signed-in.form-horizontal.bg-transparent
   legend
     .glyph.fe.fe-right-dir.show-if-collapsed
@@ -27,5 +32,7 @@ form.signed-in.form-horizontal.bg-transparent
             Leave blank to always use the current date.
       +field-checkbox('flags.private', 'Private (hide this map from public visitors)')
       span.signed-in-admin
-        +field-checkbox('is-default', 'Default (show this map when a visitor first hits the site)')
+        +field-label('default-id-0', 'Default tab')
+          +checkbox('default-id-0', '1 (show this map on tab 1 when a visitor first hits the site)')
+          +checkbox('default-id-1', '2')
     +button-bar
