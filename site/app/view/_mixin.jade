@@ -1,3 +1,12 @@
+mixin edge
+  span.edge-title
+    span.a-node
+      +node-name(plain=attributes.plainNodeA)
+    #{attributes.plainHow ? 'span' : 'a'}.how
+    span.b-node
+      +node-name(plain=attributes.plainNodeB)
+    span.when-text
+
 mixin meta-compact
   small.meta
     span  - 
@@ -8,7 +17,7 @@ mixin meta-compact
     abbr.date.timeago
 
 mixin node-name
-  a.link
+  #{attributes.plain ? 'span' : 'a'}.link
     span.person-glyph
     span.name
 

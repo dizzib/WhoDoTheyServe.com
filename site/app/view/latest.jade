@@ -5,13 +5,8 @@ include _mixin
   ul.items.unstyled
     li.item
       span.entity
-        span.sel-edge.edge-title
-          span.a-node
-            +node-name
-          a.how
-          span.b-node
-            +node-name
-          span.when-text
+        span.sel-edge
+          +edge
         span.sel-evidence
           a.glyph.fe.fe-videocam
           a(target='_blank').url
