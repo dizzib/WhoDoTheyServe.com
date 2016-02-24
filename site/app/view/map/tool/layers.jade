@@ -1,19 +1,16 @@
 include ../../../lib/_form
 
 mixin layer(id, text)
-  .layer
+  .layer(class=attributes.class)
     +field-checkbox(id, text)
 
 legend
   .glyph.fe.fe-list-bullet
   .show-if-expanded Layers
 fieldset.show-if-expanded
-  .group
-    +layer('chkAc', 'Atlantic Council')
-    +layer('chkBilAttend', 'Bilderberg attendee')
-    +layer('chkBilSteer' , 'Bilderberg steering')
-    +layer('chkBis', 'BIS')
-    +layer('chkCfr', 'CFR')
-  hr
-  .group
-    +layer('chkOutOfDate', 'All out-of-date')
+  +layer('chkAc', 'Atlantic Council')
+  +layer('chkBilAttend', 'Bilderberg attendee')
+  +layer('chkBilSteer' , 'Bilderberg steering')
+  +layer('chkBis', 'BIS')
+  +layer('chkCfr', 'CFR')
+  +layer('chkOutOfDate', 'All out-of-date').separate

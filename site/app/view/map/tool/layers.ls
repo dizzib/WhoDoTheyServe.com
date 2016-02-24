@@ -2,7 +2,7 @@ B = require \backbone
 F = require \fs
 _ = require \underscore
 
-const OVERLAYS =
+const LAYERS =
   Ac       : default:false class:\ac
   BilAttend: default:false class:\bil-attend
   BilSteer : default:true  class:\bil-steer
@@ -16,7 +16,7 @@ module.exports = B.View.extend do
 
   render: (v-graph) ->
     function toggle css-class, state then v-graph.$el.toggleClass css-class, state
-    for let id, cfg of OVERLAYS
+    for let id, cfg of LAYERS
       @$ "\#chk#id"
         ..prop \checked cfg.default
         ..click -> toggle cfg.class, $ @ .prop \checked
@@ -25,10 +25,8 @@ module.exports = B.View.extend do
     @trigger \rendered
 
     v-graph.on \cooled ~>
-      @$el.show!
-      for let id, cfg of OVERLAYS
-        layer-exists = v-graph.$el.find "line.#{cfg.class}:first" .length > 0
-        @$ "\#chk#id" .parents \.layer .toggle layer-exists
-      group-lengths = @$ \.group .map(-> $ @ .find \.layer:visible .length).get!
-      @$ \hr .toggle(group-lengths.0 > 0 and group-lengths.1 > 0)
-      @$el.hide! unless group-lengths.0 + group-lengths.1
+      n = 0
+      for let id, cfg of LAYERS
+        n += len = v-graph.$el.find "line.#{cfg.class}:first" .length
+        @$ "\#chk#id" .parents \.layer .toggleClass \hide len is 0
+      @$el.toggle n > 0
