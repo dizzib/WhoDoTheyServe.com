@@ -22,7 +22,7 @@ evs = new m-evs!
 
 map = new m-map!
   ..on \sync -> # set convenience properties
-    @default-ids = @get-prop \default-ids or [(@get-prop \default)?id]
+    @default-ids = @get-prop \default-ids or []
 
 module.exports =
   Evidences: m-evs

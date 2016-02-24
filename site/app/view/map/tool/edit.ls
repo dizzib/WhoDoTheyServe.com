@@ -86,9 +86,7 @@ module.exports = (ve, vg) ->
   function save-default-tab tab-index, map-id
     default-ids = Hm.default-ids
     default-ids[tab-index] = map-id
-    Hm
-      ..set-prop \default void # TODO remove
-      ..set-prop \default-ids default-ids
-      ..save void,
-        success: -> log 'saved default-ids' default-ids
-        error  : -> log 'error saving default-ids' default-ids
+    Hm.set-prop \default-ids default-ids
+    Hm.save void do
+      success: -> log 'saved default-ids' default-ids
+      error  : -> log 'error saving default-ids' default-ids
