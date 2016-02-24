@@ -1,3 +1,3 @@
 module.exports =
   RX:
-    NAMECHAR: 'A-Za-záàäçéèêíñöùü0-9!&\'"'
+    NAMECHAR: 'A-Za-záàäçéèêíîñöœùü0-9!&\'"'
