@@ -28,6 +28,7 @@ module.exports = B.View.extend do
 
         directive = items: _.extend do
           D.edges, D.map, D.meta-compact, D.nodes, D.notes
+          'map-link': D.map.link # fix: to distinguish from D.node.link
           item:
             fn: ->
               $ it.element .find ".entity>:not(.#{@type})" .remove!
