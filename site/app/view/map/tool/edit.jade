@@ -27,10 +27,14 @@ form.signed-in.form-horizontal.bg-transparent
       +field-text('when', 'When')
         .help-block.gap-t
           :markdown
-            Optionally enter a date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
+            Optional date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
             Active connections on this date will have a solid line, otherwise dotted.  
             Leave blank to always use the current date.
       +field-checkbox('flags.private', 'Private (hide this map from public visitors)')
+      span.input-xlarge
+        +field-text('node_default_rx', 'Default node')
+          .help-block.gap-t
+            | Optional regular expression determining a default node to select.
       span.signed-in-admin
         +field-label('default-id-0', 'Default tab')
           +checkbox('default-id-0', '1 (show this map on tab 1 when a visitor first hits the site)')

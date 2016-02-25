@@ -24,6 +24,7 @@ schema = new M.Schema do
   description     : type:String, required:no , match:Cons.map.description.regex
   when            : type:String, required:no , match:Cons.map.when.regex
   edge_cutoff_date: type:Date  , default:Date.now # exclude edges created after this cutoff
+  node_default_rx : type:String, required:no # regular-expression string
   nodes           : [s-node]
   size            : s-size
   flags           :

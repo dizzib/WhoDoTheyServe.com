@@ -1,5 +1,6 @@
 B  = require \backbone
 F  = require \fs # browserified
+_  = require \underscore
 C  = require \../collection
 D  = require \../view-handler/directive
 Ve = require \../view-activity/edit
@@ -44,6 +45,11 @@ module.exports = B.View.extend do
     @v-info.render @map, D.map
     @v-meta.render @map, D.meta
     @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
+    if not node-id and rxs = @map.get \node_default_rx
+      try
+        rx = new RegExp rxs
+        node-id = (_.sample _.filter @v-graph.d3f.nodes!, -> rx.test it.name)?_id
+      catch ex then log ex
     @trigger \render node-id
 
   show: ->
