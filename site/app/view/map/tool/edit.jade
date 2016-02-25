@@ -1,10 +1,5 @@
 include ../../../lib/_form
 
-mixin checkbox(name, label)
-  label.checkbox
-    input(type='checkbox', id=name, name=name)
-    div #{label}
-
 form.signed-in.form-horizontal.bg-transparent
   legend
     .glyph.fe.fe-right-dir.show-if-collapsed
@@ -30,7 +25,7 @@ form.signed-in.form-horizontal.bg-transparent
             Optional date in format `dd/mm/yyyy`, `mm/yyyy` or `yyyy`.  
             Active connections on this date will have a solid line, otherwise dotted.  
             Leave blank to always use the current date.
-      +field-checkbox('flags.private', 'Private (hide this map from public visitors)')
+      +field-checkbox('flags.private', 'Private (hide this map from public visitors)', 'Visibility')
       span.input-xlarge
         +field-text('node_default_rx', 'Default node')
           .help-block.gap-t
