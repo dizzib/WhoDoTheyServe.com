@@ -10,7 +10,7 @@ module.exports = (vg) ->
     g := @svg.selectAll \g.edge-glyphs
       .data @d3f.links!
       .enter!append \svg:g
-        .attr \class -> "edge-glyphs #{it.class}"
+        .attr \class -> "edge-glyphs id_#{it._id} #{it.class}"
     g.each me.append
   vg.on \tick ->
     g.attr \transform me.get-transform
