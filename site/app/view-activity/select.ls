@@ -46,6 +46,7 @@ module.exports =
         # debounce to ignore 1st of 2 change events... bug in bootstrap-combobox ?
         ..change _.debounce (~> @trigger \selected @get-selected-id!), 250ms
       @cbx = @$dropdown.data \combobox
+      @cbx.$element.on \focus -> @select!
       @set-by-id sel-id
     set-by-id: (id) ->
       @$dropdown.val id
