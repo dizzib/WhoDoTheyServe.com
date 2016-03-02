@@ -17,7 +17,7 @@ module.exports =
       V.meta.render edge, D.meta
       render-evidences id, act, child-id
       render-notes id, act
-      B.tracker.edge = edge
+      B.tracker.node-ids.push (edge.get \a_node_id), (edge.get \b_node_id)
       done!
     false # async done
   edges: ->
@@ -34,7 +34,7 @@ module.exports =
       V.meta.render node, D.meta
       render-evidences id, act, child-id
       render-notes id, act
-      B.tracker.node-ids.push id
+      B.tracker.node-ids.push id, id
       done!
     false # async done
   nodes: (tag) ->

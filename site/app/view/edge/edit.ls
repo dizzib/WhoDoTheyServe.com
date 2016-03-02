@@ -8,6 +8,7 @@ module.exports =
     init-sel V.edge-b-node-sel, it.get \b_node_id
 
     ($how = @$ \#how).typeahead source:_.uniq C.Edges.pluck \how
+    auto-populate-how! if it.isNew!
 
     @$ \.btn-swap-ab .click ->
       a-id = (sel-a = V.edge-a-node-sel).get-selected-id!

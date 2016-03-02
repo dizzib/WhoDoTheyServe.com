@@ -3,7 +3,7 @@ R = require \./router
 S = require \./session
 
 B.Model.prototype.idAttribute = \_id # mongodb
-B.tracker = edge:void, node-ids:[] # keep track of last edited entities
+B.tracker = node-ids:[] # track last touched nodes for new edge pre-populate
 
 # standard error handler
 _sync = B.sync

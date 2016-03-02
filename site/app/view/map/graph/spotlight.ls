@@ -1,3 +1,4 @@
+B = require \backbone
 _ = require \underscore
 C = require \../../../collection
 
@@ -9,3 +10,4 @@ module.exports = (vg, cursor) ->
     edges = (C.Edges.where a_node_id:id) ++ C.Edges.where b_node_id:id
     sel = (_.map edges, -> ".id_#{it.id}").join \,
     vg.svg.selectAll sel .classed \lit true if sel
+    B.tracker.node-ids.push id

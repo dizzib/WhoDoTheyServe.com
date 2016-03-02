@@ -63,11 +63,11 @@ m = B.DeepModel.extend do
 _create = Fac.get-factory-method m
 m.create = ->
   o = _create it
-  if o.isNew! # auto-populate new edge
+  if o.isNew! # pre-populate new edge
+    B.tracker.node-ids = _.last B.tracker.node-ids, 2
     o.set \a_is \lt
-    o.set \a_node_id B.tracker.node-ids[*-1]
-    o.set \b_node_id B.tracker.node-ids[*-2]
-    o.set \how B.tracker.edge?get \how
+    o.set \a_node_id B.tracker.node-ids.0
+    o.set \b_node_id B.tracker.node-ids.1
   o
 
 module.exports = m
