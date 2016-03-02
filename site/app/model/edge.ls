@@ -64,9 +64,10 @@ _create = Fac.get-factory-method m
 m.create = ->
   o = _create it
   if o.isNew! # auto-populate new edge
-    o.set \a_node_id, B.tracker.node-ids[*-1]
-    o.set \b_node_id, B.tracker.node-ids[*-2]
-    o.set \how, B.tracker.edge?get \how
+    o.set \a_is \lt
+    o.set \a_node_id B.tracker.node-ids[*-1]
+    o.set \b_node_id B.tracker.node-ids[*-2]
+    o.set \how B.tracker.edge?get \how
   o
 
 module.exports = m
