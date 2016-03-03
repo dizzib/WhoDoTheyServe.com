@@ -10,9 +10,11 @@ m = B.DeepModel.extend do
 
   ## core
   toJSON-T: (opts) ->
+    name = @get \name
+    is-person = Lib.is-person name
     _.extend (@toJSON opts),
-      family-name: (@get \name)?match(/^\w+,/)?0.replace ',' ''
-      is-person  : Lib.is-person @get \name
+      family-name: (name.match(/^\w+,/)?0.replace ',' '') if is-person
+      is-person  : is-person
       tip        : 'Evidence'
 
   ## extensions
