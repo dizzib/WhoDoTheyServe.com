@@ -40,17 +40,18 @@ module.exports = B.View.extend do
   render: (@map, node-id) -> # @map for external ref
     @v-graph.map = @map
     @v-graph.render!
-    @v-find.render @v-graph
-    @v-layers.render @v-graph
-    @v-info.render @map, D.map
-    @v-meta.render @map, D.meta
-    @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
     if not node-id and rxs = @map.get \node_default_rx
       try
         rx = new RegExp rxs
         node-id = (_.sample _.filter @v-graph.d3f.nodes!, -> rx.test it.name)?_id
       catch ex then log ex
     @trigger \render node-id
+    _.defer ~>
+      @v-find.render @v-graph
+      @v-layers.render @v-graph
+      @v-info.render @map, D.map
+      @v-meta.render @map, D.meta
+      @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
 
   show: ->
     @$el.show! .one \hide ~> @scroll-pos.save!
