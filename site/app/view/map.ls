@@ -52,6 +52,7 @@ module.exports = B.View.extend do
       @v-info.render @map, D.map
       @v-meta.render @map, D.meta
       @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
+      @map.globalise-entities! # do this expensive step last, for performance
 
   show: ->
     @$el.show! .one \hide ~> @scroll-pos.save!

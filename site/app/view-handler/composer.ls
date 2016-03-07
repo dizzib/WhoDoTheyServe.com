@@ -67,6 +67,7 @@ function render-nodes-or-edges done, render
     # first time through render default map entities rather than nothing
     loc = B.history.fragment
     m.fetch success: ->
+      m.globalise-entities!
       render! if B.history.fragment is loc # skip if user navigated away
       done!
     return false # async
