@@ -14,23 +14,21 @@ module.exports = (vg) ->
           .style \stroke-width 80
           .attr \d "M#{hull.join \L}Z"
 
-  vg.on \pre-cool ->
-    @svg?selectAll \.hull .remove!
-
-  vg.on \pre-render (ents) ->
+  vg.on \late-render ->
     regions := []
-    edges = _.reject ents.edges, -> (_.intersection it.classes, <[ layer out-of-date ]>).length
+    nodes = @d3f.nodes!
+    edges = _.reject @d3f.links!, -> (_.intersection it.classes, <[ layer out-of-date ]>).length
     edges-a-is = _.groupBy edges, -> it.a_is
     edges-a-is.eq?by-a-node = _.groupBy edges-a-is.eq, -> it.a_node_id
     edges-a-is.eq?by-b-node = _.groupBy edges-a-is.eq, -> it.b_node_id
     return unless edges-a-is.lt?by-a-node = _.groupBy edges-a-is.lt, -> it.a_node_id
     return unless edges-a-is.lt?by-b-node = _.groupBy edges-a-is.lt, -> it.b_node_id
-    nodes-free = _.indexBy (_.reject ents.nodes, -> it.is-person), \_id
+    nodes-free = _.indexBy (_.reject nodes, -> it.is-person), \_id
     explicit-bosses = H.Map.get-prop \regions
     explicit-boss-node-ids = _.map explicit-bosses, -> it.id
 
     function get-region cls, node-ids
-      class:cls, nodes:_.filter ents.nodes, -> it._id in node-ids
+      class:cls, nodes:_.filter nodes, -> it._id in node-ids
 
     function get-peer-node-ids subord-node-ids
       return [] unless edges-a-is.eq?
@@ -85,3 +83,6 @@ module.exports = (vg) ->
 
     push-explicit-regions!
     push-implicit-regions!
+
+  vg.on \pre-cool ->
+    @svg?selectAll \.hull .remove!

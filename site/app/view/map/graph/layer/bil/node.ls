@@ -2,10 +2,7 @@ _ = require \underscore
 C = require \../../../../../collection
 
 module.exports = (vg) ->
-  vg.on \pre-render (ents) ->
-    ents.nodes = _.reject ents.nodes, me.is-conference-yyyy
-
-  vg.on \render ->
+  vg.on \late-render ->
     function render-badge node, x, x-size
       const BADGE-Y-SIZE = 16
       badge = d3.select node .append \svg:g
@@ -47,6 +44,9 @@ module.exports = (vg) ->
     edges = _.filter me.edges-attend, -> node._id is it.a_node_id or node._id is it.b_node_id
     edges = _.sortBy edges, -> it.yyyy
     (if edges.length <= 4 then render-badges-separate else render-badges-combined) this, edges
+
+  vg.on \pre-render (ents) ->
+    ents.nodes = _.reject ents.nodes, me.is-conference-yyyy
 
   me =
     is-annual-conference: ->

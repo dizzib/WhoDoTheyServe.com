@@ -6,15 +6,15 @@ const ICON-SPACE = ICON-SIZE + ICON-GAP
 
 module.exports = (vg) ->
   var g
-  vg.on \cooled ->
+  vg.on \late-render ->
     g := @svg.selectAll \g.edge-glyphs
       .data @d3f.links!
       .enter!append \svg:g
         .attr \class -> "edge-glyphs id_#{it._id} #{it.class}"
     g.each me.append
     g.attr \transform me.get-transform
-  vg.on \pre-cool ->
-    g?remove!
+  vg.on \tick ->
+    g?attr \transform me.get-transform
 
   me =
     append: (edge) ->

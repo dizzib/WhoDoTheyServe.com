@@ -22,6 +22,7 @@ module.exports = B.View.extend do
   initialize: ->
     n-tick = 0
     is-resized = false
+    is-late-rendered = false
     @d3f = d3.layout.force!
       ..on \start ~>
         @trigger \pre-cool
@@ -34,6 +35,9 @@ module.exports = B.View.extend do
           @justify!
           is-resized := true # resize only once during cool-down
       ..on \end ~>
+        unless is-late-rendered
+          @trigger \late-render
+          is-late-rendered := true
         @trigger \tick
         @trigger \cooled
 
