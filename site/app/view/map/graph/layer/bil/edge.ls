@@ -34,6 +34,11 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
     glyphs.each edge-glyph.append
     glyphs.attr \transform edge-glyph.get-transform
 
+  vg.on \late-render ->
+    ~function add-overlay name then @svg.append \svg:g .attr \class name
+    ga := add-overlay \bil-attend
+    gs := add-overlay \bil-steer
+
   vg.on \pre-cool ->
     g-attend?remove!
     g-steer?remove!
@@ -50,8 +55,3 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
     # inject info required by node renderer
     bn.edges-attend = edges-attend
     bn.nodes-steer = nodes-steer
-
-  vg.on \render ->
-    ~function add-overlay name then @svg.append \svg:g .attr \class name
-    ga := add-overlay \bil-attend
-    gs := add-overlay \bil-steer

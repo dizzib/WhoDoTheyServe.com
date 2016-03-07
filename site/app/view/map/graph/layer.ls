@@ -16,7 +16,7 @@ module.exports = (vg = v-graph) ->
         o.edges = _.filter entities.edges, -> o.fn-edge-is-match it and node-is-match it
         for e in o.edges then e.classes ++= [ \layer o.tag ]
 
-      vg.on \render -> # append-badges
+      vg.on \late-render -> # append-badges
         o.d3f = @d3f
         o.g-root = @svg.append \svg:g .attr \class o.tag
         for edge in o.edges

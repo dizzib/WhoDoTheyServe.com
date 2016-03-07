@@ -1,7 +1,7 @@
 _ = require \underscore
 
 module.exports = (vg) ->
-  vg.on \render ->
+  vg.on \late-render ->
     return unless @map.get-is-editable!
 
     const PIN-IN  = 'translate(-7,7)'

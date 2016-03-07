@@ -3,7 +3,7 @@ _   = require \underscore
 
 module.exports = class extends Eve
   (vm, vg, v-find) ->
-    vg.on \render ~>
+    vg.on \late-render ->
       vg.$el.on \click ~>
         remove!
         render nd._id if nd = find-nearby-node it.offsetX, it.offsetY

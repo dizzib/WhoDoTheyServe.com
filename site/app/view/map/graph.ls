@@ -37,6 +37,7 @@ module.exports = B.View.extend do
       ..on \end ~>
         unless is-late-rendered
           @trigger \late-render
+          @trigger \late-rendered
           is-late-rendered := true
         @trigger \tick
         @trigger \cooled
@@ -108,11 +109,8 @@ module.exports = B.View.extend do
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
     @justify!
-
-    # order matters: svg uses painter's algo
     @trigger \render ents
     @svg.selectAll \g.node .call @d3f.drag if is-editable
-    @trigger \rendered
 
     # determine whether to freeze immediately
     unless Sys.env is \test # no need to wait for cooldown when testing

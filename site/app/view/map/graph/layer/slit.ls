@@ -4,7 +4,7 @@ module.exports = (vg) ->
     @svg.selectAll \.node .append \svg:g
       .attr \class \slit
 
-  vg.on \rendered ->
+  vg.on \late-rendered ->
     const BADGE-WIDTH = 24
     @svg.selectAll \.slit .each ->
       slit = d3.select this
