@@ -63,24 +63,15 @@ function fetch-entity coll, id, name, cb
   cb ent
 
 function render-nodes-or-edges done, render
-  function refresh cb # at least show entities belonging to default map
-    if m = C.Maps.get Hv.Map.default-ids?0
-      loc = B.history.fragment
-      m.fetch success: ->
-        # ideally we'd only render if the data has changed i.e. response code 200 not 304
-        # Unfortunately there is no easy way to detect a 304.
-        render! if B.history.fragment is loc # skip if user navigated away
-        cb!
-    else
-      render!
-      cb!
-  if C.Nodes.length # render immediately then refresh in background
-    render!
-    refresh ->
-    true # sync
-  else # first time through we have nothing to render immediately
-    refresh done
-    false # async
+  if C.Nodes.length is 0 and m = C.Maps.get Hv.Map.default-ids?0
+    # first time through render default map entities rather than nothing
+    loc = B.history.fragment
+    m.fetch success: ->
+      render! if B.history.fragment is loc # skip if user navigated away
+      done!
+    return false # async
+  render!
+  true # sync
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
