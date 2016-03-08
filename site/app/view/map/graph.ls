@@ -20,9 +20,8 @@ module.exports = B.View.extend do
   get-size-y: -> @svg?attr \height
 
   initialize: ->
+    var is-resized
     n-tick = 0
-    is-resized = false
-    is-late-rendered = false
     @d3f = d3.layout.force!
       ..on \start ~>
         @trigger \pre-cool
@@ -35,10 +34,11 @@ module.exports = B.View.extend do
           @justify!
           is-resized := true # resize only once during cool-down
       ..on \end ~>
-        unless is-late-rendered
+        unless @is-rendered
+          @map.parse-secondary-entities!
           @trigger \late-render
           @trigger \late-rendered
-          is-late-rendered := true
+          @is-rendered = true
         @trigger \tick
         @trigger \cooled
 
@@ -61,25 +61,24 @@ module.exports = B.View.extend do
       y  : node?y or @get-size-y!/2
       pin: node?fixed
     @map.set \entities do
-      nodes: C.Nodes.filter -> _.contains node-ids, it.id
-      edges: C.Edges.filter ~>
+      nodes: new C.nodes C.Nodes.filter -> it.id in node-ids
+      edges: new C.edges C.Edges.filter ~>
         return false unless it.is-in-map node-ids
         return true unless edge-cutoff-date = @map.get \edge_cutoff_date
         map-create-uid   = @map.get \meta .create_user_id
         edge-create-date = it.get \meta .create_date
         edge-create-uid  = it.get \meta .create_user_id
         edge-create-date < edge-cutoff-date or edge-create-uid is map-create-uid
+      evidences: C.Evidences
     @
 
   render: (opts) ->
     return unless @el # might be undefined for seo
     @$el.empty!
-    # clone entities so the originals don't get filtered out, as they may be used elsewhere
-    return unless ents = _.deepClone @map.get \entities
-    return unless ents.nodes?length
-
-    ents.nodes = _.map ents.nodes, -> it.toJSON-T! <<< classes:[]
-    ents.edges = _.map ents.edges, -> it.toJSON-T! <<< classes:[]
+    return unless (entities = @map.get \entities)?nodes?length
+    ents = {}
+    ents.nodes = entities.nodes.toJSON-T!
+    ents.edges = entities.edges.toJSON-T nodes:entities.nodes, shallow:true
     @trigger \pre-render ents # ents can be modified by handlers
     for n in ents.nodes then n.class = n.classes * ' '
     for e in ents.edges then e.class = e.classes * ' '
@@ -106,6 +105,7 @@ module.exports = B.View.extend do
      .size [size-x, size-y]
      .start!
 
+    @is-rendered = false
     @svg = d3.select @el .append \svg:svg
     set-canvas-size @svg, size-x, size-y
     @justify!

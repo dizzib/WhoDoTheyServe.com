@@ -34,7 +34,7 @@ module.exports = B.View.extend do
     loc = B.history.fragment
     map.fetch success: ->
       return unless B.history.fragment is loc # bail if user navigated away
-      display it
+      display map
       done!
     return false # async done
 

@@ -15,6 +15,7 @@ module.exports = (vg) ->
 
   vg.on \pre-render (ents) ->
     for n in ents.nodes
+      n.classes = []
       n.classes.push \tag if n.tags?length
       n.classes.push \person if n.is-person
       n.classes.push \you if is-you n

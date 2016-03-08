@@ -28,6 +28,7 @@ module.exports = (vg) ->
       target: _.find ents.nodes, -> it._id is edge.b_node_id
 
     for e in ents.edges
+      e.classes = []
       e.classes.push \out-of-date if not is-in-range e.when-obj
       e.classes.push \family if (a = e.source.family-name) and (b = e.target.family-name) and a is b
 

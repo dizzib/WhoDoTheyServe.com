@@ -1,5 +1,4 @@
 _  = require \underscore
-C  = require \../../../../../collection
 
 module.exports = (vg, edge-glyph, bn = bil-node) ->
   var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer

@@ -1,5 +1,4 @@
 _ = require \underscore
-C = require \../../../../../collection
 
 module.exports = (vg) ->
   vg.on \late-render ->
@@ -28,7 +27,7 @@ module.exports = (vg) ->
       const BADGE-X-SIZE = 20
       offset-x = - (BADGE-X-GAP * (edges.length - 1)) / 2
       for edge, i in edges
-        evs = _.filter C.Evidences.models, -> edge._id is it.get \entity_id
+        evs = entevs.filter -> edge._id is it.get \entity_id
         n-evs = evs.length
         x = offset-x + (i * BADGE-X-GAP) - (BADGE-X-SIZE / 2)
         render-badge node, x, BADGE-X-SIZE .append \svg:a
@@ -40,6 +39,7 @@ module.exports = (vg) ->
             .attr \dy 13
             .text edge.yy
 
+    entevs = vg.map.get(\entities).evidences
     node <- @svg.selectAll \g.node .each
     edges = _.filter me.edges-attend, -> node._id is it.a_node_id or node._id is it.b_node_id
     edges = _.sortBy edges, -> it.yyyy

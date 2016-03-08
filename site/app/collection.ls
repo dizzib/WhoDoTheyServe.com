@@ -63,6 +63,11 @@ module.exports.init = (models) ->
     model     : models.User
 
   me = module.exports
+    ..edges     = edges
+    ..evidences = evidences
+    ..nodes     = nodes
+    ..notes     = notes
+
     ..Edges     = new edges!
     ..Evidences = new evidences!
     ..Maps      = new maps!

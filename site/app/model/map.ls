@@ -18,20 +18,22 @@ m = B.DeepModel.extend do
 
   ## extensions
   get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
-  globalise-entities: ->
-    ents = @get \entities
-    C.Nodes.set ents.nodes, remove:false # add nodes first so edge comparator can read node names
-    C.Edges.set ents.edges, remove:false
-    C.Evidences.set ents.evidences, remove:false
-    C.Notes.set ents.notes, remove:false
-  parse: ->
-    return it unless es = it.entities
-    it.entities = # convert json to model instances for view/map
-      edges    : _.map es.edges    , -> new M-Edge it
-      evidences: _.map es.evidences, -> new M-Evi it
-      nodes    : _.map es.nodes    , -> new M-Node it
-      notes    : _.map es.notes    , -> new M-Note it
+  globalise-entities: -> # should be called shortly after parsing
+    return unless json = @get(\entities)?json
+    C.Nodes.set json.nodes, remove:false # add nodes first so edge comparator can read node names
+    C.Edges.set json.edges, remove:false
+    C.Evidences.set json.evidences, remove:false
+    C.Notes.set json.notes, remove:false
+  parse: -> # only parse core entities for performance
+    if json = it.entities then it.entities =
+      nodes: new C.nodes json.nodes
+      edges: new C.edges json.edges
+      json: json
     it
+  parse-secondary-entities: -> # split away from core parse for performance
+    return unless json = (ents = @get \entities)?json
+    ents.evidences ||= new C.evidences json.evidences
+    ents.notes ||= new C.notes json.notes
 
   ## validation
   validation:
