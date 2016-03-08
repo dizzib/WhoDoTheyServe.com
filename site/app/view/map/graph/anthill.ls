@@ -1,8 +1,7 @@
 _  = require \underscore
-C  = require \../../../collection
 
 module.exports = (vg, cursor) ->
-  cache = {}
+  var cache, dn-edges-by-node-id, up-edges-by-node-id
 
   cursor.on \remove ->
     vg.svg.selectAll \.ants .classed \ants false
@@ -14,11 +13,19 @@ module.exports = (vg, cursor) ->
     sel = (_.map eids, -> ".id_#it:not(.out-of-date)").join \,
     vg.svg.selectAll sel .classed \ants true if sel
 
+  vg.on \late-render -> # build performance hashes
+    cache := {}
+    dn-edges-by-node-id := {}
+    up-edges-by-node-id := {}
+    @map.get \entities .edges.each ->
+      (dn-edges-by-node-id[it.get \b_node_id] ||= []).push it if \lt is it.get \a_is
+      (up-edges-by-node-id[it.get \a_node_id] ||= []).push it if \lt is it.get \a_is
+
   function get-downhill-edge-ids node-id, done = []
     return [] if _.contains done, node-id # infinite recursion guard
     done.push node-id
     return cache[node-id] if _.contains cache, node-id
-    down-edges = C.Edges.where b_node_id:node-id, a_is:\lt
+    down-edges = dn-edges-by-node-id[node-id]
     down-edge-ids = _.map down-edges, -> it.id
     down-node-ids = _.map down-edges, -> it.get \a_node_id
     for nid in down-node-ids then down-edge-ids ++= get-downhill-edge-ids nid, done
@@ -29,7 +36,7 @@ module.exports = (vg, cursor) ->
     return [] if _.contains done, node-id # infinite recursion guard
     done.push node-id
     return cache[node-id] if _.contains cache, node-id
-    up-edges = C.Edges.where a_node_id:node-id, a_is:\lt
+    up-edges = up-edges-by-node-id[node-id]
     up-edge-ids = _.map up-edges, -> it.id
     up-node-ids = _.map up-edges, -> it.get \b_node_id
     for nid in up-node-ids then up-edge-ids ++= get-uphill-edge-ids nid, done

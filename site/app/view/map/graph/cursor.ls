@@ -3,10 +3,13 @@ _   = require \underscore
 
 module.exports = class extends Eve
   (vm, vg, v-find) ->
+    var focus-node-id
+
+    vg.on \cooled ->
+      refresh focus-node-id
     vg.on \late-render ->
       vg.$el.on \click ~>
-        remove!
-        render nd._id if nd = find-nearby-node it.offsetX, it.offsetY
+        refresh (find-nearby-node it.offsetX, it.offsetY)?_id
 
       function find-nearby-node x, y
         const RADIUS = 100px
@@ -19,12 +22,9 @@ module.exports = class extends Eve
         min = _.min dists, -> it.d
         min.node if min.d < RADIUS ^ 2
 
-    vm.on \render (id) ~>
-      if id then vg.on \cooled ~> render id
+    vm.on \render (id) -> focus-node-id := id
 
-    v-find.on \select (id) ->
-      remove!
-      render id
+    v-find.on \select (id) -> refresh id
 
     function get-cursor-path
       function get-segment sign-x, sign-y
@@ -37,11 +37,10 @@ module.exports = class extends Eve
         "M #px #py L #px #qy L #qx #py L #px #py "
       get-segment(+1, +1) + get-segment(+1, -1) + get-segment(-1, +1) + get-segment(-1, -1)
 
-    ~function remove
+    ~function refresh id
       vg.svg.select \.cursor .remove!
       @emit \remove
-
-    ~function render id
+      return unless (focus-node-id := id)?
       n = vg.svg.select "g.node.id_#id"
       n.append \svg:path
         .attr \class \cursor

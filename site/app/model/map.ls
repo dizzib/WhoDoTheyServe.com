@@ -34,6 +34,7 @@ m = B.DeepModel.extend do
     return unless json = (ents = @get \entities)?json
     ents.evidences ||= new C.evidences json.evidences
     ents.notes ||= new C.notes json.notes
+    ents
 
   ## validation
   validation:
