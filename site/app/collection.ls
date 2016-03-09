@@ -62,6 +62,9 @@ module.exports.init = (models) ->
     url       : Api.users
     model     : models.User
 
+  B.Index evidences
+  B.Index notes
+
   me = module.exports
     ..edges     = edges
     ..evidences = evidences

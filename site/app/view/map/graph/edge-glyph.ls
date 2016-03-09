@@ -17,7 +17,7 @@ module.exports = (vg) ->
 
   me =
     append: (edge) ->
-      return unless evs = vg.evs-by-entity-id[edge._id]
+      return unless evs = vg.map.get \entities .evidences.where entity_id:edge._id
       dx = - (ICON-SPACE * (evs.length - 1)) / 2
       dy = ICON-SIZE / 2
       for ev, i in evs

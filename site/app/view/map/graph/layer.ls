@@ -18,7 +18,7 @@ module.exports = (vg) ->
         o.d3f = @d3f
         o.g-root = @svg.append \svg:g .attr \class o.tag
         for edge in o.edges
-          evs  = @evs-by-entity-id[edge._id]
+          evs  = vg.map.get \entities .evidences.where entity_id:edge._id
           url  = if evs.length is 1 then evs.0.get \url else "#/edge/#{edge._id}"
           tip  = if evs.length is 1 then edge.tip else ''
           node = if o.fn-node-is-match edge.source then edge.target else edge.source

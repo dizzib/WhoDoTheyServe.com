@@ -46,15 +46,13 @@ const GLYPHS =
   glyphs:
     null: ->
       $el = $ it.element
-      evs = C.Evidences.find ~> @_id is it.get \entity_id
-      if evs.models.length is 0
-        $el.append "<a title='Please add some evidence'
-          class='glyph fe fe-lg fe-attention'/></a>"
-      else for ev in evs.models
+      for ev in evs = C.Evidences.where entity_id:@_id
         $el.append "<a target='_blank' title='#{@tip}' href='#{ev.get \url}'
           class='glyph fe #{ev.get-glyph!name} #{get-evi-class ev.is-dead!}'/></a>"
-      notes = C.Notes.find ~> @_id is it.get \entity_id
-      for note in notes.models
+      unless evs.length
+        $el.append "<a title='Please add some evidence'
+          class='glyph fe fe-lg fe-attention'/></a>"
+      for note in C.Notes.where entity_id:@_id
         $el.append "<span title='#{note.get \text}' class='glyph fe fe-comment'/>"
       return ''
 

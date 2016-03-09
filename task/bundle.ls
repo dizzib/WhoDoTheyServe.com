@@ -18,6 +18,7 @@ const LIBS =
   \./lib-3p/underscore.mixin.deepExtend
   \./lib-3p/Autolinker
   \./lib-3p/backbone-deep-model
+  \./lib-3p/backbone-index
   \./lib-3p/backbone-validation
   \./lib-3p/backbone-validation-bootstrap
   \./lib-3p/bootstrap-combobox

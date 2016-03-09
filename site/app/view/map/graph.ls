@@ -35,9 +35,7 @@ module.exports = B.View.extend do
           is-resized := true # resize only once during cool-down
       ..on \end ~> # late render
         unless @is-rendered
-          if ents = @map.parse-secondary-entities!
-            @evs-by-entity-id = {} # for fast evidence selection
-            ents.evidences.each ~> (@evs-by-entity-id[it.get \entity_id] ||= []).push it
+          @map.parse-secondary-entities!
           @trigger \late-render
           @trigger \late-rendered
         @trigger \cooled
