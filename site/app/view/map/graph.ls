@@ -76,8 +76,7 @@ module.exports = B.View.extend do
     @
 
   render: (opts) ->
-    return unless @el # might be undefined for seo
-    @$el.empty!
+    return unless @$el?empty! # might be undefined for seo
     return @trigger \render-complete unless (entities = @map.get \entities)?nodes?length
     ents = {}
     ents.nodes = entities.nodes.toJSON-T!
