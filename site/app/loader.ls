@@ -1,22 +1,22 @@
 const LIBS =
   backbone:
-    cdn: '//cdn.jsdelivr.net/backbonejs/1.1.2/backbone-min.js'
+    cdn: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'
     loc: \backbone.js
     ok : -> Backbone?
   bootstrap_css:
-    cdn: '//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css'
+    cdn: '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css'
     loc: \bootstrap/css/bootstrap.css
     ok : -> true # no fallback 'cos yepnope.css.js ignores timeout
   d3:
-    cdn: '//cdn.jsdelivr.net/d3js/3.4.12/d3.min.js'
+    cdn: '//cdnjs.cloudflare.com/ajax/libs/d3/3.4.12/d3.min.js'
     loc: \d3.js
     ok : -> d3?
   jquery:
-    cdn: '//cdn.jsdelivr.net/jquery/2.0.1/jquery.min.js'
+    cdn: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.1/jquery.min.js'
     loc: \jquery.js
     ok : -> $?
   underscore:
-    cdn: '//cdn.jsdelivr.net/underscorejs/1.7.0/underscore-min.js'
+    cdn: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js'
     loc: \underscore.js
     ok : -> _?
 
