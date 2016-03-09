@@ -33,16 +33,17 @@ module.exports = B.View.extend do
           resize @
           @justify!
           is-resized := true # resize only once during cool-down
-      ..on \end ~>
+      ..on \end ~> # late render
         unless @is-rendered
           if ents = @map.parse-secondary-entities!
             @evs-by-entity-id = {} # for fast evidence selection
             ents.evidences.each ~> (@evs-by-entity-id[it.get \entity_id] ||= []).push it
           @trigger \late-render
           @trigger \late-rendered
-          @is-rendered = true
-        @trigger \tick
         @trigger \cooled
+        unless @is-rendered
+          @trigger \render-complete
+          @is-rendered = true
 
   justify: ->
     return unless @svg # might be undefined e.g. new map
@@ -77,7 +78,7 @@ module.exports = B.View.extend do
   render: (opts) ->
     return unless @el # might be undefined for seo
     @$el.empty!
-    return unless (entities = @map.get \entities)?nodes?length
+    return @trigger \render-complete unless (entities = @map.get \entities)?nodes?length
     ents = {}
     ents.nodes = entities.nodes.toJSON-T!
     ents.edges = entities.edges.toJSON-T nodes:entities.nodes, shallow:true
@@ -119,7 +120,9 @@ module.exports = B.View.extend do
       return if @map.isNew!
       return if opts?is-slow-to-cool
 
-    @d3f.alpha 0 # freeze map -- must be called after start
+    @trigger \tick
+    <~ _.defer   # yield thread for immediate map.show, before late render
+    @d3f.alpha 0 # freeze map
 
 ## helpers
 

@@ -29,7 +29,7 @@ module.exports = B.View.extend do
     @v-find   = new V-Find el:@$ \.find
     @v-layers = new V-Layers el:@$ \.layers
 
-    @v-info.on \rendered -> @$el.hide! unless it.get \description
+    @v-info.on \rendered -> @$el.toggle (it.get \description)?length > 0
 
     Gc @
     T @
@@ -38,21 +38,21 @@ module.exports = B.View.extend do
     @scroll-pos = new Sp @v-graph
 
   render: (@map, node-id) -> # @map for external ref
-    @v-graph.map = @map
-    @v-graph.render!
-    if not node-id and rxs = @map.get \node_default_rx
-      try
-        rx = new RegExp rxs
-        node-id = (_.sample _.filter @v-graph.d3f.nodes!, -> rx.test it.name)?_id
-      catch ex then log ex
-    @trigger \render node-id
-    _.defer ~>
-      @v-find.render @v-graph
-      @v-layers.render @v-graph
+    (vg = @v-graph).map = @map
+    vg.once \render-complete ~>
+      @v-find.render vg
+      @v-layers.render vg
       @v-info.render @map, D.map
       @v-meta.render @map, D.meta
       @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
       @map.globalise-entities! # do this expensive step last, for performance
+    vg.render!
+    if not node-id and rxs = @map.get \node_default_rx
+      try
+        rx = new RegExp rxs
+        node-id = (_.sample _.filter vg.d3f.nodes!, -> rx.test it.name)?_id
+      catch ex then log ex
+    @trigger \render node-id
 
   show: ->
     @$el.show! .one \hide ~> @scroll-pos.save!

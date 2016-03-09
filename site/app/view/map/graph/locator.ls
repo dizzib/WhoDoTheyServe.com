@@ -3,7 +3,6 @@ _ = require \underscore
 R = require \../../../router
 
 module.exports = (vm, cursor, v-find) ->
-
   var frag
 
   cursor.on \remove -> set-hash ''

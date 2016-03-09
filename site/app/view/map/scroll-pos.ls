@@ -18,14 +18,11 @@ module.exports = class
       y: Math.max 0 (svg.attr(\height) - w.innerHeight) / 2
 
     @pos ?= get-initial-scroll-pos!
-    _.defer ~>
-      $w.scrollLeft @pos.x if @pos.x
-      $w.scrollTop @pos.y if @pos.y
+    $w.scrollLeft @pos.x if @pos.x
+    $w.scrollTop @pos.y if @pos.y
 
   save: ->
     @pos.x = $w.scrollLeft!
     @pos.y = $w.scrollTop!
-
-    _.defer ->
-      $w.scrollLeft 0
-      $w.scrollTop 0
+    $w.scrollLeft 0
+    $w.scrollTop 0

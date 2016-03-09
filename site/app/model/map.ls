@@ -31,9 +31,9 @@ m = B.DeepModel.extend do
       json: json
     it
   parse-secondary-entities: -> # split away from core parse for performance
-    return unless json = (ents = @get \entities)?json
-    ents.evidences ||= new C.evidences json.evidences
-    ents.notes ||= new C.notes json.notes
+    if json = (ents = @get \entities)?json
+      ents.evidences ||= new C.evidences json.evidences
+      ents.notes ||= new C.notes json.notes
     ents
 
   ## validation
