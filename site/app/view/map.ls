@@ -40,6 +40,7 @@ module.exports = B.View.extend do
   render: (@map, node-id) -> # @map for external ref
     (vg = @v-graph).map = @map
     vg.once \render-complete ~>
+      <~ _.defer # allow completed map to display
       @v-find.render vg
       @v-layers.render vg
       @v-info.render @map, D.map
