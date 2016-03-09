@@ -9,7 +9,7 @@ W4m = require \wait.for .forMethod
 
 const POLL-TIME    = 50ms
 const SITE-URL     = "http://#{process.env.SITE_DOMAIN_NAME or \localhost}:#{process.env.SITE_PORT}"
-const WAIT-TIMEOUT = _.parseInt(process.env.APP_TEST_TIMEOUT) or 10000ms
+const WAIT-TIMEOUT = _.parseInt(process.env.APP_TEST_TIMEOUT) or 15000ms
 
 log "App test timeout = #{WAIT-TIMEOUT}ms"
 
