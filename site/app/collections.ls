@@ -11,14 +11,15 @@ module.exports =
       C.Edges.fetch!
       C.Nodes.fetch!
       C.Notes.fetch!
-    ).then done, fail or fail-default
+    ).then ok, error
 
-    function done
+    function ok
       is-loaded := true
       success!
 
-    function fail-default coll, xhr
+    function error coll, xhr
       alert "Unable to load entities.\n\n#{xhr.responseText}"
+      fail! if fail?
 
   fetch-core: (success, fail) ->
     $.when(

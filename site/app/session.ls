@@ -30,8 +30,7 @@ module.exports = me =
         B.trigger \signin
         B.trigger \signed-in-by-user
 
-    function fail coll, xhr
-      alert "Unable to load entities.\n\n#{xhr.responseText}"
+    function fail
       B.history.history.back!
 
   signout: ->
