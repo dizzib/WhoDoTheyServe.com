@@ -1,6 +1,7 @@
 B = require \backbone
 Q = require \querystring # browserified
 T = require \transparency
+_ = require \underscore
 
 module.exports =
   DocuView: B.View.extend do
@@ -22,18 +23,24 @@ module.exports =
     initialize: ->
       @opts     = it.opts or {}
       @template = "<div>#{it.template}</div>" # transparency requires a root div for lists
-    # For fast ui render happens in 2 passes:
-    # 1. render current content immediately
-    # 2. render async-fetched content
     render: (coll, directive, opts) ->
-      @$el.attr \data-loc B.history.fragment # to detemine if navigated away
-      render coll, 0
-      return unless @opts.fetch and coll.url # filtered collection won't have url
-      coll.fetch success: -> render it, 1
-      ~function render c, pass
+      @$el.show!attr \data-loc B.history.fragment # to detemine if navigated away
+      # 1. render current content immediately for performance
+      render coll, first-chunk-only:@opts.fetch
+      # 2. then optionally render async-fetched content
+      if @opts.fetch then coll.fetch success: -> render it
+
+      ~function render c, opts, pos = 0
+        const CHUNK-SIZE = 5
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
-        c = c.find f if f = opts?filter
-        ($tem = $ @template).render (items:c.toJSON-T!), items:directive
-        $tem.find \.no-items .toggle (c.length is 0)
-        @$el.html $tem
-        @$el.show! if pass is 0
+        chunk = []
+        first-chunk = pos is 0
+        while chunk.length < CHUNK-SIZE and pos < c.length
+          chunk.push c.at(pos++).toJSON-T!
+        ($tem = $ @template).render {items:chunk}, items:directive
+        $tem.find \.no-items .toggle c.length is 0
+        if first-chunk
+          @$el.html $tem
+          return if opts?first-chunk-only
+        else @$el.find \ul .append $tem.find(\ul).children!
+        if pos < c.length then _.defer ~> render c, void, pos
