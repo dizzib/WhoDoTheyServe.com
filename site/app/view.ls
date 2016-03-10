@@ -42,7 +42,7 @@ module.exports
   ..edge-a-node-sel = new Vs.SelectView                         sel:\#a_node_id
   ..edge-b-node-sel = new Vs.SelectView                         sel:\#b_node_id
   ..edge-edit       = new Ve.EditView template:T-EdgeEdit     , el:\.view>.main
-  ..edges           = new Vr.ListView template:T-Edges        , el:\.view>.edges, opts:{ fetch:false }
+  ..edges           = new Vr.ListView template:T-Edges        , el:\.view>.edges
   ..edges-head      = new Vr.InfoView template:T-EdgesHead    , el:\.view>.main
   ..evidence-edit   = new Ve.EditView template:T-EvidenceEdit , el:\.view>.evidence-edit
   ..evidences       = new Vr.ListView template:T-Evidences    , el:\.view>.evidences
@@ -50,7 +50,7 @@ module.exports
   ..footer          = new V-Footer                              el:\.footer
   ..latest          = new V-Latest                              el:\.view>.main
   ..maps            = new V-Maps                                el:\.view.maps
-  ..maps-list       = new Vr.ListView template:T-MapsList     , el:\.view>.maps-list, opts:{ fetch:false }
+  ..maps-list       = new Vr.ListView template:T-MapsList     , el:\.view>.maps-list
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta
   ..navbar          = new V-NavBar                              el:\.navigator
   ..node            = new Vr.InfoView template:T-Node         , el:\.view>.main
@@ -58,7 +58,7 @@ module.exports
   ..node-edges-a    = new Vr.ListView template:T-NodeEdgesA   , el:\.view>.node-edges-a
   ..node-edges-b    = new Vr.ListView template:T-NodeEdgesB   , el:\.view>.node-edges-b
   ..node-edges-head = new Vr.InfoView template:T-EdgesHead    , el:\.view>.node-edges-head
-  ..nodes           = new Vr.ListView template:T-Nodes        , el:\.view>.nodes, opts:{ fetch:false }
+  ..nodes           = new Vr.ListView template:T-Nodes        , el:\.view>.nodes
   ..nodes-head      = new Vr.InfoView template:T-NodesHead    , el:\.view>.main
   ..note-edit       = new Ve.EditView template:T-NoteEdit     , el:\.view>.note-edit
   ..notes           = new Vr.ListView template:T-Notes        , el:\.view>.notes
@@ -70,5 +70,5 @@ module.exports
   ..user-signin-err = new Vr.InfoView template:T-UserSigninErr, el:\.view>.main, opts:{ query-string:true }
   ..user-signout    = new Vr.InfoView template:''             , el:\.view>.main
   ..user-signup     = new Ve.EditView template:T-UserEdit     , el:\.view>.main
-  ..users           = new Vr.ListView template:T-Users        , el:\.view>.users
+  ..users           = new Vr.ListView template:T-Users        , el:\.view>.users, opts:{ fetch:true }
   ..version         = new Vr.InfoView template:T-Version      , el:\.view-version

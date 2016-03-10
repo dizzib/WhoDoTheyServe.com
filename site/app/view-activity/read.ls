@@ -20,7 +20,7 @@ module.exports =
 
   ListView: B.View.extend do
     initialize: ->
-      @opts     = { fetch:true } <<< it.opts
+      @opts     = it.opts or {}
       @template = "<div>#{it.template}</div>" # transparency requires a root div for lists
     # For fast ui render happens in 2 passes:
     # 1. render current content immediately
@@ -28,8 +28,7 @@ module.exports =
     render: (coll, directive, opts) ->
       @$el.attr \data-loc B.history.fragment # to detemine if navigated away
       render coll, 0
-      return unless @opts.fetch
-      return unless coll.url # filtered collection won't have url
+      return unless @opts.fetch and coll.url # filtered collection won't have url
       coll.fetch success: -> render it, 1
       ~function render c, pass
         return unless B.history.fragment is @$el.attr \data-loc # bail if user has navigated away
