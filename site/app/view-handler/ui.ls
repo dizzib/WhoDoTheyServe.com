@@ -12,15 +12,16 @@ B.on \boot ->
 
 ## routing
 B.on \pre-route ->
-  $ '.view' .off \focus, 'input[type=text]' .removeClass \ready
-  # handle view persistance -- some views (e.g. map) should not be cleared down, for performance
-  $ '.view>:not(.persist-once)' .trigger(\hide).hide!
-  $ '.view>:not(.persist-once,.persist)' .off! # so different views can use same element
-  $ '.view>:not(.persist-once,.persist)' .empty! # leave persistent views e.g. map
-  $ '.view>.persist-once' .removeClass \persist-once
+  $ \.view
+    .removeClass \ready
+    .off \focus 'input[type=text]'
+    .children!
+      .trigger \hide .hide!
+      # persistent views (e.g. map) should not be cleared down
+      .not \.persist .off! .empty!
   # handle errors
-  $ '.alert-error' .removeClass \active    # clear any error alert location overrides
-  $ '.view>.alert-error' .addClass \active # reset back to default
+  $ \.alert-error .removeClass \active    # clear any error alert location overrides
+  $ \.view>.alert-error .addClass \active # reset back to default
   spinner-timeout := setTimeout (-> $ \.spinner .show!), 50ms
 
 B.on \routed ->
@@ -33,8 +34,8 @@ B.on \routed ->
   $ 'input[type=text],textarea,select,.btn-new' .filter \:visible:first .focus!
 
 ## session
-B.on \signed-in-by-user  -> show-alert-once 'Welcome! You are now logged in'
-B.on \signed-out-by-user -> show-alert-once 'Goodbye! You are now logged out'
+B.on \signed-in-by-user  -> show-alert 'Welcome! You are now logged in'
+B.on \signed-out-by-user -> show-alert 'Goodbye! You are now logged out'
 B.on \signed-out-by-session-expired -> show-error 'Your session has expired. Please login again to continue.'
 
 ## error handling
@@ -43,8 +44,7 @@ B.on \validation-error -> show-error "One or more fields have errors. Please cor
 
 ## helpers
 
-function show-alert-once msg
-  $ '.view>.alert-info' .addClass \persist-once .text msg .show!
+function show-alert msg then $ \.view>.alert-info .text msg .show!
 
 function show-error
   # The .active class can be used to override the default error alert location

@@ -12,7 +12,7 @@ B.sync = (method, model, options) ->
   options.error = (xhr) ->
     (error ...) if error
     return S.expire! if xhr?status is 401
-    B.trigger \error, xhr?responseText
+    B.trigger \error xhr?responseText
   _sync method, model, options
 
 # validation
@@ -24,5 +24,5 @@ B.Validation
     B.trigger \validation-error
 
 B # event handlers
-  ..on \signed-in-by-user , -> R.navigate \user
-  ..on \signed-out-by-user, -> R.navigate \users
+  ..on \signed-in-by-user  -> R.navigate \user
+  ..on \signed-out-by-user -> R.navigate \users
