@@ -82,7 +82,7 @@ function run rl, db-uri, cb
 
   function save-if-done
     return unless --n-pending is 0
-    dead-ids = _.pluck dead, \_id
+    dead-ids = _.map dead, \_id
     value = 'dead-ids':dead-ids
     log "found #{Chalk.cyan dead-ids.length} dead-ids: #dead-ids"
     ans <- rl.question "Update database #db-uri (y/N) ?"

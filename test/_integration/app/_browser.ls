@@ -61,7 +61,7 @@ module.exports = B =
       w4mc \executeScript (-> window.fill it), [ v ]
 
     if val? then fill-field ...
-    else for [k, v] in _.pairs sel then fill-field k, v
+    else for [k, v] in _.toPairs sel then fill-field k, v
 
   go: (path = '') ->
     url = "#SITE-URL#{if path then '/#' else ''}/#path"

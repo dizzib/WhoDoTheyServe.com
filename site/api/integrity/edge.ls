@@ -69,5 +69,5 @@ function get-maps-having-edge id, cb
   return cb err if err
   cb void, _.filter maps, ->
     return false if edge.meta.create_date > it.edge_cutoff_date
-    map-node-ids = _.pluck it.nodes, \_id
-    (_.contains map-node-ids, edge.a_node_id) and (_.contains map-node-ids, edge.b_node_id)
+    map-node-ids = _.map it.nodes, \_id
+    (_.includes map-node-ids, edge.a_node_id) and (_.includes map-node-ids, edge.b_node_id)

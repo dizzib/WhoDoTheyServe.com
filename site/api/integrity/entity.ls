@@ -9,7 +9,7 @@ module.exports =
       return next err if err
       err, evs <- M-Evidences.find entity_id: $in:ids = _.map docs, -> it._id
       return next err if err
-      entity-ids = _.unique _.map evs, -> it.entity_id.toString!
+      entity-ids = _.uniq _.map evs, -> it.entity_id.toString!
       if (n-no-evidence = ids.length - entity-ids.length) > 0
         return next new Err.Api "Cannot create while #{n-no-evidence} of your other #{Model.modelName} are missing evidence"
       next!

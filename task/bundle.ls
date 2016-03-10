@@ -77,7 +77,7 @@ module.exports = me =
       popd!
   is-lib: (ipath) ->
     ipath-app = ipath.replace "#{Dirname.SITE}/app/" './'
-    _.any ALL-LIBS, -> _.contains ipath-app, it
+    _.some ALL-LIBS, -> _.includes ipath-app, it
   libs: ->
     bundle \lib.js ->
       b = Browsify LIBS

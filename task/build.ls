@@ -92,7 +92,7 @@ function compile-batch tid
 function finalise ipath, opath
   const API = <[ /api/ /api.ls ]>
   const APP = <[ /app/ /app.ls ]>
-  function contains then _.any it, -> _.contains ipath, it
+  function contains then _.some it, -> _.includes ipath, it
   function contains-base then contains ["#it/"]
   if ipath # partial build. site/lib is common to site/api and site/app
     return if contains-base \task

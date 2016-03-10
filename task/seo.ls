@@ -79,7 +79,7 @@ module.exports =
     function queue-links pending, done, $
       links = _.map ($ \a), -> $ it .attr \href
       for l in links
-        if not _.contains done, l and not _.contains pending, l
+        if not _.includes done, l and not _.includes pending, l
         and /^#/.test l and not EXCLUDE-ROUTES.test l
           #log "push #l"
           pending.push l

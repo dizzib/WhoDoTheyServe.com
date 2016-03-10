@@ -39,4 +39,4 @@ module.exports =
 function get-maps-having-node id, cb
   err, maps <- M-Maps.find!lean!exec
   return cb err if err
-  cb void, _.filter maps, -> (_.contains (_.pluck it.nodes, \_id), id)
+  cb void, _.filter maps, -> (_.includes (_.map it.nodes, \_id), id)
