@@ -5,9 +5,17 @@ M-Nodes     = require \./model/nodes
 M-Notes     = require \./model/notes
 M-Evidences = require \./model/evidences
 
+var cache
+
 module.exports =
+  bust-cache: (req, res, next) ->
+    cache := void
+    next!
+
   # return all entities and dependencies required to render latest
   list: (req, res, next) ->
+    return res.json cache if cache?
+
     function get-ents model, type, fields, cb
       err, docs <- model.find!lean!exec
       return cb err if err
@@ -38,6 +46,7 @@ module.exports =
     err, ents.notes <- M-Notes.find-for-entities nodes-and-edges
     return next err if err
 
-    res.json do
+    cache :=
       ids: [_.pick o, <[ _id _type ]> for o in latest]
       entities: ents
+    res.json cache
