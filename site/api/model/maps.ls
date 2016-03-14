@@ -51,29 +51,22 @@ function read req, res, next
   err, map <- me.findById req.id .lean!exec
   return next err if err
   return res.json {} unless map
-  map.entities = {}
-  # nodes
-  map-node-ids = _.map map.nodes, \_id
+  ## !!! server-side version of client-side view/map/graph.refresh-entities
   err, nodes <- M-Nodes.find!lean!exec
   return next err if err
-
-  ## !!! server-side version of client-side view/map/refresh-entities
-  map.entities.nodes = _.filter nodes, -> _.includes map-node-ids, it._id
-  # edges excluding those created by other users after the cutoff
+  map.entities = ents = {}
+  ents.nodes = _.intersectionBy nodes, map.nodes, \_id
   err, edges <- M-Edges.find!lean!exec
   return next err if err
-  map.entities.edges = _.filter edges, ->
-    return false unless (_.includes map-node-ids, it.a_node_id) and (_.includes map-node-ids, it.b_node_id)
+  map-node-ids = _.map map.nodes, \_id
+  ents.edges = _.filter edges, ->
+    return false unless (it.a_node_id in map-node-ids) and (it.b_node_id in map-node-ids)
     return true unless edge-cutoff-date = map.edge_cutoff_date
+    # exclude edges created by other users after the cutoff
     it.meta.create_date < edge-cutoff-date or it.meta.create_user_id is map.meta.create_user_id
-
-  # evidences
-  err, evs <- M-Evidences.find!lean!exec
+  nodes-and-edges = ents.nodes ++ ents.edges
+  err, ents.evidences <- M-Evidences.find-for-entities nodes-and-edges
   return next err if err
-  map-entity-ids = map-node-ids ++ _.map map.entities.edges, \_id
-  map.entities.evidences = _.filter evs, -> _.includes map-entity-ids, it.entity_id
-  # notes
-  err, notes <- M-Notes.find!lean!exec
+  err, ents.notes <- M-Notes.find-for-entities nodes-and-edges
   return next err if err
-  map.entities.notes = _.filter notes, -> _.includes map-entity-ids, it.entity_id
   res.json map

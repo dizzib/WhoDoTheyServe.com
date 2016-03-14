@@ -10,11 +10,14 @@ module.exports.get-spec = (...args) ->
     fields.description ?= ''
     fields.name ?= "Map #key"
     (h.get-spec key, fields) <<< entities:
-      edges: {["is#i" get-spec-edges key, i] for i in [0 to 5]}
+      edges    : {["is#i" get-spec-ents key, \edge, i] for i in [0 to 9]}
+      evidences: {["is#i" get-spec-ents key, \evidence, i] for i in [0 to 9]}
+      nodes    : {["is#i" get-spec-ents key, \node, i] for i in [0 to 9]}
+      notes    : {["is#i" get-spec-ents key, \note, i] for i in [0 to 9]}
 
-  function get-spec-edges key, n
-    info: "map #key entities.edges length is #n"
-    fn  : R -> ST.maps[key].entities.edges.length.should.equal n
+  function get-spec-ents key, type, n
+    info: "map #key entities.#{type}s length is #n"
+    fn  : R -> ST.maps[key].entities["#{type}s"].length.should.equal n
 
   a0: get-spec \a0 description:"123!&',()" nodes:<[ a ]>
   a1: get-spec \a1 nodes:<[ a ]>

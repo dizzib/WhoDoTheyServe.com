@@ -7,6 +7,7 @@ Hive        = require \./hive
 I-Edge      = require \./integrity/edge
 I-Entity    = require \./integrity/entity
 I-Node      = require \./integrity/node
+Latest      = require \./latest
 M-Edges     = require \./model/edges
 M-Maps      = require \./model/maps
 M-Nodes     = require \./model/nodes
@@ -49,6 +50,7 @@ module.exports = Express.Router!
   ..get '/notes/for/:id'     M-Notes.crud-fns.list-for-entity
   ..use hive!
   ..use integrity!
+  ..use latest!
   ..use sys!
   # crud
   ..use crud-logins! # must run before M-Users because M-Users needs req.login
@@ -102,6 +104,9 @@ function integrity then Express.Router!
   ..post   '/nodes'     I-Entity.create M-Nodes
   ..put    '/nodes/:id' I-Node.update
   ..delete '/nodes/:id' I-Node.delete
+
+function latest then Express.Router!
+  ..get '/latest' Latest.list
 
 function sec route, Model then Express.Router!
   ..param \id extract-id

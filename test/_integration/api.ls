@@ -8,6 +8,7 @@ Http     = require \./api/_http
 Evidence = require \./api/evidence
 Edge     = require \./api/edge
 Hive     = require \./api/hive
+Latest   = require \./api/latest
 Map      = require \./api/map
 Node     = require \./api/node
 Note     = require \./api/note
@@ -129,6 +130,7 @@ describe 'userA' ->
     test Session.signout.ok
     test Session.a.password.b.signin.bad
     test Session.a.password.c.signin.ok
+    test Latest.is0
   describe 'node a' ->
     test Node.list.is0
     test Node.a.create.ok
@@ -173,6 +175,8 @@ describe 'userA' ->
     test Evidence.a.list.is1
     test Node.a.remove.bad # has evidence
     test Node.a.name.update.bad # has evidence
+    test Latest.type.node.read.ok
+    test Latest.is1
   describe 'note a' ->
     test Note.a.list.is0
     test Note.a.create.ok
@@ -182,12 +186,16 @@ describe 'userA' ->
     test Note.a.text.min-lt.update.bad
     test Note.a.text.max.update.ok
     test Note.a.text.max-gt.update.bad
+    test Latest.type.note.read.ok
+    test Latest.is2
   describe 'node b' ->
     test Node.b.create.ok
     test Node.b.dup.update.bad
     test Evidence.b.list.is0
     test Evidence.b0.create.ok
     test Evidence.b.list.is1
+    test Latest.type.node.read.ok
+    test Latest.is3
   describe 'edge' ->
     test Edge.aa.create.bad # loop
   describe 'map' ->
@@ -198,6 +206,7 @@ describe 'userA' ->
     test Map.list.is2
     test Map.ax.create.ok
     test Map.list.is3
+    test Latest.type.map.read.ok
   describe 'sys' ->
     test Sys.mode.toggle.bad
 describe 'userB' ->
@@ -247,6 +256,7 @@ describe 'userB' ->
     test Edge.ab.when.DMY2-DMY1.update.bad
     test Evidence.ab0.create.ok
     test Edge.list.is1
+    test Latest.type.edge.read.ok
   describe 'edge ab chronological' ->
     test Edge.ba.create.bad # reciprocal
     test Edge.ab2.DMY2-DMY4.create.bad
@@ -292,10 +302,13 @@ describe 'userC' ->
     test Map.c0.create.ok
     test Map.list.is3
     test Map.c0.read.ok
+    test Map.c0.entities.nodes.is5
     test Map.c0.entities.edges.is4
     test Edge.ac.create.ok
     test Map.c0.read.ok
     test Map.c0.entities.edges.is5 # c's latest edge ac should be included on c's map
+    test Map.c0.entities.evidences.is7
+    test Map.c0.entities.notes.is2
     test Edge.ac.remove.ok
     test Evidence.bc0.remove.ok
     test Edge.bc.remove.bad # on map c

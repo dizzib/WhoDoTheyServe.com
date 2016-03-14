@@ -19,3 +19,8 @@ module.exports = me = Crud.set-fns (M.model \evidences, schema)
     err, docs <- me.find entity_id:req.id .lean!exec
     return next err if err
     res.json docs
+  ..find-for-entities = (entities, cb) ->
+    err, docs <- me.find!lean!exec
+    return cb err if err
+    docs-by-entity-id = _.groupBy docs, \entity_id
+    cb void _.compact _.flatMap entities, -> docs-by-entity-id[it._id]
