@@ -130,7 +130,7 @@ describe 'userA' ->
     test Session.signout.ok
     test Session.a.password.b.signin.bad
     test Session.a.password.c.signin.ok
-    test Latest.is0
+    test Latest.is0.void
   describe 'node a' ->
     test Node.list.is0
     test Node.a.create.ok
@@ -175,8 +175,7 @@ describe 'userA' ->
     test Evidence.a.list.is1
     test Node.a.remove.bad # has evidence
     test Node.a.name.update.bad # has evidence
-    test Latest.type.node.read.ok
-    test Latest.is1
+    test Latest.is1.node
   describe 'note a' ->
     test Note.a.list.is0
     test Note.a.create.ok
@@ -186,16 +185,14 @@ describe 'userA' ->
     test Note.a.text.min-lt.update.bad
     test Note.a.text.max.update.ok
     test Note.a.text.max-gt.update.bad
-    test Latest.type.note.read.ok
-    test Latest.is2
+    test Latest.is2.note
   describe 'node b' ->
     test Node.b.create.ok
     test Node.b.dup.update.bad
     test Evidence.b.list.is0
     test Evidence.b0.create.ok
     test Evidence.b.list.is1
-    test Latest.type.node.read.ok
-    test Latest.is3
+    test Latest.is3.node
   describe 'edge' ->
     test Edge.aa.create.bad # loop
   describe 'map' ->
@@ -211,8 +208,7 @@ describe 'userA' ->
 describe 'public' ->
   test Session.signout.ok
   test Map.list.is2
-  test Latest.type.map.read.ok
-  test Latest.is5
+  test Latest.is5.map
 describe 'userB' ->
   test Session.b.password.b.signin.bad
   test Session.b.password.a.signin.ok
@@ -259,7 +255,7 @@ describe 'userB' ->
     test Edge.ab.when.DMY2-DMY1.update.bad
     test Evidence.ab0.create.ok
     test Edge.list.is1
-    test Latest.type.edge.read.ok
+    test Latest.is7.edge
   describe 'edge ab chronological' ->
     test Edge.ba.create.bad # reciprocal
     test Edge.ab2.DMY2-DMY4.create.bad
