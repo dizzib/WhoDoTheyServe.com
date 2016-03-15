@@ -38,7 +38,7 @@ module.exports =
     # add dependencies
     edge-node-ids = _.uniq (_.map ents.edges, \a_node_id) ++ (_.map ents.edges, \b_node_id)
     edge-nodes = _.intersectionWith nodes, edge-node-ids, (a, b) -> a._id is b
-    ents.nodes = (_.filter latest, _type:\node) ++ edge-nodes
+    ents.nodes = _.uniq (_.filter latest, _type:\node) ++ edge-nodes
     nodes-and-edges = ents.nodes ++ ents.edges
     err, ents.evidences <- M-Evidences.find-for-entities nodes-and-edges
     return next err if err

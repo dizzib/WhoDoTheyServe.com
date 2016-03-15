@@ -329,9 +329,11 @@ describe 'userD' -> # daily_quota = 0
   test Session.d.password.a.signin.ok
   test Node.f.create.bad
   test Edge.ac.create.bad
+describe 'public' ->
+  test Session.signout.ok
+  test Latest.read.ok
 describe 'teardown' ->
   describe 'userB' ->
-    test Session.signout.ok
     test Session.b.password.a.signin.ok
     test Node.g.name.update.bad # on userC's map
     test Node.g.remove.bad # on userC's map
