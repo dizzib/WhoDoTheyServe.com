@@ -4,7 +4,6 @@ Vr = require \./view-activity/read
 Vs = require \./view-activity/select
 
 V-Footer  = require \./view/footer
-V-Latest  = require \./view/latest
 V-Maps    = require \./view/maps
 V-NavBar  = require \./view/navbar
 V-Sys     = require \./view/sys
@@ -18,6 +17,7 @@ T-EdgesHead     = F.readFileSync __dirname + \/view/edges-head.html
 T-EvidenceEdit  = F.readFileSync __dirname + \/view/evidence-edit.html
 T-Evidences     = F.readFileSync __dirname + \/view/evidences.html
 T-EvidencesHead = F.readFileSync __dirname + \/view/evidences-head.html
+T-Latest        = F.readFileSync __dirname + \/view/latest.html
 T-MapsList      = F.readFileSync __dirname + \/view/maps-list.html
 T-Meta          = F.readFileSync __dirname + \/view/meta.html
 T-Node          = F.readFileSync __dirname + \/view/node.html
@@ -48,7 +48,7 @@ module.exports
   ..evidences       = new Vr.ListView template:T-Evidences    , el:\.view>.evidences
   ..evidences-head  = new Vr.InfoView template:T-EvidencesHead, el:\.view>.evidences-head
   ..footer          = new V-Footer                              el:\.footer
-  ..latest          = new V-Latest                              el:\.view>.main
+  ..latest          = new Vr.ListView template:T-Latest       , el:\.view>.main, opts:{ fetch:true }
   ..maps            = new V-Maps                                el:\.view.maps
   ..maps-list       = new Vr.ListView template:T-MapsList     , el:\.view>.maps-list
   ..meta            = new Vr.InfoView template:T-Meta         , el:\.view>.meta

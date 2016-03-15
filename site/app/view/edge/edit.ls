@@ -21,7 +21,9 @@ module.exports =
       b-id = V.edge-b-node-sel.get-selected-id!
       return unless a-id and b-id
       top-hows = (get-top-hows a-id) ++ (get-top-hows b-id)
-      $how.val (_.max top-hows, -> it.1).0
+      top-how = (_.max top-hows, -> it.1).0
+      # never clear, to avoid intermittent app test fail with sel.on \selected timing
+      $how.val top-how if top-how?length
 
     function get-top-hows node-id
       edges = (C.Edges.where a_node_id:node-id) ++ (C.Edges.where b_node_id:node-id)

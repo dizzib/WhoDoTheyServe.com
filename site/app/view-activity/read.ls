@@ -39,6 +39,7 @@ module.exports =
           chunk.push c.at(pos++).toJSON-T!
         ($tem = $ @template).render {items:chunk}, items:directive
         $tem.find \.no-items .toggle c.length is 0
+        $tem.find \.timeago .timeago!
         if first-chunk
           @$el.html $tem
           return if opts?first-chunk-only

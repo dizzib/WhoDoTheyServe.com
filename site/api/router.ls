@@ -107,10 +107,10 @@ function integrity then Express.Router!
 
 function latest then Express.Router!
   ..get '/latest' Latest.list
-  ..all '/edges'  Latest.bust-cache
-  ..all '/maps'   Latest.bust-cache
-  ..all '/nodes'  Latest.bust-cache
-  ..all '/notes'  Latest.bust-cache
+  ..all '/edges*' Latest.bust-cache
+  ..all '/maps*'  Latest.bust-cache
+  ..all '/nodes*' Latest.bust-cache
+  ..all '/notes*' Latest.bust-cache
 
 function sec route, Model then Express.Router!
   ..param \id extract-id

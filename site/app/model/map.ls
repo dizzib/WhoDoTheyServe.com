@@ -19,11 +19,7 @@ m = B.DeepModel.extend do
   ## extensions
   get-is-editable : -> @isNew! or S.get-id! is (@get \meta .create_user_id)
   globalise-entities: -> # should be called shortly after parsing
-    return unless json = @get(\entities)?json
-    C.Nodes.set json.nodes, remove:false # add nodes first so edge comparator can read node names
-    C.Edges.set json.edges, remove:false
-    C.Evidences.set json.evidences, remove:false
-    C.Notes.set json.notes, remove:false
+    C.globalise-entities json if json = @get(\entities)?json
   parse: -> # only parse core entities for performance
     if json = it.entities then it.entities =
       nodes: new C.nodes json.nodes

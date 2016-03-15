@@ -5,6 +5,7 @@ R        = require \./helper .run
 B        = require \./app/_browser
 Edge     = require \./app/edge
 Evidence = require \./app/evidence
+Latest   = require \./app/latest
 Map      = require \./app/map
 Node     = require \./app/node
 Note     = require \./app/note
@@ -35,6 +36,7 @@ t 'click Latest' R ->
   B.wait-for 'Latest Updates' \legend
 
 describe \admin ->
+  test Latest.is0.void
   describe 'signup users' ->
     test User.list.is0
     test User.admin.create.ok
@@ -51,13 +53,16 @@ describe \admin ->
   describe 'node' ->
     test Node.list.is0
     test Node.a.create.ok
+  describe 'map' ->
+    test Map.a0.create.ok
+    test Map.ax.create.ok # private
+    test Latest.is2.map   # exclude private
+  describe 'node' ->
     test Node.a.name.max.update.ok
     test Node.a.name.max-gt.update.bad
     test Node.a.name.update.ok
     test Node.b.create.bad # node a missing evidence
-  describe 'map' ->
-    test Map.a0.create.ok
-    test Map.ax.create.ok
+    test Latest.is2.node
 #describe 'openauth signup' ->
   #test OpenAuth.github
   #test User.list.is4
@@ -93,11 +98,13 @@ describe \userA ->
     test Edge.ab.is.eq.update.ok
     test Edge.ab.when.DMY1-DMY2.update.ok
     test Evidence.ab0.create.ok
+    test Latest.is4.edge
   describe 'note' ->
     test Note.a.list.is0
     test Note.a.create.ok
     test Note.a.text.jotld.update.ok
     test Note.a.list.is1
+    test Latest.is5.note
 describe \userB ->
   test Session.signout.ok
   test Session.b.password.a.signin.ok
@@ -136,12 +143,12 @@ describe 'teardown' ->
     describe 'remove users' ->
       test User.a.remove.ok
       test User.list.is1
-describe 'admin 2' ->
+describe 'admin' ->
   describe 'recreate users: orphaned logins should not cause duplicate key error' ->
     test User.a.create.ok
     test User.b.create.ok
     test User.list.is3
-  test Map.ax.private.update.ok
+  test Map.ax.toggle-private.update.ok
 describe 'public' ->
   test Session.signout.ok
   test Map.list.is2

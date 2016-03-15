@@ -12,6 +12,7 @@ module.exports =
   edges    : get-url \edges
   evidences: get-url \evidences
   hive     : get-url \hive
+  latest   : get-url \latest
   maps     : get-url \maps
   nodes    : get-url \nodes
   notes    : get-url \notes

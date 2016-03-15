@@ -26,4 +26,4 @@ function list n
 function read key, is-ok, fields
   Http.assert (res = Http.get \latest), is-ok
   (type = res.object.ids.0._type).should.equal fields.type
-  res.object.entities["#{type}s"].length.should.be.at.least 1 unless type is \map
+  res.object.entities["#{type}s"].length.should.be.at.least 1

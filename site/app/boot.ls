@@ -20,6 +20,7 @@ require \./view-handler/ui
 C.init do
   Evidence: require \./model/evidence
   Edge    : require \./model/edge
+  Latest  : require \./model/latest
   Map     : require \./model/map
   Node    : require \./model/node
   Note    : require \./model/note

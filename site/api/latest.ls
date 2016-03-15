@@ -9,34 +9,35 @@ var cache
 
 module.exports =
   bust-cache: (req, res, next) ->
-    cache := void
+    cache := void unless req.method is \GET
     next!
 
   # return all entities and dependencies required to render latest
   list: (req, res, next) ->
     return res.json cache if cache?
 
-    function get-ents model, type, fields, cb
+    function get-ents model, type, cb
       err, docs <- model.find!lean!exec
-      return cb err if err
-      return cb void [o <<< _type:type for o in docs] unless fields
-      cb void [_.pick(o, fields) <<< _type:type for o in docs]
+      cb err, [o <<< _type:type for o in docs]
 
-    err, edges <- get-ents M-Edges, \edge, void
+    err, maps <- M-Maps.find!lean!exec
     return next err if err
-    err, maps <- get-ents M-Maps, \map, <[ _id meta ]>
+    maps = [_.pick(m, <[ _id name meta ]>) <<< _type:\map for m in
+      _.reject maps, -> it.flags?private]
+    err, edges <- get-ents M-Edges, \edge
     return next err if err
-    err, nodes <- get-ents M-Nodes, \node, void
+    err, nodes <- get-ents M-Nodes, \node
     return next err if err
-    err, notes <- get-ents M-Notes, \note, void
+    err, notes <- get-ents M-Notes, \note
     return next err if err
 
     all     = edges ++ maps ++ nodes ++ notes
     by-date = _.sortBy all, (o) -> o.meta.update_date or o.meta.create_date
     latest  = _.reverse _.takeRight by-date, 50
-
-    # dependencies
-    ents = edges: _.filter latest, _type:\edge
+    ents    =
+      edges: _.filter latest, _type:\edge
+      maps : _.filter latest, _type:\map
+    # add dependencies
     edge-node-ids = _.uniq (_.map ents.edges, \a_node_id) ++ (_.map ents.edges, \b_node_id)
     edge-nodes = _.intersectionWith nodes, edge-node-ids, (a, b) -> a._id is b
     ents.nodes = (_.filter latest, _type:\node) ++ edge-nodes

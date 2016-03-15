@@ -56,6 +56,20 @@ const GLYPHS =
         $el.append "<span title='#{note.get \text}' class='glyph fe fe-comment'/>"
       return ''
 
+const MAP =
+  link:
+    href: -> "#/map/#{@id or @_id or \new}"
+  name:
+    text: -> @name or 'New map'
+  description:
+    html: -> htmlify-text @description
+  shortname:
+    text: ->
+      return s unless (s = @name or 'New map').length > 3
+      s.substr(0, 3) + \...
+  when:
+    text: -> "Date: #{@when}" if @when
+
 const META =
   'create-by':
     class: -> \hide if get-is-admin @meta?create_user_id
@@ -91,6 +105,10 @@ const NODE-TAGS =
       href: -> "#/nodes/#{@value}"
       text: -> @value
 
+const NOTES =
+  note:
+    html: -> htmlify-text @text
+
 const REMOVE =
   text: -> it.element.remove!
 
@@ -116,19 +134,23 @@ module.exports =
     'btn-new':
       href: -> "#/#{B.history.fragment}/evi-new"
   glyph: GLYPH
-  map:
-    link:
-      href: -> "#/map/#{@id or @_id or \new}"
-    name:
-      text: -> @name or 'New map'
-    description:
-      html: -> htmlify-text @description
-    shortname:
-      text: ->
-        return s unless (s = @name or 'New map').length > 3
-        s.substr(0, 3) + \...
-    when:
-      text: -> "Date: #{@when}" if @when
+  latest: _.extend do
+    EDGE
+    GLYPHS
+    MAP
+    META-COMPACT
+    NODE-NAME
+    NODE-TAGS
+    NOTES
+    'map-link': MAP.link # fix: to distinguish from D.node.link
+    item:
+      fn: ->
+        $ it.element .find ".entity>:not(._type-#{@_type})" .remove!
+        void
+      class: ->
+        return unless @_type is \map
+        "#{it.element.className} seo-remove"
+  map: MAP
   map-edit:
     'flags.private':
       checked: -> @flags?private
@@ -153,8 +175,7 @@ module.exports =
     NODE-NAME
     NODE-TAGS
   notes: _.extend do
-    note:
-      html: -> htmlify-text @text
+    NOTES
     META-COMPACT
   notes-head:
     'btn-edit':

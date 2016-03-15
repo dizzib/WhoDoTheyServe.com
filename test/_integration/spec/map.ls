@@ -23,7 +23,7 @@ module.exports.get-spec = (...args) ->
   a1: get-spec \a1 nodes:<[ a ]>
   ax: _.extend do
     get-spec \ax nodes:<[ a ]> flags: private:true
-    private: get-spec \ax flags: private:true
+    toggle-private: get-spec \ax flags: private:true
   b0: get-spec \b0 nodes:<[ b ]>
   c0: get-spec \c0 name:"C's map" nodes:<[ a b c d g ]>
   cx: get-spec \cx nodes:<[ g ]> flags: private:true

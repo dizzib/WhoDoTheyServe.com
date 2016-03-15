@@ -206,11 +206,14 @@ describe 'userA' ->
     test Map.list.is2
     test Map.ax.create.ok
     test Map.list.is3
-    test Latest.type.map.read.ok
   describe 'sys' ->
     test Sys.mode.toggle.bad
-describe 'userB' ->
+describe 'public' ->
   test Session.signout.ok
+  test Map.list.is2
+  test Latest.type.map.read.ok
+  test Latest.is5
+describe 'userB' ->
   test Session.b.password.b.signin.bad
   test Session.b.password.a.signin.ok
   describe 'node a' ->

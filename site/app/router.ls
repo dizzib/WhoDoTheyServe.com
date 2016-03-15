@@ -60,7 +60,7 @@ r = B.Router.extend do
   edge_edit      : -> V.edge-edit.render (M-Edge.create it), C.Edges
   edges          : -> Vc.edges ...&
   fireprox       : -> F.configure ...&
-  latest         : -> V.latest.render ...&
+  latest         : -> V.latest.render C.Latest, Vd.latest
   map            : -> V.maps.render ...&
   map_default    : -> if id = Hm.default-ids.0 then V.maps.render id, ...& else B.trigger \error 'Please set default map'
   node           : -> Vc.node ...&
