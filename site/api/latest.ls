@@ -14,23 +14,21 @@ module.exports =
 
   # return all entities and dependencies required to render latest
   list: (req, res, next) ->
-    return res.json cache if cache?
-
     function get-ents model, type, cb
       err, docs <- model.find!lean!exec
       cb err, [o <<< _type:type for o in docs]
 
+    return res.json cache if cache?
     err, maps <- M-Maps.find!lean!exec
     return next err if err
-    maps = [_.pick(m, <[ _id name meta ]>) <<< _type:\map for m in
-      _.reject maps, -> it.flags?private]
+    maps = _.reject maps, -> it.flags?private
+    maps = [_.pick(m, <[ _id name meta ]>) <<< _type:\map for m in maps]
     err, edges <- get-ents M-Edges, \edge
     return next err if err
     err, nodes <- get-ents M-Nodes, \node
     return next err if err
     err, notes <- get-ents M-Notes, \note
     return next err if err
-
     all     = edges ++ maps ++ nodes ++ notes
     by-date = _.sortBy all, (o) -> o.meta.update_date or o.meta.create_date
     latest  = _.reverse _.takeRight by-date, 50
@@ -46,8 +44,6 @@ module.exports =
     return next err if err
     err, ents.notes <- M-Notes.find-for-entities nodes-and-edges
     return next err if err
-
-    cache :=
+    res.json cache :=
       ids: [_.pick o, <[ _id _type ]> for o in latest]
       entities: ents
-    res.json cache
