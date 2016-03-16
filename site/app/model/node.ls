@@ -12,12 +12,14 @@ m = B.DeepModel.extend do
   ## core
   toJSON-T: (opts) ->
     is-person = Lib.is-person name = @get \name
+    w = W.parse-range w-raw = @get \when
 
     _.extend (@toJSON opts),
       family-name: (name.match(/^\w+,/)?0.replace ',' '') if is-person
+      is-live    : W.is-in-range W.get-int-today!, w.int
       is-person  : is-person
       tip        : 'Evidence'
-      when-text  : if w-raw = @get \when then "(#w-raw)" else ''
+      when-text  : if w-raw then "(#w-raw)" else ''
 
   ## extensions
   get-yyyy-by-name: ->

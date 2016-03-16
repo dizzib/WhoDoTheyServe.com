@@ -22,6 +22,7 @@
 
   .edge-title
     .a-node
+    .b-node
     .how
       margin-right  0.3em
 
@@ -37,6 +38,13 @@
   .glyphs
     margin-left   0.5em
 
+  .node-title.dead
+    text-decoration line-through // does not work on glyph
+    .glyph
+      opacity       0.5
+  .node-when
+    margin-left   0.3em
+
   .section
     border-top    1px solid #ddd
     margin-top    40px
@@ -44,8 +52,6 @@
   .link + .tags
   .tag + .tag
     margin-left  0.5em
-  .when
-    margin-left  0.3em
 
 .view.editing
   a.btn-edit

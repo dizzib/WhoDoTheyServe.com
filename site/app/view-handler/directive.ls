@@ -5,24 +5,25 @@ S = require \../session
 V = require \../view
 
 const NODE-NAME =
-  link:
-    href: -> get-node-href @_id
   name:
     text: -> @name
-  'person-glyph':
-    class: -> "glyph fe fe-male" if @is-person
-    title: -> \person
-  when:
+  'node-title':
+    href : -> get-node-href @_id
+    class: -> "node-title #{if @is-live then '' else 'dead'}".trim!
+  'node-when':
     text: -> @when-text
+  'person-glyph':
+    class: -> 'glyph fe fe-male' if @is-person
+    title: -> "person #{if @is-live then '' else '(deceased)'}".trim!
 
 const EDGE =
   'a-node': NODE-NAME
   'b-node': NODE-NAME
+  'edge-when':
+    text: -> @when-text
   how:
     href: -> "#/edge/#{@_id}"
     text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
-  when:
-    text: -> @when-text
 
 const EVI =
   glyph:
@@ -144,7 +145,6 @@ module.exports =
     NODE-NAME
     NODE-TAGS
     NOTES
-    'map-link': MAP.link # fix: to distinguish from D.node.link
     item:
       fn: ->
         $ it.element .find ".entity>:not(._type-#{@_type})" .remove!

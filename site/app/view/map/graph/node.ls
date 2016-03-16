@@ -16,8 +16,9 @@ module.exports = (vg) ->
   vg.on \pre-render (ents) ->
     for n in ents.nodes
       n.classes = []
-      n.classes.push \tag if n.tags?length
+      n.classes.push \dead unless n.is-live
       n.classes.push \person if n.is-person
+      n.classes.push \tag if n.tags?length
       n.classes.push \you if is-you n
 
   vg.on \render ->
@@ -42,8 +43,10 @@ module.exports = (vg) ->
             .attr \dy 22
             .attr \text-anchor \middle
             .text -> it.when-text
-    append-glyph (@svg.selectAll \g.node.person), GLYPHS.person, \person
-    append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]), (-> it.tags.join ', ')
+    append-glyph (@svg.selectAll \g.node.person), GLYPHS.person,
+      -> "person #{if it.is-live then '' else '(deceased)'}".trim!
+    append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]),
+      -> it.tags.join ', '
 
     for icon in icons =  (Hv.Map.get-prop \icons) or []
       g = @svg.select "g.id_#{icon.id}"

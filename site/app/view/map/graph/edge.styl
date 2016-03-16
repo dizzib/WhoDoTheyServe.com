@@ -4,16 +4,17 @@
   .edge
     stroke            #aaa
     stroke-width      1.5px
-  .edge.family
-    stroke-dasharray  2
-    stroke-width      5px
-  .edge.out-of-date
-    stroke-dasharray  5
-    stroke-width      1px
-  .edge.out-of-date.family
-    stroke-width      2px
-  .edge.you
-    display           none
+    &.family
+      stroke-dasharray  2
+      stroke-width      5px
+    &.out-of-date
+      &.family
+        opacity           0.5
+      &:not(.family)
+        opacity           0.75
+        stroke-dasharray  5
+    &.you
+      display           none
   .edge-glyphs
     text
       fill              #08c
