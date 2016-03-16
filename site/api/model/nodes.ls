@@ -1,14 +1,15 @@
-_         = require \lodash
-M         = require \mongoose
-Cons      = require \../../lib/model/constraints
-Crud      = require \../crud
-Err       = require \../error
-P-Id      = require \./plugin-id
-P-Meta    = require \./plugin-meta
+_      = require \lodash
+M      = require \mongoose
+Cons   = require \../../lib/model/constraints
+Crud   = require \../crud
+Err    = require \../error
+P-Id   = require \./plugin-id
+P-Meta = require \./plugin-meta
 
 schema = new M.Schema do
   name: type:String, required:yes, match:Cons.node.name.regex
   tags: type:[String], validate:validate-tag
+  when: type:String, required:no, match:Cons.node.when.regex
 
 schema
   ..plugin P-Id

@@ -29,13 +29,17 @@ module.exports = (vg) ->
       ..append \svg:circle
         .attr \r -> 5 + it.weight + if is-you it then 30 else 0
       ..append \svg:a
-        .attr \xlink:href -> "#/node/#{it._id}"
-        .append \svg:text
+        ..attr \xlink:href -> "#/node/#{it._id}"
+        ..append \svg:text
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
-        .append \title
-          .text -> it.name
+        ..append \svg:text
+          .attr \dy 22
+          .attr \text-anchor \middle
+          .text -> it.when-text
+        ..append \title
+          .text -> "#{it.name} #{it.when-text}".trim!
     append-glyph (@svg.selectAll \g.node.person), GLYPHS.person, \person
     append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]), (-> it.tags.join ', ')
 

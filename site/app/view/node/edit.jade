@@ -14,27 +14,37 @@ form.form-horizontal.well
     span.input-xxlarge
       +field-text('name', 'Name', 'Enter name')
         span(title='person').person-glyph.gap-l.fe.fe-lg.fe-male
-    .help-block.gap-t
-      | As you enter the name, a list of matches will appear so
-      | you can check it doesn't already exist.
-      | To help keep things consistent, please stick to the following naming guidelines:
-    .help-block.gap-t
-      li
-        | A person's name should take the form LastName, FirstName e.g. 
-        strong Jefferson, Thomas 
-        | rather than 
-        strong Thomas Jefferson
-      li
-        | An organisation should begin without the indefinite article e.g. 
-        strong Bank of England 
-        | rather than 
-        strong The Bank of England
-    .help-block.gap-t
-      | You'll need to provide supporting evidence of this actor's existence
-      | in reality, so it should be definite and tangible. Please refrain from adding
-      | names like 'Illuminati' or 'New world order' which are too vague and nebulous.
-    .gap-t
-      +field-tags('tags', 'Tags')
+        .help-block.gap-t
+          | As you enter the name, a list of matches will appear so
+          | you can check it doesn't already exist.
+          | To help keep things consistent, please stick to the following naming guidelines:
+        .help-block.gap-t
+          li
+            | A person's name should take the form LastName, FirstName e.g. 
+            strong Jefferson, Thomas 
+            | rather than 
+            strong Thomas Jefferson
+          li
+            | An organisation should begin without the indefinite article e.g. 
+            strong Bank of England 
+            | rather than 
+            strong The Bank of England
+        .help-block.gap-t
+          | You'll need to provide supporting evidence of this actor's existence
+          | in reality, so it should be definite and tangible.
+    +field-tags('tags', 'Tags')
+      .help-block Optional list of classifying tags.
+    +field-text('when', 'When')
+      .help-block
+        :markdown
+          Optional time period over which this node exists, in the format
+          `dd/mm/yyyy-dd/mm/yyyy`, `dd/mm/yyyy-` or `-dd/mm/yyyy`.
+          The `dd/` and `mm/` are optional.
+
+          Examples:
+          * From 1st Feb 2006 to 3rd Feb 2014 `01/02/2006-03/02/2014`
+          * From May 2010 to Sep 2010 `05/2010-09/2010`
+          * From 1830 to 1901 `1830-1901`
     .add-to-map.create.gap-t
       +field-checkbox('__add-to-map', 'Add to map ')
     +button-bar

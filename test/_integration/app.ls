@@ -61,6 +61,7 @@ describe \admin ->
     test Node.a.name.max.update.ok
     test Node.a.name.max-gt.update.bad
     test Node.a.name.update.ok
+    test Node.a.when.deceased.update.ok
     test Node.b.create.bad # node a missing evidence
     test Latest.is2.node
 #describe 'openauth signup' ->

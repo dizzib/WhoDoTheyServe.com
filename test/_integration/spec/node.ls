@@ -25,12 +25,14 @@ exports.get-spec = (...args) ->
         has  : h.get-spec \a name:'Bank of England, The'
       ucase: h.get-spec \a name:'Node AA'
       you  : h.get-spec \a name:'YOU! (UK)'
-    tags: _.extend do
+    tags:
       lcase1: h.get-spec \a tags:<[ bank ]>
       lcase2: h.get-spec \a tags:<[ tv music ]>
       min-lt: h.get-spec \a tags:<[ a ]>
       max-gt: h.get-spec \a tags:[ \X * 21 ]
       ucase : h.get-spec \a tags:<[ Tv music ]>
+    when:
+      deceased: h.get-spec \a when:'1870-1934'
   b: _.extend do
     h.get-spec \b name:'Node b'
     dup: h.get-spec \b name:'Node AA'

@@ -5,7 +5,7 @@ mixin edge
     #{attributes.plainHow ? 'span' : 'a'}.how
     span.b-node
       +node-name(plain=attributes.plainNodeB)
-    span.when-text
+    span.when
 
 mixin meta-compact
   small.meta
@@ -20,6 +20,7 @@ mixin node-name
   #{attributes.plain ? 'span' : 'a'}.link
     span.person-glyph
     span.name
+    span.when
 
 mixin node-tags
   span.tags

@@ -156,6 +156,8 @@ describe 'userA' ->
     test Node.a.tags.ucase.update.bad
     test Node.a.tags.min-lt.update.bad
     test Node.a.tags.max-gt.update.bad
+    test Node.a.when.deceased.update.ok
+    test Node.a.when.deceased.read.ok
     test Node.b.create.bad # prior node missing evidence
     test Evidence.a.list.is0
     test Evidence.a0.create.ok

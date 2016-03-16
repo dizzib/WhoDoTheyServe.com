@@ -12,6 +12,8 @@ const NODE-NAME =
   'person-glyph':
     class: -> "glyph fe fe-male" if @is-person
     title: -> \person
+  when:
+    text: -> @when-text
 
 const EDGE =
   'a-node': NODE-NAME
@@ -19,7 +21,7 @@ const EDGE =
   how:
     href: -> "#/edge/#{@_id}"
     text: -> "----#{@how ? ''}---#{if @a_is_lt then \> else \-}"
-  'when-text':
+  when:
     text: -> @when-text
 
 const EVI =

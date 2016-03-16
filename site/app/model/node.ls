@@ -2,6 +2,7 @@ B   = require \backbone
 _   = require \underscore
 Con = require \../../lib/model/constraints
 Lib = require \../../lib/model/node
+W   = require \../../lib/when
 Api = require \../api
 Fac = require \./_factory
 
@@ -10,15 +11,16 @@ m = B.DeepModel.extend do
 
   ## core
   toJSON-T: (opts) ->
-    name = @get \name
-    is-person = Lib.is-person name
+    is-person = Lib.is-person name = @get \name
+
     _.extend (@toJSON opts),
       family-name: (name.match(/^\w+,/)?0.replace ',' '') if is-person
       is-person  : is-person
       tip        : 'Evidence'
+      when-text  : if w-raw = @get \when then "(#w-raw)" else ''
 
   ## extensions
-  get-yyyy: ->
+  get-yyyy-by-name: ->
     /[12]\d{3}$/.exec(@get \name)?0
 
   ## validation

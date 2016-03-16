@@ -23,7 +23,7 @@ m = B.DeepModel.extend do
     nodes    = opts?nodes or C.Nodes
     a-node   = nodes.get @get \a_node_id # undefined if new
     b-node   = nodes.get @get \b_node_id # undefined if new
-    yyyy     = a-node?get-yyyy! or b-node?get-yyyy!
+    yyyy     = a-node?get-yyyy-by-name! or b-node?get-yyyy-by-name!
     when-raw = if yyyy then "#yyyy-#yyyy" else @get \when
     when-obj = W.parse-range when-raw
 
