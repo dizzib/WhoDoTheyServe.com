@@ -34,12 +34,14 @@ module.exports = (vg) ->
           .attr \dy 4
           .attr \text-anchor \middle
           .text -> it.name
-        ..append \svg:text
-          .attr \dy 22
-          .attr \text-anchor \middle
-          .text -> it.when-text
         ..append \title
           .text -> "#{it.name} #{it.when-text}".trim!
+        ..each ->
+          return unless it.when-text
+          d3.select this .append \svg:text
+            .attr \dy 22
+            .attr \text-anchor \middle
+            .text -> it.when-text
     append-glyph (@svg.selectAll \g.node.person), GLYPHS.person, \person
     append-glyph (@svg.selectAll \g.node.tag), (-> GLYPHS[it.tags.0]), (-> it.tags.join ', ')
 
