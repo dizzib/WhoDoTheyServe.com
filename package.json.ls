@@ -26,6 +26,7 @@ dependencies:
   'passport-facebook'     : \1.0.3
   'passport-github'       : \0.1.5
   'passport-google-oauth' : \0.1.5
+  request                 : \2.16.6
   'serve-favicon'         : \2.2.0
   shortid                 : \2.0.0
 devDependencies:
@@ -50,7 +51,6 @@ devDependencies:
   mocha                 : \~1.15.1
   mongodb               : \~1.2.14
   nib                   : \~1.1.0
-  request               : \~2.16.6
   shelljs               : \~0.2.6
   stylus                : \~0.51.1
   'uglify-js'           : \~2.4.12

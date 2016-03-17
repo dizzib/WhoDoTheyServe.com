@@ -6,6 +6,7 @@ if process.env.COVERAGE is \true
 Db        = require \./api/db
 Hive      = require \./api/hive
 Router    = require \./api/router
+Urlmon    = require \./api/urlmon
 HiveMap   = require \./boot/hive/map
 MigrateDb = require \./boot/migrate-db
 Server    = require \./server
@@ -21,3 +22,4 @@ port = process.env.OPENSHIFT_NODEJS_PORT or process.env.PORT or 80
 Server.listen port, host, ->
   const MSG = 'Express server http listening on'
   log if host then "#MSG #host:#port" else "#MSG port #port"
+Urlmon.start!
