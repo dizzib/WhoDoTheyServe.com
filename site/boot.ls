@@ -16,8 +16,8 @@ console.error err if err
 err <- HiveMap.boot
 console.error err if err
 
-const msg = 'Express server http listening on'
-port = process.env.PORT or process.env.OPENSHIFT_NODEJS_PORT or 80
-if host = process.env.OPENSHIFT_NODEJS_IP
-  return Server.listen port, host, -> log "#msg #host:#port"
-Server.listen port, -> log "#msg port #port"
+host = process.env.OPENSHIFT_NODEJS_IP
+port = process.env.OPENSHIFT_NODEJS_PORT or process.env.PORT or 80
+Server.listen port, host, ->
+  const MSG = 'Express server http listening on'
+  log if host then "#MSG #host:#port" else "#MSG port #port"
