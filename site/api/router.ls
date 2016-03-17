@@ -29,7 +29,7 @@ module.exports = Express.Router!
     # www.whodotheyserve.com/api, and here we prevent CF from caching such requests.
     res.header \Cache-Control \no-cache
     next!
-  ..options '/*' (, res) -> res.send 200
+  ..options '/*' (, res) -> res.sendStatus 200
   ..param \id extract-id
   # security
   ..use sec-hive!
