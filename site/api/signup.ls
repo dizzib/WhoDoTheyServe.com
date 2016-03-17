@@ -5,7 +5,7 @@ module.exports =
   create-token: ->
     # http://stackoverflow.com/questions/8838624/nodejs-send-email-on-registration
     C.randomBytes 16 .toString 'base64' .replace /\//g,'_' .replace /\+/g,'-'
-  plugin: (schema)->
+  plugin: (schema) ->
     schema.add do
       create_token: type:String, index:{+unique, +sparse}
     schema.virtual \is_verified .get -> @create_token is void

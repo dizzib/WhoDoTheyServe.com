@@ -2,7 +2,7 @@ _        = require \lodash
 M        = require \mongoose
 Cons     = require \../../lib/model/constraints
 CryptPwd = require \../crypt-pwd
-P-Id     = require \./plugin-id
+P-Id     = require \./plugin/id
 M-Users  = require \./users
 
 spec =

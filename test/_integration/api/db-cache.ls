@@ -7,7 +7,7 @@ Client   = require \mongodb .MongoClient
 Mongoose = require \mongoose
 Cache-C  = require "#DB-CACHE/collection-cache"
 Cache-Q  = require "#DB-CACHE/query-by-entity-cache"
-P-Id     = require "#DB-CACHE/../model/plugin-id"
+P-Id     = require "#DB-CACHE/../model/plugin/id"
 Store    = require "#DB-CACHE/in-process-store"
 Sweeper  = require "#DB-CACHE/sweeper"
 
@@ -35,7 +35,7 @@ before (done) ->
     entity_id: type:String
     name     : type:String
   schema = new Mongoose.Schema spec .plugin P-Id
-  M-Foos := Mongoose.model \foos, schema
+  M-Foos := Mongoose.model \foos schema
 
   err, db <- Client.connect DB-URL
   C-Foos := db.collection \foos
@@ -47,24 +47,24 @@ after (done) ->
   Mongoose.connection.db.dropDatabase done
 
 # NOTE: each test must leave collection empty for next test
-it 'collection cache', (done) ->
+it 'collection cache' (done) ->
   <- assert-count 0
-  <- add \a, \foo, \andy
+  <- add \a \foo \andy
   store-c.hit-count.should.equal 1
   <- assert-count 1
   store-c.hit-count.should.equal 2
   <- find-by-id \a
   store-c.hit-count.should.equal 3
-  <- add \b, \foo, \butch
-  <- add \c, \bar, \chris
+  <- add \b \foo \butch
+  <- add \c \bar \chris
   <- assert-count 3
-  <- find-by-id-then-save \a, \d
+  <- find-by-id-then-save \a \d
   <- assert-count 3
   <- assert-exists \b
   <- assert-exists \d
-  <- find-one-and-update \c, \cindy
-  <- find-one-by-name \chris, 0
-  <- find-one-by-name \cindy, 1
+  <- find-one-and-update \c \cindy
+  <- find-one-by-name \chris 0
+  <- find-one-by-name \cindy 1
   <- find-by-id-and-remove \b
   <- assert-not-exists \b
   <- assert-count 2
@@ -76,21 +76,21 @@ it 'collection cache', (done) ->
   <- assert-count 0
   done!
 
-it 'query-by-entity cache', (done) ->
+it 'query-by-entity cache' (done) ->
   <- assert-count 0
-  <- add \a, \foo, \andy
+  <- add \a \foo \andy
   <- assert-count 1
-  <- find-by-entity-id \foo, 1
+  <- find-by-entity-id \foo 1
   store-q.hit-count.should.equal 0
-  <- find-by-entity-id \foo, 1
+  <- find-by-entity-id \foo 1
   store-q.hit-count.should.equal 1
-  <- find-by-entity-id \bar, 0
+  <- find-by-entity-id \bar 0
   <- add \b, \foo, \butch
   <- add \c, \bar, \chris
   <- assert-count 3
-  <- find-by-id-then-save \a, \d
-  <- find-by-entity-id \foo, 2
-  <- find-by-entity-id \bar, 1
+  <- find-by-id-then-save \a \d
+  <- find-by-entity-id \foo 2
+  <- find-by-entity-id \bar 1
   <- find-by-id-and-remove \b
   <- assert-not-exists \b
   <- assert-count 2

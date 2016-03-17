@@ -3,8 +3,8 @@ M      = require \mongoose
 Cons   = require \../../lib/model/constraints
 Crud   = require \../crud
 Err    = require \../error
-P-Id   = require \./plugin-id
-P-Meta = require \./plugin-meta
+P-Id   = require \./plugin/id
+P-Meta = require \./plugin/meta
 
 schema = new M.Schema do
   name: type:String, required:yes, match:Cons.node.name.regex

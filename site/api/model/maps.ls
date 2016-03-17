@@ -6,8 +6,8 @@ M-Edges     = require \./edges
 M-Evidences = require \./evidences
 M-Nodes     = require \./nodes
 M-Notes     = require \./notes
-P-Id        = require \./plugin-id
-P-Meta      = require \./plugin-meta
+P-Id        = require \./plugin/id
+P-Meta      = require \./plugin/meta
 
 s-node = new M.Schema do
   _id: type:String , required:yes

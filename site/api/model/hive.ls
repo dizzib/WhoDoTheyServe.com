@@ -1,6 +1,6 @@
 M    = require \mongoose
 _    = require \lodash
-P-Id = require \./plugin-id
+P-Id = require \./plugin/id
 
 s-hive =
   key  : type:String, required:yes, index:{+unique}
@@ -9,7 +9,7 @@ s-hive =
 schema = new M.Schema s-hive, { collection:\hive }
   ..plugin P-Id
 
-module.exports = me = M.model \hive, schema
+module.exports = me = M.model \hive schema
   ..load = (cb) ->
     err, docs <- me.find
     cb err, docs

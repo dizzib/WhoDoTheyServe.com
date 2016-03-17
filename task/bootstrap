@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+rm -rf ./_build
 
 LSC='./node_modules/.bin/lsc --debug'
 

@@ -3,8 +3,8 @@ _      = require \lodash
 Cons   = require \../../lib/model/constraints
 When   = require \../../lib/when
 Crud   = require \../crud
-P-Id   = require \./plugin-id
-P-Meta = require \./plugin-meta
+P-Id   = require \./plugin/id
+P-Meta = require \./plugin/meta
 
 spec =
   a_node_id : type:String, required:yes

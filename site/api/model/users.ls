@@ -2,8 +2,8 @@ M      = require \mongoose
 Cons   = require \../../lib/model/constraints
 Crypt  = require \../crypt
 Crud   = require \../crud
-P-Id   = require \./plugin-id
-P-Meta = require \./plugin-meta
+P-Id   = require \./plugin/id
+P-Meta = require \./plugin/meta
 
 const AUTHTYPE-PASSWORD = \password
 
@@ -19,22 +19,22 @@ spec =
 
 schema = new M.Schema spec
   ..plugin P-Id
-  ..pre \save, (next) -> # encrypt email
+  ..pre \save (next) -> # encrypt email
     return next! unless @isModified \email
     @email = Crypt.encrypt @email
     next!
-  ..pre \validate, (next) -> # validate email
+  ..pre \validate (next) -> # validate email
     # Set self-created user's meta. This really belongs in pre-init but doesn't
     # seem to work there, so we'll leave it in pre-validate for now.
-    if @isNew then @set \meta.create_user_id, @_id unless @get \meta.create_user_id
+    if @isNew then @set \meta.create_user_id @_id unless @get \meta.create_user_id
     # normal validation
     return next! unless @email
     return next! unless @isModified \email
-    @invalidate \email, "Invalid email #{@email}" unless Cons.email.regex.test @email
+    @invalidate \email "Invalid email #{@email}" unless Cons.email.regex.test @email
     next!
   ..plugin P-Meta # must run after user pre-validate
 
-module.exports = me = M.model \users, schema
+module.exports = me = M.model \users schema
   ..check-is-authtype-password = -> it.auth_type is AUTHTYPE-PASSWORD
   ..crud-fns =
     create: (req, res, next) ->
