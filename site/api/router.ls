@@ -2,7 +2,6 @@ Express     = require \express
 Passport    = require \passport
 Analytics   = require \./analytics
 AuthPasswd  = require \./authenticate/password
-H           = require \./helper
 Hive        = require \./hive
 I-Edge      = require \./integrity/edge
 I-Entity    = require \./integrity/entity

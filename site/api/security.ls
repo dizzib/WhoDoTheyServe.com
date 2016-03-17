@@ -1,5 +1,5 @@
 Err     = require \./error
-H       = require \./helper
+D       = require \./lib/date
 M-Users = require \./model/users
 
 module.exports =
@@ -17,7 +17,7 @@ module.exports =
       next err if err
       err, n <- Model.count $and:
         * 'meta.create_user_id': si.id
-        * 'meta.create_date'   : $gte:H.get-date-yesterday!
+        * 'meta.create_date'   : $gte:D.get-date-yesterday!
       next err if err
       if user.quota_daily? then
         const multipliers =

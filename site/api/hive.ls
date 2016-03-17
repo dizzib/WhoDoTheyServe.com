@@ -1,6 +1,5 @@
 M      = require \mongoose
 _      = require \lodash
-H      = require \./helper
 M-Hive = require \./model/hive
 
 cache = {}

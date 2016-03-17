@@ -1,6 +1,5 @@
 M    = require \mongoose
 _    = require \lodash
-H    = require \../helper
 P-Id = require \./plugin-id
 
 s-hive =

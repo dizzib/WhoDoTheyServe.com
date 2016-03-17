@@ -3,7 +3,7 @@ P-Facebook = require \passport-facebook .Strategy
 P-Github   = require \passport-github .Strategy
 P-Google   = require \passport-google-oauth .OAuth2Strategy
 Err        = require \../error
-H          = require \../helper
+H          = require \../lib/host
 M-Sessions = require \../model/sessions
 M-Users    = require \../model/users
 

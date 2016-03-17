@@ -1,4 +1,3 @@
-H  = require \./helper
 Pj = require \../package.json
 
 const MODE-MAINT  = \maintenance

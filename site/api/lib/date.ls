@@ -18,3 +18,8 @@ module.exports =
         d = new Date date
         d.setMinutes (d.getMinutes! - d.getTimezoneOffset!);
         return d
+
+  get-date-yesterday: ->
+      d = new Date!
+      d.setDate d.getDate! - 1
+      return d

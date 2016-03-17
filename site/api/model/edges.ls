@@ -3,7 +3,6 @@ _      = require \lodash
 Cons   = require \../../lib/model/constraints
 When   = require \../../lib/when
 Crud   = require \../crud
-H      = require \../helper
 P-Id   = require \./plugin-id
 P-Meta = require \./plugin-meta
 
@@ -17,8 +16,8 @@ spec =
 schema = new M.Schema spec
   ..plugin P-Id
   ..plugin P-Meta
-  ..pre \validate, (next) ->
-    if @a_node_id is @b_node_id then @invalidate \a_node_id, 'Nodes A and B must differ'
+  ..pre \validate (next) ->
+    if @a_node_id is @b_node_id then @invalidate \a_node_id 'Nodes A and B must differ'
     next!
 
-module.exports = me = Crud.set-fns (M.model \edges, schema)
+module.exports = me = Crud.set-fns (M.model \edges schema)

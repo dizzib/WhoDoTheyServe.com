@@ -2,7 +2,6 @@ _        = require \lodash
 M        = require \mongoose
 Cons     = require \../../lib/model/constraints
 CryptPwd = require \../crypt-pwd
-H        = require \../helper
 P-Id     = require \./plugin-id
 M-Users  = require \./users
 
@@ -12,16 +11,16 @@ spec =
 
 schema = new M.Schema spec
   ..plugin P-Id
-  ..pre \save, (next) ->     # hash password
+  ..pre \save (next) ->     # hash password
     return next! unless @isModified \password
     CryptPwd.hash this, next
-  ..pre \validate, (next) -> # validate password
+  ..pre \validate (next) -> # validate password
     return next! unless @isModified \password
     is-valid = Cons.password.regex.test @password
-    @invalidate \password, 'Invalid password' unless is-valid
+    @invalidate \password 'Invalid password' unless is-valid
     next!
 
-module.exports = me = M.model \logins, schema
+module.exports = me = M.model \logins schema
   ..crud-fns =
     create: (req, res, next) ->
       o = _.pick (b = req.body), <[ handle password ]>

@@ -11,7 +11,7 @@ _           = require \lodash
 Logger      = require \morgan
 Passport    = require \passport
 Err         = require \./api/error
-H           = require \./api/helper
+H           = require \./api/lib/host
 OAuthMock   = require \./api/authenticate/openauth-mock if process.env.NODE_ENV is \test
 OAuthRouter = require \./api/authenticate/router
 Router      = require \./api/router
@@ -30,8 +30,8 @@ static-opts = maxAge:ONE-HOUR
 env = (express = Express!).settings.env
 
 module.exports = express
-  ..use '/coverage', Im.createHandler! if Im
-  ..use Favicon \./app/asset/favicon.png, static-opts
+  ..use '/coverage' Im.createHandler! if Im
+  ..use Favicon \./app/asset/favicon.png static-opts
   ..use Logger \dev if env in <[ development ]>
   ..use Compress! if env in <[ staging production ]>
   ..use CookiePars!
@@ -41,11 +41,11 @@ module.exports = express
   ..use Passport.initialize!
 
   # routes
-  ..use '/api', Router
+  ..use '/api' Router
   #..use '/api/auth', OAuthRouter.create \facebook
   #..use '/api/auth', OAuthRouter.create \github
   #..use '/api/auth', OAuthRouter.create \google
-  ..use '/api/auth', OAuthMock.create-router! if process.env.NODE_ENV is \test
+  ..use '/api/auth' OAuthMock.create-router! if process.env.NODE_ENV is \test
 
   ..use Express.static DIR-APP, static-opts
   ..use Im.createClientHandler DIR-APP, matcher:matcher if Im
@@ -55,10 +55,10 @@ module.exports = express
 
 # http://backbonetutorials.com/cross-domain-sessions/
 function allow-cross-domain req, res, next
-  res.set \Access-Control-Allow-Credentials, true
-  res.set \Access-Control-Allow-Headers    , 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  res.set \Access-Control-Allow-Methods    , 'GET,POST,PUT,DELETE,OPTIONS'
-  res.set \Access-Control-Allow-Origin     , req.headers.origin
+  res.set \Access-Control-Allow-Credentials true
+  res.set \Access-Control-Allow-Headers     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  res.set \Access-Control-Allow-Methods     'GET,POST,PUT,DELETE,OPTIONS'
+  res.set \Access-Control-Allow-Origin      req.headers.origin
   next!
 
 function get-validation-msg err
