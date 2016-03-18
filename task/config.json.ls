@@ -6,7 +6,6 @@ dev:
     WDTS_DB_URI                    : \mongodb://localhost/wdts_dev
     WDTS_DB_CACHE_ENABLE           : true
     WDTS_DB_CACHE_SWEEP_PERIOD_MINS: 10
-    URLMON_PERIOD_DAYS             : 7
   test:
     api:
       testee:
