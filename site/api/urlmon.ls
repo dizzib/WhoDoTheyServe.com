@@ -20,12 +20,11 @@ function check ev
   try
     r = R url = ev.url, { strictSSL:false timeout:20000ms }, (err, res) ->
       return fail err if err
+    r.on \response (res) ->
+      r.abort!
       sc = res.statusCode
       # for some reason, cpexposed.com returns 402 (payment required) even though it's ok
-      fail "response code = #sc" unless sc in [200 402]
-    r.on \data ->
-      r.abort!
-      log "is ok"
+      if sc in [200 402] then log "is ok" else fail "response code = #sc"
   catch e
     fail e
 
@@ -33,6 +32,6 @@ function check-next evs
     return unless ev = evs.pop!
     check ev
     ulog "#{evs.length} remaining"
-    _.delay (-> check-next evs), 30000ms
+    _.delay (-> check-next evs), 10000ms
 
 function ulog msg then console.log 'urlmon:' msg
