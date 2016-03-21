@@ -39,3 +39,17 @@ it 'node.name bad' ->
     'the Bank of England' 'The Bank of England'
     'tesla, Nikola'
   for n in NAMES then Assert.notOk (Cons.node.name.regex.test n), n
+
+it 'url ok' ->
+  const URLS =
+    \http://foo.com
+    \http://foo.com?bar=boo
+  for u in URLS then Assert.ok (Cons.url.regex.test u), u
+
+it 'url bad' ->
+  const URLS =
+    \foo
+    \http://
+    \http://foo
+    \https://web.archive.org
+  for u in URLS then Assert.notOk (Cons.url.regex.test u), u

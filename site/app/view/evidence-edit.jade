@@ -4,11 +4,13 @@ form.form-horizontal.well
   fieldset
     span.input-max
       +field-text('url', 'Url', 'Enter the url of some good evidence!')
-    .help-block.gap-t
-      | Evidence can take the form of a web page, a document (e.g. pdf), or a video.
-    .help-block.gap-t
-      | Ideally, it should be 
-      a(href='https://en.wikipedia.org/wiki/Corroborating_evidence') corroborated 
-      | from multiple independent sources.
+        .help-block.gap-t
+          | Evidence can take the form of a web page, a document (e.g. pdf), or a video.
+        .help-block.gap-t
+          | Ideally, it should be 
+          a(href='https://en.wikipedia.org/wiki/Corroborating_evidence') corroborated 
+          | from multiple independent sources.
+    +field-checkbox('bare_href', 'Render link as bare url rather than via \
+      the Wayback Machine at archive.org', 'Bare href')
     +field-hidden('entity_id', 'EntityId')
   +button-bar

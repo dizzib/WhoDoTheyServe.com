@@ -14,6 +14,7 @@ Flags   = require \./flags
 Fntello = require \./fontello
 Inst    = require \./npm/install
 MaintDE = require \./maint/dead-evidences
+MaintEU = require \./maint/evidence-urls
 Prod    = require \./prod
 Site    = require \./site
 Staging = require \./staging
@@ -41,6 +42,7 @@ const COMMANDS =
   * cmd:'f.o  ' lev:0 desc:'fonts - open fontello'       fn:Fntello.open
   * cmd:'f.s  ' lev:0 desc:'fonts - save fontello'       fn:Fntello.save
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'      fn:-> Test.run \staging
+  * cmd:'s.mu ' lev:0 desc:'stage - maint: check urls'   fn:MaintEU.staging
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'     fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'   fn:MaintDE.staging

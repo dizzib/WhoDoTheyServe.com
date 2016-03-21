@@ -30,7 +30,7 @@ const EVI =
     class: ->
       "glyph fe #{@glyph.name} #{get-evi-class @is-dead}"
   'url-outer':
-    href: -> @url
+    href: -> @href
   'url-inner':
     text: -> @url
 
@@ -50,8 +50,9 @@ const GLYPHS =
     null: ->
       $el = $ it.element
       for ev in evs = C.Evidences.where entity_id:@_id
-        $el.append "<a target='_blank' title='#{@tip}' href='#{ev.get \url}'
-          class='glyph fe #{ev.get-glyph!name} #{get-evi-class ev.is-dead!}'/></a>"
+        evj = ev.toJSON-T!
+        $el.append "<a target='_blank' title='#{@tip}' href='#{evj.href}'
+          class='glyph fe #{evj.glyph.name} #{get-evi-class evj.is-dead}'/></a>"
       unless evs.length
         $el.append "<a title='Please add some evidence'
           class='glyph fe fe-lg fe-attention'/></a>"

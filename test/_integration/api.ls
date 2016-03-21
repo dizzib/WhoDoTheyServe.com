@@ -170,6 +170,7 @@ describe 'userA' ->
     test Evidence.a.url.no-path.create.bad
     test Evidence.a.url.no-domain.create.bad
     test Evidence.a1.create.ok
+    test Evidence.a1.read.ok
     test Evidence.a.list.is4
     test Evidence.a1.remove.ok
     test Evidence.a.url.path.remove.ok

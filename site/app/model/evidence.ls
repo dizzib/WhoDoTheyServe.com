@@ -7,22 +7,34 @@ Hv  = require \./hive .instance.Evidences
 const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
 const VID-YOUTUBE = service:\youtube rx:/youtube\.com|youtu\.be/i
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.evidences
 
   ## core
   toJSON-T: (opts) ->
+    url = @get \url
+    vid = _.find [ VID-VIMEO, VID-YOUTUBE ], -> it.rx.test url
+    if (/^https:\/\/web\.archive\.org/.test url or @get \bare_href or vid)
+      href = url
+    else
+     d = new Date(@get \meta.update_date or @get \meta.create_date)
+     timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
+     timestamp += if (day = 1 + d.getDate!) < 10 then "0#day" else "#day"
+     href = "https://web.archive.org/web/#timestamp/#url"
+
     _.extend (@toJSON opts),
       glyph  : @get-glyph!
+      href   : href
       is-dead: @is-dead!
-      video  : _.find [ VID-VIMEO, VID-YOUTUBE ], ~> it.rx.test @get \url
+      video  : vid
 
   ## extensions
   get-glyph: ->
     const GLYPHS =
       * name:\fe-file-pdf unicode:\\ue807 rxs:[ /\.pdf$/i ]
       * name:\fe-videocam unicode:\\ue81c rxs:[ VID-VIMEO.rx, VID-YOUTUBE.rx ]
-    for g in GLYPHS then return g if _.find g.rxs, ~> it.test @get \url
+    url = @get \url
+    for g in GLYPHS then return g if _.find g.rxs, -> it.test url
     name:\fe-doc-text unicode:\\ue81b
 
   is-dead: ->
@@ -32,6 +44,4 @@ m = B.DeepModel.extend do
   labels    : 'url': 'Url'
   validation: 'url': required:yes pattern:\url
 
-m.create = Fac.get-factory-method m
-
-module.exports = m
+me.create = Fac.get-factory-method me

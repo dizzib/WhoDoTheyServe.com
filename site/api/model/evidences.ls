@@ -8,6 +8,7 @@ P-Meta = require \./plugin/meta
 s-evidences =
   entity_id : type:String, required:yes
   url       : type:String, required:yes, match:Cons.url.regex
+  bare_href : type:Boolean, required:no
 
 schema = new M.Schema s-evidences
   ..index { entity_id:1, url:1 }, {+unique}

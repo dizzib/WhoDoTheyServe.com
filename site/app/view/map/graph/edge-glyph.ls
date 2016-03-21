@@ -21,17 +21,18 @@ module.exports = (vg) ->
       dx = - (ICON-SPACE * (evs.length - 1)) / 2
       dy = ICON-SIZE / 2
       for ev, i in evs
+        evj = ev.toJSON-T!
         d3.select this
           .append \svg:a
             .attr \target \_blank
-            .attr \xlink:href  -> ev.get \url
+            .attr \xlink:href  -> evj.href
             .attr \xlink:title -> edge.tip
             .append \text
-              .attr \class -> if ev.is-dead! then \dead else \live
+              .attr \class -> if evj.is-dead then \dead else \live
               .attr \font-family \fontello
               .attr \x dx + i * ICON-SPACE
               .attr \y dy
-              .text -> ev.get-glyph!unicode
+              .text -> evj.glyph.unicode
     get-transform: ->
       x = it.source.x + (it.target.x - it.source.x - ICON-SIZE) / 2
       y = it.source.y + (it.target.y - it.source.y - ICON-SIZE) / 2
