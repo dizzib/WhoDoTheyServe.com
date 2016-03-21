@@ -7,7 +7,7 @@ engines:
 scripts:
   start: 'node boot.js'
   task : './task/bootstrap && node ./_build/task/repl'
-  test : './task/bootstrap && node ./_build/task/npm/test'
+  test : 'rm -rf ./_build && ./task/bootstrap && node ./_build/task/npm/test'
 dependencies:
   bcrypt                  : \0.7.5
   'body-parser'           : \1.12.3
