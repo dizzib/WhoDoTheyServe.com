@@ -15,7 +15,7 @@ module.exports = me = B.DeepModel.extend do
   toJSON-T: (opts) ->
     url = @get \url
     vid = _.find [ VID-VIMEO, VID-YOUTUBE ], -> it.rx.test url
-    if (/^https:\/\/web\.archive\.org/.test url or @get \bare_href or vid)
+    if (/^https?:\/\/web\.archive\.org/.test url or @get \bare_href or vid)
       href = url
     else
       unless timestamp = @get \timestamp
