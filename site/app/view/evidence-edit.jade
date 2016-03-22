@@ -15,7 +15,8 @@ form.form-horizontal.well
     +field-text('timestamp', 'Timestamp')
       .help-block
         :markdown
-          An optional archive.org wayback machine timestamp, in the format
-          `yyyy` or `yyyymm` or `yyyymmdd`.
+          An optional archive.org Wayback Machine timestamp, in the format
+          `yyyy` or `yyyymm` or `yyyymmdd`, to override the default (calculated
+          from this evidence's create date).
     +field-hidden('entity_id', 'EntityId')
   +button-bar
