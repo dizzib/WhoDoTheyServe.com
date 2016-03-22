@@ -10,4 +10,4 @@ function list n, first-type
   B.click \Latest \a
   B.wait-for 'Latest Updates' \legend
   B.assert.count n, sel:\.latest>ul>li
-  B.wait-for '' ".latest>ul>li:first-child>.entity>._type-#first-type" if n
+  B.wait-for sel:".latest>ul>li:first-child>.entity>._type-#first-type" if n

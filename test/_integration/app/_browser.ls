@@ -25,13 +25,17 @@ module.exports = B =
     count: (n-expect, opts) ->
       sig = "count(#n-expect, #{U.inspect opts})"
       poll-for-ok WAIT-TIMEOUT, ->
-        n-actual = B.wait-for (opts <<< expect-unique:false)
-        if n-actual > 0
-          el = w4mc \executeScript -> window.el
-          vis = W4m el, \displayed
-          return "#sig: el is not visible" unless vis
-        return \ok if n-actual is n-expect
-        "#sig expect=#n-expect, actual=#n-actual"
+        try
+          n-actual = B.wait-for (opts <<< expect-unique:false)
+          if n-actual > 0
+            el = w4mc \executeScript -> window.el
+            vis = W4m el, \displayed
+            return "#sig: el is not visible" unless vis
+          return \ok if n-actual is n-expect
+          "#sig expect=#n-expect, actual=#n-actual"
+        catch e
+          log \count e
+          "count failed: #e"
 
     displayed: (expect = true ...args) ->
       poll-for-ok WAIT-TIMEOUT, ->
