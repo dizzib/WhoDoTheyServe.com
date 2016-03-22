@@ -40,6 +40,25 @@ it 'node.name bad' ->
     'tesla, Nikola'
   for n in NAMES then Assert.notOk (Cons.node.name.regex.test n), n
 
+it 'timestamp ok' ->
+  const TIMESTAMPS =
+    \1999
+    \2008
+    \200801
+    \200812
+    \20081201
+    \20081231
+  for t in TIMESTAMPS then Assert.ok (Cons.timestamp.regex.test t), t
+
+it 'timestamp bad' ->
+  const TIMESTAMPS =
+    \999
+    \20081
+    \200813
+    \2008121
+    \20081232
+  for t in TIMESTAMPS then Assert.notOk (Cons.timestamp.regex.test t), t
+
 it 'url ok' ->
   const URLS =
     \http://foo.com

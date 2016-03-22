@@ -169,12 +169,22 @@ describe 'userA' ->
     test Evidence.a.url.no-http.create.bad
     test Evidence.a.url.no-path.create.bad
     test Evidence.a.url.no-domain.create.bad
+    test Evidence.a.timestamp.yyyy.create.ok
+    test Evidence.a.timestamp.yyyymm.create.ok
+    test Evidence.a.timestamp.yyyymmdd.create.ok
+    test Evidence.a.timestamp.yyyymmdd.read.ok
+    test Evidence.a.timestamp.yy.create.bad
+    test Evidence.a.timestamp.yyyymmddh.create.bad
+    test Evidence.a.timestamp.bare-href.create.bad
     test Evidence.a1.create.ok
     test Evidence.a1.read.ok
-    test Evidence.a.list.is4
+    test Evidence.a.list.is7
     test Evidence.a1.remove.ok
     test Evidence.a.url.path.remove.ok
     test Evidence.a.url.path-qs.remove.ok
+    test Evidence.a.timestamp.yyyy.remove.ok
+    test Evidence.a.timestamp.yyyymm.remove.ok
+    test Evidence.a.timestamp.yyyymmdd.remove.ok
     test Evidence.a.list.is1
     test Node.a.remove.bad # has evidence
     test Node.a.name.update.bad # has evidence

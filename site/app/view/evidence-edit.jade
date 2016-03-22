@@ -12,5 +12,10 @@ form.form-horizontal.well
           | from multiple independent sources.
     +field-checkbox('bare_href', 'Render link as bare url rather than via \
       the Wayback Machine at archive.org', 'Bare href')
+    +field-text('timestamp', 'Timestamp')
+      .help-block
+        :markdown
+          An optional archive.org wayback machine timestamp, in the format
+          `yyyy` or `yyyymm` or `yyyymmdd`.
     +field-hidden('entity_id', 'EntityId')
   +button-bar

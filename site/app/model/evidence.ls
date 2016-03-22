@@ -1,5 +1,6 @@
 B   = require \backbone
 _   = require \underscore
+Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 Hv  = require \./hive .instance.Evidences
@@ -17,10 +18,10 @@ module.exports = me = B.DeepModel.extend do
     if (/^https:\/\/web\.archive\.org/.test url or @get \bare_href or vid)
       href = url
     else
-     d = new Date(@get \meta.update_date or @get \meta.create_date)
-     timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
-     timestamp += if (day = 1 + d.getDate!) < 10 then "0#day" else "#day"
-     href = "https://web.archive.org/web/#timestamp/#url"
+      unless timestamp = @get \timestamp
+        d = new Date @get \meta.create_date
+        timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
+      href = "https://web.archive.org/web/#timestamp/#url"
 
     _.extend (@toJSON opts),
       glyph  : @get-glyph!
@@ -41,7 +42,15 @@ module.exports = me = B.DeepModel.extend do
     _.contains Hv.dead-ids, @id
 
   ## validation
-  labels    : 'url': 'Url'
-  validation: 'url': required:yes pattern:\url
+  labels:
+    'url': 'Url'
+  validation:
+    'timestamp':
+      * required: no
+      * pattern : Con.timestamp.regex
+        msg     : "Timestamp should be #{Con.timestamp.info}"
+    'url':
+      * required: yes
+      * pattern : \url
 
 me.create = Fac.get-factory-method me
