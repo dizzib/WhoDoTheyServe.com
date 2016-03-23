@@ -43,7 +43,7 @@ module.exports = me = B.DeepModel.extend do
       unless timestamp = o.timestamp
         d = new Date @get \meta.create_date
         timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
-      o.href = "https://web.archive.org/web/#timestamp/#{o.url}"
+      o.href = "http://web.archive.org/web/#timestamp/#{o.url}"
     o
 
   ## validation
