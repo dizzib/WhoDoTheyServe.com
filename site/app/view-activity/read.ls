@@ -16,6 +16,7 @@ module.exports =
       # transparency won't process void data, hence {}
       data = if @opts.query-string then Q.parse o else (o?toJSON-T! or {})
       ($tem = $ @template).render data, directive
+      $tem.find \.timeago .timeago!
       @$el.html $tem .show!
       @trigger \rendered o
 
