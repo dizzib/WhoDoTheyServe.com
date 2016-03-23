@@ -36,10 +36,12 @@ const EVI =
 
 const EVI-VIDEO =
   video:
-    class: -> if @video then @video.service unless get-youtube-embed @url .error
-    text : -> get-youtube-embed @url .error if @video
+    class: -> @video.service if @video?id
+    text : ->
+      if @video?service and not @video.id
+        "Cannot get a valid video id from #{@url}. Please check the url is correct."
   youtube:
-    src: -> get-youtube-embed @url .url if @video
+    src: -> @video?href
 
 const GLYPH =
   glyph:
@@ -218,12 +220,6 @@ function get-is-admin then (C.Users.get it)?get-is-admin!
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
 function get-user-text then if (u = C.Users.get it) then "#{u.get \name}" else '(deleted user)'
-
-function get-youtube-embed url
-  # http://stackoverflow.com/questions/21607808/convert-a-youtube-video-url-to-embed-code
-  matches = url.match /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
-  return url:"//www.youtube.com/embed/#{matches.2}" if matches?2.length is 11
-  error:"Cannot get a valid video id from #url. Please check the url is correct."
 
 function htmlify-text
   return unless it
