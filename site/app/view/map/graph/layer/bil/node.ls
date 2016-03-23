@@ -27,13 +27,14 @@ module.exports = (vg) ->
       const BADGE-X-SIZE = 20
       offset-x = - (BADGE-X-GAP * (edges.length - 1)) / 2
       for edge, i in edges
-        evs = entevs.filter -> edge._id is it.get \entity_id
-        n-evs = evs.length
+        evs = entevs.where entity_id:edge._id
+        is-single = (n-evs = evs.length) is 1
+        ev0 = evs.0?toJSON-T!
         x = offset-x + (i * BADGE-X-GAP) - (BADGE-X-SIZE / 2)
         render-badge node, x, BADGE-X-SIZE .append \svg:a
-          .attr \target if n-evs is 1 then \_blank else ''
-          .attr \xlink:href if n-evs is 1 then evs.0.get \url else "#/edge/#{edge._id}"
-          .attr \xlink:title if n-evs is 1 then "Evidence at Bilderberg #{edge.yyyy}" else ''
+          .attr \target if is-single then \_blank else ''
+          .attr \xlink:href if is-single then ev0.href else "#/edge/#{edge._id}"
+          .attr \xlink:title if is-single then "Evidence at Bilderberg #{edge.yyyy}" else ''
           .append \svg:text
             .attr \dx 1
             .attr \dy 13
