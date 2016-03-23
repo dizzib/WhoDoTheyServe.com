@@ -3,7 +3,7 @@ Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.users
 
   ## core
@@ -35,6 +35,4 @@ m = B.DeepModel.extend do
       pattern : \url
       required: no
 
-m.create = Fac.get-factory-method m
-
-module.exports = m
+me.create = Fac.get-factory-method me

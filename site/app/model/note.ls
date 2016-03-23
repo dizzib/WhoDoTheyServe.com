@@ -3,7 +3,7 @@ Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.notes
 
   ## core
@@ -16,6 +16,4 @@ m = B.DeepModel.extend do
       * pattern : Con.note.regex
         msg     : "Note should be #{Con.note.info}"
 
-m.create = Fac.get-factory-method m
-
-module.exports = m
+me.create = Fac.get-factory-method me

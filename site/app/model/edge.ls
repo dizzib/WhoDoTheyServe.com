@@ -6,7 +6,7 @@ Api = require \../api
 C   = require \../collection
 Fac = require \./_factory
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.edges
 
   ## core
@@ -61,8 +61,8 @@ m = B.DeepModel.extend do
       * pattern : Con.edge.when.regex
         msg     : "When should be #{Con.edge.when.info}"
 
-_create = Fac.get-factory-method m
-m.create = ->
+_create = Fac.get-factory-method me
+me.create = ->
   o = _create it
   if o.isNew! # pre-populate new edge
     B.tracker.node-ids = _.last B.tracker.node-ids, 2
@@ -70,5 +70,3 @@ m.create = ->
     o.set \a_node_id B.tracker.node-ids.0
     o.set \b_node_id B.tracker.node-ids.1
   o
-
-module.exports = m

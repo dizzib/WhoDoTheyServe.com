@@ -10,7 +10,7 @@ M-Evi  = require \./evidence
 M-Node = require \./node
 M-Note = require \./note
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.maps
 
   ## core
@@ -48,6 +48,4 @@ m = B.DeepModel.extend do
       * pattern : Con.map.when.regex
         msg     : "When should be #{Con.map.when.info}"
 
-m.create = Fac.get-factory-method m
-
-module.exports = m
+me.create = Fac.get-factory-method me

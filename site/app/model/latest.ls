@@ -2,7 +2,7 @@ B   = require \backbone
 Api = require \../api
 C   = require \../collection
 
-module.exports = me = B.DeepModel.extend do
+module.exports = B.DeepModel.extend do
   urlRoot: Api.latest
 
   ## core

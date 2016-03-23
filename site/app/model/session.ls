@@ -2,7 +2,7 @@ B   = require \backbone
 Api = require \../api
 Fac = require \./_factory
 
-m = B.DeepModel.extend do
+module.exports = me = B.DeepModel.extend do
   urlRoot: Api.sessions
 
   ## core
@@ -15,6 +15,4 @@ m = B.DeepModel.extend do
     'handle'  : required:yes
     'password': required:yes
 
-m.create = Fac.get-factory-method m
-
-module.exports = m
+me.create = Fac.get-factory-method me
