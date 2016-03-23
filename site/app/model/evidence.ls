@@ -4,38 +4,43 @@ Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
 
-const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
-const VID-YOUTUBE = service:\youtube rx:/youtube\.com|youtu\.be/i
-
 module.exports = me = B.DeepModel.extend do
   urlRoot: Api.evidences
 
   ## core
   toJSON-T: (opts) ->
-    url = @get \url
-    vid = _.find [ VID-VIMEO, VID-YOUTUBE ], -> it.rx.test url
-    if (/^https?:\/\/web\.archive\.org/.test url or is-bare = (@get \bare_href or vid))
-      href = url
+    const DEFS =
+      pdf:
+        glyph: name:\fe-file-pdf unicode:\\ue807
+        rx   : /\.pdf$/i
+        type : \binary
+      vimeo:
+        glyph: name:\fe-videocam unicode:\\ue81c
+        rx   : /vimeo\.com/i
+        type : \binary
+        video:
+          service:\vimeo
+      youtube:
+        glyph: name:\fe-videocam unicode:\\ue81c
+        rx   : /youtube\.com|youtu\.be/i
+        type : \binary
+        video:
+          service:\youtube
+      default:
+        glyph: name:\fe-doc-text unicode:\\ue81b
+        rx   :  /.+/
+        type : \text
+
+    o = _.extend @toJSON(opts), _.find DEFS, ~> it.rx.test @get \url
+    o.is-bare = o.bare_href or o.type is \binary
+    if (/^https?:\/\/web\.archive\.org/.test o.url or o.is-bare)
+      o.href = o.url
     else
-      unless timestamp = @get \timestamp
+      unless timestamp = o.timestamp
         d = new Date @get \meta.create_date
         timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
-      href = "https://web.archive.org/web/#timestamp/#url"
-
-    _.extend (@toJSON opts),
-      glyph  : @get-glyph!
-      href   : href
-      is-bare: is-bare
-      video  : vid
-
-  ## extensions
-  get-glyph: ->
-    const GLYPHS =
-      * name:\fe-file-pdf unicode:\\ue807 rxs:[ /\.pdf$/i ]
-      * name:\fe-videocam unicode:\\ue81c rxs:[ VID-VIMEO.rx, VID-YOUTUBE.rx ]
-    url = @get \url
-    for g in GLYPHS then return g if _.find g.rxs, -> it.test url
-    name:\fe-doc-text unicode:\\ue81b
+      o.href = "https://web.archive.org/web/#timestamp/#{o.url}"
+    o
 
   ## validation
   labels:
