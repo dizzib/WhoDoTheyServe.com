@@ -28,7 +28,7 @@ const EDGE =
 const EVI =
   glyph:
     class: ->
-      "glyph fe #{@glyph.name} #{get-evi-class @is-dead}"
+      "glyph fe #{@glyph.name} #{get-evi-class @}"
   'url-outer':
     href: -> @href
   'url-inner':
@@ -52,7 +52,7 @@ const GLYPHS =
       for ev in evs = C.Evidences.where entity_id:@_id
         evj = ev.toJSON-T!
         $el.append "<a target='_blank' title='#{@tip}' href='#{evj.href}'
-          class='glyph fe #{evj.glyph.name} #{get-evi-class evj.is-dead}'/></a>"
+          class='glyph fe #{evj.glyph.name} #{get-evi-class evj}'/></a>"
       unless evs.length
         $el.append "<a title='Please add some evidence'
           class='glyph fe fe-lg fe-attention'/></a>"
@@ -213,7 +213,7 @@ module.exports =
 
 ## helpers
 
-function get-evi-class is-dead then if is-dead then \dead else \live
+function get-evi-class ev then if ev.is-bare then \bare-href else \safe-href
 function get-is-admin then (C.Users.get it)?get-is-admin!
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it

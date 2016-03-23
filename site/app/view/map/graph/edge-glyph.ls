@@ -28,7 +28,7 @@ module.exports = (vg) ->
             .attr \xlink:href  -> evj.href
             .attr \xlink:title -> edge.tip
             .append \text
-              .attr \class -> if evj.is-dead then \dead else \live
+              .attr \class -> if evj.is-bare then \bare-href else \safe-href
               .attr \font-family \fontello
               .attr \x dx + i * ICON-SPACE
               .attr \y dy

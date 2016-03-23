@@ -3,7 +3,6 @@ _   = require \underscore
 Con = require \../../lib/model/constraints
 Api = require \../api
 Fac = require \./_factory
-Hv  = require \./hive .instance.Evidences
 
 const VID-VIMEO   = service:\vimeo   rx:/vimeo\.com/i
 const VID-YOUTUBE = service:\youtube rx:/youtube\.com|youtu\.be/i
@@ -15,7 +14,7 @@ module.exports = me = B.DeepModel.extend do
   toJSON-T: (opts) ->
     url = @get \url
     vid = _.find [ VID-VIMEO, VID-YOUTUBE ], -> it.rx.test url
-    if (/^https?:\/\/web\.archive\.org/.test url or @get \bare_href or vid)
+    if (/^https?:\/\/web\.archive\.org/.test url or is-bare = (@get \bare_href or vid))
       href = url
     else
       unless timestamp = @get \timestamp
@@ -26,7 +25,7 @@ module.exports = me = B.DeepModel.extend do
     _.extend (@toJSON opts),
       glyph  : @get-glyph!
       href   : href
-      is-dead: @is-dead!
+      is-bare: is-bare
       video  : vid
 
   ## extensions
@@ -37,9 +36,6 @@ module.exports = me = B.DeepModel.extend do
     url = @get \url
     for g in GLYPHS then return g if _.find g.rxs, -> it.test url
     name:\fe-doc-text unicode:\\ue81b
-
-  is-dead: ->
-    _.contains Hv.dead-ids, @id
 
   ## validation
   labels:

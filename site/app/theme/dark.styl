@@ -1,7 +1,8 @@
 col0 = #2f2f2f // main background
 col1 = #66dddd // link foreground
 col2 = #c6c6c6 // text foreground
-col3 = #00ff00 // live evidence foreground
+col3 = #00ff00 // safe-href fg
+col4 = #00ffff // bare-href fg
 
 bg()
   background-color  rgba(70, 70, 70, 0.85)
@@ -48,6 +49,9 @@ textarea
     a
       color       col1
 
+.fe-attention
+  color         yellow
+
 .graph
   .badge-ac
     text
@@ -57,8 +61,10 @@ textarea
     stroke      #fff
   .edge.ac
     stroke      cyan
-  .edge-glyphs
-    text.live
+  .edge-glyphs text
+    &.bare-href
+      fill        col4
+    &.safe-href
       fill        col3
   .node
     a
@@ -70,6 +76,8 @@ textarea
     .fe
       fill        #ddd
 
-.view
-  .glyph.live
+.view .glyph
+  &.bare-href
+    color         col4
+  &.safe-href
     color         col3
