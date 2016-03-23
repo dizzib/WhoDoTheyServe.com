@@ -26,24 +26,28 @@ module.exports = me = B.DeepModel.extend do
         type : \binary
         video:
           service:\youtube
+      html-bare: # for performance, link directly to some trusted sites
+        glyph: name:\fe-doc-text unicode:\\ue81b
+        rx   : /https?:\/\/(en\.wikipedia\.org)/
+        type : \html-bare
       default:
         glyph: name:\fe-doc-text unicode:\\ue81b
-        rx   :  /.+/
+        rx   : /.+/
         type : \text
 
     o = _.extend @toJSON(opts), _.find DEFS, ~> it.rx.test @get \url
-    o.is-bare = o.bare_href or o.type is \binary
     if o.video?service is \youtube
       # http://stackoverflow.com/questions/21607808/convert-a-youtube-video-url-to-embed-code
       matches = o.url.match /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
       o.video.href = "//www.youtube.com/embed/#{o.video.id = id}" if (id = matches?2)?length is 11
+    o.is-bare = not o.timestamp and (o.bare_href or o.type in <[ binary html-bare ]>)
     if (/^https?:\/\/web\.archive\.org/.test o.url or o.is-bare)
       o.href = o.url
     else
-      unless timestamp = o.timestamp
+      unless ts = o.timestamp
         d = new Date @get \meta.create_date
-        timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
-      o.href = "http://web.archive.org/web/#timestamp/#{o.url}"
+        ts = timestamp = d.getFullYear! + if (m = 1 + d.getMonth!) < 10 then "0#m" else "#m"
+      o.href = "http://web.archive.org/web/#ts/#{o.url}"
     o
 
   ## validation
