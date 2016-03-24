@@ -36,7 +36,7 @@ module.exports = me = B.DeepModel.extend do
       # http://stackoverflow.com/questions/21607808/convert-a-youtube-video-url-to-embed-code
       matches = o.url.match /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
       o.video.href = "//www.youtube.com/embed/#{o.video.id = id}" if (id = matches?2)?length is 11
-    o.href = if t = o.timestamp then "http://archive.org/web/#t/#{o.url}" else o.url
+    o.href = if t = o.timestamp then "http://web.archive.org/web/#t/#{o.url}" else o.url
     o.is-href-archive = /^https?:\/\/(web\.)?archive\.org/.test o.href
     o
 
