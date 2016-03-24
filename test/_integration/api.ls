@@ -175,7 +175,6 @@ describe 'userA' ->
     test Evidence.a.timestamp.yyyymmdd.read.ok
     test Evidence.a.timestamp.yy.create.bad
     test Evidence.a.timestamp.yyyymmddh.create.bad
-    test Evidence.a.timestamp.bare-href.create.bad
     test Evidence.a1.create.ok
     test Evidence.a1.read.ok
     test Evidence.a.list.is7

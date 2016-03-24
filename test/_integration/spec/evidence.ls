@@ -5,7 +5,7 @@ exports.get-spec = (...args) ->
 
   function add-evidences spec, name
     spec["#{name}0"] = h.get-spec "#{name}:0" url:"http://#{name}-0.com"
-    spec["#{name}1"] = h.get-spec "#{name}:1" url:"http://#{name}-1.com" bare_href:true
+    spec["#{name}1"] = h.get-spec "#{name}:1" url:"http://#{name}-1.com"
 
   spec =
     a:
@@ -17,7 +17,6 @@ exports.get-spec = (...args) ->
         path     : h.get-spec \a:2 url:\http://foo.com
         path-qs  : h.get-spec \a:3 url:\http://foo.com?bar=boo
       timestamp:
-        bare-href: h.get-spec \a:x url:\http://bar.com timestamp:\2009 bare_href:true
         yy       : h.get-spec \a:x url:\http://bas.com timestamp:\20
         yyyy     : h.get-spec \a:4 url:\http://bap.com timestamp:\2009
         yyyymm   : h.get-spec \a:5 url:\http://baz.com timestamp:\200905

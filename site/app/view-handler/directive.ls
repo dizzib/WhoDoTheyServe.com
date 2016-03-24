@@ -215,7 +215,7 @@ module.exports =
 
 ## helpers
 
-function get-evi-class ev then if ev.is-bare then \bare-href else \safe-href
+function get-evi-class ev then if ev.is-href-archive then \href-archive else \href-live
 function get-is-admin then (C.Users.get it)?get-is-admin!
 function get-node-href then "#/node/#{it}"
 function get-user-href then "#/user/#{it}" if it
