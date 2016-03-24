@@ -26,14 +26,14 @@ module.exports = me = B.DeepModel.extend do
         type : \binary
         video:
           service:\youtube
-      html-bare: # for performance, link directly to some trusted sites
+      html-bare: # for performance, link directly to sites deemed as highly stable
         glyph: name:\fe-doc-text unicode:\\ue81b
         rx   : /https?:\/\/(en\.wikipedia\.org)/
         type : \html-bare
       default:
         glyph: name:\fe-doc-text unicode:\\ue81b
         rx   : /.+/
-        type : \text
+        type : \html
 
     o = _.extend @toJSON(opts), _.find DEFS, ~> it.rx.test @get \url
     if o.video?service is \youtube
