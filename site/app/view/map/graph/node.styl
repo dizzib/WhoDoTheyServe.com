@@ -12,9 +12,16 @@
       stroke        #ccc
     .fe
       fill          #888
+    .old-name
+      text-decoration line-through
     &.boss
       text
         font-size     18px
+    &.dead
+      a
+        text-decoration line-through
+      .fe
+        opacity       0.5
     &.you
       circle
         fill          none
@@ -22,8 +29,3 @@
         stroke        #aaa
       text
         font-size     16px
-  .node.dead
-    a
-      text-decoration line-through
-    .fe
-      opacity       0.5
