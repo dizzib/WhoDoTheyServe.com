@@ -49,7 +49,7 @@ const GLYPH =
 
 const GLYPHS =
   glyphs:
-    null: ->
+    fn: ->
       $el = $ it.element
       for ev in evs = C.Evidences.where entity_id:@_id
         evj = ev.toJSON-T!
@@ -173,6 +173,10 @@ module.exports =
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
+    old_names:
+      old_name:
+        fn  : -> $ it.element .parent!show!
+        text: -> @value
     NODE-NAME
     NODE-TAGS
   nodes: _.extend do
