@@ -31,6 +31,10 @@ module.exports = me = B.DeepModel.extend do
       * required: yes
       * pattern : Con.node.name.regex
         msg     : "Name should be #{Con.node.name.info}"
+    old_names: ->
+      const MSG = "Every name should be #{Con.node.name.info}"
+      names = if _.isString it then [it] else it
+      MSG unless names and names.every -> Con.node.name.regex.test it
     tags: ->
       const MSG = "Every tag should be #{Con.node.tag.info}"
       tags = if _.isString it then [it] else it

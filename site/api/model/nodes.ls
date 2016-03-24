@@ -7,9 +7,10 @@ P-Id   = require \./plugin/id
 P-Meta = require \./plugin/meta
 
 schema = new M.Schema do
-  name: type:String, required:yes, match:Cons.node.name.regex
-  tags: type:[String], validate:validate-tag
-  when: type:String, required:no, match:Cons.node.when.regex
+  name     : type:String, required:yes, match:Cons.node.name.regex
+  old_names: type:[String], validate:get-array-validator Cons.node.name
+  tags     : type:[String], validate:get-array-validator Cons.node.tag
+  when     : type:String, required:no, match:Cons.node.when.regex
 
 schema
   ..plugin P-Id
@@ -25,6 +26,5 @@ schema
 
 module.exports = me = Crud.set-fns (M.model \nodes schema)
 
-function validate-tag
-  return false unless _.isArray it
-  it.every -> Cons.node.tag.regex.test it
+function get-array-validator constraint
+  -> if _.isArray it then (it.every -> constraint.regex.test it) else false
