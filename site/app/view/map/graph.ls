@@ -96,12 +96,16 @@ module.exports = B.View.extend do
      .links (ents.edges or [])
      .charge -2000
      .friction 0.85
-     .linkDistance 100
+     .linkDistance (edge) ->
+       if \rename in edge.classes then 50 else 100
      .linkStrength (edge) ->
-        function has-class then _.contains edge.classes, it
-        x = if has-class \layer then 0 else if has-class \out-of-date then 1 else 20
-        w = edge.source.weight + edge.target.weight
-        x / w
+        const WEIGHTS =
+          * class:\layer       weight:0
+          * class:\rename      weight:20
+          * class:\out-of-date weight:1
+        w = _.find WEIGHTS, -> it.class in edge.classes
+        x = if w then w.weight else 20
+        x / (edge.source.weight + edge.target.weight)
      .size [size-x, size-y]
      .start!
 

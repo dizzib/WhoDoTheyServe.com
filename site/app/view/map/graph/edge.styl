@@ -4,15 +4,21 @@
   .edge
     stroke            #aaa
     stroke-width      1.5px
-    &.family
-      stroke-dasharray  2
-      stroke-width      5px
-    &.out-of-date
+    &:not(.rename)
       &.family
+        stroke-dasharray  2
+        stroke-width      5px
+      &.out-of-date:not(.rename)
+        &.family
+          opacity           0.5
+        &:not(.family)
+          opacity           0.75
+          stroke-dasharray  5
+    &.rename
+      stroke            #ccc
+      stroke-width      10px
+      &.out-of-date
         opacity           0.5
-      &:not(.family)
-        opacity           0.75
-        stroke-dasharray  5
     &.you
       display           none
   .edge-glyphs

@@ -19,7 +19,7 @@ module.exports = me = B.DeepModel.extend do
       is-live    : W.is-in-range W.get-int-today!, w.int
       is-person  : is-person
       tip        : 'Evidence'
-      when-text  : if w-raw then "(#w-raw)" else ''
+      when-text  : if w-raw then "(#{w-raw.replace /^-/ \?-})" else ''
 
   ## extensions
   get-yyyy-by-name: ->
