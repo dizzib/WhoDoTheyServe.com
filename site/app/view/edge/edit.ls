@@ -16,6 +16,10 @@ module.exports =
       sel-a.set-by-id b-id
       sel-b.set-by-id a-id
 
+    @$ \.btn-rename .click ~>
+      @$ \#a_is_eq .click!
+      $how.val \rename
+
     function auto-populate-how
       a-id = V.edge-a-node-sel.get-selected-id!
       b-id = V.edge-b-node-sel.get-selected-id!
