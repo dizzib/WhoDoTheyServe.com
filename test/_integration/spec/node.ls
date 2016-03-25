@@ -25,9 +25,6 @@ exports.get-spec = (...args) ->
         has  : h.get-spec \a name:'Bank of England, The'
       ucase: h.get-spec \a name:'Node AA'
       you  : h.get-spec \a name:'YOU! (UK)'
-    old-names:
-      good: h.get-spec \a old_names:[ 'Foo aa' 'Bar bb, The' ]
-      bad : h.get-spec \a old_names:[ 'Foo aa' 'The Bar bb' ]
     tags:
       lcase1: h.get-spec \a tags:<[ bank ]>
       lcase2: h.get-spec \a tags:<[ tv music ]>

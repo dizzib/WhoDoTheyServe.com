@@ -13,10 +13,6 @@ module.exports =
     $name.on 'change keyup' show-or-hide-person-glyph
     show-or-hide-person-glyph!
 
-    # old-names
-    ($old-names = @$ \#old_names).tagsinput confirmKeys:[13] trimValue:true
-    for name in @model.get(\old_names) or [] then $old-names .tagsinput \add name
-
     # tags
     $.extend $.fn.typeahead.Constructor.prototype, val: -> # fix tagsinput #436
     ($tags = @$ \#tags).tagsinput confirmKeys:[13 32] typeahead: source:C.Nodes.tags!

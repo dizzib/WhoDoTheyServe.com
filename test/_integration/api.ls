@@ -151,8 +151,6 @@ describe 'userA' ->
     test Node.a.name.paren.open.update.ok
     test Node.a.name.update.ok
     test Node.a.name.ucase.update.ok
-    test Node.a.old-names.good.update.ok
-    test Node.a.old-names.bad.update.bad
     test Node.a.tags.lcase1.update.ok
     test Node.a.tags.lcase2.update.ok
     test Node.a.tags.ucase.update.bad

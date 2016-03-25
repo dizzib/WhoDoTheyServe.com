@@ -173,10 +173,6 @@ module.exports =
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
       href : -> "#/node/edit/#{@_id}"
-    old_names:
-      old_name:
-        fn  : -> $ it.element .parent!show!
-        text: -> @value
     NODE-NAME
     NODE-TAGS
   nodes: _.extend do

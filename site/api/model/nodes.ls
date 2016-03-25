@@ -7,10 +7,9 @@ P-Id   = require \./plugin/id
 P-Meta = require \./plugin/meta
 
 schema = new M.Schema do
-  name     : type:String, required:yes, match:Cons.node.name.regex
-  old_names: type:[String], validate:get-array-validator Cons.node.name
-  tags     : type:[String], validate:get-array-validator Cons.node.tag
-  when     : type:String, required:no, match:Cons.node.when.regex
+  name: type:String, required:yes, match:Cons.node.name.regex
+  tags: type:[String], validate:get-array-validator Cons.node.tag
+  when: type:String, required:no, match:Cons.node.when.regex
 
 schema
   ..plugin P-Id
