@@ -1,8 +1,6 @@
-$.fn.disable-buttons = ->
-  @find \.btn .prop \disabled true .addClass \disabled
-
-$.fn.enable-buttons = ->
-  @find \.btn .prop \disabled false .removeClass \disabled
+$.fn.disable-buttons = -> @find \.btn .toggle-button false
+$.fn.enable-buttons  = -> @find \.btn .toggle-button true
+$.fn.toggle-button   = (enable) -> @prop \disabled !enable .toggleClass \disabled !enable
 
 _toggle = $.fn.dropdown.Constructor.prototype.toggle
 $.fn.dropdown.Constructor.prototype.toggle = ->

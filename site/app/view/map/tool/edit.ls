@@ -29,6 +29,7 @@ module.exports = (ve, vg) ->
         alert-success void
         init-dropdown!
         render-dropdown!
+        refresh-deletable!
         init-error-alert!
         load-default-tab it.id
       ..on \saved (map, is-new) ->
@@ -50,8 +51,11 @@ module.exports = (ve, vg) ->
         init-error-alert!
         @$el.show!
     vg
-      ..on \pre-cool -> ve.$el.disable-buttons!
-      ..on \cooled   -> ve.$el.enable-buttons!
+      ..on \pre-cool ->
+        ve.$el.disable-buttons!
+      ..on \cooled ->
+        ve.$el.enable-buttons!
+        refresh-deletable!
 
   function init-dropdown
     opts = filter:true maxHeight:500 width:370
@@ -79,6 +83,12 @@ module.exports = (ve, vg) ->
     node-ids.push add-node-id if add-node-id
     ve.v-nodes-sel.render C.Nodes, \name, node-ids
     node-ids
+
+  function refresh-deletable
+    is-deletable = (ve.v-nodes-sel?get-selected-ids! or []).length < 10
+    ve.$el.find \.delete-ask
+      ..toggle-button is-deletable
+      ..attr \title if !is-deletable then 'To delete this map, first remove actors' else ''
 
   function refresh-map node-ids
     vg.refresh-entities node-ids .render is-slow-to-cool:true
