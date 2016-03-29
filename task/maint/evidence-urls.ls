@@ -1,4 +1,4 @@
-# maintenance task to list all invalid evidence urls and optionally fix for a domain
+# maintenance task to list all invalid evidence urls and optionally fix them
 
 Chalk = require \chalk
 _     = require \lodash
@@ -6,8 +6,6 @@ M     = require \mongoose
 Shell = require \shelljs/global
 W4    = require \wait.for .for
 Cfg   = require \../config
-
-const FIX-DOMAIN = \bilderbergmeetings.org
 
 module.exports =
   # readline is DI'd because multiple instances causes odd behaviour
@@ -22,30 +20,28 @@ function run rl, db-uri, cb
 
   log "db-uri=#db-uri"
   M.connect db-uri
-  err, evs <- M-Evs.find!lean!exec
+  err, evs <- M-Evs.find
   return bail err if err
-  for ev in bad-evs = _.reject(evs, -> Cons.url.regex.test it.url)
-    log ev.entity_id, ev.url
-  fix-evs = _.filter bad-evs, -> _.includes it.url, FIX-DOMAIN
-  log "#{bad-evs.length} bad out of #{evs.length} evidences"
-  ans <- rl.question "Fix #{fix-evs.length} #FIX-DOMAIN (y/N) ?"
+  const RX = /^(https?:\/\/web\.archive\.org\/web\/(\d{8})\d+\/)(.*)$/
+  for ev in fix-evs = _.filter(evs, -> RX.test it.url)
+    res = RX.exec ev.url
+    ev.timestamp = res.2
+    ev.url = res.3
+    log ev
+  ans <- rl.question "Fix #{fix-evs.length} of #{evs.length} evidences. Apply? (y/N)"
   return bail! unless ans is \y
-  fix-next!
+  apply-next-fix!
 
   function bail err
     M.disconnect!
     cb err
 
-  function fix-next
-    const RX = /^(https?:\/\/web\.archive\.org\/web\/\d+\/)(.*)$/
+  function apply-next-fix
     unless ev = fix-evs.shift!
       log \done!
       return bail!
-    err, doc <- M-Evs.findById ev._id
+    bail new Error "Invalid url #{ev.url}" unless Cons.url.regex.test ev.url
+    log "saving #{ev._id}"
+    err, ev <- ev.save!
     return bail err if err
-    doc.url .= replace RX, '$2'
-    log doc
-    bail new Error "Invalid url #{doc.url}" unless Cons.url.regex.test doc.url
-    err, doc <- doc.save!
-    return bail err if err
-    fix-next!
+    apply-next-fix!
