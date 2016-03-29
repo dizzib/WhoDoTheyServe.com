@@ -12,7 +12,6 @@
 + /app/lib-3p/fontello/font
 + /app/lib-3p/multiple-select.css
 + /app/lib-3p/multiple-select.png
-+ /app/lib-3p/yepnope.1.5.4-min.js
 + /app/theme/
 - /app/*
 - /app/lib-3p/*

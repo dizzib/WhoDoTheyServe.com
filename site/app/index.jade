@@ -6,10 +6,9 @@ html
   meta(name="viewport" content="width=device-width")
   head
     title WhoDoTheyServe.com
-    style
-      // seed css from bootstrap.css to prevent FoUC
-      include:stylus index.styl
-    script(src='/lib-3p/yepnope.1.5.4-min.js')
+    // seed css from bootstrap.css to prevent FoUC
+    style: include:stylus index.styl
+    script: include:uglify-js lib-3p/yepnope.js
     script(src='loader.js')
     link(rel='stylesheet', href='app.css')
   noscript
