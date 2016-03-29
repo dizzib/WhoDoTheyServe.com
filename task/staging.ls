@@ -35,8 +35,8 @@ function copy-minified dir, files
 
 function copy-minified-files
   log "copy minified files"
-  copy-minified \app, <[ app lib lib-signin loader ]>
-  copy-minified \app/lib-3p, <[ backbone d3 jquery underscore ]> # CDN fallbacks
+  copy-minified \app <[ app lib lib-signin ]>
+  copy-minified \app/lib-3p <[ backbone d3 jquery underscore ]> # CDN fallbacks
 
 function copy-files
   log "copy files to #{Dir.dist.STAGING}"
@@ -61,7 +61,9 @@ function delete-files
 
 function set-load-from-cdn
   log "set-load-from-cdn"
-  # setting a global flag is more robust than the previous way of using
+  # setting a flag is more robust than the previous way of using
   # a ?cdn=true querystring which seems to interfere with the window.*
   # support fns in the test runner marionette sandbox
-  ("window.isLoadFromCdn = true;" + cat \./app/loader.js).to \./app/loader.js
+  const PATH = \./app/index.html
+  const VAR  = \window.isLoadFromCdn
+  cat PATH .replace("#VAR = false" "#VAR = true").to PATH

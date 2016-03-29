@@ -6,9 +6,11 @@ html
   meta(name="viewport" content="width=device-width")
   head
     title WhoDoTheyServe.com
-    // seed css from bootstrap.css to prevent FoUC
+    //- seed css from bootstrap.css to prevent FoUC
     style: include:stylus index.styl
     script: include:uglify-js lib-3p/yepnope.js
+    //- the following flag is toggled by /task/staging.ls
+    script window.isLoadFromCdn = false;
     script: include:livescript:uglify-js loader.ls
     link(rel='stylesheet' href='app.css')
   noscript
