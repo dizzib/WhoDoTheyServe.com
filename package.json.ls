@@ -43,6 +43,7 @@ devDependencies:
   'istanbul-middleware'     : \~0.2.0
   jade                      : \~1.9.2
   'jstransformer-livescript': \~1.1.1
+  'jstransformer-markdown'  : \~1.1.0
   'jstransformer-stylus'    : \~1.0.0
   'jstransformer-uglify-js' : \~1.1.1
   levelup                   : \~0.19.0 # cacheify
