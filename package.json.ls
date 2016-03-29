@@ -30,30 +30,34 @@ dependencies:
   'serve-favicon'         : \2.2.0
   shortid                 : \2.0.0
 devDependencies:
-  brfs                  : \~0.0.9
-  browserify            : \~3.38.0
-  cacheify              : \~0.4.0
-  chai                  : \~2.3.0
-  chalk                 : \~0.4.0
-  cheerio               : \~0.14.0
-  chokidar              : \~1.0.1
-  cron                  : \~1.0.3
-  exposify              : \~0.1.4
-  growly                : \~1.2.0
-  'istanbul-middleware' : \~0.2.0
-  jade                  : \~1.9.2
-  levelup               : \~0.19.0 # cacheify
-  livescript            : \~1.4.0
-  marked                : \~0.3.1
-  'marionette-client'   : \git://github.com/dizzib/marionette-js-client.git#newSandbox
-  'marionette-js-logger': \0.1.2
-  memdown               : \~0.10.2 # cacheify
-  mocha                 : \~1.15.1
-  mongodb               : \~1.2.14
-  nib                   : \~1.1.0
-  pug                   : \~2.0.0
-  shelljs               : \~0.2.6
-  stylus                : \~0.51.1
-  'uglify-js'           : \~2.4.12
-  'variadic.js'         : \~0.0.1
-  'wait.for'            : \~0.6.3
+  brfs                      : \~0.0.9
+  browserify                : \~3.38.0
+  cacheify                  : \~0.4.0
+  chai                      : \~2.3.0
+  chalk                     : \~0.4.0
+  cheerio                   : \~0.14.0
+  chokidar                  : \~1.0.1
+  cron                      : \~1.0.3
+  exposify                  : \~0.1.4
+  growly                    : \~1.2.0
+  'istanbul-middleware'     : \~0.2.0
+  jade                      : \~1.9.2
+  'jstransformer-livescript': \~1.1.1
+  'jstransformer-stylus'    : \~1.0.0
+  'jstransformer-uglify-js' : \~1.1.1
+  levelup                   : \~0.19.0 # cacheify
+  livescript                : \~1.4.0
+  marked                    : \~0.3.1
+  'marionette-client'       : \git://github.com/dizzib/marionette-js-client.git#newSandbox
+  'marionette-js-logger'    : \0.1.2
+  memdown                   : \~0.10.2 # cacheify
+  mocha                     : \~1.15.1
+  mongodb                   : \~1.2.14
+  nib                       : \~1.1.0
+  pug                       : \~2.0.0
+  'pug-cli'                 : \~1.0.0
+  shelljs                   : \~0.2.6
+  stylus                    : \~0.51.1
+  'uglify-js'               : \~2.4.12
+  'variadic.js'             : \~0.0.1
+  'wait.for'                : \~0.6.3

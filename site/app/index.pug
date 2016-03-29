@@ -9,7 +9,7 @@ html
     // seed css from bootstrap.css to prevent FoUC
     style: include:stylus index.styl
     script: include:uglify-js lib-3p/yepnope.js
-    script(src='loader.js')
+    script: include:livescript loader.ls
     link(rel='stylesheet', href='app.css')
   noscript
     meta(http-equiv='refresh', content='0;URL=latest.html')
