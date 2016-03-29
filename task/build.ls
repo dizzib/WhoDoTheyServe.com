@@ -17,7 +17,7 @@ G        = require \./growl
 
 const BIN = "#{Dir.ROOT}/node_modules/.bin"
 
-pruner = new Cron.CronJob cronTime:'*/10 * * * *', onTick:prune-empty-dirs
+pruner = new Cron.CronJob cronTime:'*/10 * * * *' onTick:prune-empty-dirs
 tasks  =
   jade:
     cmd : "#BIN/jade --out $ODIR $IN"
@@ -33,6 +33,11 @@ tasks  =
     cmd : "#BIN/marked --output $OUT --input $IN"
     ixt : \md
     oxt : \html
+  pug:
+    cmd : "#BIN/pug --out $ODIR $IN"
+    ixt : \pug
+    oxt : \html
+    mixn: \_
   static:
     cmd : 'cp --target-directory $ODIR $IN'
     ixt : '{css,eot,gif,html,jpg,js,mak,otf,pem,png,svg,ttf,txt,woff,woff2}'
