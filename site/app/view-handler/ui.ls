@@ -5,6 +5,7 @@ const KEYCODE-ESC = 27
 var spinner-timeout # to prevent unsightly flash when render happens quickly
 
 $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
+$w = $ window
 
 ## initialisation
 B.on \boot ->
@@ -26,6 +27,9 @@ B.on \pre-route ->
 
 B.on \routed ->
   <- _.defer
+  if $ '.view>:visible:not(.persist)' .length
+    $w.scrollLeft 0
+    $w.scrollTop 0
   $ \.view .addClass \ready # signal for seo crawler
   $ \.timeago .timeago!
   clearTimeout spinner-timeout
