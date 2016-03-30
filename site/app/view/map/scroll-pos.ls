@@ -1,5 +1,3 @@
-_ = require \underscore
-
 $w = $ w = window
 
 module.exports = class
