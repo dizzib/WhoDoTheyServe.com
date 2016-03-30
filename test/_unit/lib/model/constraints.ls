@@ -48,6 +48,7 @@ it 'timestamp ok' ->
     \200812
     \20081201
     \20081231
+    \20131010
   for t in TIMESTAMPS then Assert.ok (Cons.timestamp.regex.test t), t
 
 it 'timestamp bad' ->

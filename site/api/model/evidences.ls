@@ -11,7 +11,7 @@ s-evidences =
   timestamp: type:String, required:no, match:Cons.timestamp.regex
 
 schema = new M.Schema s-evidences
-  ..index { entity_id:1, url:1 }, {+unique}
+  ..index { entity_id:1, url:1, timestamp:1 }, {+unique}
   ..plugin P-Id
   ..plugin P-Meta
 

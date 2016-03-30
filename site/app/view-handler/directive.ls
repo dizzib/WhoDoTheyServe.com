@@ -32,7 +32,7 @@ const EVI =
   'url-outer':
     href: -> @href
   'url-inner':
-    text: -> @url
+    text: -> @url + if t = @timestamp then " (as of #t)" else ''
 
 const EVI-VIDEO =
   video:
