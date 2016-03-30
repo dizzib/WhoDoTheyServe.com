@@ -42,7 +42,7 @@ const COMMANDS =
   * cmd:'f.o  ' lev:0 desc:'fonts - open fontello'       fn:Fntello.open
   * cmd:'f.s  ' lev:0 desc:'fonts - save fontello'       fn:Fntello.save
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'      fn:-> Test.run \staging
-  * cmd:'s.mu ' lev:0 desc:'stage - maint: check urls'   fn:MaintEU.staging
+  * cmd:'s.mu ' lev:0 desc:'stage - maint: fix ev urls'  fn:MaintEU.staging
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'     fn:generate-staging
   * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:Seo.generate
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'   fn:MaintDE.staging
@@ -51,6 +51,7 @@ const COMMANDS =
   * cmd:'p.ld ' lev:0 desc:'PROD  - list deployments'    fn:Prod.rhc.deployments.list
   * cmd:'p.le ' lev:0 desc:'PROD  - list env vars'       fn:Prod.rhc.env.list
   * cmd:'p.mde' lev:1 desc:'prod  - maintain dead evs'   fn:MaintDE.prod
+  * cmd:'p.mu ' lev:1 desc:'prod  - maint: fix ev urls'  fn:MaintEU.prod
   * cmd:'p.AD ' lev:2 desc:'PROD  - activate deployment' fn:Prod.rhc.deployments.activate
   * cmd:'p.ENV' lev:2 desc:'PROD  - env vars->PROD'      fn:Prod.rhc.env.send
 # * cmd:'p.UPD' lev:2 desc:'prod  - update stage->PROD'  fn:Prod.af.update
