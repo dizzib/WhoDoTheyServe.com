@@ -12,8 +12,6 @@ MigrateDb = require \./boot/migrate-db
 Server    = require \./server
 
 Db.connect!
-err <- MigrateDb.drop-evidences-index
-console.log err if err
 err <- Hive.init
 console.error err if err
 err <- HiveMap.boot
