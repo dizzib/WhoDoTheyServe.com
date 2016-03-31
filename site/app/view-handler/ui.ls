@@ -1,18 +1,23 @@
-B = require \backbone
-_ = require \underscore
+B  = require \backbone
+_  = require \underscore
+Br = require \../lib/browser
 
 const KEYCODE-ESC = 27
 var spinner-timeout # to prevent unsightly flash when render happens quickly
 
 $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
-$w = $ window
 
 ## initialisation
 B.on \boot ->
   $.fn.bootstrapDropdownHover!
 
 ## routing
-B.on \pre-route ->
+B.on \pre-route (name) ->
+  # scroll-to home must happen first, otherwise it intermittently fails with a
+  # blank screen on Android Firefox.
+  # Note that maps handle their own scrolling.
+  Br.scroll-to x:0 y:0 unless name is \map
+
   $ \.view
     .removeClass \ready
     .off \focus 'input[type=text]'
@@ -25,11 +30,8 @@ B.on \pre-route ->
   $ \.view>.alert-error .addClass \active # reset back to default
   spinner-timeout := setTimeout (-> $ \.spinner .show!), 50ms
 
-B.on \routed ->
+B.on \routed (name) ->
   <- _.defer
-  if $ '.view>:visible:not(.persist)' .length
-    $w.scrollLeft 0
-    $w.scrollTop 0
   $ \.view .addClass \ready # signal for seo crawler
   $ \.timeago .timeago!
   clearTimeout spinner-timeout

@@ -1,3 +1,5 @@
+Br = require \../../lib/browser
+
 $w = $ w = window
 
 module.exports = class
@@ -9,16 +11,14 @@ module.exports = class
       y: y - w.innerHeight / 2 + 40px
 
   restore: ->
-    ~function get-initial-scroll-pos
-      return x:0 y:0 unless svg = @v-graph.svg # might be undefined e.g. new map
-      # center map
+    @pos ?= unless svg = @v-graph.svg then x:0 y:0 else # new map has no svg
+      # center map if first time in
       x: Math.max 0 (svg.attr(\width) - w.innerWidth) / 2
       y: Math.max 0 (svg.attr(\height) - w.innerHeight) / 2
-
-    @pos ?= get-initial-scroll-pos!
-    $w.scrollLeft @pos.x if @pos.x
-    $w.scrollTop @pos.y if @pos.y
+    #log \restore @pos, @name = @v-graph.map.get \name
+    Br.scroll-to @pos
 
   save: ->
     @pos.x = $w.scrollLeft!
     @pos.y = $w.scrollTop!
+    #log \save @pos, @name
