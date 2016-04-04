@@ -15,7 +15,6 @@ module.exports = me = B.DeepModel.extend do
     w = W.parse-range w-raw = @get \when
 
     _.extend (@toJSON opts),
-      family-name: (name.match(/^\w+,/)?0.replace ',' '') if is-person
       is-live    : W.is-in-range W.get-int-today!, w.int
       is-person  : is-person
       tip        : 'Evidence'

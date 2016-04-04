@@ -29,7 +29,7 @@ module.exports = (vg) ->
 
     for e in ents.edges
       e.classes = []
-      e.classes.push \family if (a = e.source.family-name) and (b = e.target.family-name) and a is b
+      e.classes.push \family if e.how in <[ daughter married son ]>
       e.classes.push \out-of-date if not is-in-range e.when-obj
       e.classes.push \rename if e.how is \rename
 
