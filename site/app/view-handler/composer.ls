@@ -82,6 +82,7 @@ function render-evidences entity-id, act, id
 
 function render-notes entity-id, act
   notes = C.Notes.find -> entity-id is it.get \entity_id
+  return unless notes.length or S.is-signed-in!
   note-by-signin =
     if act is \note-new then M-Note.create!set \entity_id entity-id
     else notes.find(-> S.is-signed-in it.get \meta.create_user_id).models?0
