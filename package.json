@@ -60,7 +60,7 @@
     "mongodb": "~1.2.14",
     "nib": "~1.1.0",
     "pug": "~2.0.0-alpha1",
-    "pug-cli": "~1.0.0",
+    "pug-cli": "~1.0.0-alpha1",
     "shelljs": "~0.2.6",
     "stylus": "~0.51.1",
     "uglify-js": "~2.4.12",
