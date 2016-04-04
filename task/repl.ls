@@ -38,13 +38,14 @@ const COMMANDS =
   * cmd:'b1   ' lev:0 desc:'build - enable $api'         fn:-> Flags.toggle \test.run.api
   * cmd:'b2   ' lev:0 desc:'build - enable $app'         fn:-> Flags.toggle \test.run.app
   * cmd:'bt   ' lev:0 desc:'build - autorun tests $ta'   fn:-> Flags.toggle \test.autorun
-  * cmd:'d.mde' lev:0 desc:'dev   - maintain dead evs'   fn:MaintDE.dev
+  * cmd:'b.mde' lev:0 desc:'build - maintain dead evs'   fn:MaintDE.dev
+  * cmd:'b.gs ' lev:1 desc:'build - generate seo'        fn:-> Seo.generate \dev
   * cmd:'f.o  ' lev:0 desc:'fonts - open fontello'       fn:Fntello.open
   * cmd:'f.s  ' lev:0 desc:'fonts - save fontello'       fn:Fntello.save
   * cmd:'s    ' lev:0 desc:'stage - recycle + test'      fn:-> Test.run \staging
   * cmd:'s.mu ' lev:0 desc:'stage - maint: fix ev urls'  fn:MaintEU.staging
   * cmd:'s.g  ' lev:1 desc:'stage - generate + test'     fn:generate-staging
-  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:Seo.generate
+  * cmd:'s.gs ' lev:1 desc:'stage - generate seo'        fn:-> Seo.generate \staging
   * cmd:'s.mde' lev:1 desc:'stage - maintain dead evs'   fn:MaintDE.staging
   * cmd:'p    ' lev:0 desc:'prod  - show config'         fn:Prod.show-cfg
 # * cmd:'p.l  ' lev:1 desc:'prod  - login'               fn:Prod.af.login

@@ -45,7 +45,7 @@ function copy-files
 
 function copy-seo-files
   return G.alert 'no seo' unless test \-e Dir.dist.SEO
-  const N-MIN = 300
+  const N-MIN = 700
   try
     pushd Dir.dist.SEO
     n = (W4 exec, "ls -1R | grep .*.html | wc -l").split('\n').0

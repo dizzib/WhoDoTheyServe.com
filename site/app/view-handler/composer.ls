@@ -63,11 +63,9 @@ function fetch-entity coll, id, name, cb
   cb ent
 
 function render-nodes-or-edges done, render
-  if C.Nodes.length is 0 and m = C.Maps.get Hv.Map.default-ids?0
-    # first time through render default map entities rather than nothing
+  if C.Nodes.length is 0
     loc = B.history.fragment
-    m.fetch success: ->
-      m.globalise-entities!
+    Cs.fetch-all ->
       render! if B.history.fragment is loc # skip if user navigated away
       done!
     return false # async

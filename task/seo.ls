@@ -5,6 +5,7 @@ Mc      = require \marionette-client
 Os      = require \os
 Path    = require \path
 Shell   = require \shelljs/global
+W4      = require \wait.for .for
 W4m     = require \wait.for .forMethod
 Cfg     = require \./config
 Dist    = require \./constants .dir.dist
@@ -13,14 +14,14 @@ G       = require \./growl
 module.exports =
   # Due to the dynamic nature of the site, we'll render each page in
   # Firefox then manipulate it using cheerio
-  generate: ->
+  generate: (env-id) ->
     try
-      const BROWSER-HOST     = process.env.firefox-host or \localhost
-      const EXCLUDE-ROUTES   = /map/
-      const ROUTE-HOME       = '#/nodes'
-      const STAGING-SITE-URL = "http://#{Os.hostname!}:#{Cfg.staging.primary.PORT}"
+      const BROWSER-HOST   = process.env.firefox-host or \localhost
+      const EXCLUDE-ROUTES = /map/
+      const ROUTE-HOME     = '#/nodes'
+      const SITE-URL       = "http://#{Os.hostname!}:#{Cfg[env-id].primary.PORT}"
 
-      log "generate seo from #STAGING-SITE-URL via firefox at #BROWSER-HOST"
+      log "generate seo from #SITE-URL via firefox at #BROWSER-HOST"
 
       md = new Mc.Drivers.Tcp host:BROWSER-HOST
       mc = new Mc.Client md
@@ -37,9 +38,11 @@ module.exports =
       while pending.length
         done.push route = pending.shift!
         log "done=#{done.length - 1} pending=#{pending.length + 1} #route"
-        url = "#STAGING-SITE-URL/#route"
+        url = "#SITE-URL/#route"
         W4m mc, \executeScript (-> window.location.href = it), [ url ]
-        W4m mc, \findElement \.ready
+        W4 pause, 10ms
+        while (W4m mc, \executeScript -> document.querySelectorAll \.rendering .length)
+          W4 pause, 100ms
         html = W4m mc, \pageSource
         $ = Cheerio.load html
         amend-css $
@@ -75,6 +78,8 @@ module.exports =
         <script type='text/javascript'>
           window.location.href = '/#' + window.location.pathname.replace('.html', '');
         </script>"
+
+    function pause ms, cb then setTimeout (-> cb!), ms
 
     function queue-links pending, done, $
       links = _.map ($ \a), -> $ it .attr \href

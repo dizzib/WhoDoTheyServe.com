@@ -25,11 +25,13 @@ module.exports =
       @opts     = it.opts or {}
       @template = "<div>#{it.template}</div>" # transparency requires a root div for lists
     render: (coll, directive, opts) ->
-      @$el.show!attr \data-loc B.history.fragment # to detemine if navigated away
+      @$el.show!addClass \rendering
+      @$el.attr \data-loc B.history.fragment # to detemine if navigated away
       # 1. render current content immediately for performance
       render coll, first-chunk-only:@opts.fetch
       # 2. then optionally render async-fetched content
-      if @opts.fetch then coll.fetch success: -> render it
+      return @$el.removeClass \rendering unless @opts.fetch
+      coll.fetch success: -> render it
 
       ~function render c, opts, pos = 0
         const CHUNK-SIZE = 5
@@ -45,4 +47,5 @@ module.exports =
           @$el.html $tem
           return if opts?first-chunk-only
         else @$el.find \ul .append $tem.find(\ul).children!
-        if pos < c.length then _.defer ~> render c, void, pos
+        return @$el.removeClass \rendering if pos >= c.length
+        _.defer ~> render c, void, pos

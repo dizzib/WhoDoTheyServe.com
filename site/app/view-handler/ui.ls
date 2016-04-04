@@ -19,12 +19,11 @@ B.on \pre-route (name) ->
   Br.scroll-to x:0 y:0 unless name is \map
 
   $ \.view
-    .removeClass \ready
+    .addClass \rendering
     .off \focus 'input[type=text]'
     .children!
       .trigger \hide .hide!
-      # persistent views (e.g. map) should not be cleared down
-      .not \.persist .off! .empty!
+      .not \.persist .off! .empty! # persistent views (eg. map) should not be cleared
   # handle errors
   $ \.alert-error .removeClass \active    # clear any error alert location overrides
   $ \.view>.alert-error .addClass \active # reset back to default
@@ -32,7 +31,7 @@ B.on \pre-route (name) ->
 
 B.on \routed (name) ->
   <- _.defer
-  $ \.view .addClass \ready # signal for seo crawler
+  $ \.view .removeClass \rendering # signal for seo task
   $ \.timeago .timeago!
   clearTimeout spinner-timeout
   $ \.spinner .hide!
