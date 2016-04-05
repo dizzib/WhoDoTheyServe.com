@@ -40,7 +40,6 @@ module.exports =
         log "done=#{done.length - 1} pending=#{pending.length + 1} #route"
         url = "#SITE-URL/#route"
         W4m mc, \executeScript (-> window.location.href = it), [ url ]
-        W4 pause, 10ms
         while (W4m mc, \executeScript -> document.querySelectorAll \.rendering .length)
           W4 pause, 100ms
         html = W4m mc, \pageSource
@@ -64,6 +63,7 @@ module.exports =
       $ \style .remove!
       insert-link \/lib-3p/bootstrap/css/bootstrap.css
       insert-link \/app.css
+      insert-link \/theme/light.css
 
     function amend-scripts $
       $ \script .remove!
@@ -75,7 +75,7 @@ module.exports =
           is enabled in your browser before refreshing the page.
         </div></div>"
       $ \body .before "
-        <script type='text/javascript'>
+        <script>
           window.location.href = '/#' + window.location.pathname.replace('.html', '');
         </script>"
 
