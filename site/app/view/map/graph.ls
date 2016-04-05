@@ -76,9 +76,8 @@ module.exports = B.View.extend do
   render: (opts) ->
     return unless @$el?empty! # might be undefined for seo
     return @trigger \render-complete unless (entities = @map.get \entities)?nodes?length
-    ents = {}
-    ents.nodes = entities.nodes.toJSON-T!
-    ents.edges = entities.edges.toJSON-T nodes:entities.nodes, shallow:true
+    (ents = {}).nodes = entities.nodes.toJSON-T!
+    ents.edges = entities.edges.toJSON-T nodes-json-by-id:_.indexBy ents.nodes, \_id
     @trigger \pre-render ents # ents can be modified by handlers
     for n in ents.nodes then n.class = n.classes * ' '
     for e in ents.edges then e.class = e.classes * ' '

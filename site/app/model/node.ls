@@ -17,12 +17,9 @@ module.exports = me = B.DeepModel.extend do
     _.extend (@toJSON opts),
       is-live    : W.is-in-range W.get-int-today!, w.int
       is-person  : is-person
+      name-yyyy  : /[12]\d{3}$/.exec(name)?0
       tip        : 'Evidence'
       when-text  : if w-raw then "(#{w-raw.replace /^-/ \?-})" else ''
-
-  ## extensions
-  get-yyyy-by-name: ->
-    /[12]\d{3}$/.exec(@get \name)?0
 
   ## validation
   validation:

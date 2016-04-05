@@ -20,19 +20,22 @@ module.exports = me = B.DeepModel.extend do
       s = "from #{when-obj.raw.from or '?'}"
       s + if (when-to = when-obj.raw.to) then " to #when-to" else ''
 
-    nodes    = opts?nodes or C.Nodes
-    a-node   = nodes.get @get \a_node_id # undefined if new
-    b-node   = nodes.get @get \b_node_id # undefined if new
-    yyyy     = a-node?get-yyyy-by-name! or b-node?get-yyyy-by-name!
+    if nodes = opts?nodes-json-by-id
+      a-node = nodes[@get \a_node_id]
+      b-node = nodes[@get \b_node_id]
+    else
+      a-node = C.Nodes.get(@get \a_node_id)?toJSON-T! # undefined if new
+      b-node = C.Nodes.get(@get \b_node_id)?toJSON-T! # undefined if new
+    yyyy     = a-node?name-yyyy or b-node?name-yyyy
     when-raw = if yyyy then "#yyyy-#yyyy" else @get \when
     when-obj = W.parse-range when-raw
 
     _.extend (@toJSON opts),
-      'a-node' : a-node?toJSON-T! unless opts?shallow
-      'b-node' : b-node?toJSON-T! unless opts?shallow
-      a_is     : @get \a_is
-      a_is_eq  : \eq is @get \a_is
-      a_is_lt  : \lt is @get \a_is
+      'a-node' : a-node
+      'b-node' : b-node
+      a_is     : a_is = @get \a_is
+      a_is_eq  : \eq is a_is
+      a_is_lt  : \lt is a_is
       tip      : get-tip!
       when-obj : when-obj
       when-text: get-when-text!
