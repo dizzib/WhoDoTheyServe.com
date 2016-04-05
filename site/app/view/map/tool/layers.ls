@@ -8,7 +8,7 @@ const LAYERS =
   BilSteer : default:true  class:\bil-steer
   Bis      : default:false class:\bis
   Cfr      : default:false class:\cfr
-  OutOfDate: default:false class:\out-of-date
+  OutOfDate: default:false class:\out-of-date filter:':not(.near)'
 
 module.exports = B.View.extend do
   initialize: ->
@@ -29,6 +29,7 @@ module.exports = B.View.extend do
     ~function refresh
       n = 0
       for let id, cfg of LAYERS
-        n += len = vg.$el.find "line.#{cfg.class}:first" .length
+        sel = "line.#{cfg.class}#{cfg.filter or ''}:first"
+        n += len = vg.$el.find sel .length
         @$ "\#chk#id" .parents \.layer .toggleClass \hide len is 0
       @$el.toggle n > 0
