@@ -47,12 +47,10 @@ module.exports = (vg) ->
     (if edges.length <= 4 then render-badges-separate else render-badges-combined) this, edges
 
   vg.on \pre-render (ents) ->
-    ents.nodes = _.reject ents.nodes, me.is-conference-yyyy
+    [conf-nodes, ents.nodes] = _.partition ents.nodes, me.is-conference-yyyy
+    (_.find ents.nodes, me.is-annual-conference)?sub-nodes = conf-nodes
 
   me =
-    is-annual-conference: ->
-      'Bilderberg Annual Conference' is it.name
-    is-conference-yyyy: ->
-      /^Bilderberg Conference [0-9]{4}$/.test it.name
-    is-steering: ->
-      'Bilderberg Steering Committee' is it.name
+    is-annual-conference: -> 'Bilderberg Annual Conference' is it.name
+    is-conference-yyyy  : -> /^Bilderberg Conference [0-9]{4}$/.test it.name
+    is-steering         : -> 'Bilderberg Steering Committee' is it.name

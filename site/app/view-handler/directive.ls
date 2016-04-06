@@ -17,8 +17,8 @@ const NODE-NAME =
     title: -> "person #{if @is-live then '' else '(deceased)'}".trim!
 
 const EDGE =
-  'a-node': NODE-NAME
-  'b-node': NODE-NAME
+  a_node: NODE-NAME
+  b_node: NODE-NAME
   'edge-when':
     text: -> @when-text
   how:

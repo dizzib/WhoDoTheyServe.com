@@ -10,7 +10,7 @@ module.exports = (vg, cursor) ->
     ueids = get-uphill-edge-ids id
     deids = get-downhill-edge-ids id
     eids = ueids ++ deids
-    sel = (_.map eids, -> ".id_#it:not(.out-of-date)").join \,
+    sel = (_.map eids, -> ".edge.id_#it").join \,
     vg.svg.selectAll sel .classed \ants true if sel
 
   vg.on \late-render -> # build performance hashes

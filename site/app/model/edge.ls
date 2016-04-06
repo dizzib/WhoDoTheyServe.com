@@ -12,7 +12,7 @@ module.exports = me = B.DeepModel.extend do
   ## core
   toJSON-T: (opts) ->
     ~function get-tip
-      "Evidence#{if how = @get \how then " - #how" else ''} #{get-when-text true}"
+      "Evidence #{if how = @get \how then "- #how" else ''} #{get-when-text true}".trim!
 
     function get-when-text is-tip
       return '' if yyyy and not is-tip
@@ -27,15 +27,14 @@ module.exports = me = B.DeepModel.extend do
       a-node = C.Nodes.get(@get \a_node_id)?toJSON-T! # undefined if new
       b-node = C.Nodes.get(@get \b_node_id)?toJSON-T! # undefined if new
     yyyy     = a-node?name-yyyy or b-node?name-yyyy
-    when-raw = if yyyy then "#yyyy-#yyyy" else @get \when
-    when-obj = W.parse-range when-raw
+    when-obj = W.parse-range @get \when
 
     _.extend (@toJSON opts),
-      'a-node' : a-node
-      'b-node' : b-node
-      a_is     : a_is = @get \a_is
-      a_is_eq  : \eq is a_is
-      a_is_lt  : \lt is a_is
+      a_node   : a-node
+      b_node   : b-node
+      a_is     : a-is = @get \a_is
+      a_is_eq  : \eq is a-is
+      a_is_lt  : \lt is a-is
       tip      : get-tip!
       when-obj : when-obj
       when-text: get-when-text!

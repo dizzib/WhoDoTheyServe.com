@@ -4,4 +4,5 @@ for i in 0..4
       display           inherit
       stroke-dasharray  5
       stroke-dashoffset -2 * i
-      stroke-width      4px
+      &:not(.out-of-date)
+        stroke-width      4px

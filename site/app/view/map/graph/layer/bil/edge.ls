@@ -1,4 +1,4 @@
-_  = require \underscore
+_ = require \underscore
 
 module.exports = (vg, edge-glyph, bn = bil-node) ->
   var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
@@ -7,14 +7,15 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
     ~function render g, edges, fn-get-hub, fn-is-hub, css-class
       return unless hub = _.find @d3f.nodes!, fn-get-hub
       g-child = g.append \svg:g
-      for edge in edges
-        [src, tar] = [edge.source, edge.target]
+      for e in edges
+        [src, tar] = [e.source, e.target]
         g-child.append \svg:line
           .attr \x1 if fn-is-hub src then hub.x else src.x
           .attr \y1 if fn-is-hub src then hub.y else src.y
           .attr \x2 if fn-is-hub tar then hub.x else tar.x
           .attr \y2 if fn-is-hub tar then hub.y else tar.y
-          .attr \class "edge id_#{edge._id} layer #{css-class}"
+          .attr \class "edge id_#{e._id} layer #{css-class} #{e.classes * ' '}".trim!
+          .datum e
       g-child
 
     # attends
@@ -43,13 +44,14 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
     g-steer?remove!
 
   vg.on \pre-render (ents) ->
-    function is-conference-yyyy then bn.is-conference-yyyy it.source or bn.is-conference-yyyy it.target
+    function is-conf-yyyy then bn.is-conference-yyyy it.source or bn.is-conference-yyyy it.target
     function is-steering then it.how is \member and (bn.is-steering it.source or bn.is-steering it.target)
 
-    edges-attend := _.filter ents.edges, is-conference-yyyy
+    edges-conf    = _.filter ents.edges, is-conf-yyyy
+    edges-attend := _.filter edges-conf, -> it.how is \attends
     edges-steer  := _.filter ents.edges, is-steering
     nodes-steer  := _.map edges-steer, -> if bn.is-steering it.source then it.target else it.source
-    ents.edges = _.difference ents.edges, edges-attend, edges-steer
+    ents.edges    = _.difference ents.edges, edges-conf, edges-steer
 
     # inject info required by node renderer
     bn.edges-attend = edges-attend

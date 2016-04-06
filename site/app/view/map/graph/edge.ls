@@ -7,7 +7,9 @@ module.exports = (vg) ->
   vg.on \pre-render (ents) ->
     map-when = vg.map.get \when
     map-when-int = if map-when then W.parse map-when, \max else W.get-int-today!
-    function is-in-range then W.is-in-range map-when-int, it.int
+    function is-in-range edge
+      edge.a_node.is-live and edge.b_node.is-live
+      and W.is-in-range map-when-int, edge.when-obj.int
 
     # Choose the single edge to render for node-pairs having chronological edges
     node-pairs = {}
@@ -17,7 +19,7 @@ module.exports = (vg) ->
       key = if id0 < id1 then "#id0,#id1" else "#id1,#id0" # treate A-B and B-A identically
       (node-pairs[key] ?= []).push e
     for k, v of node-pairs when v.length > 1
-      p = _.partition v, -> is-in-range it.when-obj
+      p = _.partition v, -> is-in-range it
       if p.0.length is 1 then reject-ids ++= _.pluck p.1, \_id else
         reject-ids ++= _.pluck v[0 til -1], \_id # all out of range, so just use the last one
     es = _.reject es, -> it._id in reject-ids
@@ -30,7 +32,7 @@ module.exports = (vg) ->
     for e in ents.edges
       e.classes = []
       e.classes.push \family if e.how in <[ daughter married son ]>
-      e.classes.push \out-of-date if not is-in-range e.when-obj
+      e.classes.push \out-of-date unless is-in-range e
       e.classes.push \rename if e.how is \rename
 
   vg.on \render ->
