@@ -24,10 +24,11 @@ module.exports = (vg) ->
         reject-ids ++= _.pluck v[0 til -1], \_id # all out of range, so just use the last one
     es = _.reject es, -> it._id in reject-ids
 
-    ents.edges = _.map es, (edge) -> _.extend do
-      edge
-      source: _.find ents.nodes, -> it._id is edge.a_node_id
-      target: _.find ents.nodes, -> it._id is edge.b_node_id
+    nodes-by-id = _.indexBy ents.nodes, \_id
+    ents.edges = _.map es, -> _.extend do
+      it
+      source: nodes-by-id[it.a_node_id]
+      target: nodes-by-id[it.b_node_id]
 
     for e in ents.edges
       e.classes = []
