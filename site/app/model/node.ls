@@ -11,12 +11,12 @@ module.exports = me = B.DeepModel.extend do
 
   ## core
   toJSON-T: (opts) ->
-    is-person = Lib.is-person name = @get \name
-    w = W.parse-range w-raw = @get \when
+    name  = @get \name
+    w-raw = @get \when
 
     _.extend (@toJSON opts),
-      is-live    : W.is-in-range W.get-int-today!, w.int
-      is-person  : is-person
+      is-live    : !w-raw or W.is-in-range W.get-int-today!, W.parse-range(w-raw).int
+      is-person  : Lib.is-person name
       name-yyyy  : /[12]\d{3}$/.exec(name)?0
       tip        : 'Evidence'
       when-text  : if w-raw then "(#{w-raw.replace /^-/ \?-})" else ''
