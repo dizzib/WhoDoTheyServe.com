@@ -18,7 +18,7 @@ B.Router.prototype.navigate = -> _navigate it, trigger:true
 r = B.Router.extend do
   execute: (cb, args, name) ->
     return unless cb
-    B.trigger \pre-route name
+    B.trigger 'before-pre-route pre-route' name
     function done then B.trigger \routed name
     # async callbacks should return false and call done when finished
     is-sync = cb.apply this, args ++ done

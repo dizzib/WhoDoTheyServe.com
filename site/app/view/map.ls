@@ -56,7 +56,8 @@ module.exports = B.View.extend do
     @trigger \render node-id
 
   show: ->
-    @$el.show! .one \hide ~> @scroll-pos.save!
+    B.once \before-pre-route ~> @scroll-pos.save!
+    @$el.show!
     @v-graph.justify!
     @scroll-pos.restore!
     @trigger \show
