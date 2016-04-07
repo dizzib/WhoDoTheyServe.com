@@ -17,9 +17,9 @@ module.exports = (vg, cursor) ->
     cache := {}
     dn-edges-by-node-id := {}
     up-edges-by-node-id := {}
-    @map.get \entities .edges.each ->
-      (dn-edges-by-node-id[it.get \b_node_id] ||= []).push it if \lt is it.get \a_is
-      (up-edges-by-node-id[it.get \a_node_id] ||= []).push it if \lt is it.get \a_is
+    @map.get \entities .edges.each -> if \lt is it.get \a_is
+      (dn-edges-by-node-id[it.get \b_node_id] ||= []).push it
+      (up-edges-by-node-id[it.get \a_node_id] ||= []).push it
 
   function get-downhill-edge-ids node-id, done = []
     return [] if _.contains done, node-id # infinite recursion guard
