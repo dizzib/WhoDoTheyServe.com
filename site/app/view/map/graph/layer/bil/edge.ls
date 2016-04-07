@@ -4,35 +4,33 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
   var edges-attend, edges-steer, nodes-steer, ga, g-attend, gs, g-steer
 
   vg.on \cooled ->
-    ~function render g, edges, fn-get-hub, fn-is-hub, css-class
+    ~function render g, edges, fn-get-hub, fn-is-satellite, css-class
       return unless hub = _.find @d3f.nodes!, fn-get-hub
       g-child = g.append \svg:g
       for e in edges
-        [src, tar] = [e.source, e.target]
+        e.source = hub if fn-is-satellite e.source
+        e.target = hub if fn-is-satellite e.target
         g-child.append \svg:line
-          .attr \x1 if fn-is-hub src then hub.x else src.x
-          .attr \y1 if fn-is-hub src then hub.y else src.y
-          .attr \x2 if fn-is-hub tar then hub.x else tar.x
-          .attr \y2 if fn-is-hub tar then hub.y else tar.y
-          .attr \class "edge id_#{e._id} layer #{css-class} #{e.classes * ' '}".trim!
+          .attr \x1 e.source.x
+          .attr \y1 e.source.y
+          .attr \x2 e.target.x
+          .attr \y2 e.target.y
+          .attr \class "edge layer id_#{e._id} #css-class #{e.classes * ' '}".trim!
           .datum e
+      g-child.selectAll \g.edge-glyphs
+        .data edges
+        .enter!append \svg:g
+          .attr \class -> "edge-glyphs layer id_#{it._id} #css-class #{it.classes * ' '}".trim!
+        .each edge-glyph.append
+        .attr \transform edge-glyph.get-transform
       g-child
 
-    # attends
     if edges-attend
       edges = _.reject edges-attend, (edge) ->
         !!_.find nodes-steer, -> it._id in [edge.source._id, edge.target._id]
       g-attend := render ga, edges, bn.is-annual-conference, bn.is-conference-yyyy, \bil-attend
-
-    # steering
-    return unless edges = edges-steer
-    return unless g-steer := render gs, edges, bn.is-steering, bn.is-steering, \bil-steer
-    glyphs = g-steer.selectAll \g.edge-glyphs
-      .data edges
-      .enter!append \svg:g
-        .attr \class 'edge-glyphs layer bil-steer'
-    glyphs.each edge-glyph.append
-    glyphs.attr \transform edge-glyph.get-transform
+    if edges = edges-steer
+      g-steer := render gs, edges, bn.is-steering, bn.is-steering, \bil-steer
 
   vg.on \late-render ->
     ~function add-overlay name then @svg.append \svg:g .attr \class name
