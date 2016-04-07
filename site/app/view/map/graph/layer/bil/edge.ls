@@ -10,6 +10,10 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
       for e in edges
         e.source = hub if fn-is-satellite e.source
         e.target = hub if fn-is-satellite e.target
+      # a node can connect to hub multiple times, in which case render the latest only
+      edges = _.sortBy edges, \yyyy .reverse!
+      edges = _.uniq edges, -> it.source._id.toString! + it.target._id.toString!
+      for e in edges
         g-child.append \svg:line
           .attr \x1 e.source.x
           .attr \y1 e.source.y
