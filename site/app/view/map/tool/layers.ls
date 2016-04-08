@@ -8,7 +8,7 @@ const LAYERS =
   BilSteer : default:true  class:\bil-steer
   Bis      : default:false class:\bis
   Cfr      : default:false class:\cfr
-  OutOfDate: default:false class:\out-of-date filter:':not(.near)'
+  OutOfDate: default:false class:\out-of-date filter:':not(.layer):not(.near)'
 
 module.exports = B.View.extend do
   initialize: ->
