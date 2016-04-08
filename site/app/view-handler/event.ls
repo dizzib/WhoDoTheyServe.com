@@ -17,7 +17,11 @@ B.on \boot ->
   V.edge-edit
     ..on \rendered Vee.init
   V.evidence-edit
-    ..on \rendered -> Fpx.get-browser-url (-> $ \#url .attr \value it) if it.isNew!
+    ..on \rendered (ev) ->
+      if ev.isNew! then Fpx.get-browser-url ->
+        o = ev.parse-url it
+        $ \#timestamp .attr \value o.timestamp
+        $ \#url       .attr \value o.url
   V.maps
     ..on \appended ->
       it.v-edit

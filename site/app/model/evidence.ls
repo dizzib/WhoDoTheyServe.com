@@ -40,6 +40,11 @@ module.exports = me = B.DeepModel.extend do
     o.is-href-archive = /^https?:\/\/(web\.)?archive\.org/.test o.href
     o
 
+  ## extensions
+  parse-url: (url) ->
+    const RX = /^(https?:\/\/web\.archive\.org\/web\/(\d{8})\d+\/)(.*)$/
+    if r = RX.exec url then timestamp:r.2, url:r.3 else url:url
+
   ## validation
   labels:
     'url': 'Url'

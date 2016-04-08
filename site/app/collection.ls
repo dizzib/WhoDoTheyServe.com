@@ -45,7 +45,8 @@ module.exports = me =
       auto-create: (entity-id, cb) ->
         url <- Fpx.get-browser-url
         return cb! unless url
-        ev = models.Evidence.create entity_id:entity-id, url:url
+        ev = models.Evidence.create entity_id:entity-id
+        ev.set ev.parse-url url
         me.Evidences.create ev, { +merge, +wait, success:-> cb ok:true }
 
     latest = c.extend do
