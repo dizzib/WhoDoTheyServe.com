@@ -5,28 +5,25 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
 
   vg.on \cooled ->
     ~function render g, edges, fn-get-hub, fn-is-satellite, css-class
-      return unless hub = _.find @d3f.nodes!, fn-get-hub
+      const MAX-BUNDLE-SIZE = 5
       g-child = g.append \svg:g
-      for e in edges
-        e.source = hub if fn-is-satellite e.source
-        e.target = hub if fn-is-satellite e.target
-      # a node can connect to hub multiple times, in which case render the latest only
-      edges = _.sortBy edges, \yyyy .reverse!
-      edges = _.uniq edges, -> it.source._id.toString! + it.target._id.toString!
-      for e in edges
-        g-child.append \svg:line
-          .attr \x1 e.source.x
-          .attr \y1 e.source.y
-          .attr \x2 e.target.x
-          .attr \y2 e.target.y
-          .attr \class "edge layer id_#{e._id} #css-class #{e.classes * ' '}".trim!
-          .datum e
-      g-child.selectAll \g.edge-glyphs
-        .data edges
-        .enter!append \svg:g
-          .attr \class -> "edge-glyphs layer id_#{it._id} #css-class #{it.classes * ' '}".trim!
-        .each edge-glyph.append
-        .attr \transform edge-glyph.get-transform
+      if hub = _.find @d3f.nodes!, fn-get-hub
+        for e in edges
+          e.source = hub if fn-is-satellite e.source
+          e.target = hub if fn-is-satellite e.target
+        ## a node can connect to hub multiple times, forming a bundle
+        edges = _.sortBy edges, \yyyy .reverse!
+        bundles = _.groupBy edges, -> it.source._id.toString! + it.target._id.toString!
+        for k, b of bundles
+          e = b.0 # most recent
+          if (n = b.length) > MAX-BUNDLE-SIZE then n = MAX-BUNDLE-SIZE
+          g-child.append \svg:line
+            .attr \x1 e.source.x
+            .attr \y1 e.source.y
+            .attr \x2 e.target.x
+            .attr \y2 e.target.y
+            .attr \class "edge layer id_#{e._id} bundle-#n #css-class #{e.classes * ' '}".trim!
+            .datum e
       g-child
 
     if edges-attend
@@ -35,6 +32,12 @@ module.exports = (vg, edge-glyph, bn = bil-node) ->
       g-attend := render ga, edges, bn.is-annual-conference, bn.is-conference-yyyy, \bil-attend
     if edges = edges-steer
       g-steer := render gs, edges, bn.is-steering, bn.is-steering, \bil-steer
+      g-steer.selectAll \g.edge-glyphs
+        .data edges
+        .enter!append \svg:g
+          .attr \class -> "edge-glyphs layer bil-steer id_#{it._id} #{it.classes * ' '}".trim!
+        .each edge-glyph.append
+        .attr \transform edge-glyph.get-transform
 
   vg.on \late-render ->
     ~function add-overlay name then @svg.append \svg:g .attr \class name

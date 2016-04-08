@@ -27,7 +27,7 @@ module.exports = me = B.DeepModel.extend do
       a-node = C.Nodes.get(@get \a_node_id)?toJSON-T! # undefined if new
       b-node = C.Nodes.get(@get \b_node_id)?toJSON-T! # undefined if new
     yyyy     = a-node?name-yyyy or b-node?name-yyyy
-    when-obj = W.parse-range @get \when
+    when-obj = W.parse-range(@get \when or yyyy)
 
     _.extend (@toJSON opts),
       a_node   : a-node
