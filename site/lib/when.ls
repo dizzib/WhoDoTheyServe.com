@@ -41,7 +41,8 @@ module.exports = me =
       int: from:RANGE.min.int, to:RANGE.max.int
       raw: from:null         , to:null
     w = it.split \-
-    throw new Error "'#it' must contain a single dash" unless w.length is 2
+    throw new Error "'#it' must not contain multiple dashes" if w.length > 2
+    w.push w.0 if w.length is 1
     i-from = me.parse w.0, \min
     i-to   = me.parse w.1, \max
     throw new Error "Invalid range from #i-from to #i-to" unless i-from <= i-to

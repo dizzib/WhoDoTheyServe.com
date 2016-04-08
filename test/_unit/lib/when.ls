@@ -1,7 +1,7 @@
 Expect  = require \chai .expect
 Subject = require "#{process.cwd!}/site/lib/when"
 
-(...) <- describe.only 'when ' # trailing space to workaround mocha bug #1060
+(...) <- describe 'when ' # trailing space to workaround mocha bug #1060
 const MIN = 10000101
 const MAX = 29991231
 
@@ -59,8 +59,11 @@ it \parse-range (done) ->
     ## realistic
     * '1996-'                   19960101, MAX
     * '-1996'                   MIN     , 19961231
+    * '2014'                    20140101, 20141231
     * '2014-2014'               20140101, 20141231
+    * '07/2014'                 20140701, 20140731
     * '07/2014-07/2014'         20140701, 20140731
+    * '21/07/2014'              20140721, 20140721
     * '21/07/2014-21/07/2014'   20140721, 20140721
 
   for t in TEST-CASES
@@ -71,10 +74,9 @@ it \parse-range (done) ->
 
 it \parse-range-exceptions (done) ->
   const TEST-CASES =
-    # must have a single dash
+    # multiple dashes
     * '--'   \dash
     * '0-1-' \dash
-    * '2014' \dash
     # bad length
     * '100-'       \length
     * '-100'       \length
