@@ -10,7 +10,7 @@ module.exports = (vg, cursor) ->
   cursor.on \render (id) ->
     node = nodes-by-id[id]
     nodes = node.sub-nodes or [node]
-    edges = _.flatten [edges-by-node-id[n._id] for n in nodes]
+    edges = _.compact _.flatten [edges-by-node-id[n._id] for n in nodes]
     sel = (_.map edges, -> ".id_#{it.id}").join \,
     vg.svg.selectAll sel .classed \lit true if sel
     B.tracker.node-ids.push id
