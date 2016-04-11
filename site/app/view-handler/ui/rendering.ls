@@ -1,5 +1,4 @@
 B = require \backbone
-_ = require \underscore
 
 const CLASS-RENDERING = \rendering # signal the seo task to block
 

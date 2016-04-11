@@ -16,6 +16,7 @@ S  = require \./session
 
 require \./view-handler/event
 require \./view-handler/ui
+require \./view-handler/ui/message
 require \./view-handler/ui/rendering
 
 C.init do
