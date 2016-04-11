@@ -3,7 +3,6 @@ _  = require \underscore
 Br = require \../lib/browser
 
 const KEYCODE-ESC = 27
-var spinner-timeout # to prevent unsightly flash when render happens quickly
 
 $ document .keyup -> if it.keyCode is KEYCODE-ESC then $ \.cancel .click!
 
@@ -19,7 +18,6 @@ B.on \pre-route (name) ->
   Br.scroll-to x:0 y:0 unless name is \map
 
   $ \.view
-    .addClass \rendering
     .off \focus 'input[type=text]'
     .children!
       .trigger \hide .hide!
@@ -27,15 +25,10 @@ B.on \pre-route (name) ->
   # handle errors
   $ \.alert-error .removeClass \active    # clear any error alert location overrides
   $ \.view>.alert-error .addClass \active # reset back to default
-  spinner-timeout := setTimeout (-> $ \.spinner .show!), 50ms
 
 B.on \routed (name) ->
-  <- _.defer
-  $ \.view .removeClass \rendering # signal for seo task
-  $ \.timeago .timeago!
-  clearTimeout spinner-timeout
-  $ \.spinner .hide!
   <- _.defer # must come after navbar focus
+  $ \.timeago .timeago!
   $ 'input[type=text],textarea,select,.btn-new' .filter \:visible:first .focus!
 
 ## session

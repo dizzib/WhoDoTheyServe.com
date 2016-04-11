@@ -2,6 +2,7 @@ B = require \backbone
 Q = require \querystring # browserified
 T = require \transparency
 _ = require \underscore
+R = require \../view-handler/ui/rendering
 
 module.exports =
   DocuView: B.View.extend do
@@ -25,13 +26,12 @@ module.exports =
       @opts     = it.opts or {}
       @template = "<div>#{it.template}</div>" # transparency requires a root div for lists
     render: (coll, directive, opts) ->
-      @$el.show!addClass \rendering
+      R.set @$el.show!
       @$el.attr \data-loc B.history.fragment # to detemine if navigated away
       # 1. render current content immediately for performance
       render coll, first-chunk-only:@opts.fetch
       # 2. then optionally render async-fetched content
-      return @$el.removeClass \rendering unless @opts.fetch
-      coll.fetch success: -> render it
+      (coll.fetch success: -> render it) if @opts.fetch
 
       ~function render c, opts, pos = 0
         const CHUNK-SIZE = 5
@@ -47,5 +47,5 @@ module.exports =
           @$el.html $tem
           return if opts?first-chunk-only
         else @$el.find \ul .append $tem.find(\ul).children!
-        return @$el.removeClass \rendering if pos >= c.length
+        return R.unset @$el if pos >= c.length
         _.defer ~> render c, void, pos

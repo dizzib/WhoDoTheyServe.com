@@ -5,6 +5,7 @@ C  = require \../collection
 D  = require \../view-handler/directive
 Ve = require \../view-activity/edit
 Vr = require \../view-activity/read
+Ur = require \../view-handler/ui/rendering
 Gc = require \./map/graph/composer
 Sp = require \./map/scroll-pos
 T  = require \./map/tool
@@ -38,6 +39,7 @@ module.exports = B.View.extend do
     @scroll-pos = new Sp @v-graph
 
   render: (@map, node-id) -> # @map for external ref
+    Ur.set @$el
     (vg = @v-graph).map = @map
     vg.once \render-complete ~>
       <~ _.defer # allow completed map to display
@@ -47,6 +49,7 @@ module.exports = B.View.extend do
       @v-meta.render @map, D.meta
       @v-edit.render @map, C.Maps, fetch:no directive:D.map-edit if @map.get-is-editable!
       @map.globalise-entities! # do this expensive step last, for performance
+      Ur.unset @$el
     vg.render!
     if not node-id and rxs = @map.get \node_default_rx
       try

@@ -63,14 +63,11 @@ function fetch-entity coll, id, name, cb
   cb ent
 
 function render-nodes-or-edges done, render
-  if C.Nodes.length is 0
-    loc = B.history.fragment
-    Cs.fetch-all ->
-      render! if B.history.fragment is loc # skip if user navigated away
-      done!
-    return false # async
-  render!
-  true # sync
+  loc = B.history.fragment
+  Cs.fetch-all ->
+    render! if B.history.fragment is loc # skip if user navigated away
+    done!
+  false # async
 
 function render-evidences entity-id, act, id
   evs = C.Evidences.find -> entity-id is it.get \entity_id
