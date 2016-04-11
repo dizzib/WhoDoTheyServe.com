@@ -17,7 +17,7 @@ S  = require \./session
 require \./view-handler/event
 require \./view-handler/ui
 require \./view-handler/ui/message
-require \./view-handler/ui/rendering
+require \./view-handler/ui/spinner
 
 C.init do
   Evidence: require \./model/evidence
