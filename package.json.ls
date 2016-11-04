@@ -1,15 +1,15 @@
 name   : \wdts
-version: \0.17.0
+version: \0.18.0
 private: true
 engines:
-  node: '>=0.10.x'
-  npm : '>=1.0.x'
+  node: '>=4.2.6'
+  npm : '>=2.14.12'
 scripts:
   start: 'node boot.js'
   task : './task/bootstrap && node ./_build/task/repl'
   test : 'rm -rf ./_build && ./task/bootstrap && node ./_build/task/npm/test'
 dependencies:
-  bcrypt                  : \0.7.5
+  bcrypt                  : \0.8.7
   'body-parser'           : \1.12.3
   compression             : \1.4.3
   'cookie-parser'         : \1.3.4
@@ -49,7 +49,7 @@ devDependencies:
   levelup                   : \~0.19.0 # cacheify
   livescript                : \~1.4.0
   marked                    : \~0.3.1
-  'marionette-client'       : \git://github.com/dizzib/marionette-js-client.git#newSandbox
+  'marionette-client'       : \~1.9.5
   'marionette-js-logger'    : \0.1.2
   memdown                   : \~0.10.2 # cacheify
   mocha                     : \~1.15.1

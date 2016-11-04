@@ -2,13 +2,13 @@
 
 ## install global dependencies
 
-* [node.js][nodejs] v0.10
+* [node.js][nodejs] >= v4.6.2
 
 * [bcrypt dependencies][bcrypt-deps] (just the dependencies!)
 
-* [mongodb][mongodb] (run with [`mongod`][mongod])
+* [mongodb][mongodb] >= v3.2 (run with [`mongod`][mongod])
 
-* [firefox][firefox] running locally for the app integration tests.
+* [firefox][firefox] >= v45.0, running locally for the app integration tests.
 Must be a recent version with [marionette][marionette-js].
 
 ## git clone, build and run

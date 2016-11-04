@@ -15,6 +15,7 @@ log "App test timeout = #{WAIT-TIMEOUT}ms"
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host or \localhost)
 mc = new Mc.Client md
+mc.protocol = 3
 mc.plugin \logger Mjl
 
 module.exports = B =
@@ -28,7 +29,7 @@ module.exports = B =
         try
           n-actual = B.wait-for (opts <<< expect-unique:false)
           if n-actual > 0
-            el = w4mc \executeScript -> window.el
+            el = remote-exec -> testUtils.el
             vis = W4m el, \displayed
             return "#sig: el is not visible" unless vis
           return \ok if n-actual is n-expect
@@ -41,10 +42,10 @@ module.exports = B =
       poll-for-ok WAIT-TIMEOUT, ->
         try
           B.wait-for ...args
-          el = w4mc \executeScript -> window.el
+          el = remote-exec -> testUtils.el
           res = W4m el, \displayed
           return \ok if res is expect
-          html = w4mc \executeScript -> window.el.outerHTML
+          html = remote-exec -> testUtils.el.outerHTML
           "displayed(#{U.inspect ...args}) expect=#expect, actual=#res, html=#html"
         catch e
           log \displayed e
@@ -52,7 +53,7 @@ module.exports = B =
 
   click: (...args) ->
     B.wait-for ...args
-    w4mc \executeScript -> window.click-el!
+    remote-exec -> testUtils.click-el!
     B
 
   fill: (sel, val) ->
@@ -62,14 +63,14 @@ module.exports = B =
       v = if _.has val, \value then val.value else val
       return unless v?
       B.wait-for label-text, \label val.opts
-      w4mc \executeScript (-> window.fill it), [ v ]
+      remote-exec (-> testUtils.fill it), [ v ]
 
     if val? then fill-field ...
     else for [k, v] in _.toPairs sel then fill-field k, v
 
   go: (path = '') ->
     url = "#SITE-URL#{if path then '/#' else ''}/#path"
-    w4mc \executeScript (-> window.location.href = it), [ url ]
+    remote-exec (-> window.location.href = it), [ url ]
 
   init: ->
     log "connecting to firefox marionette at #host"
@@ -87,7 +88,7 @@ module.exports = B =
     init-sandbox!
 
   send-keys: (keys) ->
-    el = w4mc \executeScript -> window.el
+    el = remote-exec -> testUtils.el
     W4m el, \clear
     W4m el, \sendKeys keys
 
@@ -113,13 +114,13 @@ module.exports = B =
     remote-args = [ sel, filter, opts.scope, opts.include-hidden ]
 
     remote-fn = switch
-    | args.text?length => -> window.fetch-by-text ...
-    | args.'text-rx'?  => -> window.fetch-by-regex ...
-    | _                => -> window.fetch ...
+    | args.text?length => -> testUtils.fetch-by-text ...
+    | args.'text-rx'?  => -> testUtils.fetch-by-regex ...
+    | _                => -> testUtils.fetch ...
 
     n = void
     poll-for-ok opts.timeout, ->
-      n := w4mc \executeScript remote-fn, remote-args
+      n := remote-exec remote-fn, remote-args
       return \ok if n is 1 or not opts.expect-unique
       "Found #{n} occurrences of #{U.inspect remote-args} expecting exactly 1."
     n
@@ -139,11 +140,11 @@ function handle-remote-log
 function init-sandbox
   view = w4mc \findElement \.view
   w4mc \waitFor -> view.displayed!
-  w4mc \executeScript ->
-    log = console.log
+  remote-exec ->
+    log = -> console.log ...&
 
-    window.click-el = ->
-      tag = (el = window.el).tagName
+    testUtils.click-el = ->
+      tag = (el = testUtils.el).tagName
       return el.click! unless tag is \A
       # for some reason anchor clicks occasionally fail (bug in firefox?)
       # so we must verify it worked
@@ -164,31 +165,31 @@ function init-sandbox
       el.click!
       setTimeout verify, 10ms
 
-    window.fetch = (cond-fn = (-> true), filter, scope, include-hidden) ->
+    testUtils.fetch = (cond-fn = (-> true), filter, scope, include-hidden) ->
       n = 0
       scope-el = switch scope
       | \document  => window.document
-      | \el        => window.el
-      | \el.parent => window.el.parentNode
+      | \el        => testUtils.el
+      | \el.parent => testUtils.el.parentNode
       | _          => throw new Error "invalid scope #{scope}"
       for el in scope-el.querySelectorAll filter
         continue if el.disabled
         continue unless cond-fn el.textContent
         if (not include-hidden and is-visible el) or include-hidden
           #console.log 'match:', el.outerHTML, el.offsetWidth, el.offsetHeight
-          window.el = el
+          testUtils.el = el
           n++
       n
 
-    window.fetch-by-text = (text, filter, scope, include-hidden) ->
-      window.fetch (-> it.trim() is text), filter, scope, include-hidden
+    testUtils.fetch-by-text = (text, filter, scope, include-hidden) ->
+      testUtils.fetch (-> it.trim() is text), filter, scope, include-hidden
 
-    window.fetch-by-regex = (text-rx, filter, scope, include-hidden) ->
+    testUtils.fetch-by-regex = (text-rx, filter, scope, include-hidden) ->
       rx = new RegExp text-rx
-      window.fetch (-> rx.test it), filter, scope, include-hidden
+      testUtils.fetch (-> rx.test it), filter, scope, include-hidden
 
-    window.fill = ->
-      id = window.el.getAttribute \for
+    testUtils.fill = ->
+      id = testUtils.el.getAttribute \for
       for el in document.querySelectorAll "input##{id},textarea##{id}"
         continue unless is-visible el
         switch attr = el.getAttribute \type
@@ -197,7 +198,8 @@ function init-sandbox
         | \radio    => el.checked = it
         return attr
 
-    function is-visible el then el.offsetWidth > 0 or el.offsetHeight > 0
+    function is-visible el
+      el.offsetWidth > 0 or el.offsetHeight > 0
 
 function poll-for-ok timeout, fn
   start-time = Date.now!
@@ -209,5 +211,9 @@ function poll-for-ok timeout, fn
     W4 pause, POLL-TIME
 
   function pause ms, cb then setTimeout (-> cb!), ms
+
+function remote-exec fn, args
+  opts = name:\executeScript parameters:{ script:fn, args:args, sandbox:\system }
+  W4m mc, \_executeScript, opts
 
 function w4mc then W4m mc, ...&
