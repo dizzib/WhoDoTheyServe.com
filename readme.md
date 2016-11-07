@@ -8,7 +8,7 @@
 
 * [mongodb][mongodb] >= v3.2 (run with [`mongod`][mongod])
 
-* [firefox][firefox] >= v45.0, running locally for the app integration tests.
+* [firefox][firefox] running locally for the app integration tests.
 Must be a recent version with [marionette][marionette-js].
 
 ## git clone, build and run

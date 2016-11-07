@@ -14,8 +14,7 @@ const WAIT-TIMEOUT = _.parseInt(process.env.APP_TEST_TIMEOUT) or 15000ms
 log "App test timeout = #{WAIT-TIMEOUT}ms"
 
 md = new Mc.Drivers.Tcp host:(host = process.env.firefox-host or \localhost)
-mc = new Mc.Client md
-mc.protocol = 3
+mc = new Mc.Client null, lazy:true
 mc.plugin \logger Mjl
 
 module.exports = B =
@@ -76,6 +75,7 @@ module.exports = B =
     log "connecting to firefox marionette at #host"
     W4m md, \connect
     log "connected"
+    mc.resetWithDriver md
     w4mc \startSession
     mc.logger.handleMessage = handle-remote-log
     w4mc \setSearchTimeout 500
