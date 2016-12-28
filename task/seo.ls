@@ -24,8 +24,9 @@ module.exports =
       log "generate seo from #SITE-URL via firefox at #BROWSER-HOST"
 
       md = new Mc.Drivers.Tcp host:BROWSER-HOST
-      mc = new Mc.Client md
+      mc = new Mc.Client null, lazy:true
       W4m md, \connect
+      mc.resetWithDriver md
       W4m mc, \startSession
       W4m mc, \setSearchTimeout 15000
 
