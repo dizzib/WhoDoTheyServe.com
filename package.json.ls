@@ -9,7 +9,7 @@ scripts:
   task : './task/bootstrap && node ./_build/task/repl'
   test : 'rm -rf ./_build && ./task/bootstrap && node ./_build/task/npm/test'
 dependencies:
-  bcrypt                  : \0.8.7
+  bcryptjs                : \2.4.0
   'body-parser'           : \1.12.3
   compression             : \1.4.3
   'cookie-parser'         : \1.3.4
