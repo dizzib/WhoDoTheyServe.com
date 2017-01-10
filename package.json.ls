@@ -36,7 +36,7 @@ devDependencies:
   chai                      : \~2.3.0
   chalk                     : \~0.4.0
   cheerio                   : \~0.14.0
-  chokidar                  : \~1.0.1
+  chokidar                  : \~1.6.1
   cron                      : \~1.0.3
   exposify                  : \~0.1.4
   growly                    : \~1.2.0
