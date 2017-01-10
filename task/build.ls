@@ -102,9 +102,9 @@ function finalise ipath, opath
     return if contains-base \task
     me.emit \built-api unless contains APP
     switch
-      | /\.css$/.test opath => Bundle.css!
-      | Bundle.is-lib ipath => Bundle.libs!
-      | not (contains-base \test or contains API) => Bundle.app opath
+    | /\.css$/.test opath => Bundle.css!
+    | Bundle.is-lib ipath => Bundle.libs!
+    | not (contains-base \test or contains API) => Bundle.app opath
     me.emit \built-app unless contains API
   else # full build
     me.emit \built-api
@@ -140,14 +140,14 @@ function start-watching tid
         finalise ipath
       catch e then G.err e
     else switch act
-      | \add \change
-        try opath = W4 compile, t, ipath
-        catch e then return G.err e
-        G.ok opath
-        finalise ipath, opath
-      | \unlink
-        Assert.equal pwd!, Dir.BUILD
-        try W4m Fs, \unlink, opath = get-opath t, ipath
-        catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
-        G.ok "Delete #opath"
-        finalise ipath, opath
+    | \add \change
+      try opath = W4 compile, t, ipath
+      catch e then return G.err e
+      G.ok opath
+      finalise ipath, opath
+    | \unlink
+      Assert.equal pwd!, Dir.BUILD
+      try W4m Fs, \unlink, opath = get-opath t, ipath
+      catch e then throw e unless e.code is \ENOENT # not found i.e. already deleted
+      G.ok "Delete #opath"
+      finalise ipath, opath
