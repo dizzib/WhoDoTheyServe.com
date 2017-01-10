@@ -9,12 +9,12 @@ module.exports =
     log "delete #dir"
     rm \-rf dir
 
-  refresh-modules: ->
+  update-modules: ->
     pushd Dir.ROOT
     try
       Assert.equal pwd!, Dir.ROOT
       W4 exec, 'npm -v'
       W4 exec, 'npm prune'
-      W4 exec, 'npm install'
+      W4 exec, 'npm update'
     finally
       popd!

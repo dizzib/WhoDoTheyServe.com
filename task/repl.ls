@@ -26,7 +26,7 @@ const CHALKS = [Chalk.stripColor, Chalk.yellow, Chalk.red]
 const COMMANDS =
   * cmd:'h    ' lev:0 desc:'help  - show commands'       fn:show-help
   * cmd:'i.d  ' lev:0 desc:'inst  - delete modules'      fn:Inst.delete-modules
-  * cmd:'i.r  ' lev:0 desc:'inst  - refresh modules'     fn:Inst.refresh-modules
+  * cmd:'i.u  ' lev:0 desc:'inst  - update modules'      fn:Inst.update-modules
   * cmd:'     ' lev:0 desc:'build - halt test run'       fn:Test.cancel
   * cmd:'b    ' lev:0 desc:'build - recycle + test'      fn:-> Test.run \dev
   * cmd:'b.a  ' lev:0 desc:'build - all'                 fn:build-all
