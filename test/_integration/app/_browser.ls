@@ -214,6 +214,6 @@ function poll-for-ok timeout, fn
 
 function remote-exec fn, args
   opts = name:\executeScript parameters:{ script:fn, args:args, sandbox:\system }
-  W4m mc, \_executeScript, opts
+  w4mc \_executeScript opts
 
 function w4mc then W4m mc, ...&
