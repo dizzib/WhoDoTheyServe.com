@@ -1,3 +1,5 @@
+# SAVE INDEX.PUG FOR CHANGES TO BE INCLUDED!!!
+
 const LIBS =
   backbone:
     cdn: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js'
