@@ -19,11 +19,6 @@ const BIN = "#{Dir.ROOT}/node_modules/.bin"
 
 pruner = new Cron.CronJob cronTime:'*/10 * * * *' onTick:prune-empty-dirs
 tasks  =
-  jade:
-    cmd : "#BIN/jade --obj \"{'basedir':'#{Dir.SITE}/app'}\" --out $ODIR $IN"
-    ixt : \jade
-    oxt : \html
-    mixn: \_
   livescript:
     cmd : "#BIN/lsc --output $ODIR $IN"
     ixt : \ls
@@ -34,7 +29,7 @@ tasks  =
     ixt : \md
     oxt : \html
   pug:
-    cmd : "#BIN/pug --out $ODIR $IN"
+    cmd : "#BIN/pug --obj \"{'basedir':'#{Dir.SITE}/app'}\" --out $ODIR $IN"
     ixt : \pug
     oxt : \html
     mixn: \_
