@@ -2,8 +2,8 @@ name   : \wdts
 version: \0.18.1
 private: true
 engines:
-  node: '4.2.6'
-  npm : '2.14.12'
+  node: \4.2.6
+  npm : \2.14.12
 scripts:
   start: 'node boot.js'
   task : './task/bootstrap && node ./_build/task/repl'
@@ -14,6 +14,7 @@ dependencies:
   compression             : \1.4.3
   'cookie-parser'         : \1.3.4
   'cookie-session'        : \1.1.0
+  cors                    : \2.8.3
   crypto                  : \0.0.3
   'custom-error-generator': \7.0.0
   errorhandler            : \1.3.5

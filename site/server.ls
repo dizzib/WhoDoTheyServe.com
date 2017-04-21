@@ -2,6 +2,7 @@ BodyParser  = require \body-parser
 Compress    = require \compression
 CookiePars  = require \cookie-parser
 CookieSess  = require \cookie-session
+Cors        = require \cors
 ErrHandler  = require \errorhandler
 Express     = require \express
 Favicon     = require \serve-favicon
@@ -36,8 +37,8 @@ module.exports = express
   ..use Compress! if env in <[ staging production ]>
   ..use CookiePars!
   ..use CookieSess cookie-opts
+  ..use Cors!
   ..use BodyParser.json limit:\999kb
-  ..use allow-cross-domain
   ..use Passport.initialize!
 
   # routes
@@ -52,14 +53,6 @@ module.exports = express
   ..use log-error show-stack:env in <[ development staging production ]>
   ..use handle-error
   ..use ErrHandler! if env in <[ development ]>
-
-# http://backbonetutorials.com/cross-domain-sessions/
-function allow-cross-domain req, res, next
-  res.set \Access-Control-Allow-Credentials true
-  res.set \Access-Control-Allow-Headers     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  res.set \Access-Control-Allow-Methods     'GET,POST,PUT,DELETE,OPTIONS'
-  res.set \Access-Control-Allow-Origin      req.headers.origin
-  next!
 
 function get-validation-msg err
   return _.reduce err.errors, iterator, ''
