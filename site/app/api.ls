@@ -1,11 +1,11 @@
 # api calls bypass CF by calling the native provider domain not whodotheyserve.com
-const PROD-URL = \http://wdts-dizzib0.rhcloud.com/api
+const PROD-URL = \http://wdts2-dizzib0.rhcloud.com/api
 
 module.exports =
   post-coverage: -> # https://github.com/gotwarlost/istanbul-middleware
     new XMLHttpRequest!
-      ..open \POST, \/coverage/client
-      ..setRequestHeader 'Content-Type', 'application/json; charset=UTF-8'
+      ..open \POST \/coverage/client
+      ..setRequestHeader \Content-Type 'application/json; charset=UTF-8'
       ..send JSON.stringify window.__coverage__
 
   ## endpoints

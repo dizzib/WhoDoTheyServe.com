@@ -1,9 +1,9 @@
 name   : \wdts
-version: \0.18.0
+version: \0.18.1
 private: true
 engines:
-  node: '>=4.2.6'
-  npm : '>=2.14.12'
+  node: '4.2.6'
+  npm : '2.14.12'
 scripts:
   start: 'node boot.js'
   task : './task/bootstrap && node ./_build/task/repl'
