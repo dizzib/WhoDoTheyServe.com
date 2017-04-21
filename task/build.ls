@@ -89,8 +89,8 @@ function compile-batch tid
   G.ok "...done #info!"
 
 function finalise ipath, opath
-  const API = <[ /api/ /api.ls ]>
-  const APP = <[ /app/ /app.ls ]>
+  const API = <[ /api/ test/_integration/api.ls ]>
+  const APP = <[ /app/ test/_integration/app.ls ]>
   function contains then _.some it, -> _.includes ipath, it
   function contains-base then contains ["#it/"]
   if ipath # partial build. site/lib is common to site/api and site/app
