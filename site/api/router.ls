@@ -1,4 +1,3 @@
-Cors        = require \cors
 Express     = require \express
 Passport    = require \passport
 Analytics   = require \./analytics
@@ -29,7 +28,7 @@ module.exports = Express.Router!
     # www.whodotheyserve.com/api, and here we prevent CF from caching such requests.
     res.header \Cache-Control \no-cache
     next!
-  ..options '/*' Cors! # (, res) -> res.sendStatus 200
+  ..options '/*' (, res) -> res.sendStatus 200
   ..param \id extract-id
   # security
   ..use sec-hive!

@@ -37,7 +37,7 @@ module.exports = express
   ..use Compress! if env in <[ staging production ]>
   ..use CookiePars!
   ..use CookieSess cookie-opts
-  ..use Cors!
+  ..use Cors credentials:true origin:true
   ..use BodyParser.json limit:\999kb
   ..use Passport.initialize!
 
