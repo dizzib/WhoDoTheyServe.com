@@ -1,5 +1,6 @@
-A = require \Autolinker
+L = require \Autolinker
 B = require \backbone
+A = require \../api
 C = require \../collection
 S = require \../session
 V = require \../view
@@ -123,6 +124,11 @@ const SHOW-IF-CREATOR-OR-ADMIN = ->
 
 # _.extend seems to work better then livescript's with (aka the cloneport)
 module.exports =
+  about:
+    api:
+      href: -> A[it.element.text]
+    'n-hits':
+      href: -> "#{A.hive}/n-hits-#{new Date!getFullYear!}"
   edge: _.extend do
     'btn-edit':
       class: SHOW-IF-CREATOR-OR-ADMIN
@@ -207,7 +213,7 @@ module.exports =
     EVI
   user-notes:
     note:
-      html: -> A.link @text if @text
+      html: -> L.link @text if @text
     meta: REMOVE
   users:
     user:
@@ -223,4 +229,4 @@ function get-user-text then if (u = C.Users.get it) then "#{u.get \name}" else '
 
 function htmlify-text
   return unless it
-  A.link it.replace /\r\n/g, \<br/>
+  L.link it.replace /\r\n/g, \<br/>

@@ -5,10 +5,6 @@ _ = require \underscore
 S = require \../view-handler/ui/spinner
 
 module.exports =
-  DocuView: B.View.extend do
-    initialize: -> @document = it.document
-    render: -> @$el.html @document .show!
-
   InfoView: B.View.extend do
     initialize: ->
       @opts     = it.opts or {}

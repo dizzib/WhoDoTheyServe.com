@@ -26,7 +26,7 @@ r = B.Router.extend do
   routes:
     \__coverage           : A.post-coverage
     ''                    : \map_default
-    \doc/about            : \doc_about
+    \about                : \about
     \edge/edit/:id        : \edge_edit
     \edge/new             : \edge_edit
     \edge/:id             : \edge
@@ -55,7 +55,7 @@ r = B.Router.extend do
     \user/:id             : \user
     \users                : \users
     \*nomatch             : \map_default
-  doc_about      : -> V.doc-about.render ...&
+  about          : -> V.about.render void, Vd.about, ...&
   edge           : -> Vc.edge ...&
   edge_edit      : -> V.edge-edit.render (M-Edge.create it), C.Edges
   edges          : -> Vc.edges ...&

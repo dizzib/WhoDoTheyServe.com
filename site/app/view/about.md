@@ -12,18 +12,18 @@ you can add to [github issues][issues].
 ### Data
 
 The data is freely available in [JSON] format via an [API]:
-[nodes](http://wdts-dizzib0.rhcloud.com/api/nodes)
-[edges](http://wdts-dizzib0.rhcloud.com/api/edges)
-[evidences](http://wdts-dizzib0.rhcloud.com/api/evidences)
-[maps](http://wdts-dizzib0.rhcloud.com/api/maps)
-[users](http://wdts-dizzib0.rhcloud.com/api/users)
+<a class='api'>nodes</a>
+<a class='api'>edges</a>
+<a class='api'>evidences</a>
+<a class='api'>maps</a>
+<a class='api'>users</a>
 
 A [production database dump][db-dump] is maintained in github.
 
 ### Privacy
 
 This site does not use 3rd party tracking tools like Google analytics.
-The only information captured is [visitor count per 10-days][hit-count].
+The only information captured is <a class='n-hits'>visitor count per 10-days</a>
 
 ### Credits
 
@@ -37,7 +37,6 @@ information requests to UK public authorities.
 [beta]:       https://en.wikipedia.org/wiki/Software_release_life_cycle
 [coi]:        http://en.wikipedia.org/wiki/Conflict_of_interest
 [db-dump]:    https://github.com/dizzib/prod-db-dump
-[hit-count]:  http://wdts-dizzib0.rhcloud.com/api/hive/n-hits-2016
 [github]:     https://github.com
 [issues]:     https://github.com/dizzib/WhoDoTheyServe.com/issues
 [json]:       http://en.wikipedia.org/wiki/Json

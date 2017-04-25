@@ -9,7 +9,7 @@ V-NavBar  = require \./view/navbar
 V-Sys     = require \./view/sys
 
 # cannot refactor since Brfs requires this exact code format
-D-About         = F.readFileSync __dirname + \/doc/about.html
+T-About         = F.readFileSync __dirname + \/view/about.html
 T-EdgeEdit      = F.readFileSync __dirname + \/view/edge/edit.html
 T-Edge          = F.readFileSync __dirname + \/view/edge.html
 T-Edges         = F.readFileSync __dirname + \/view/edges.html
@@ -37,7 +37,7 @@ T-Users         = F.readFileSync __dirname + \/view/users.html
 T-Version       = F.readFileSync __dirname + \/view/version.html
 
 module.exports
-  ..doc-about       = new Vr.DocuView document:D-About        , el:\.view>.main
+  ..about           = new Vr.InfoView template:T-About        , el:\.view>.main
   ..edge            = new Vr.InfoView template:T-Edge         , el:\.view>.main
   ..edge-a-node-sel = new Vs.SelectView                         sel:\#a_node_id
   ..edge-b-node-sel = new Vs.SelectView                         sel:\#b_node_id
