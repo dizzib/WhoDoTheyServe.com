@@ -46,12 +46,12 @@ devDependencies:
   'jstransformer-markdown'  : \~1.1.0
   'jstransformer-stylus'    : \~1.0.0
   'jstransformer-uglify-js' : \~1.1.1
-  levelup                   : \~0.19.0 # cacheify
+  levelup                   : \~1.3.5 # cacheify
   livescript                : \~1.4.0
   marked                    : \~0.3.1
   'marionette-client'       : \~1.9.5
   'marionette-js-logger'    : \0.1.2
-  memdown                   : \~0.10.2 # cacheify
+  memdown                   : \~1.2.4 # cacheify
   mocha                     : \~1.15.1
   mongodb                   : \~1.2.14
   nib                       : \~1.1.0
