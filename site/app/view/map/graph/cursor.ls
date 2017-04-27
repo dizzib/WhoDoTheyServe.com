@@ -1,4 +1,4 @@
-Eve = require \events .EventEmitter
+Eve = require \../../../lib/event-emitter
 _   = require \underscore
 
 module.exports = class extends Eve
