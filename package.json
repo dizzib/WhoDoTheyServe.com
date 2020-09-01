@@ -24,7 +24,7 @@
     "express": "4.12.3",
     "http-status": "0.1.8",
     "lodash": "4.6.1",
-    "mongoose": "4.0.3",
+    "mongoose": "5.10.2",
     "morgan": "1.5.2",
     "passport": "0.2.0",
     "passport-facebook": "1.0.3",
