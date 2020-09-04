@@ -57,7 +57,7 @@
     "marionette-js-logger": "0.1.2",
     "memdown": "~1.2.4",
     "mocha": "~1.15.1",
-    "mongodb": "~1.2.14",
+    "mongodb": "~3.6.1",
     "nib": "~1.1.0",
     "pug": "~2.0.0-beta11",
     "pug-cli": "~1.0.0-alpha6",
